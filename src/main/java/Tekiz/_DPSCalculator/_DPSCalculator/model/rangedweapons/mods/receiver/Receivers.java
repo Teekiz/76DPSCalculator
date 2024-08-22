@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter @RequiredArgsConstructor
 public enum Receivers
 {
+	//todo, update so that receivers (or other mods) are loaded  from a JSON file
 	AUTOMATIC(ReceiverType.AUTOMATIC, 0.90, 0,32, 0, 0.50, false, false, null),
 	CALIBRATED(ReceiverType.SEMIAUTOMATIC, 0, 100,0,1, 0, false, false, null),
 	FIERCE(ReceiverType.SEMIAUTOMATIC, 0, 50, 9, 0, 0.05, false, false, null);
