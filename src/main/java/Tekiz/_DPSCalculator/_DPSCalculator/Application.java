@@ -1,9 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.Pistol;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.receiver.Ammo;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.receiver.Receiver;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.receiver.Receivers;
+import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.ModLoader;
+import java.io.File;
+import java.io.IOException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,19 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-	static Pistol pistol = new Pistol();
+	static ModLoader modLoader = new ModLoader();
+	static File file = new File("src/main/resources/data/receivers.json");
 
 	public static void main(String[] args)
 	{
 		SpringApplication.run(Application.class, args);
-
-		pistol.setReceiver(new Receiver());
-		pistol.getReceiver().setReceiver(Receivers.CALIBRATED);
-		pistol.getReceiver().setAmmo(Ammo.FUSIONCELL);
 	}
 
 	@GetMapping
-	public String getReceiver() {return pistol.getReceiver().getAmmoType().getAmmoName();}
+	public String getReceiver() throws IOException
+	{return modLoader.loadReceivers(file).get(0).getName();}
 
 	/*
 	@GetMapping
