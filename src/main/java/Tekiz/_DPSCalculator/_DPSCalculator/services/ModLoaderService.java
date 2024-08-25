@@ -10,14 +10,14 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 @Service @Getter
-public class ModService
+public class ModLoaderService
 {
 	//todo - change from static path
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final File file = new File("src/main/resources/data/receivers.json");
 	private final List<Receiver> receivers;
 
-	public ModService() throws IOException
+	public ModLoaderService() throws IOException
 	{
 		receivers = loadReceivers();
 	}

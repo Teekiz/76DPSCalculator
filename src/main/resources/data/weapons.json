@@ -1,0 +1,21 @@
+{
+    "10MMPISTOL" : 
+    {
+        "weaponName" : "10mm pistol",
+        "weaponType" : "PISTOL",
+        "weaponLevels" : [5,15,25,35,45],
+        "weaponDamageValues" : [15,18,21,24,28],
+        "apCost" : 20,
+        "ammo" : "10mm",    
+        "magazineSize" : 12,
+        "fireRate" : 43,
+        "range" : 120,
+        "accuracy" : 63,
+        "projectileCount" : 1,
+        "criticalBonus" : 100,
+        "rangedPenalty" : -50,
+        "reloadTime" : 1.97,
+        "attackSpeed" : 0.67,
+        "attackDelay" : 0.23
+    }
+}

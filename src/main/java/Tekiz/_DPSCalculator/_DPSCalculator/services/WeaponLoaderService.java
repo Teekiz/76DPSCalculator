@@ -2,8 +2,13 @@ package Tekiz._DPSCalculator._DPSCalculator.services;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.Pistol;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,28 +16,42 @@ import org.springframework.stereotype.Service;
 @Service @Getter
 public class WeaponLoaderService
 {
-	//todo update to weapon list if comparison to multiple is made.
+	//todo - change from static path
 	private final WeaponFactory weaponFactory;
-	private final ModService modService;
+	private final ObjectMapper objectMapper;
+	private final File file = new File("src/main/resources/data/weapons.json");
 
-	private Weapon weapon = null;
-
+	//todo - consider changing to method
+	//todo - pass object mapper?
 	@Autowired
-	public WeaponLoaderService(WeaponFactory weaponFactory, ModService modService)
+	public WeaponLoaderService(WeaponFactory weaponFactory) throws IOException
 	{
 		this.weaponFactory = weaponFactory;
-		this.modService = modService;
+		objectMapper = new ObjectMapper();
 	}
 
-	public void createWeapon(WeaponType weaponType)
+	public List<String> loadWeaponNameList() throws IOException
 	{
-		weapon = weaponFactory.createWeapon(weaponType);
-
-		if (weapon instanceof Pistol)
+		List<String> weaponNames = new ArrayList<>();
+		JsonNode rootNode = objectMapper.readTree(file);
+		Iterator<String> names = rootNode.fieldNames();
+		while (names.hasNext())
 		{
-			((Pistol) weapon).setReceiver(modService.getReceivers().get(0));
-
+			weaponNames.add(names.next());
 		}
+
+		return weaponNames;
 	}
 
+	public Weapon getWeapon(String weaponName) throws IOException
+	{
+		JsonNode rootNode = objectMapper.readTree(file);
+		JsonNode weaponNode = rootNode.get(weaponName.toUpperCase());
+		;
+		if (weaponNode != null)
+		{
+			return weaponFactory.createWeapon(weaponNode);
+		}
+		return null;
+	}
 }

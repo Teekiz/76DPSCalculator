@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.services.WeaponLoaderService;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class WeaponController
 		this.weaponLoaderService = weaponLoaderService;
 	}
 
-	@GetMapping("/create")
-	public String createWeapon(@RequestParam WeaponType weaponType) {
-		weaponLoaderService.createWeapon(weaponType);
-		return "Weapon created: " + weaponType;
+	@GetMapping("/create") //@RequestParam String weaponName
+	public String createWeapon() throws IOException
+	{
+		return "Weapon created: " + weaponLoaderService.getWeapon("10MMPISTOL").getWeaponName();
 	}
 }
