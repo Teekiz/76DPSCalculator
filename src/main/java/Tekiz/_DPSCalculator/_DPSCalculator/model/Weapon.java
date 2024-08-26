@@ -1,14 +1,17 @@
 package Tekiz._DPSCalculator._DPSCalculator.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Getter @Setter @AllArgsConstructor
+@Data
+@AllArgsConstructor
 public abstract class Weapon
 {
-	private String weaponName;
-	private int[] weaponLevels;
-	private int[] weaponDamageValues;
-	private int apCost;
+	protected String weaponName;
+	protected int[] weaponLevels;
+	protected int[] weaponDamageValues;
+	protected int apCost;
 }
