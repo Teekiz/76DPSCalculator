@@ -10,29 +10,30 @@ import java.util.Iterator;
 import java.util.List;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service @Getter
+@Service
 public class WeaponLoaderService
 {
-	//todo - change from static path
 	private final WeaponFactory weaponFactory;
 	private final ObjectMapper objectMapper;
-	private final File file = new File("src/main/resources/data/weapons.json");
+	private final File weaponFile;
 
 	//todo - consider changing to method
 	//todo - pass object mapper?
 	@Autowired
-	public WeaponLoaderService(WeaponFactory weaponFactory) throws IOException
+	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, @Value("${weapon.data.file.path}") String weaponDataFilePath) throws IOException
 	{
 		this.weaponFactory = weaponFactory;
-		objectMapper = new ObjectMapper();
+		this.objectMapper = objectMapper;
+		this.weaponFile = new File(weaponDataFilePath);
 	}
 
 	public List<String> loadWeaponNameList() throws IOException
 	{
 		List<String> weaponNames = new ArrayList<>();
-		JsonNode rootNode = objectMapper.readTree(file);
+		JsonNode rootNode = objectMapper.readTree(weaponFile);
 		Iterator<String> names = rootNode.fieldNames();
 		while (names.hasNext())
 		{
@@ -44,7 +45,7 @@ public class WeaponLoaderService
 
 	public Weapon getWeapon(String weaponName) throws IOException
 	{
-		JsonNode rootNode = objectMapper.readTree(file);
+		JsonNode rootNode = objectMapper.readTree(weaponFile);
 		JsonNode weaponNode = rootNode.get(weaponName.toUpperCase());
 		if (weaponNode != null)
 		{

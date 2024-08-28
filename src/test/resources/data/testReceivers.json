@@ -1,6 +1,6 @@
 {
   "AUTOMATIC": {
-    "name": "Automatic",
+    "name": "TestAutomatic",
     "receiverType": "AUTOMATIC",
     "damageChange": 0.90,
     "damageCriticalMultiplier": 0,
@@ -11,24 +11,13 @@
     "ammoOverrideType": null
   },
   "CALIBRATE": {
-    "name": "Calibrated",
+    "name": "TestCalibrated",
     "receiverType": "SEMIAUTOMATIC",
     "damageChange": 0,
     "damageCriticalMultiplier": 100,
     "fireRateChange": 0,
     "accuracyChange": 1,
     "apChange": 0,
-    "prime": false,
-    "ammoOverrideType": null
-  },
-  "FIERCE": {
-    "name": "Fierce",
-    "receiverType": "SEMIAUTOMATIC",
-    "damageChange": 0,
-    "damageCriticalMultiplier": 50,
-    "fireRateChange": 9,
-    "accuracyChange": 0,
-    "apChange": 0.05,
     "prime": false,
     "ammoOverrideType": null
   }
