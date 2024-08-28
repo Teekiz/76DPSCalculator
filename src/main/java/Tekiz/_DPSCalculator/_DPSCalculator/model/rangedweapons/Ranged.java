@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.Weapon;
+import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -24,12 +25,12 @@ public abstract class Ranged extends Weapon
 	protected double attackDelay;
 
 	@Autowired
-	public Ranged(String weaponName, int[] weaponLevels, int[] weaponDamageValues, int apCost,
+	public Ranged(String weaponName, HashMap<Integer, Double> weaponDamageByLevel, int apCost,
 				  int magazineSize, int fireRate, int range, int accuracy,
 				  int projectileCount, int criticalBonus, int rangedPenalty,
 				  double reloadTime, double attackSpeed, double attackDelay)
 	{
-		super(weaponName, weaponLevels, weaponDamageValues, apCost);
+		super(weaponName, weaponDamageByLevel, apCost);
 		this.magazineSize = magazineSize;
 		this.fireRate = fireRate;
 		this.range = range;

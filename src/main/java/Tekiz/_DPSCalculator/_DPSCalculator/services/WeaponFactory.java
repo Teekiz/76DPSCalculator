@@ -3,7 +3,6 @@ package Tekiz._DPSCalculator._DPSCalculator.services;
 import Tekiz._DPSCalculator._DPSCalculator.model.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.Pistol;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.PistolBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

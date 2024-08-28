@@ -46,7 +46,6 @@ public class WeaponLoaderService
 	{
 		JsonNode rootNode = objectMapper.readTree(file);
 		JsonNode weaponNode = rootNode.get(weaponName.toUpperCase());
-		;
 		if (weaponNode != null)
 		{
 			return weaponFactory.createWeapon(weaponNode);

@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class Weapon
 {
 	protected String weaponName;
-	protected int[] weaponLevels;
-	protected int[] weaponDamageValues;
+	protected Map<Integer, Double> weaponDamageByLevel;
 	protected int apCost;
+
+	public abstract double getBaseDamage(int damage);
 }

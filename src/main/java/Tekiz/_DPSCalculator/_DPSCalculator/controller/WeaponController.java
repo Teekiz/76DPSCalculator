@@ -27,7 +27,7 @@ public class WeaponController
 		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
 		if (weapon instanceof Pistol)
 		{
-			return "Weapon create " + ((Pistol) weapon).getMagazineSize();
+			return "Base damage" + ((Pistol) weapon).getAttackDelay();
 		}
 		return "Weapon created: " + weapon.getWeaponName();
 	}

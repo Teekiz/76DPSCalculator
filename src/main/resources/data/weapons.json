@@ -3,8 +3,14 @@
     {
         "weaponName" : "10mm pistol",
         "weaponType" : "PISTOL",
-        "weaponLevels" : [5,15,25,35,45],
-        "weaponDamageValues" : [15,18,21,24,28],
+        "weaponDamageByLevel" :
+        {
+          "5" : 15.0,
+          "15" : 18.0,
+          "25" : 21.0,
+          "35" : 24.0,
+          "45" : 28.0
+        },
         "apCost" : 20,
         "ammo" : "10mm",    
         "magazineSize" : 12,
