@@ -20,8 +20,6 @@ public class WeaponLoaderService
 	private final ObjectMapper objectMapper;
 	private final File weaponFile;
 
-	//todo - consider changing to method
-	//todo - pass object mapper?
 	@Autowired
 	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, @Value("${weapon.data.file.path}") String weaponDataFilePath) throws IOException
 	{

@@ -22,6 +22,7 @@
         "rangedPenalty" : -50,
         "reloadTime" : 1.97,
         "attackSpeed" : 0.67,
-        "attackDelay" : 0.23
+        "attackDelay" : 0.23,
+        "receiver" : "AUTOMATIC"
     }
 }
