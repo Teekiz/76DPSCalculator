@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/testWeapons.json"})
+@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json"})
 public class WeaponBuilderTest
 {
 	@Autowired

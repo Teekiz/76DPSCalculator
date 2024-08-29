@@ -27,7 +27,7 @@ public class WeaponController
 		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
 		if (weapon instanceof Pistol)
 		{
-			return "Base damage" + ((Pistol) weapon).getBaseDamage(15);
+			return "Base damage" + ((Pistol) weapon).getBaseDamage(45);
 		}
 		return "Weapon created: " + weapon.getWeaponName();
 	}

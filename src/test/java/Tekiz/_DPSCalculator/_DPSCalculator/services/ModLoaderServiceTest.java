@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(properties = {"receiver.data.file.path=src/test/resources/data/testReceivers.json"})
+@SpringBootTest(properties = {"receiver.data.file.path=src/test/resources/data/weaponData/testReceivers.json"})
 public class ModLoaderServiceTest
 {
 	@Autowired

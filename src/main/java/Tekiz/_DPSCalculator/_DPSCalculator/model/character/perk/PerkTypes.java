@@ -1,0 +1,14 @@
+package Tekiz._DPSCalculator._DPSCalculator.model.character.perk;
+
+public enum PerkTypes
+{
+	DAMAGE,
+	PENETRATION,
+	ATTACKANDRELOADSPEED,
+	ACCURACYANDRANGE,
+	SNEAKBONUS,
+	CRITICALBONUS,
+	CONSUMABLE,
+	SPECIAL,
+	MUTATION;
+}

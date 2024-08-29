@@ -5,7 +5,7 @@
         "weaponType" : "PISTOL",
         "weaponDamageByLevel" :
         {
-          "5" : 15.0,
+          "1" : 15.0,
           "15" : 18.0,
           "25" : 21.0,
           "35" : 24.0,
