@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,20 @@ public class ModLoaderService
 		return objectMapper.treeToValue(weaponNode, Receiver.class);
 	}
 
-	//todo test
 	public List<Receiver> getAllReceivers() throws IOException
 	{
 		JsonNode rootNode = objectMapper.readTree(receiversFile);
-		return objectMapper.readValue(receiversFile, new TypeReference<List<Receiver>>() {
-		});
+		List<Receiver> receivers = new ArrayList<>();
+		Iterator<JsonNode> elements = rootNode.elements();
+
+		while (elements.hasNext()) {
+			JsonNode receiverNode = elements.next();
+			Receiver receiver = objectMapper.treeToValue(receiverNode, Receiver.class);
+			receivers.add(receiver);
+		}
+
+		return receivers;
+
 	}
 
 }

@@ -1,13 +1,17 @@
 package Tekiz._DPSCalculator._DPSCalculator.services;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.Receiver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.jdi.StackFrame;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,19 +32,6 @@ public class WeaponLoaderService
 		this.weaponFile = new File(weaponDataFilePath);
 	}
 
-	public List<String> loadWeaponNameList() throws IOException
-	{
-		List<String> weaponNames = new ArrayList<>();
-		JsonNode rootNode = objectMapper.readTree(weaponFile);
-		Iterator<String> names = rootNode.fieldNames();
-		while (names.hasNext())
-		{
-			weaponNames.add(names.next());
-		}
-
-		return weaponNames;
-	}
-
 	public Weapon getWeapon(String weaponName) throws IOException
 	{
 		JsonNode rootNode = objectMapper.readTree(weaponFile);
@@ -50,5 +41,22 @@ public class WeaponLoaderService
 			return weaponFactory.createWeapon(weaponNode);
 		}
 		return null;
+	}
+
+	//This will be used to for weapon displays so that unnecessary objects are not created.
+	public HashMap<String, String> getAllWeaponsWithName() throws IOException
+	{
+		HashMap<String, String> weaponNames = new HashMap<>();
+		JsonNode rootNode = objectMapper.readTree(weaponFile);
+		Iterator<String> fieldNames = rootNode.fieldNames();
+		while (fieldNames.hasNext())
+		{
+			String rootFieldName = fieldNames.next();
+			JsonNode childNode = rootNode.get(rootFieldName);
+			String childNameValue = childNode.get("weaponName").asText();
+			weaponNames.put(rootFieldName, childNameValue);
+		}
+
+		return weaponNames;
 	}
 }
