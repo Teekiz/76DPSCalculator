@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

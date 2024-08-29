@@ -1,18 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jdi.StackFrame;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

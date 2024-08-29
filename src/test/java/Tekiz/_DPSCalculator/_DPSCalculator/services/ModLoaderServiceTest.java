@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;

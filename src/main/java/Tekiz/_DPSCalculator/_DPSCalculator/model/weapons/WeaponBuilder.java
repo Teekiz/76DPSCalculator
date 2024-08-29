@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import java.util.HashMap;
 import lombok.AllArgsConstructor;

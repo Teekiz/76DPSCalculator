@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.ModLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
