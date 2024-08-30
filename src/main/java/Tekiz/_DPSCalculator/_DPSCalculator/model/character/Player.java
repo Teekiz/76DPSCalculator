@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.character.perk.Perk;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
 @Data
@@ -17,11 +18,6 @@ public class Player
 	private int intelligence;
 	private int agility;
 	private int luck;
+	private int level;
 	private List<Perk> perks;
-
-	public double getDamageBonus()
-	{
-		//this comes from perks and consumables
-		return 0.0;
-	}
 }
