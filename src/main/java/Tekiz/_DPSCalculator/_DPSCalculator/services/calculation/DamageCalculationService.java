@@ -1,10 +1,7 @@
-package Tekiz._DPSCalculator._DPSCalculator.services;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 //@Service
 public class DamageCalculationService
