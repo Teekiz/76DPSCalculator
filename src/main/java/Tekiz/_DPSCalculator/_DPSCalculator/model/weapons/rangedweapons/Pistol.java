@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
@@ -13,12 +14,12 @@ public class Pistol extends Ranged
 {
 	private Receiver receiver;
 	@Autowired
-	public Pistol(String weaponName, HashMap<Integer, Double> weaponDamageByLevel, int apCost,
+	public Pistol(String weaponName, WeaponType weaponType, HashMap<Integer, Double> weaponDamageByLevel, int apCost,
 				  int magazineSize, int fireRate, int range, int accuracy, int projectileCount,
 				  int criticalBonus, int rangedPenalty, double reloadTime, double attackSpeed,
 				  double attackDelay, Receiver receiver)
 	{
-		super(weaponName,weaponDamageByLevel, apCost,
+		super(weaponName,weaponType, weaponDamageByLevel, apCost,
 			magazineSize, fireRate, range, accuracy, projectileCount,
 			criticalBonus, rangedPenalty, reloadTime, attackSpeed,
 			attackDelay);

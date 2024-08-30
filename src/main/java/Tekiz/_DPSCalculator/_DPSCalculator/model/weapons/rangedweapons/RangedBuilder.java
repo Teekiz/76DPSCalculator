@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -19,9 +20,9 @@ public abstract class RangedBuilder<T extends RangedBuilder<T>> extends WeaponBu
 	protected double attackSpeed;
 	protected double attackDelay;
 
-	public RangedBuilder(String weaponName, HashMap<Integer, Double> weaponDamageByLevel, int apCost)
+	public RangedBuilder(String weaponName, WeaponType weaponType, HashMap<Integer, Double> weaponDamageByLevel, int apCost)
 	{
-		super(weaponName, weaponDamageByLevel, apCost);
+		super(weaponName, weaponType, weaponDamageByLevel, apCost);
 	}
 
 	@JsonProperty("magazineSize")

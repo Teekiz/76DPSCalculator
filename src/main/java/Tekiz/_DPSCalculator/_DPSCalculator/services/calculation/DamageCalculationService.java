@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
+import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 
 //@Service

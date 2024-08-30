@@ -1,6 +1,7 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.character.perk;
+package Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.enums.BonusType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.BonusType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.PerkTypes;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,7 +5,7 @@
         "perkType" : "DAMAGE",
         "bonusType" : "ADDITIVE",
         "perkDescription" : "Your non-explosive heavy guns now do +10/15/20% damage.",
-        "condition" : "weapon.type == 'HEAVY'",
+        "condition" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
         "perkRankEffects": 
         [
             {"rank": 1, "effect": "baseDamage * 1.10"},
@@ -19,7 +19,7 @@
         "perkType" : "DAMAGE",
         "bonusType" : "ADDITIVE",
         "perkDescription" : "Deal +20/40/60% damage to glowing enemies.",
-        "condition": "enemy.type == 'GLOWING'",
+        "condition": "#enemy.weaponType == 'GLOWING'",
         "perkRankEffects": 
         [
             {"rank": 1, "effect": "baseDamage * 1.20"},
@@ -34,7 +34,7 @@
         "perkType" : "DAMAGE",
         "bonusType" : "ADDITIVE",
         "perkDescription" : "Your non-automatic pistols now do +10/15/20% more damage.",
-        "condition" : "weapon.type == 'PISTOL' && weapon.getReceiever().getReceiverType() == 'SEMIAUTOMATIC'",
+        "condition" : "#weapon.getWeaponType() == WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == 'SEMIAUTOMATIC'",
         "perkRankEffects": 
         [
             {"rank": 1, "effect": "baseDamage * 1.10"},

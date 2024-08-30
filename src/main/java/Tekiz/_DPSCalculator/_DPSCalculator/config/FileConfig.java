@@ -3,10 +3,17 @@ package Tekiz._DPSCalculator._DPSCalculator.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 @Configuration
 public class FileConfig
 {
+	@Bean
+	public ExpressionParser expressionParser()
+	{
+		return new SpelExpressionParser();
+	}
+
 	@Value("${weapon.data.file.path}")
 	private String weaponDataFilePath;
 

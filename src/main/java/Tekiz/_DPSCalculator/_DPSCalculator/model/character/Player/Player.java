@@ -1,11 +1,9 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.character;
+package Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.perk.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
 
 @Data
 @AllArgsConstructor
