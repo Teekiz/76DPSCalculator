@@ -22,4 +22,12 @@ public class FileConfig
 	public String receiverDataFilePath() {
 		return receiverDataFilePath;
 	}
+
+	@Value("${perk.data.file.path}")
+	private String perkDataFilePath;
+
+	@Bean
+	public String perkDataFilePath() {
+		return perkDataFilePath;
+	}
 }
