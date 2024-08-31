@@ -74,10 +74,30 @@ public class PerkLogicTest
 	{
 		String perkName = "GUNSLINGER";
 		Perk perk = perkLoaderService.getPerk(perkName);
-		perk.setPerkRank(1);
 		assertNotNull(perk);
 
-		Double perkValue = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.10, perkValue);
+		perk.setPerkRank(1);
+		Double perkValueR1 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.10, perkValueR1);
+
+		perk.setPerkRank(2);
+		Double perkValueR2 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.15, perkValueR2);
+
+		perk.setPerkRank(3);
+		Double perkValueR3 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.2, perkValueR3);
+
+		perk.setPerkRank(0);
+		Double perkValueLT1 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.10, perkValueLT1);
+
+		perk.setPerkRank(-20);
+		Double perkValueLT2 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.10, perkValueLT2);
+
+		perk.setPerkRank(400);
+		Double perkValueHT2 = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.20, perkValueHT2);
 	}
 }
