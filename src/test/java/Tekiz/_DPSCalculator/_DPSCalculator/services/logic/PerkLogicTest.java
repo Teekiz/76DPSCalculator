@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Rece
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class PerkLogicTest
 	}
 
 	@Test
-	public void testPistolWithDifferentReceivers() throws IOException
+	public void testPerkWithDifferentReceivers() throws IOException
 	{
 		String weaponName = "10MMPISTOL";
 		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
@@ -66,5 +67,17 @@ public class PerkLogicTest
 
 		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk, pistol);
 		assertTrue(checkWithNewReceiver);
+	}
+
+	@Test
+	public void testDamageEffect() throws IOException
+	{
+		String perkName = "GUNSLINGER";
+		Perk perk = perkLoaderService.getPerk(perkName);
+		perk.setPerkRank(1);
+		assertNotNull(perk);
+
+		Double perkValue = (Double) perkLogic.applyEffect(perk);
+		assertEquals(0.10, perkValue);
 	}
 }

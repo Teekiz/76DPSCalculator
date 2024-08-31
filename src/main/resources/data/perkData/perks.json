@@ -8,9 +8,9 @@
         "condition" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
         "perkRankEffects": 
         [
-            {"rank": 1, "effect": "baseDamage * 1.10"},
-            {"rank": 2, "effect": "baseDamage * 1.15"},
-            {"rank": 3, "effect": "baseDamage * 1.20"}
+            {"rank": 1, "effect": "0.10"},
+            {"rank": 2, "effect": "0.15"},
+            {"rank": 3, "effect": "0.20"}
        ]
     },
     "GLOWSIGHT" : 
@@ -22,9 +22,9 @@
         "condition": "#enemy.weaponType == 'GLOWING'",
         "perkRankEffects": 
         [
-            {"rank": 1, "effect": "baseDamage * 1.20"},
-            {"rank": 2, "effect": "baseDamage * 1.40"},
-            {"rank": 3, "effect": "baseDamage * 1.60"}
+          {"rank": 1, "effect": "0.10"},
+          {"rank": 2, "effect": "0.15"},
+          {"rank": 3, "effect": "0.20"}
        ]
         
     },
@@ -37,9 +37,9 @@
         "condition" : "#weapon.getWeaponType() == WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == 'SEMIAUTOMATIC'",
         "perkRankEffects": 
         [
-            {"rank": 1, "effect": "baseDamage * 1.10"},
-            {"rank": 2, "effect": "baseDamage * 1.15"},
-            {"rank": 3, "effect": "baseDamage * 1.20"}
+          {"rank": 1, "effect": "0.10"},
+          {"rank": 2, "effect": "0.15"},
+          {"rank": 3, "effect": "0.20"}
        ]
     } 
 }

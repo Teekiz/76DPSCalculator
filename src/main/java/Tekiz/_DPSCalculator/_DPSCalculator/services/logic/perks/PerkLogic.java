@@ -1,7 +1,8 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.logic;
+package Tekiz._DPSCalculator._DPSCalculator.services.logic.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkEffectStrategyFactory;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Service;
 public class PerkLogic
 {
 	private final ExpressionParser parser;
+	private final PerkEffectStrategyFactory perkEffectStrategyFactory;
 	@Autowired
-	public PerkLogic(ExpressionParser parser)
+	public PerkLogic(ExpressionParser parser, PerkEffectStrategyFactory perkEffectStrategyFactory)
 	{
 		this.parser = parser;
+		this.perkEffectStrategyFactory = perkEffectStrategyFactory;
 	}
 	public boolean evaluateCondition(Perk perk, Weapon weapon)
 	{
@@ -29,8 +32,11 @@ public class PerkLogic
 		return false;
 	}
 
-	public double applyEffectDamage(Perk perk)
+	public Object applyEffect(Perk perk)
 	{
-		return 0.0;
+		//reduces by 1 to match the index of the rank effects
+		int perkRank = perk.getPerkRank() - 1;
+		PerkEffectStrategy strategy = perkEffectStrategyFactory.getStrategy(perk);
+		return strategy.applyEffect(perk, perkRank);
 	}
 }

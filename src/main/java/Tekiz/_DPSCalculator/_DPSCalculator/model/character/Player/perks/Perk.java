@@ -12,8 +12,15 @@ public class Perk
 {
 	private String perkName;
 	private PerkTypes perkType;
+	private int perkRank;
 	private BonusType bonusType;
 	private String perkDescription;
 	private String condition;
 	private List<PerkRankEffects> perkRankEffects;
+
+	public void setPerkRank(int newRank)
+	{
+		if (newRank <= 0) perkRank = 1;
+		else perkRank = Math.min(newRank, perkRankEffects.size());
+	}
 }
