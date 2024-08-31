@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.logic.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkEffectStrategyFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.factory.PerkEffectStrategyFactory;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

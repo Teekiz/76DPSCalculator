@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.creation;
+package Tekiz._DPSCalculator._DPSCalculator.services.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;

@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.creation;
+package Tekiz._DPSCalculator._DPSCalculator.services.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.DamageEffectStrategy;

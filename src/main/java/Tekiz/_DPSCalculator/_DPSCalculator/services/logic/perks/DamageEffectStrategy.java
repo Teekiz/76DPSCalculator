@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkEffectStrategyFactory;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ExpressionParser;

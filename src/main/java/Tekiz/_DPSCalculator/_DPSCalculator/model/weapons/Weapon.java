@@ -17,5 +17,6 @@ public abstract class Weapon
 	protected Map<Integer, Double> weaponDamageByLevel;
 	protected int apCost;
 
+	//todo change this - receiver damage is additive
 	public abstract double getBaseDamage(int damage);
 }

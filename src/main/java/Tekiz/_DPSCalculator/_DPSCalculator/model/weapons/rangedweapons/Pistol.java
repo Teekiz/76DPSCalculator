@@ -27,12 +27,7 @@ public class Pistol extends Ranged
 	}
 	public double getBaseDamage(int weaponLevel)
 	{
-		double baseDamage = weaponDamageByLevel.get(weaponLevel);
-		if (receiver != null)
-		{
-			baseDamage = baseDamage * receiver.getDamageChange();
-		}
-		return baseDamage;
+		return weaponDamageByLevel.get(weaponLevel);
 	}
 	//Capacitor
 	//Receiver
