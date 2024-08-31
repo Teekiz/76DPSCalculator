@@ -37,4 +37,12 @@ public class FileConfig
 	public String perkDataFilePath() {
 		return perkDataFilePath;
 	}
+
+	@Value("${consumable.data.file.path}")
+	private String consumableDataFilePath;
+
+	@Bean
+	public String consumableDataFilePath() {
+		return consumableDataFilePath;
+	}
 }

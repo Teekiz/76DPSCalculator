@@ -1,0 +1,23 @@
+{
+    "AGEDMIRELURKQUEENSTEAK" : 
+    {
+        "consumableName" : "Aged mirelurk queen steak",
+        "ConsumableType" : "FOOD",
+        "addictionType" : "NONE",
+        "consumableEffect" : "#player.setEndurance(#player.getEndurance + 3)"
+    },
+    "BALLISTICBOCK" : 
+    {
+        "consumableName" : "Ballistic Bock",
+        "ConsumableType" : "DRINK",
+        "addictionType" : "ALCOHOL",
+        "consumableEffect" : "#player.setEndurance(#player.getEndurance + 3)"
+    },
+    "BERRYMENTATS" : 
+    {
+        "consumableName" : "Berry Mentats",
+        "ConsumableType" : "CHEMS",
+        "addictionType" : "MENTATS",
+        "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 5)"
+    }
+}
