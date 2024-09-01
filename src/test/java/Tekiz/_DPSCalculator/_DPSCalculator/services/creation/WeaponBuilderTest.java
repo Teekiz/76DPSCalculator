@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.Pistol;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.PistolBuilder;
@@ -28,7 +29,7 @@ public class WeaponBuilderTest
 		weaponDamageMap.put(35, 24.0);
 		weaponDamageMap.put(45, 28.0);
 
-		Pistol pistol = new PistolBuilder("10mm Pistol", WeaponType.PISTOL, weaponDamageMap, 20).setAccuracy(20).build();
+		Pistol pistol = new PistolBuilder("10mm Pistol", WeaponType.PISTOL, DamageType.BALLISTIC, weaponDamageMap, 20).setAccuracy(20).build();
 		assertNotNull(pistol);
 		assertEquals("10mm Pistol", pistol.getWeaponName());
 		assertEquals(21, pistol.getWeaponDamageByLevel().get(25));

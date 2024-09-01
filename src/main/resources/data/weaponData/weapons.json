@@ -3,6 +3,7 @@
     {
         "weaponName" : "10mm pistol",
         "weaponType" : "PISTOL",
+        "damageType" : "BALLISTIC",
         "weaponDamageByLevel" :
         {
           "1" : 15.0,

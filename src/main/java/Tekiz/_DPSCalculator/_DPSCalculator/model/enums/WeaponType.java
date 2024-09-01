@@ -4,5 +4,7 @@ public enum WeaponType
 {
 	PISTOL,
 	RIFLE,
-	HEAVY;
+	HEAVY,
+	ONEHANDED,
+	TWOHANDED;
 }

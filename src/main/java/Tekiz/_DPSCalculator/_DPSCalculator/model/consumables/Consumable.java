@@ -16,5 +16,7 @@ public class Consumable
 	private String consumableName;
 	private ConsumableType consumableType;
 	private AddictionType addictionType;
+	private String condition;
+	private String conditionEffect;
 	private String consumableEffect;
 }

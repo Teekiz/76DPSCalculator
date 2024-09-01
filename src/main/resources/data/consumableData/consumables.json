@@ -11,6 +11,8 @@
         "consumableName" : "Ballistic Bock",
         "ConsumableType" : "DRINK",
         "addictionType" : "ALCOHOL",
+        "condition" : "#weapon.getDamageType() == DamageType.BALLISTIC",
+        "conditionEffect" : "#damage.add(0.15)",
         "consumableEffect" : "#player.setEndurance(#player.getEndurance + 3)"
     },
     "BERRYMENTATS" : 
@@ -19,5 +21,21 @@
         "ConsumableType" : "CHEMS",
         "addictionType" : "MENTATS",
         "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 5)"
+    },
+    "DADDY_O" :
+    {
+      "consumableName" : "Daddy-O",
+      "ConsumableType" : "CHEMS",
+      "addictionType" : "DADDY_O",
+      "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 3); #player.setPerception(#player.getPerception + 3); #player.setCharisma(#player.getCharisma + 2);"
+    },
+    "FURY" :
+    {
+      "consumableName" : "Fury",
+      "ConsumableType" : "CHEMS",
+      "addictionType" : "FURY",
+      "condition" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
+      "conditionEffect" : "#damage.add(0.30)",
+      "consumableEffect" : "#player.setPerception(#player.getPerception - 5);"
     }
 }
