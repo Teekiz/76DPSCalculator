@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Player;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 public class DamageCalculationService
 {
 	/*
@@ -13,21 +13,9 @@ public class DamageCalculationService
 		OutgoingDamage = Base * (1 + DamageBonus) * DamageMultiplier1 * DamageMultiplier2 *...
 		DamageBonus comes for consumables and perks.
 	 */
-
-	private final Player player;
-	private final Weapon weapon;
-
-	//@Autowired
-	public DamageCalculationService(Player player, Weapon weapon)
-	{
-		this.player = player;
-		this.weapon = weapon;
-	}
-
 	//todo - update getBaseDamage
-	public double calculateOutgoingDamage()
+	public double calculateOutgoingDamage(double baseDamage, List<Double> additiveDamage, List<Double> multiplicativeDamage)
 	{
-		double baseDamage = weapon.getBaseDamage(45);
 		return 0.0;
 	}
 }

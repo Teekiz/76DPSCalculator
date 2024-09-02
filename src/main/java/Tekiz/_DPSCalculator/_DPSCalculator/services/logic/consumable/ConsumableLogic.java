@@ -1,9 +1,10 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.logic.perks;
+package Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.factory.PerkEffectStrategyFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkEffectStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,34 +13,42 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PerkLogic
+public class ConsumableLogic
 {
 	private final ExpressionParser parser;
-	private final PerkEffectStrategyFactory perkEffectStrategyFactory;
 	@Autowired
-	public PerkLogic(ExpressionParser parser, PerkEffectStrategyFactory perkEffectStrategyFactory)
+	public ConsumableLogic(ExpressionParser parser)
 	{
 		this.parser = parser;
-		this.perkEffectStrategyFactory = perkEffectStrategyFactory;
 	}
-	//todo - change from perk weapon, to Loadout, and then define the weapon to equal loadout.getWeapon()
-	public boolean evaluateCondition(Perk perk, Loadout loadout)
+
+	// - if the consumable has a condition, this will evaluate it
+	public boolean evaluateCondition(Character character, Consumable consumable, Weapon weapon)
 	{
-		if (perk != null && loadout.getWeapon() != null)
+		if (character != null && consumable != null && consumable.getCondition() != null)
 		{
-			StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(perk.getCondition());
-			context.setVariable("weapon", loadout.getWeapon());
-			return Optional.ofNullable(parser.parseExpression(perk.getCondition()).getValue(context, Boolean.class)).orElse(false);
+			StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(consumable.getCondition());
+			context.setVariable("character", character);
+			context.setVariable("weapon", weapon);
+			return Optional.ofNullable(parser.parseExpression(consumable.getCondition()).getValue(context, Boolean.class)).orElse(false);
 		}
 		return false;
 	}
 
-	//todo - consider changing this
+	public Object applyConditionEffect()
+	{
+		return null;
+	}
+
 	public Object applyEffect(Perk perk)
 	{
+		/*
 		//reduces by 1 to match the index of the rank effects
 		int perkRank = perk.getPerkRank() - 1;
 		PerkEffectStrategy strategy = perkEffectStrategyFactory.getStrategy(perk);
 		return strategy.applyEffect(perk, perkRank);
+
+		 */
+		return null;
 	}
 }

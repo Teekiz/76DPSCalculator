@@ -28,8 +28,8 @@ public class ModLoaderService
 	public Receiver getReceiver(String receiverName) throws IOException
 	{
 		JsonNode rootNode = objectMapper.readTree(receiversFile);
-		JsonNode weaponNode = rootNode.get(receiverName.toUpperCase());
-		return objectMapper.treeToValue(weaponNode, Receiver.class);
+		JsonNode receiverNode = rootNode.get(receiverName.toUpperCase());
+		return objectMapper.treeToValue(receiverNode, Receiver.class);
 	}
 
 	public List<Receiver> getAllReceivers() throws IOException

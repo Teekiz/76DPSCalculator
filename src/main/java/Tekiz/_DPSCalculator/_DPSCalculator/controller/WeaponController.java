@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.Pistol;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.WeaponLoaderService;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class WeaponController
 	public String createWeapon() throws IOException
 	{
 		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
-		if (weapon instanceof Pistol)
+		if (weapon instanceof RangedWeapon)
 		{
-			return "Base damage" + ((Pistol) weapon).getBaseDamage(45);
+			return "Base damage" + (weapon).getBaseDamage(45);
 		}
 		return "Weapon created: " + weapon.getWeaponName();
 	}

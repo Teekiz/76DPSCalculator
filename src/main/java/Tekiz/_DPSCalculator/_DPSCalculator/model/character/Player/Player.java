@@ -2,9 +2,9 @@ package Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.ConsumableType;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -19,18 +19,25 @@ public class Player
 	private int luck;
 
 	private int level;
-	private List<Perk> perks;
-	private List<Consumable> consumables;
+	private Set<Perk> perks;
+
+	//there can be many food effects but only one of each alcohol and chem.
+	private Set<Consumable> consumables;
+	private Consumable alcoholConsumed;
+	private Consumable chemConsumed;
 
 	private int maxSpecialValue = 100;
 	private int minSpecialValue = 1;
+
+	private boolean isAiming = false;
+	private boolean isSneaking = false;
 
 	public Player()
 	{
 		this.strength = this.perception = this.endurance = this.charisma = this.intelligence = this.agility = this.luck = 1;
 		this.level = 1;
-		perks = new ArrayList<>();
-		consumables = new ArrayList<>();
+		perks = new HashSet<>();
+		consumables = new HashSet<>();
 	}
 
 	//used to update the specials values based on enum provided. checks to make sure that specials cannot go over 100 or below 1.
@@ -52,5 +59,43 @@ public class Player
 	{
 		if (current + value > maxSpecialValue) return maxSpecialValue;
 		else return Math.max(current + value, minSpecialValue);
+	}
+
+	public void addConsumable(Consumable consumable)
+	{
+		if (consumable.getConsumableType() == ConsumableType.FOOD || consumable.getConsumableType() == ConsumableType.DRINK)
+		{
+			consumables.add(consumable);
+		}
+		else
+		{
+			if (consumable.getConsumableType() == ConsumableType.ALCOHOL)
+			{
+				alcoholConsumed = consumable;
+			}
+			else if (consumable.getConsumableType() == ConsumableType.CHEMS)
+			{
+				chemConsumed = consumable;
+			}
+		}
+	}
+
+	public void removeConsumable(Consumable consumable)
+	{
+		if (consumable.getConsumableType() == ConsumableType.FOOD || consumable.getConsumableType() == ConsumableType.DRINK)
+		{
+			consumables.remove(consumable);
+		}
+		else
+		{
+			if (consumable.getConsumableType() == ConsumableType.ALCOHOL)
+			{
+				alcoholConsumed = null;
+			}
+			else if (consumable.getConsumableType() == ConsumableType.CHEMS)
+			{
+				chemConsumed = null;
+			}
+		}
 	}
 }

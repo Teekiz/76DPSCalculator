@@ -9,7 +9,7 @@
     "BALLISTICBOCK" : 
     {
         "consumableName" : "Ballistic Bock",
-        "ConsumableType" : "DRINK",
+        "ConsumableType" : "ALCOHOL",
         "addictionType" : "ALCOHOL",
         "condition" : "#weapon.getDamageType() == DamageType.BALLISTIC",
         "conditionEffect" : "#damage.add(0.15)",

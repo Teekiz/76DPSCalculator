@@ -13,7 +13,7 @@
   "CALIBRATE": {
     "name": "TestCalibrated",
     "receiverType": "SEMIAUTOMATIC",
-    "damageChange": 0,
+    "damageChange": 0.0,
     "damageCriticalMultiplier": 100,
     "fireRateChange": 0,
     "accuracyChange": 1,

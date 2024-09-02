@@ -4,6 +4,8 @@ public enum ConsumableType
 {
 	FOOD,
 	DRINK,
+	ALCOHOL,
 	CHEMS,
+	LUNCHBOX,
 	MISC;
 }

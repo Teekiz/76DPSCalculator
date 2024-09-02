@@ -1,12 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.Pistol;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.LoadoutService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -22,51 +22,58 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PerkLogicTest
 {
 	@Autowired
-	WeaponLoaderService weaponLoaderService;
-	@Autowired
 	PerkLoaderService perkLoaderService;
 	@Autowired
 	ModLoaderService modLoaderService;
 	@Autowired
 	PerkLogic perkLogic;
+	@Autowired
+	LoadoutService loadoutService;
 
 	@Test
 	public void testFalseCondition() throws IOException
 	{
+		Loadout loadout = loadoutService.createNewLoadout();
+
 		String weaponName = "10MMPISTOL";
-		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
-		assertNotNull(weapon);
-		assertEquals("Test 10mm pistol", weapon.getWeaponName());
+		loadout.setWeapon(weaponName);
+		assertNotNull(loadout.getWeapon());
+		assertEquals("Test 10mm pistol", loadout.getWeapon().getWeaponName());
 
 		String perkName = "HEAVYGUNNER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
 		//
-		boolean check = perkLogic.evaluateCondition(perk, weapon);
+		boolean check = perkLogic.evaluateCondition(perk, loadout);
 		assertFalse(check);
 	}
 
 	@Test
 	public void testPerkWithDifferentReceivers() throws IOException
 	{
+		Loadout loadout = loadoutService.createNewLoadout();
+
 		String weaponName = "10MMPISTOL";
-		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
-		assertNotNull(weapon);
+		loadout.setWeapon(weaponName);
+		assertNotNull(loadout.getWeapon());
 
 		String perkName = "GUNSLINGER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		boolean check = perkLogic.evaluateCondition(perk, weapon);
+		boolean check = perkLogic.evaluateCondition(perk, loadout);
 		assertFalse(check);
 
-		Pistol pistol = (Pistol) weapon;
 		Receiver newReceiver = modLoaderService.getReceiver("CALIBRATE");
-		pistol.setReceiver(newReceiver);
+		if (loadout.getWeapon() instanceof RangedWeapon)
+		{
+			((RangedWeapon) loadout.getWeapon()).setReceiver(newReceiver);
+		}
 
-		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk, pistol);
+		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk, loadout);
 		assertTrue(checkWithNewReceiver);
+
 	}
 
 	@Test

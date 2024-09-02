@@ -2,8 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.Pistol;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.PistolBuilder;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeaponBuilder;
 import Tekiz._DPSCalculator._DPSCalculator.services.factory.WeaponFactory;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json"})
+@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json",
+	"receiver.data.file.path=src/test/resources/data/weaponData/testReceivers.json"})
 public class WeaponBuilderTest
 {
 	@Autowired
@@ -29,7 +30,7 @@ public class WeaponBuilderTest
 		weaponDamageMap.put(35, 24.0);
 		weaponDamageMap.put(45, 28.0);
 
-		Pistol pistol = new PistolBuilder("10mm Pistol", WeaponType.PISTOL, DamageType.BALLISTIC, weaponDamageMap, 20).setAccuracy(20).build();
+		RangedWeapon pistol = new RangedWeaponBuilder("10mm Pistol", WeaponType.PISTOL, DamageType.BALLISTIC, weaponDamageMap, 20).setAccuracy(20).build();
 		assertNotNull(pistol);
 		assertEquals("10mm Pistol", pistol.getWeaponName());
 		assertEquals(21, pistol.getWeaponDamageByLevel().get(25));

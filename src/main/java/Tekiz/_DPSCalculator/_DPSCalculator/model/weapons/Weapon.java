@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AllArgsConstructor
 public abstract class Weapon
 {
+	//todo - consider changing to add armour penetration and removing projectile amount
 	protected String weaponName;
 	protected WeaponType weaponType;
 	protected DamageType damageType;
