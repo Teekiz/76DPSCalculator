@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Special;
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
@@ -22,13 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PerkLogicTest
 {
 	@Autowired
+	LoadoutService loadoutService;
+	@Autowired
 	PerkLoaderService perkLoaderService;
 	@Autowired
-	ModLoaderService modLoaderService;
-	@Autowired
 	PerkLogic perkLogic;
+
 	@Autowired
-	LoadoutService loadoutService;
+	ModLoaderService modLoaderService;
 
 	@Test
 	public void testFalseCondition() throws IOException
@@ -44,7 +46,6 @@ public class PerkLogicTest
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		//
 		boolean check = perkLogic.evaluateCondition(perk, loadout);
 		assertFalse(check);
 	}
@@ -77,34 +78,27 @@ public class PerkLogicTest
 	}
 
 	@Test
-	public void testDamageEffect() throws IOException
+	public void testEffect() throws IOException
 	{
-		String perkName = "GUNSLINGER";
+		Loadout loadout = loadoutService.createNewLoadout();
+
+		String perkName = "HEAVYGUNNER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		perk.setPerkRank(1);
-		Double perkValueR1 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.10, perkValueR1);
+		perkLogic.applyEffect(perk, loadout);
+		assertEquals(2, loadout.getPlayer().getEndurance());
+		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -1);
 
 		perk.setPerkRank(2);
-		Double perkValueR2 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.15, perkValueR2);
+		perkLogic.applyEffect(perk, loadout);
+		assertEquals(3, loadout.getPlayer().getEndurance());
+		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -2);
 
 		perk.setPerkRank(3);
-		Double perkValueR3 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.2, perkValueR3);
+		perkLogic.applyEffect(perk, loadout);
+		assertEquals(4, loadout.getPlayer().getEndurance());
+		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -3);
 
-		perk.setPerkRank(0);
-		Double perkValueLT1 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.10, perkValueLT1);
-
-		perk.setPerkRank(-20);
-		Double perkValueLT2 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.10, perkValueLT2);
-
-		perk.setPerkRank(400);
-		Double perkValueHT2 = (Double) perkLogic.applyEffect(perk);
-		assertEquals(0.20, perkValueHT2);
 	}
 }

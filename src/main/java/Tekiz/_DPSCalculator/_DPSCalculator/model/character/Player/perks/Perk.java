@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.BonusType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.PerkTypes;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -22,5 +23,10 @@ public class Perk
 	{
 		if (newRank <= 0) perkRank = 1;
 		else perkRank = Math.min(newRank, perkRankEffects.size());
+	}
+
+	public String getPerkEffect()
+	{
+		return perkRankEffects.get(getPerkRank() - 1).getEffect();
 	}
 }
