@@ -40,6 +40,8 @@ public class Player
 		consumables = new HashSet<>();
 	}
 
+	//todo - consider not increasing the specials directly through mods, but add bonuses instead.
+
 	//used to update the specials values based on enum provided. checks to make sure that specials cannot go over 100 or below 1.
 	public void modifySpecial(Special special, int value)
 	{

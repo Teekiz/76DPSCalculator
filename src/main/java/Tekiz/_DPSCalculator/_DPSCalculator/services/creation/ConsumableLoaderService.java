@@ -45,7 +45,6 @@ public class ConsumableLoaderService
 		}
 
 		return consumables;
-
 	}
 
 }

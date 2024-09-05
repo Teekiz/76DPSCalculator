@@ -45,4 +45,12 @@ public class FileConfig
 	public String consumableDataFilePath() {
 		return consumableDataFilePath;
 	}
+
+	@Value("${armour.data.file.path}")
+	private String armourDataFilePath;
+
+	@Bean
+	public String armourDataFilePath() {
+		return armourDataFilePath;
+	}
 }
