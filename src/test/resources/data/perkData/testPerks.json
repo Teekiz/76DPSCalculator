@@ -2,9 +2,7 @@
   "HEAVYGUNNER" :
   {
     "perkName" : "Test Heavy Gunner",
-    "perkType" : "DAMAGE",
     "perkRank" : 1,
-    "bonusType" : "ADDITIVE",
     "perkDescription" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "condition" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
     "perkRankEffects":
@@ -17,9 +15,7 @@
   "GLOWSIGHT" :
   {
     "perkName" : "Glow Sight",
-    "perkType" : "DAMAGE",
     "perkRank" : 1,
-    "bonusType" : "ADDITIVE",
     "perkDescription" : "Deal +20/40/60% damage to glowing enemies.",
     "condition": "#enemy.weaponType == 'GLOWING'",
     "perkRankEffects":
@@ -33,9 +29,7 @@
   "GUNSLINGER" :
   {
     "perkName" : "Gunslinger",
-    "perkType" : "DAMAGE",
     "perkRank" : 1,
-    "bonusType" : "ADDITIVE",
     "perkDescription" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "condition" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
     "perkRankEffects":

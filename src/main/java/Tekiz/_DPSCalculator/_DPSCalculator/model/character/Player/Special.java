@@ -32,7 +32,7 @@ public class Special
 		}
 	}
 
-	public int modifySpecialCheck(int current, int value)
+	private int modifySpecialCheck(int current, int value)
 	{
 		if (current + value > maxSpecialValue) return maxSpecialValue;
 		else return Math.max(current + value, minSpecialValue);

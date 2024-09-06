@@ -1,7 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.BonusType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.PerkTypes;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +9,7 @@ import lombok.Data;
 public class Perk
 {
 	private String perkName;
-	private PerkTypes perkType;
 	private int perkRank;
-	private BonusType bonusType;
 	private String perkDescription;
 	private String condition;
 	private List<PerkRankEffects> perkRankEffects;

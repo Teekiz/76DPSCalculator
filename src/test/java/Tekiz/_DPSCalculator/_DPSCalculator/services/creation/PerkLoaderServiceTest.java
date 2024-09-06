@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.PerkTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.BonusTypes;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,5 @@ public class PerkLoaderServiceTest
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 		assertEquals("Test Heavy Gunner", perk.getPerkName());
-		assertEquals(PerkTypes.DAMAGE, perk.getPerkType());
 	}
 }
