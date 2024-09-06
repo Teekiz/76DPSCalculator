@@ -3,12 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourPiece;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourSet;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourSet;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourType;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

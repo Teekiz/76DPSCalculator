@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ConsumableType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.ConsumableType;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
@@ -26,7 +26,8 @@ public class Player
 	private Consumable alcoholConsumed;
 	private Consumable chemConsumed;
 
-	private int maxSpecialValue = 100;
+	private int maxSpecialBoost = 100;
+	private int maxSpecialValue = 15;
 	private int minSpecialValue = 1;
 
 	private boolean isAiming = false;
@@ -56,6 +57,8 @@ public class Player
 			case LUCK -> luck = modifySpecialCheck(luck, value);
 		}
 	}
+
+	//todo - implement the specifics for armour slots, consumables and specials
 
 	public int modifySpecialCheck(int current, int value)
 	{

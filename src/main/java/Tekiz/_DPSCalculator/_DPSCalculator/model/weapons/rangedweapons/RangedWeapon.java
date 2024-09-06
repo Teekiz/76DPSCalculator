@@ -1,30 +1,30 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.RangedMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Getter @Setter
+@Getter
 @JsonDeserialize(builder = RangedWeaponBuilder.class)
 public class RangedWeapon extends Weapon
 {
-	private int magazineSize;
-	private int fireRate;
-	private int range;
-	private int accuracy;
+	private final int magazineSize;
+	private final int fireRate;
+	private final int range;
+	private final int accuracy;
 
-	private int projectileCount;
-	private int criticalBonus;
-	private int rangedPenalty;
-	private double reloadTime;
-	private double attackSpeed;
-	private double attackDelay;
+	private final int projectileCount;
+	private final int criticalBonus;
+	private final int rangedPenalty;
+	private final double reloadTime;
+	private final double attackSpeed;
+	private final double attackDelay;
 	private Receiver receiver;
 
 	@Autowired
@@ -52,6 +52,16 @@ public class RangedWeapon extends Weapon
 	{
 		return weaponDamageByLevel.get(weaponLevel);
 	}
+
+	public void setMod(RangedMod rangedMod)
+	{
+		switch (rangedMod)
+		{
+			case Receiver receiver -> this.receiver = receiver;
+			default -> {}
+		}
+	}
+
 	//mods - pistols use grips, while rifles use stocks
 	//receive, barrel, stock, magazine, sights, muzzle, grip
 	//effects

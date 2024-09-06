@@ -1,8 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Special;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.ReceiverType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.WeaponType;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class BaseEvaluationContext
@@ -13,6 +14,7 @@ public class BaseEvaluationContext
 		StandardEvaluationContext context = new StandardEvaluationContext(rootObject);
 		context.setVariable("WeaponType", WeaponType.class);
 		context.setVariable("DamageType", DamageType.class);
+		context.setVariable("ReceiverType", ReceiverType.class);
 		context.setVariable("Special", Special.class);
 
 		return context;

@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeaponBuilder;
 import Tekiz._DPSCalculator._DPSCalculator.services.factory.WeaponFactory;

@@ -1,9 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
-import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourSet;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourSet;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourType;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;

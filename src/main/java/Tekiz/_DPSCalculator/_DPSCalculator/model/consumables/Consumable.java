@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.consumables;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.AddictionType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.ConsumableType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.AddictionType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.ConsumableType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

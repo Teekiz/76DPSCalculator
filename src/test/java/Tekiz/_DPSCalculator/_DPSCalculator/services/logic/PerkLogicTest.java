@@ -69,7 +69,7 @@ public class PerkLogicTest
 		Receiver newReceiver = modLoaderService.getReceiver("CALIBRATE");
 		if (loadout.getWeapon() instanceof RangedWeapon)
 		{
-			((RangedWeapon) loadout.getWeapon()).setReceiver(newReceiver);
+			((RangedWeapon) loadout.getWeapon()).setMod(newReceiver);
 		}
 
 		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk, loadout);
