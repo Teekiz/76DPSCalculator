@@ -9,9 +9,9 @@
     "condition" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
     "perkRankEffects":
     [
-      {"rank": 1, "effect": "#player.modifySpecial(#Special.ENDURANCE, 1);"},
-      {"rank": 2, "effect": "#player.modifySpecial(#Special.ENDURANCE, 2);"},
-      {"rank": 3, "effect": "#player.modifySpecial(#Special.ENDURANCE, 3);"}
+      {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
+      {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
+      {"rank": 3, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"}
     ]
   },
   "GLOWSIGHT" :

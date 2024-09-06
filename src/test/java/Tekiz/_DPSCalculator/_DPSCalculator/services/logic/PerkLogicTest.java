@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Special;
+import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
@@ -87,18 +87,18 @@ public class PerkLogicTest
 		assertNotNull(perk);
 
 		perkLogic.applyEffect(perk, loadout);
-		assertEquals(2, loadout.getPlayer().getEndurance());
-		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -1);
+		assertEquals(2, loadout.getPlayer().getSpecials().getEndurance());
+		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -1);
 
 		perk.setPerkRank(2);
 		perkLogic.applyEffect(perk, loadout);
-		assertEquals(3, loadout.getPlayer().getEndurance());
-		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -2);
+		assertEquals(3, loadout.getPlayer().getSpecials().getEndurance());
+		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -2);
 
 		perk.setPerkRank(3);
 		perkLogic.applyEffect(perk, loadout);
-		assertEquals(4, loadout.getPlayer().getEndurance());
-		loadout.getPlayer().modifySpecial(Special.ENDURANCE, -3);
+		assertEquals(4, loadout.getPlayer().getSpecials().getEndurance());
+		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -3);
 
 	}
 }

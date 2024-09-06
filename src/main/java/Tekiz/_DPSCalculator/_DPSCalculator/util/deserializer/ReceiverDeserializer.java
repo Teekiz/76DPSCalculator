@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 {
+	//todo - consider making this to mod deserializer
 	private final ModLoaderService modLoaderService;
 	public ReceiverDeserializer(ModLoaderService modLoaderService)
 	{

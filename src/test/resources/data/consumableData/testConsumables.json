@@ -4,7 +4,7 @@
     "consumableName" : "Test Aged mirelurk queen steak",
     "ConsumableType" : "FOOD",
     "addictionType" : "NONE",
-    "consumableEffect" : "#player.modifySpecial(#Special.ENDURANCE, 3);"
+    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
   "BALLISTICBOCK" :
   {
@@ -13,7 +13,7 @@
     "addictionType" : "ALCOHOL",
     "condition" : "#weapon.getDamageType() == DamageType.BALLISTIC",
     "conditionEffect" : "#damage.add(0.15)",
-    "consumableEffect" : "#player.setEndurance(#player.getEndurance + 3)"
+    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
   "BERRYMENTATS" :
   {
@@ -43,7 +43,7 @@
     "consumableName" : "Test mutliple effects",
     "ConsumableType" : "FOOD",
     "addictionType" : "NONE",
-    "consumableEffect" : "#player.modifySpecial(#Special.ENDURANCE, 3); #player.modifySpecial(#Special.INTELLIGENCE, 2)"
+    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   },
   "TESTCONDITION" :
   {
@@ -51,7 +51,7 @@
     "ConsumableType" : "FOOD",
     "addictionType" : "NONE",
     "condition" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#player.modifySpecial(#Special.CHARISMA, 10); #player.modifySpecial(#Special.CHARISMA, -5);",
-    "consumableEffect" : "#player.modifySpecial(#Special.ENDURANCE, 3); #player.modifySpecial(#Special.INTELLIGENCE, 2)"
+    "conditionEffect" : "#player.getSpecials().modifySpecial(#Special.CHARISMA, 10); #player.getSpecials().modifySpecial(#Special.CHARISMA, -5);",
+    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   }  
 }

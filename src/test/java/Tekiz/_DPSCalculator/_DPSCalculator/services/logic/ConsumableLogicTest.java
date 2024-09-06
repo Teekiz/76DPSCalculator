@@ -33,9 +33,9 @@ public class ConsumableLogicTest
 
 		Consumable consumable = consumableLoaderService.getConsumable("AGEDMIRELURKQUEENSTEAK");
 
-		assertEquals(1, loadout.getPlayer().getEndurance());
+		assertEquals(1, loadout.getPlayer().getSpecials().getEndurance());
 		consumableLogic.applyEffect(consumable, loadout);
-		assertEquals(4, loadout.getPlayer().getEndurance());
+		assertEquals(4, loadout.getPlayer().getSpecials().getEndurance());
 	}
 
 	@Test
@@ -46,11 +46,11 @@ public class ConsumableLogicTest
 
 		Consumable consumable = consumableLoaderService.getConsumable("TESTMULTIPLEEFFECTS");
 
-		assertEquals(1, loadout.getPlayer().getEndurance());
-		assertEquals(1, loadout.getPlayer().getIntelligence());
+		assertEquals(1, loadout.getPlayer().getSpecials().getEndurance());
+		assertEquals(1, loadout.getPlayer().getSpecials().getIntelligence());
 		consumableLogic.applyEffect(consumable, loadout);
-		assertEquals(4, loadout.getPlayer().getEndurance());
-		assertEquals(3, loadout.getPlayer().getIntelligence());
+		assertEquals(4, loadout.getPlayer().getSpecials().getEndurance());
+		assertEquals(3, loadout.getPlayer().getSpecials().getIntelligence());
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ConsumableLogicTest
 		Consumable consumable = consumableLoaderService.getConsumable("TESTCONDITION");
 		assertTrue(consumableLogic.evaluateCondition(consumable, loadout));
 		consumableLogic.applyConditionEffect(consumable, loadout);
-		assertEquals(6, loadout.getPlayer().getCharisma());
+		assertEquals(6, loadout.getPlayer().getSpecials().getCharisma());
 	}
 }
 
