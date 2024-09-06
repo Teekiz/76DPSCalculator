@@ -1,5 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.ArmourType;
@@ -19,4 +22,20 @@ public class Armour
 	private ArmourPiece armourPiece;
 	private ArmourSet armourSet;
 	private HashMap<Integer, ArmourResistance> armourResistance;
+
+	//mods
+	private Material armourMaterial;
+	private Miscellaneous armourMisc;
+
+	//todo - add check to ensure piece matches
+	//todo - consider changing from data
+	public void setMod(ArmourMod armourMod)
+	{
+		switch (armourMod)
+		{
+			case Material material -> this.setArmourMaterial(material);
+			case Miscellaneous miscellaneous -> this.setArmourMisc(miscellaneous);
+			default -> {}
+		}
+	}
 }

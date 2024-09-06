@@ -12,8 +12,7 @@
         "15": { "damageResistance": 19, "energyResistance": 6,"radiationResistance": 0, "cryoResistance": 0},
         "25": {"damageResistance": 28, "energyResistance": 7, "radiationResistance": 0, "cryoResistance": 0},
         "35": {"damageResistance": 37, "energyResistance": 8, "radiationResistance": 0, "cryoResistance": 0},
-        "45": { "damageResistance": 45, "energyResistance": 9, "radiationResistance": 0, "cryoResistance": 0
-        }
+        "45": { "damageResistance": 45, "energyResistance": 9, "radiationResistance": 0, "cryoResistance": 0}
       }
   }
 }
