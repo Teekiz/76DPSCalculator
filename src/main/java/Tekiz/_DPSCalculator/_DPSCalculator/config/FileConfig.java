@@ -22,14 +22,6 @@ public class FileConfig
 		return weaponDataFilePath;
 	}
 
-	@Value("${receiver.data.file.path}")
-	private String receiverDataFilePath;
-
-	@Bean
-	public String receiverDataFilePath() {
-		return receiverDataFilePath;
-	}
-
 	@Value("${perk.data.file.path}")
 	private String perkDataFilePath;
 
