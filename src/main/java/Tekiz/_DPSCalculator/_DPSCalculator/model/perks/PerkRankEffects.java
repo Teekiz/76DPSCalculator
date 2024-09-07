@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks;
+package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

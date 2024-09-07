@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;

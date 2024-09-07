@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.Specials;
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;

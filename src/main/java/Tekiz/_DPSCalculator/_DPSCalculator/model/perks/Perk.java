@@ -1,8 +1,10 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks;
+package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +15,9 @@ public class Perk
 	private String perkDescription;
 	private String condition;
 	private List<PerkRankEffects> perkRankEffects;
+
+	@Autowired
+	private PerkLogic perkLogic;
 
 	public void setPerkRank(int newRank)
 	{
