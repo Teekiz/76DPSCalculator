@@ -19,6 +19,7 @@ public class Loadout
 {
 	private final Player player;
 	private final Environment environment;
+	private final Modifiers modifiers;
 
 	private Weapon weapon;
 	private Enemy enemy;
@@ -37,6 +38,7 @@ public class Loadout
 
 		this.player = new Player();
 		this.environment = new Environment();
+		this.modifiers = new Modifiers();
 		this.weapon = null;
 		this.enemy = null;
 	}

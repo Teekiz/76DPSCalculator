@@ -14,12 +14,11 @@ public class Player
 	private int level;
 	//todo
 	private int maxHP;
-	private Set<Perk> perks;
+
 
 	//there can be many food effects but only one of each alcohol and chem.
+	private Set<Perk> perks;
 	private Set<Consumable> consumables;
-	private Consumable alcoholConsumed;
-	private Consumable chemConsumed;
 
 	private boolean isAiming = false;
 	private boolean isSneaking = false;
@@ -27,12 +26,10 @@ public class Player
 	public Player()
 	{
 		this.level = 1;
-		specials = new Special(1, 1, 1, 1, 1, 1, 1, 1, 15);
-		perks = new HashSet<>();
-		consumables = new HashSet<>();
+		this.specials = new Special(1, 1, 1, 1, 1, 1, 1, 1, 15);
+		this.perks = new HashSet<>();
+		this.consumables = new HashSet<>();
 	}
-
-	//todo - consider not increasing the specials directly through mods, but add bonuses instead.
 
 	//used to update the specials values based on enum provided. checks to make sure that specials cannot go over 100 or below 1.
 
@@ -40,39 +37,10 @@ public class Player
 
 	public void addConsumable(Consumable consumable)
 	{
-		if (consumable.getConsumableType() == ConsumableType.FOOD || consumable.getConsumableType() == ConsumableType.DRINK)
-		{
-			consumables.add(consumable);
-		}
-		else
-		{
-			if (consumable.getConsumableType() == ConsumableType.ALCOHOL)
-			{
-				alcoholConsumed = consumable;
-			}
-			else if (consumable.getConsumableType() == ConsumableType.CHEMS)
-			{
-				chemConsumed = consumable;
-			}
-		}
+		consumables.add(consumable);
 	}
-
 	public void removeConsumable(Consumable consumable)
 	{
-		if (consumable.getConsumableType() == ConsumableType.FOOD || consumable.getConsumableType() == ConsumableType.DRINK)
-		{
-			consumables.remove(consumable);
-		}
-		else
-		{
-			if (consumable.getConsumableType() == ConsumableType.ALCOHOL)
-			{
-				alcoholConsumed = null;
-			}
-			else if (consumable.getConsumableType() == ConsumableType.CHEMS)
-			{
-				chemConsumed = null;
-			}
-		}
+		consumables.remove(consumable);
 	}
 }

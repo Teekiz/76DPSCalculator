@@ -15,7 +15,6 @@ public class PerkLogic
 	{
 		this.parsingService = parsingService;
 	}
-	//todo - change from perk weapon, to Loadout, and then define the weapon to equal loadout.getWeapon()
 	public boolean evaluateCondition(Perk perk, Loadout loadout)
 	{
 		if (perk != null && loadout.getWeapon() != null)
@@ -25,7 +24,6 @@ public class PerkLogic
 		return false;
 	}
 
-	//todo - consider changing this
 	public void applyEffect(Perk perk, Loadout loadout)
 	{
 		parsingService.applyEffect(loadout, perk.getPerkEffect());
