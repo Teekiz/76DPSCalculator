@@ -1,8 +1,7 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.character.Player;
+package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.character.Player.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.ConsumableType;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
@@ -14,7 +13,6 @@ public class Player
 	private int level;
 	//todo
 	private int maxHP;
-
 
 	//there can be many food effects but only one of each alcohol and chem.
 	private Set<Perk> perks;
