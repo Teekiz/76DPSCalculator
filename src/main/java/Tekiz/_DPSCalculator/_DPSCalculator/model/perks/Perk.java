@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,18 @@ public class Perk
 	public String getPerkEffect()
 	{
 		return perkRankEffects.get(getPerkRank() - 1).getEffect();
+	}
+
+	public boolean checkPerk(Loadout loadout)
+	{
+		return perkLogic.evaluateCondition(this, loadout);
+	}
+
+	public void checkAndApplyPerk(Loadout loadout)
+	{
+		if (perkLogic.evaluateCondition(this, loadout))
+		{
+			perkLogic.applyEffect(this, loadout);
+		}
 	}
 }
