@@ -2,13 +2,13 @@ package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.LoadoutService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PerkLogicTest
 {
 	@Autowired
-	LoadoutService loadoutService;
+	LoadoutManager loadoutManager;
 	@Autowired
 	PerkLoaderService perkLoaderService;
 	@Autowired
@@ -35,44 +35,44 @@ public class PerkLogicTest
 	@Test
 	public void testFalseCondition() throws IOException
 	{
-		Loadout loadout = loadoutService.createNewLoadout();
+		Loadout loadout = loadoutManager.getLoadout();
 
 		String weaponName = "10MMPISTOL";
-		loadout.setWeapon(weaponName);
-		assertNotNull(loadout.getWeapon());
-		assertEquals("Test 10mm pistol", loadout.getWeapon().getWeaponName());
+		loadout.getWeaponManager().loadWeapon(weaponName);
+		assertNotNull(loadout.getWeaponManager().getCurrentWeapon());
+		assertEquals("Test 10mm pistol", loadout.getWeaponManager().getCurrentWeapon().getWeaponName());
 
 		String perkName = "HEAVYGUNNER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		boolean check = perkLogic.evaluateCondition(perk, loadout);
+		boolean check = perkLogic.evaluateCondition(perk);
 		assertFalse(check);
 	}
 
 	@Test
 	public void testPerkWithDifferentReceivers() throws IOException
 	{
-		Loadout loadout = loadoutService.createNewLoadout();
+		Loadout loadout = loadoutManager.getLoadout();
 
 		String weaponName = "10MMPISTOL";
-		loadout.setWeapon(weaponName);
-		assertNotNull(loadout.getWeapon());
+		loadout.getWeaponManager().loadWeapon(weaponName);
+		assertNotNull(loadout.getWeaponManager().getCurrentWeapon());
 
 		String perkName = "GUNSLINGER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		boolean check = perkLogic.evaluateCondition(perk, loadout);
+		boolean check = perkLogic.evaluateCondition(perk);
 		assertFalse(check);
 
 		Receiver newReceiver = modLoaderService.getReceiver("CALIBRATE");
-		if (loadout.getWeapon() instanceof RangedWeapon)
+		if (loadout.getWeaponManager().getCurrentWeapon() instanceof RangedWeapon)
 		{
-			((RangedWeapon) loadout.getWeapon()).setMod(newReceiver);
+			((RangedWeapon) loadout.getWeaponManager().getCurrentWeapon()).setMod(newReceiver);
 		}
 
-		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk, loadout);
+		boolean checkWithNewReceiver = perkLogic.evaluateCondition(perk);
 		assertTrue(checkWithNewReceiver);
 
 	}
@@ -80,25 +80,25 @@ public class PerkLogicTest
 	@Test
 	public void testEffect() throws IOException
 	{
-		Loadout loadout = loadoutService.createNewLoadout();
+		Loadout loadout = loadoutManager.getLoadout();
 
 		String perkName = "HEAVYGUNNER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
 
-		perkLogic.applyEffect(perk, loadout);
-		assertEquals(2, loadout.getPlayer().getSpecials().getEndurance());
-		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -1);
+		perkLogic.applyEffect(perk);
+		assertEquals(2, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
+		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -1);
 
 		perk.setPerkRank(2);
-		perkLogic.applyEffect(perk, loadout);
-		assertEquals(3, loadout.getPlayer().getSpecials().getEndurance());
-		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -2);
+		perkLogic.applyEffect(perk);
+		assertEquals(3, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
+		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -2);
 
 		perk.setPerkRank(3);
-		perkLogic.applyEffect(perk, loadout);
-		assertEquals(4, loadout.getPlayer().getSpecials().getEndurance());
-		loadout.getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -3);
+		perkLogic.applyEffect(perk);
+		assertEquals(4, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
+		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -3);
 
 	}
 }

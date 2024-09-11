@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.enums;
+package Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers;
 
 public enum BonusTypes
 {

@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.enums.Character;
+package Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables;
 
 public enum ConsumableType
 {

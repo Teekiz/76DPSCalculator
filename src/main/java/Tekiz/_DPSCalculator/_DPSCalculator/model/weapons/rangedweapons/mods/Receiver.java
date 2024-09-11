@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.ReceiverType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import lombok.Getter;
 
 @Getter

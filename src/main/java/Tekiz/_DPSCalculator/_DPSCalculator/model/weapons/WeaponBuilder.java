@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Weapons.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
 

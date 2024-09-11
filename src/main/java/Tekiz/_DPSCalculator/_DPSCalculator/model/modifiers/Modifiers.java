@@ -1,6 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
+package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.BonusTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import java.util.HashMap;
 import lombok.Getter;
 
@@ -9,8 +9,10 @@ public class Modifiers
 {
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
-	private final HashMap<Object, SourceData> modifierData;
+	private final HashMap<SourceData, Double> modifierData;
 
+
+	//	private Double value;
 	public Modifiers()
 	{
 		specialModifier = new SpecialModifiers();
@@ -20,7 +22,7 @@ public class Modifiers
 
 	public void addModifier(Object sourceObject, BonusTypes bonusType, double bonus)
 	{
-		modifierData.put(sourceObject, new SourceData(bonusType, bonus));
+		modifierData.put(new SourceData(sourceObject, bonusType), bonus);
 
 		switch (bonusType)
 		{
@@ -43,29 +45,32 @@ public class Modifiers
 	}
 
 	//this is used to remove bonuses if the boost should no longer be applied (e.g. the players weapon change so a perk does not apply)
-	public void removeModifier(Object sourceObject)
+	public void removeModifier(Object sourceObject, BonusTypes bonusType)
 	{
-		SourceData sourceData = modifierData.get(sourceObject);
+		SourceData sourceData = new SourceData(sourceObject, bonusType);
+		Double value = modifierData.get(sourceData);
 
-		if (sourceData == null) return;
+		if (value == null) return;
 
 		switch (sourceData.getBonusTypes())
 		{
-			case DAMAGE_ADDITIVE -> miscModifiers.removeAdditiveWeaponDamageBonus(sourceData.getValue());
-			case DAMAGE_MULTIPLICATIVE -> miscModifiers.removeMultiplicativeWeaponDamageBonus(sourceData.getValue());
-			case PENETRATION_PHYSICAL -> miscModifiers.removePenetrationPhysicalBonus(sourceData.getValue());
-			case PENETRATION_ENERGY -> miscModifiers.removePenetrationEnergyBonus(sourceData.getValue());
-			case PENETRATION_RADIATION -> miscModifiers.removePenetrationRadiationBonus(sourceData.getValue());
-			case PENETRATION_POISON -> miscModifiers.removePenetrationPoisonBonus(sourceData.getValue());
-			case ATTACKSPEED -> miscModifiers.removeAttackSpeedBonus(sourceData.getValue());
-			case RELOADSPEED -> miscModifiers.removeReloadSpeedBonus(sourceData.getValue());
-			case ACCURACY -> miscModifiers.removeAccuracyBonus(sourceData.getValue());
-			case RANGE ->  miscModifiers.removeRangeBonus(sourceData.getValue());
-			case SNEAK -> miscModifiers.removeSneakBonus(sourceData.getValue());
-			case CRITICAL -> miscModifiers.removeCriticalBonus(sourceData.getValue());
+			case DAMAGE_ADDITIVE -> miscModifiers.removeAdditiveWeaponDamageBonus(value);
+			case DAMAGE_MULTIPLICATIVE -> miscModifiers.removeMultiplicativeWeaponDamageBonus(value);
+			case PENETRATION_PHYSICAL -> miscModifiers.removePenetrationPhysicalBonus(value);
+			case PENETRATION_ENERGY -> miscModifiers.removePenetrationEnergyBonus(value);
+			case PENETRATION_RADIATION -> miscModifiers.removePenetrationRadiationBonus(value);
+			case PENETRATION_POISON -> miscModifiers.removePenetrationPoisonBonus(value);
+			case ATTACKSPEED -> miscModifiers.removeAttackSpeedBonus(value);
+			case RELOADSPEED -> miscModifiers.removeReloadSpeedBonus(value);
+			case ACCURACY -> miscModifiers.removeAccuracyBonus(value);
+			case RANGE ->  miscModifiers.removeRangeBonus(value);
+			case SNEAK -> miscModifiers.removeSneakBonus(value);
+			case CRITICAL -> miscModifiers.removeCriticalBonus(value);
 			case SPECIAL_STRENGTH, SPECIAL_PERCEPTION, SPECIAL_ENDURANCE,
 				SPECIAL_CHARISMA, SPECIAL_INTELLIGENCE, SPECIAL_AGILITY,
-				SPECIAL_LUCK -> specialModifier.removeSpecialBonus(sourceData.getBonusTypes(), sourceData.getValue());
+				SPECIAL_LUCK -> specialModifier.removeSpecialBonus(sourceData.getBonusTypes(), value);
 		}
+
+		modifierData.remove(sourceData);
 	}
 }

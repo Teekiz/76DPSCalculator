@@ -1,6 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -31,16 +30,16 @@ public class Perk
 		return perkRankEffects.get(getPerkRank() - 1).getEffect();
 	}
 
-	public boolean checkPerk(Loadout loadout)
+	public boolean checkPerk()
 	{
-		return perkLogic.evaluateCondition(this, loadout);
+		return perkLogic.evaluateCondition(this);
 	}
 
-	public void checkAndApplyPerk(Loadout loadout)
+	public void checkAndApplyPerk()
 	{
-		if (perkLogic.evaluateCondition(this, loadout))
+		if (perkLogic.evaluateCondition(this))
 		{
-			perkLogic.applyEffect(this, loadout);
+			perkLogic.applyEffect(this);
 		}
 	}
 }

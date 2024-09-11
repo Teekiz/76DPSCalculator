@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
+package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
 
 import lombok.Getter;
 

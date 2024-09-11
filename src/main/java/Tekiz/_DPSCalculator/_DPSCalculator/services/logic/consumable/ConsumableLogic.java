@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,26 +15,26 @@ public class ConsumableLogic
 		this.parsingService = parsingService;
 	}
 
-	public boolean evaluateCondition(Consumable consumable, Loadout loadout)
+	public boolean evaluateCondition(Consumable consumable)
 	{
 		//loadout should not be null but just in case
-		if (consumable != null && consumable.getCondition() != null && loadout != null)
+		if (consumable != null && consumable.getCondition() != null)
 		{
-			return parsingService.evaluateCondition(loadout, consumable.getCondition());
+			return parsingService.evaluateCondition(consumable.getCondition());
 		}
 		return false;
 	}
 
-	public void applyConditionEffect(Consumable consumable, Loadout loadout)
+	public void applyConditionEffect(Consumable consumable)
 	{
 		if (consumable.getConditionEffect() != null)
 		{
-			parsingService.applyEffect(loadout, consumable.getConditionEffect());
+			parsingService.applyEffect(consumable.getConditionEffect());
 		}
 	}
 
-	public void applyEffect(Consumable consumable, Loadout loadout)
+	public void applyEffect(Consumable consumable)
 	{
-		parsingService.applyEffect(loadout, consumable.getConsumableEffect());
+		parsingService.applyEffect(consumable.getConsumableEffect());
 	}
 }

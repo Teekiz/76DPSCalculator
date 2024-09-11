@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour.mods;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import java.util.HashMap;
 import lombok.Getter;
 

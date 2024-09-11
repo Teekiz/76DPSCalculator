@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.enums.Armour;
+package Tekiz._DPSCalculator._DPSCalculator.model.enums.armour;
 
 public enum ArmourPiece
 {

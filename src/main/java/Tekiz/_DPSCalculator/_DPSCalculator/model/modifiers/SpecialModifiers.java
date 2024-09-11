@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.BonusTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import lombok.Getter;
 
 @Getter

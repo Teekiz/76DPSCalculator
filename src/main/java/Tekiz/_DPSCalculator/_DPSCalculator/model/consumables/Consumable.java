@@ -1,8 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.consumables;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.AddictionType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.Character.ConsumableType;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.ConsumableType;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable.ConsumableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,16 +25,16 @@ public class Consumable
 	@Autowired
 	private ConsumableLogic consumableLogic;
 
-	public boolean checkConsumable(Loadout loadout)
+	public boolean checkConsumable()
 	{
-		return consumableLogic.evaluateCondition(this, loadout);
+		return consumableLogic.evaluateCondition(this);
 	}
-	public void checkAndApplyConsumable(Loadout loadout)
+	public void checkAndApplyConsumable()
 	{
-		if (consumableLogic.evaluateCondition(this, loadout))
+		if (consumableLogic.evaluateCondition(this))
 		{
-			consumableLogic.applyConditionEffect(this, loadout);
+			consumableLogic.applyConditionEffect(this);
 		}
-		consumableLogic.applyEffect(this, loadout);
+		consumableLogic.applyEffect(this);
 	}
 }
