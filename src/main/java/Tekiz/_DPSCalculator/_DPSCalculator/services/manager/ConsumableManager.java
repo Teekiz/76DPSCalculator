@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedListener;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable.ConsumableLogic;
 import jakarta.annotation.PreDestroy;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,15 +21,16 @@ public class ConsumableManager implements WeaponModifiedListener
 	//there can be many food effects but only one of each alcohol and chem.
 	private Set<Consumable> consumables;
 	private final ConsumableLoaderService consumableLoaderService;
+	private final ConsumableLogic consumableLogic;
 
 	@Autowired
-	public ConsumableManager(ConsumableLoaderService consumableLoaderService)
+	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ConsumableLogic consumableLogic)
 	{
 		this.consumables = new HashSet<>();
 		this.consumableLoaderService = consumableLoaderService;
+		this.consumableLogic = consumableLogic;
 	}
 
-	/*
 	public void addConsumable(Consumable consumable)
 	{
 		consumables.add(consumable);
@@ -38,7 +40,19 @@ public class ConsumableManager implements WeaponModifiedListener
 		consumables.remove(consumable);
 	}
 
-	 */
+	public boolean checkConsumable(Consumable consumable)
+	{
+		return consumableLogic.evaluateCondition(consumable);
+	}
+
+	public void checkAndApplyConsumable(Consumable consumable)
+	{
+		if (consumableLogic.evaluateCondition(consumable))
+		{
+			consumableLogic.applyConditionEffect(consumable);
+		}
+		consumableLogic.applyEffect(consumable);
+	}
 
 	@Override
 	public void onWeaponModified(WeaponModifiedEvent event)

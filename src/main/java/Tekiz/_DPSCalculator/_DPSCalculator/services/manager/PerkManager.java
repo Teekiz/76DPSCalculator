@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedListener;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.HashSet;
@@ -20,17 +21,29 @@ public class PerkManager implements WeaponModifiedListener
 {
 	private Set<Perk> perks;
 	private final PerkLoaderService perkLoaderService;
+	private final PerkLogic perkLogic;
 
 	@Autowired
-	public PerkManager(PerkLoaderService perkLoaderService)
+	public PerkManager(PerkLoaderService perkLoaderService, PerkLogic perkLogic)
 	{
 		this.perks = new HashSet<>();
 		this.perkLoaderService = perkLoaderService;
+		this.perkLogic = perkLogic;
 	}
 
 	public void addPerk(String perkName) throws IOException
 	{
-		perks.add(perkLoaderService.getPerk(perkName));
+		Perk perk = perkLoaderService.getPerk(perkName);
+		processPerk(perk);
+		perks.add(perk);
+	}
+
+	public void processPerk(Perk perk)
+	{
+		if (perkLogic.evaluateCondition(perk))
+		{
+			perkLogic.applyEffect(perk);
+		}
 	}
 
 	@Override

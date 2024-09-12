@@ -1,23 +1,26 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
+package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.MiscModifiers;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.SourceData;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.SpecialModifiers;
+import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
 @Getter
-public class Modifiers
+@Service
+public class ModifierManager
 {
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
 	private final HashMap<SourceData, Double> modifierData;
-
-
-	//	private Double value;
-	public Modifiers()
+	public ModifierManager()
 	{
-		specialModifier = new SpecialModifiers();
-		miscModifiers = new MiscModifiers();
-		modifierData = new HashMap<>();
+		this.specialModifier = new SpecialModifiers();
+		this.miscModifiers = new MiscModifiers();
+		this.modifierData = new HashMap<>();
 	}
 
 	public void addModifier(Object sourceObject, BonusTypes bonusType, double bonus)
@@ -73,4 +76,18 @@ public class Modifiers
 
 		modifierData.remove(sourceData);
 	}
+
+	//todo
+	public void updateModifier()
+	{
+
+	}
+
+	@PreDestroy
+	public void clear()
+	{
+		this.modifierData.clear();
+	}
 }
+
+

@@ -38,5 +38,16 @@
       {"rank": 2, "effect": "0.15"},
       {"rank": 3, "effect": "0.20"}
     ]
+  },
+  "TESTMODIFIER" :
+  {
+    "perkName" : "TestModifierPerk",
+    "perkRank" : 1,
+    "perkDescription" : "Test to check if modifiers work.",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
+    "perkRankEffects":
+    [
+      {"rank": 1, "effect": "#modifiers.addModifier(#this, #BonusType.DAMAGE_ADDITIVE, 0.20)"}
+    ]
   }
 }

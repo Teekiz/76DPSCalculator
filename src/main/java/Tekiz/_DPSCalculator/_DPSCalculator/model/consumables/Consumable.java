@@ -27,20 +27,4 @@ public class Consumable
 	private Expression condition;
 	private String conditionEffect;
 	private String consumableEffect;
-
-	@Autowired
-	private ConsumableLogic consumableLogic;
-
-	public boolean checkConsumable()
-	{
-		return consumableLogic.evaluateCondition(this);
-	}
-	public void checkAndApplyConsumable()
-	{
-		if (consumableLogic.evaluateCondition(this))
-		{
-			consumableLogic.applyConditionEffect(this);
-		}
-		consumableLogic.applyEffect(this);
-	}
 }

@@ -1,9 +1,9 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout;
+package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifiers;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ArmourManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnvironmentManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.ModifierManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class Loadout
 {
 	private final int loadoutNumber;
-	private final Modifiers modifiers;
 
 	private final WeaponManager weaponManager;
 	private final PerkManager perkManager;
@@ -26,10 +25,11 @@ public class Loadout
 	private final ArmourManager armourManager;
 	private final PlayerManager playerManager;
 	private final EnvironmentManager environmentManager;
+	private final ModifierManager modifierManager;
 
 	@Autowired
 	public Loadout(int loadoutNumber, WeaponManager weaponManager, PerkManager perkManager, ConsumableManager consumableManager,
-				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager)
+				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager, ModifierManager modifierManager)
 	{
 		this.loadoutNumber = loadoutNumber;
 		this.weaponManager = weaponManager;
@@ -38,7 +38,6 @@ public class Loadout
 		this.armourManager = armourManager;
 		this.playerManager = playerManager;
 		this.environmentManager = environmentManager;
-
-		this.modifiers = new Modifiers();
+		this.modifierManager = modifierManager;
 	}
 }

@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModLoaderService;
@@ -38,7 +38,7 @@ public class PerkLogicTest
 		Loadout loadout = loadoutManager.getLoadout();
 
 		String weaponName = "10MMPISTOL";
-		loadout.getWeaponManager().loadWeapon(weaponName);
+		loadout.getWeaponManager().setWeapon(weaponName);
 		assertNotNull(loadout.getWeaponManager().getCurrentWeapon());
 		assertEquals("Test 10mm pistol", loadout.getWeaponManager().getCurrentWeapon().getWeaponName());
 
@@ -56,7 +56,7 @@ public class PerkLogicTest
 		Loadout loadout = loadoutManager.getLoadout();
 
 		String weaponName = "10MMPISTOL";
-		loadout.getWeaponManager().loadWeapon(weaponName);
+		loadout.getWeaponManager().setWeapon(weaponName);
 		assertNotNull(loadout.getWeaponManager().getCurrentWeapon());
 
 		String perkName = "GUNSLINGER";

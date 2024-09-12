@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable.ConsumableLogic;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
@@ -42,7 +42,7 @@ public class ConsumableLogicTest
 	public void TestConsumableAddToSpecialWithMultipleEffects() throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout();
-		loadout.getWeaponManager().loadWeapon("10MMPISTOL");
+		loadout.getWeaponManager().setWeapon("10MMPISTOL");
 
 		Consumable consumable = consumableLoaderService.getConsumable("TESTMULTIPLEEFFECTS");
 
@@ -58,7 +58,7 @@ public class ConsumableLogicTest
 	public void TestConditionWithMetCriteria() throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout();
-		loadout.getWeaponManager().loadWeapon("10MMPISTOL");
+		loadout.getWeaponManager().setWeapon("10MMPISTOL");
 		Consumable consumable = consumableLoaderService.getConsumable("TESTCONDITION");
 		assertTrue(consumableLogic.evaluateCondition(consumable));
 		consumableLogic.applyConditionEffect(consumable);

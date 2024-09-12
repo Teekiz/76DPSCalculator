@@ -1,9 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.factory;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ArmourManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnvironmentManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.ModifierManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
@@ -25,8 +26,9 @@ public class LoadoutFactory
 		ArmourManager armourManager = context.getBean(ArmourManager.class);
 		PlayerManager playerManager = context.getBean(PlayerManager.class);
 		EnvironmentManager environmentManager = context.getBean(EnvironmentManager.class);
+		ModifierManager modifierManager = context.getBean(ModifierManager.class);
 
 		return new Loadout(loadoutNumber, weaponManager, perkManager, consumableManager,
-			armourManager, playerManager, environmentManager);
+			armourManager, playerManager, environmentManager, modifierManager);
 	}
 }

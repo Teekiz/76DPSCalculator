@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.events;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;

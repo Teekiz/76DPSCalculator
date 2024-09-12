@@ -24,7 +24,7 @@ public class WeaponManager
 		this.weaponLoaderService = weaponLoaderService;
 	}
 
-	public void loadWeapon(String weaponName) throws IOException
+	public void setWeapon(String weaponName) throws IOException
 	{
 		Weapon loadedWeapon = weaponLoaderService.getWeapon(weaponName);
 		if (loadedWeapon == null) {
