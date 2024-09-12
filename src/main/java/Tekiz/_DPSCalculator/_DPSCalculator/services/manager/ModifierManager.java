@@ -25,25 +25,30 @@ public class ModifierManager
 
 	public void addModifier(Object sourceObject, BonusTypes bonusType, double bonus)
 	{
-		modifierData.put(new SourceData(sourceObject, bonusType), bonus);
-
-		switch (bonusType)
+		SourceData sourceData = new SourceData(sourceObject, bonusType);
+		//to make sure that duplicate bonuses are not added
+		if (!modifierData.containsKey(sourceData))
 		{
-			case DAMAGE_ADDITIVE -> miscModifiers.addAdditiveWeaponDamageBonus(bonus);
-			case DAMAGE_MULTIPLICATIVE -> miscModifiers.addMultiplicativeWeaponDamageBonus(bonus);
-			case PENETRATION_PHYSICAL -> miscModifiers.addPenetrationPhysicalBonus(bonus);
-			case PENETRATION_ENERGY -> miscModifiers.addPenetrationEnergyBonus(bonus);
-			case PENETRATION_RADIATION -> miscModifiers.addPenetrationRadiationBonus(bonus);
-			case PENETRATION_POISON -> miscModifiers.addPenetrationPoisonBonus(bonus);
-			case ATTACKSPEED -> miscModifiers.addAttackSpeedBonus(bonus);
-			case RELOADSPEED -> miscModifiers.addReloadSpeedBonus(bonus);
-			case ACCURACY -> miscModifiers.addAccuracyBonus(bonus);
-			case RANGE ->  miscModifiers.addRangeBonus(bonus);
-			case SNEAK -> miscModifiers.addSneakBonus(bonus);
-			case CRITICAL -> miscModifiers.addCriticalBonus(bonus);
-			case SPECIAL_STRENGTH, SPECIAL_PERCEPTION, SPECIAL_ENDURANCE,
-				SPECIAL_CHARISMA, SPECIAL_INTELLIGENCE, SPECIAL_AGILITY,
-				SPECIAL_LUCK -> specialModifier.addSpecialBonus(bonusType, bonus);
+			modifierData.put(sourceData, bonus);
+
+			switch (bonusType)
+			{
+				case DAMAGE_ADDITIVE -> miscModifiers.addAdditiveWeaponDamageBonus(bonus);
+				case DAMAGE_MULTIPLICATIVE -> miscModifiers.addMultiplicativeWeaponDamageBonus(bonus);
+				case PENETRATION_PHYSICAL -> miscModifiers.addPenetrationPhysicalBonus(bonus);
+				case PENETRATION_ENERGY -> miscModifiers.addPenetrationEnergyBonus(bonus);
+				case PENETRATION_RADIATION -> miscModifiers.addPenetrationRadiationBonus(bonus);
+				case PENETRATION_POISON -> miscModifiers.addPenetrationPoisonBonus(bonus);
+				case ATTACKSPEED -> miscModifiers.addAttackSpeedBonus(bonus);
+				case RELOADSPEED -> miscModifiers.addReloadSpeedBonus(bonus);
+				case ACCURACY -> miscModifiers.addAccuracyBonus(bonus);
+				case RANGE ->  miscModifiers.addRangeBonus(bonus);
+				case SNEAK -> miscModifiers.addSneakBonus(bonus);
+				case CRITICAL -> miscModifiers.addCriticalBonus(bonus);
+				case SPECIAL_STRENGTH, SPECIAL_PERCEPTION, SPECIAL_ENDURANCE,
+					SPECIAL_CHARISMA, SPECIAL_INTELLIGENCE, SPECIAL_AGILITY,
+					SPECIAL_LUCK -> specialModifier.addSpecialBonus(bonusType, bonus);
+			}
 		}
 	}
 
@@ -53,28 +58,29 @@ public class ModifierManager
 		SourceData sourceData = new SourceData(sourceObject, bonusType);
 		Double value = modifierData.get(sourceData);
 
-		if (value == null) return;
-
-		switch (sourceData.getBonusTypes())
+		//only occurs if there is a value
+		if (value != null)
 		{
-			case DAMAGE_ADDITIVE -> miscModifiers.removeAdditiveWeaponDamageBonus(value);
-			case DAMAGE_MULTIPLICATIVE -> miscModifiers.removeMultiplicativeWeaponDamageBonus(value);
-			case PENETRATION_PHYSICAL -> miscModifiers.removePenetrationPhysicalBonus(value);
-			case PENETRATION_ENERGY -> miscModifiers.removePenetrationEnergyBonus(value);
-			case PENETRATION_RADIATION -> miscModifiers.removePenetrationRadiationBonus(value);
-			case PENETRATION_POISON -> miscModifiers.removePenetrationPoisonBonus(value);
-			case ATTACKSPEED -> miscModifiers.removeAttackSpeedBonus(value);
-			case RELOADSPEED -> miscModifiers.removeReloadSpeedBonus(value);
-			case ACCURACY -> miscModifiers.removeAccuracyBonus(value);
-			case RANGE ->  miscModifiers.removeRangeBonus(value);
-			case SNEAK -> miscModifiers.removeSneakBonus(value);
-			case CRITICAL -> miscModifiers.removeCriticalBonus(value);
-			case SPECIAL_STRENGTH, SPECIAL_PERCEPTION, SPECIAL_ENDURANCE,
-				SPECIAL_CHARISMA, SPECIAL_INTELLIGENCE, SPECIAL_AGILITY,
-				SPECIAL_LUCK -> specialModifier.removeSpecialBonus(sourceData.getBonusTypes(), value);
+			switch (sourceData.getBonusTypes())
+			{
+				case DAMAGE_ADDITIVE -> miscModifiers.removeAdditiveWeaponDamageBonus(value);
+				case DAMAGE_MULTIPLICATIVE -> miscModifiers.removeMultiplicativeWeaponDamageBonus(value);
+				case PENETRATION_PHYSICAL -> miscModifiers.removePenetrationPhysicalBonus(value);
+				case PENETRATION_ENERGY -> miscModifiers.removePenetrationEnergyBonus(value);
+				case PENETRATION_RADIATION -> miscModifiers.removePenetrationRadiationBonus(value);
+				case PENETRATION_POISON -> miscModifiers.removePenetrationPoisonBonus(value);
+				case ATTACKSPEED -> miscModifiers.removeAttackSpeedBonus(value);
+				case RELOADSPEED -> miscModifiers.removeReloadSpeedBonus(value);
+				case ACCURACY -> miscModifiers.removeAccuracyBonus(value);
+				case RANGE ->  miscModifiers.removeRangeBonus(value);
+				case SNEAK -> miscModifiers.removeSneakBonus(value);
+				case CRITICAL -> miscModifiers.removeCriticalBonus(value);
+				case SPECIAL_STRENGTH, SPECIAL_PERCEPTION, SPECIAL_ENDURANCE,
+					SPECIAL_CHARISMA, SPECIAL_INTELLIGENCE, SPECIAL_AGILITY,
+					SPECIAL_LUCK -> specialModifier.removeSpecialBonus(sourceData.getBonusTypes(), value);
+			}
+			modifierData.remove(sourceData);
 		}
-
-		modifierData.remove(sourceData);
 	}
 
 	//todo

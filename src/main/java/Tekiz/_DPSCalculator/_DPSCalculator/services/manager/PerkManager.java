@@ -2,8 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedListener;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
@@ -12,12 +11,13 @@ import java.util.Set;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
 @Scope("prototype")
 @Getter
-public class PerkManager implements WeaponModifiedListener
+public class PerkManager
 {
 	private Set<Perk> perks;
 	private final PerkLoaderService perkLoaderService;
@@ -46,11 +46,12 @@ public class PerkManager implements WeaponModifiedListener
 		}
 	}
 
-	@Override
-	public void onWeaponModified(WeaponModifiedEvent event)
+	@EventListener
+	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
-
+		perks.forEach(this::processPerk);
 	}
+
 	@PreDestroy
 	public void clear()
 	{

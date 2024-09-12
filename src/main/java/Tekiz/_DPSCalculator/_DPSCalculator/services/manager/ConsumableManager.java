@@ -2,8 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedListener;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable.ConsumableLogic;
 import jakarta.annotation.PreDestroy;
 import java.util.HashSet;
@@ -11,12 +10,13 @@ import java.util.Set;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
 @Scope("prototype")
 @Getter
-public class ConsumableManager implements WeaponModifiedListener
+public class ConsumableManager
 {
 	//there can be many food effects but only one of each alcohol and chem.
 	private Set<Consumable> consumables;
@@ -54,8 +54,8 @@ public class ConsumableManager implements WeaponModifiedListener
 		consumableLogic.applyEffect(consumable);
 	}
 
-	@Override
-	public void onWeaponModified(WeaponModifiedEvent event)
+	@EventListener
+	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
 
 	}
