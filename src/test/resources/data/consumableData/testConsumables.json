@@ -11,7 +11,7 @@
     "consumableName" : "Test Ballistic Bock",
     "ConsumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
-    "condition" : "#weapon.getDamageType() == DamageType.BALLISTIC",
+    "conditionString" : "#weapon.getDamageType() == DamageType.BALLISTIC",
     "conditionEffect" : "#damage.add(0.15)",
     "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
@@ -34,7 +34,7 @@
     "consumableName" : "Fury",
     "ConsumableType" : "CHEMS",
     "addictionType" : "FURY",
-    "condition" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
+    "conditionString" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
     "conditionEffect" : "#damage.add(0.30)",
     "consumableEffect" : "#player.setPerception(#player.getPerception - 5);"
   },  
@@ -50,7 +50,7 @@
     "consumableName" : "Test condition",
     "ConsumableType" : "FOOD",
     "addictionType" : "NONE",
-    "condition" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
+    "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
     "conditionEffect" : "#player.getSpecials().modifySpecial(#Special.CHARISMA, 10); #player.getSpecials().modifySpecial(#Special.CHARISMA, -5);",
     "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   }  
