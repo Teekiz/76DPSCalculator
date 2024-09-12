@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponModifiedListener;
 import jakarta.annotation.PreDestroy;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
@@ -25,6 +26,11 @@ public class PerkManager implements WeaponModifiedListener
 	{
 		this.perks = new HashSet<>();
 		this.perkLoaderService = perkLoaderService;
+	}
+
+	public void addPerk(String perkName) throws IOException
+	{
+		perks.add(perkLoaderService.getPerk(perkName));
 	}
 
 	@Override
