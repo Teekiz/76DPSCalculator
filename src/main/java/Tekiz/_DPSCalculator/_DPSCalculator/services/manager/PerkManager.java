@@ -31,6 +31,7 @@ public class PerkManager
 		this.perkLogic = perkLogic;
 	}
 
+	//when a perk is added - it is automatically added to the effects.
 	public void addPerk(String perkName) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
