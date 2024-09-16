@@ -25,5 +25,29 @@
         "attackSpeed" : 0.67,
         "attackDelay" : 0.23,
         "receiver" : "AUTOMATIC"
-    }
+    },
+  "GAUSSRIFLE" :
+  {
+    "weaponName" : "Test gauss rifle",
+    "weaponType" : "RIFLE",
+    "damageType" : "ENERGY",
+    "weaponDamageByLevel" :
+    {
+      "35" : 125.0,
+      "45" : 140.0
+    },
+    "apCost" : 30,
+    "ammo" : "2MMEC",
+    "magazineSize" : 5,
+    "fireRate" : 67,
+    "range" : 204,
+    "accuracy" : 60,
+    "projectileCount" : 1,
+    "criticalBonus" : 100,
+    "rangedPenalty" : -50,
+    "reloadTime" : 4.20,
+    "attackSpeed" : 0.83,
+    "attackDelay" : 0.15
+  }
+
 }

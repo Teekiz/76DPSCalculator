@@ -25,14 +25,14 @@ public class WeaponFactory
 	{
 		WeaponType weaponType = WeaponType.valueOf(weapon.get("weaponType").asText().toUpperCase());
 
-		if (weaponType.equals(WeaponType.PISTOL))
+		if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE))
 		{
 			return objectMapper.treeToValue(weapon, RangedWeapon.class);
 		}
-		else if (weaponType.equals(WeaponType.RIFLE))
-		{
+		//else if (weaponType.equals(WeaponType.RIFLE))
+		//{
 			//return rifle
-		}
+		//}
 		return null;
 	}
 }

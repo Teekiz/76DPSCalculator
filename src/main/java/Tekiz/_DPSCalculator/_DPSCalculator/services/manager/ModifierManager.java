@@ -4,20 +4,20 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.MiscModifiers;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifiers;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.SpecialModifiers;
-import Tekiz._DPSCalculator._DPSCalculator.services.events.PerkChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.ConditionChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Getter
 @Service
 @Scope(scopeName = "loadout")
-public class ModifierManager implements LoadoutScopeClearable, ApplicationListener<PerkChangedEvent>
+public class ModifierManager implements LoadoutScopeClearable
 {
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
@@ -115,10 +115,10 @@ public class ModifierManager implements LoadoutScopeClearable, ApplicationListen
 	}
 
 
-	@Override
-	public void onApplicationEvent(PerkChangedEvent event)
+	@EventListener
+	public void onConditionChangedEvent(ConditionChangedEvent event)
 	{
-		removeModifier(event.getPerkName());
+		removeModifier(event.getObjectName());
 	}
 }
 

@@ -68,8 +68,12 @@ public class ParsingService
 	{
 		try
 		{
-			String[] effects = effect.split(";");
+			if (effect.isEmpty())
+			{
+				return;
+			}
 
+			String[] effects = effect.split(";");
 			StandardEvaluationContext context = getContext(rootObject);
 
 			for (String splitEffect : effects)

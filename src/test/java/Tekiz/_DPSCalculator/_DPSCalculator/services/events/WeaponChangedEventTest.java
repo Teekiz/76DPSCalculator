@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json", "perk.data.file.path=src/test/resources/data/perkData/testPerks.json", "receivers.data.file.path=src/test/resources/data/weaponData/testReceivers.json"})
+@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json", "perk.data.file.path=src/test/resources/data/perkData/testPerks.json", "receivers.data.file.path=src/test/resources/data/weaponData/testReceivers.json", "consumable.data.file.path=src/test/resources/data/consumableData/testConsumables.json"})
 public class WeaponChangedEventTest
 {
 	@Autowired
@@ -28,20 +28,9 @@ public class WeaponChangedEventTest
 	@Autowired
 	ParsingService parsingService;
 
-	@Test
-	public void testExpression() throws IOException
-	{
-		Loadout loadout = loadoutManager.getLoadout();
-
-		loadout.getPerkManager().addPerk("HEAVYGUNNER");
-		assertFalse(loadout.getPerkManager().getPerks().isEmpty());
-
-		assertNotNull(loadout.getPerkManager().getPerks().iterator().next().getCondition());
-		loadoutManager.deleteAllLoadouts();
-	}
 
 	@Test
-	public void testWeaponChangedEvent() throws IOException
+	public void testPerkWCE() throws IOException
 	{
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
 		assertEquals(1.00, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
@@ -58,7 +47,7 @@ public class WeaponChangedEventTest
 	}
 
 	@Test
-	public void testWeaponChangedEventConditionRemoved() throws IOException
+	public void testRemovePerkWCE() throws IOException
 	{
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
@@ -72,4 +61,44 @@ public class WeaponChangedEventTest
 
 		loadoutManager.deleteAllLoadouts();
 	}
+
+	@Test
+	public void testConsumableWCE() throws IOException
+	{
+		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
+		assertEquals(0, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
+		assertEquals(10, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+		loadoutManager.deleteAllLoadouts();
+	}
+
+	@Test
+	public void testRemoveConsumableWCE() throws IOException
+	{
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
+		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
+		assertEquals(10, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
+		assertEquals(0, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+		loadoutManager.deleteAllLoadouts();
+	}
+
+	@Test
+	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
+	{
+		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENTTWO");
+		loadoutManager.getLoadout().getPerkManager().addPerk("TESTMODIFIER");
+		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
+		assertEquals(1.4, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
+		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		loadoutManager.deleteAllLoadouts();
+	}
+
 }
