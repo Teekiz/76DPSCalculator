@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.consumable.ConsumableLogic;
+import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,9 +15,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
-@Scope("prototype")
+@Scope(scopeName = "loadout")
 @Getter
-public class ConsumableManager
+public class ConsumableManager implements LoadoutScopeClearable
 {
 	//there can be many food effects but only one of each alcohol and chem.
 	private Set<Consumable> consumables;

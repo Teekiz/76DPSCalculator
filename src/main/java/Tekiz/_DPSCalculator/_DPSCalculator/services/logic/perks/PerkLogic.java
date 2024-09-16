@@ -18,13 +18,13 @@ public class PerkLogic
 	{
 		if (perk != null && perk.getCondition() != null)
 		{
-			return parsingService.evaluateCondition(perk.getCondition());
+			return parsingService.evaluateCondition(perk, perk.getCondition());
 		}
 		return false;
 	}
 
 	public void applyEffect(Perk perk)
 	{
-		parsingService.applyEffect(perk.getPerkEffect());
+		parsingService.applyEffect(perk, perk.getPerkEffect());
 	}
 }

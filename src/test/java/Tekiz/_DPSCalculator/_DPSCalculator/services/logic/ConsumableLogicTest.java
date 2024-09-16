@@ -29,6 +29,7 @@ public class ConsumableLogicTest
 	@DirtiesContext
 	public void TestConsumableToAddSpecial() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
 		Loadout loadout = loadoutManager.getLoadout();
 		Consumable consumable = consumableLoaderService.getConsumable("AGEDMIRELURKQUEENSTEAK");
 

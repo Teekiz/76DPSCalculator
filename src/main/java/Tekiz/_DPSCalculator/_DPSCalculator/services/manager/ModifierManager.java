@@ -4,19 +4,24 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.MiscModifiers;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifiers;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.SpecialModifiers;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.PerkChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Getter
 @Service
-public class ModifierManager
+@Scope(scopeName = "loadout")
+public class ModifierManager implements LoadoutScopeClearable, ApplicationListener<PerkChangedEvent>
 {
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
-	private final HashMap<Object, Modifiers> modifierData;
+	private final HashMap<String, Modifiers> modifierData;
 	public ModifierManager()
 	{
 		this.specialModifier = new SpecialModifiers();
@@ -24,9 +29,9 @@ public class ModifierManager
 		this.modifierData = new HashMap<>();
 	}
 
-	public void addModifier(Object sourceObject, BonusTypes bonusType, double bonus)
+	public void addModifier(String sourceObjectName, BonusTypes bonusType, double bonus)
 	{
-		if (addToModifierData(sourceObject, bonusType, bonus))
+		if (addToModifierData(sourceObjectName, bonusType, bonus))
 		{
 			switch (bonusType)
 			{
@@ -49,25 +54,25 @@ public class ModifierManager
 		}
 	}
 
-	public boolean addToModifierData(Object sourceObject, BonusTypes bonusType, double bonus)
+	public boolean addToModifierData(String sourceObjectName, BonusTypes bonusType, double bonus)
 	{
 		//if the modifiers already contain a source object, and the bonus is already added, return false, otherwise create a new bonus modifier.
-		if (modifierData.get(sourceObject) != null)
+		if (modifierData.get(sourceObjectName) != null)
 		{
-			return modifierData.get(sourceObject).addModifier(bonusType, bonus);
+			return modifierData.get(sourceObjectName).addModifier(bonusType, bonus);
 		}
 		else
 		{
-			modifierData.put(sourceObject, new Modifiers());
-			modifierData.get(sourceObject).addModifier(bonusType, bonus);
+			modifierData.put(sourceObjectName, new Modifiers());
+			modifierData.get(sourceObjectName).addModifier(bonusType, bonus);
 			return true;
 		}
 	}
 
 	//this is used to remove bonuses if the boost should no longer be applied (e.g. the players weapon change so a perk does not apply)
-	public void removeModifier(Object sourceObject)
+	public void removeModifier(String sourceObjectName)
 	{
-		Modifiers modifiers = modifierData.get(sourceObject);
+		Modifiers modifiers = modifierData.get(sourceObjectName);
 		if (modifiers != null)
 		{
 			for (Map.Entry<BonusTypes, Double> entry : modifiers.getModifiers().entrySet())
@@ -93,8 +98,8 @@ public class ModifierManager
 						SPECIAL_LUCK -> specialModifier.removeSpecialBonus(bonusTypes, value);
 				}
 			}
+			modifierData.remove(sourceObjectName);
 		}
-		modifierData.remove(sourceObject);
 	}
 
 	//todo
@@ -110,6 +115,11 @@ public class ModifierManager
 	}
 
 
+	@Override
+	public void onApplicationEvent(PerkChangedEvent event)
+	{
+		removeModifier(event.getPerkName());
+	}
 }
 
 

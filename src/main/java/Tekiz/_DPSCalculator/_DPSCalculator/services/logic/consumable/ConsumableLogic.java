@@ -20,7 +20,7 @@ public class ConsumableLogic
 		//loadout should not be null but just in case
 		if (consumable != null && consumable.getCondition() != null)
 		{
-			return parsingService.evaluateCondition(consumable.getCondition());
+			return parsingService.evaluateCondition(consumable, consumable.getCondition());
 		}
 		return false;
 	}
@@ -29,12 +29,12 @@ public class ConsumableLogic
 	{
 		if (consumable.getConditionEffect() != null)
 		{
-			parsingService.applyEffect(consumable.getConditionEffect());
+			parsingService.applyEffect(consumable, consumable.getConditionEffect());
 		}
 	}
 
 	public void applyEffect(Consumable consumable)
 	{
-		parsingService.applyEffect(consumable.getConsumableEffect());
+		parsingService.applyEffect(consumable, consumable.getConsumableEffect());
 	}
 }

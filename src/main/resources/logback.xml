@@ -1,0 +1,25 @@
+<configuration>
+
+	<!-- Define your appender (log file and pattern) -->
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>logs/app.log</file>  <!-- Log file path -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Disable logging for other libraries -->
+	<logger name="org.springframework" level="OFF"/>
+	<logger name="org.hibernate" level="OFF"/>
+	<logger name="com.example.external" level="OFF"/>
+
+	<logger name="Tekiz._DPSCalculator._DPSCalculator.tests" level="OFF"/>  <!-- Replace with your actual test package -->
+	<!-- Enable logging for your application -->
+	<logger name="Tekiz._DPSCalculator._DPSCalculator" level="DEBUG"/>
+
+	<!-- Optionally capture any other global logs -->
+	<root level="OFF">  <!-- Set this to OFF, INFO, or DEBUG based on your needs -->
+		<appender-ref ref="FILE"/>
+	</root>
+
+</configuration>

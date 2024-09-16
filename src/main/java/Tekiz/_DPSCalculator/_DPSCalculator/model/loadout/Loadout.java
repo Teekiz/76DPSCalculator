@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.ModifierManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
+import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScope;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,11 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Data
 @Service
-@Scope("prototype")
+@Scope(value = "loadout")
 public class Loadout
 {
-	private final int loadoutNumber;
-
+	private final int LoadoutID;
 	private final WeaponManager weaponManager;
 	private final PerkManager perkManager;
 	private final ConsumableManager consumableManager;
@@ -28,10 +28,10 @@ public class Loadout
 	private final ModifierManager modifierManager;
 
 	@Autowired
-	public Loadout(int loadoutNumber, WeaponManager weaponManager, PerkManager perkManager, ConsumableManager consumableManager,
+	public Loadout(WeaponManager weaponManager, PerkManager perkManager, ConsumableManager consumableManager,
 				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager, ModifierManager modifierManager)
 	{
-		this.loadoutNumber = loadoutNumber;
+		this.LoadoutID = LoadoutScope.loadoutIdStorage.get();
 		this.weaponManager = weaponManager;
 		this.perkManager = perkManager;
 		this.consumableManager = consumableManager;

@@ -47,7 +47,18 @@
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
     "perkRankEffects":
     [
-      {"rank": 1, "effect": "#modifiers.addModifier(#this, #BonusType.DAMAGE_ADDITIVE, 0.20)"}
+      {"rank": 1, "effect": "#modifiers.addModifier(#this.getPerkName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
+    ]
+  },
+  "TESTEVENT" :
+  {
+    "perkName" : "TestEventPerk",
+    "perkRank" : 1,
+    "perkDescription" : "Test to check if modifiers events work.",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "perkRankEffects":
+    [
+      {"rank": 1, "effect": "#modifiers.addModifier(#this.getPerkName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
     ]
   }
 }

@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ArmourLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,9 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
-@Scope("prototype")
+@Scope(scopeName = "loadout")
 @Getter
-public class ArmourManager
+public class ArmourManager implements LoadoutScopeClearable
 {
 	private Set<Armour> armour;
 	private final ArmourLoaderService armourLoaderService;
