@@ -42,8 +42,15 @@ public class PerkManager implements LoadoutScopeClearable
 	public void addPerk(String perkName) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
+		perks.add(perk);
 		processPerk(perk);
-		this.perks.add(perk);
+	}
+
+	public void removePerk(String perkName) throws IOException
+	{
+		Perk perk = perkLoaderService.getPerk(perkName);
+		perks.remove(perk);
+		publishEvent(perk);
 	}
 
 	public synchronized void processPerk(Perk perk)

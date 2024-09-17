@@ -1,11 +1,23 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
-import java.util.List;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DamageCalculationService
 {
+	private final BaseDamageService baseDamageService;
+	private final BonusDamageService bonusDamageService;
+	@Autowired
+	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService)
+	{
+		this.baseDamageService = baseDamageService;
+		this.bonusDamageService = bonusDamageService;
+	}
+
 	/*
 		Damage is calculated by:
 		Damage = OutgoingDamage * DamageResistMultiplier * BodyPartMultiplier
@@ -14,8 +26,18 @@ public class DamageCalculationService
 		DamageBonus comes for consumables and perks.
 	 */
 	//todo - update getBaseDamage
-	public double calculateOutgoingDamage(double baseDamage, List<Double> additiveDamage, List<Double> multiplicativeDamage)
+	public double calculateOutgoingDamage(Loadout loadout)
 	{
-		return 0.0;
+		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
+		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
+
+		double outgoingDamage = baseDamage * bonusDamage;
+		return round(outgoingDamage);
+	}
+
+	public double round(double value)
+	{
+		BigDecimal bigDecimal = BigDecimal.valueOf(value);
+		return bigDecimal.setScale(1, RoundingMode.HALF_UP).doubleValue();
 	}
 }

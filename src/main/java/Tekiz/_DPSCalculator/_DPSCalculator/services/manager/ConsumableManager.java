@@ -46,8 +46,9 @@ public class ConsumableManager implements LoadoutScopeClearable
 		consumables.add(consumable);
 		checkAndApplyConsumable(consumable);
 	}
-	public void removeConsumable(Consumable consumable)
+	public void removeConsumable(String consumableName) throws IOException
 	{
+		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
 		consumables.remove(consumable);
 		publishEvent(consumable);
 	}

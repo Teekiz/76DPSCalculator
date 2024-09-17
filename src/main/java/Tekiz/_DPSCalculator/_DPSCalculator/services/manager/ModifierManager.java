@@ -21,7 +21,7 @@ public class ModifierManager implements LoadoutScopeClearable
 {
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
-	private final HashMap<String, Modifiers> modifierData;
+	private HashMap<String, Modifiers> modifierData;
 	public ModifierManager()
 	{
 		this.specialModifier = new SpecialModifiers();
@@ -111,7 +111,10 @@ public class ModifierManager implements LoadoutScopeClearable
 	@PreDestroy
 	public void clear()
 	{
-		this.modifierData.clear();
+		if (this.modifierData != null) {
+			this.modifierData.clear();
+		}
+		this.modifierData = null;
 	}
 
 
