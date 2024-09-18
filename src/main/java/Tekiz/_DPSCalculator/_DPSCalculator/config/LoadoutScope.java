@@ -33,11 +33,14 @@ public class LoadoutScope implements Scope {
 		Map<String, Object> scopedObjectMap = scopedObjects.get(loadoutID);
 
 		//if the loadout has does not have a bean of the matching name
-		if (scopedObjectMap != null && !scopedObjectMap.containsKey(name))
+		if (scopedObjectMap != null)
 		{
 			Object object = objectFactory.getObject();
-			scopedObjectMap.put(name, object);
 
+			if (!scopedObjectMap.containsKey(name))
+			{
+				scopedObjectMap.put(name, object);
+			}
 			logger.debug("Created new object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
 
 			destructionCallBacks.computeIfAbsent(loadoutID, id -> new HashMap<>())
@@ -47,9 +50,11 @@ public class LoadoutScope implements Scope {
 						((LoadoutScopeClearable) object).clear();
 					}
 			});
+
+			return scopedObjectMap.get(name);
 		}
 
-		return scopedObjectMap != null ? scopedObjectMap.get(name) : null;
+		return null;
 	}
 
 	public Object remove(String name) {

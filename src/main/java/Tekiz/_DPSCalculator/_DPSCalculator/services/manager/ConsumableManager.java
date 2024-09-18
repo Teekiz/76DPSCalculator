@@ -75,7 +75,7 @@ public class ConsumableManager implements LoadoutScopeClearable
 	public void publishEvent(Consumable consumable)
 	{
 		ConditionChangedEvent conditionChangedEvent = new ConditionChangedEvent(consumable, consumable.getConsumableName());
-		logger.debug("PerkChangedEvent has been created for perk {}.", consumable);
+		logger.debug("ConditionChangedEvent has been created for consumable {}.", consumable);
 		applicationEventPublisher.publishEvent(conditionChangedEvent);
 	}
 

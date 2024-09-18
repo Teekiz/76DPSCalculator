@@ -68,7 +68,7 @@ public class PerkManager implements LoadoutScopeClearable
 	public void publishEvent(Perk perk)
 	{
 		ConditionChangedEvent conditionChangedEvent = new ConditionChangedEvent(perk, perk.getPerkName());
-		logger.debug("PerkChangedEvent has been created for perk {}.", perk);
+		logger.debug("ConditionChangedEvent has been created for perk {}.", perk);
 		applicationEventPublisher.publishEvent(conditionChangedEvent);
 	}
 
