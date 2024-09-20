@@ -14,6 +14,8 @@ public abstract class WeaponBuilder<T extends WeaponBuilder<T>>
 	protected DamageType damageType;
 	protected HashMap<Integer, Double> weaponDamageByLevel;
 	protected int apCost;
+	protected double attackSpeed;
+	protected int criticalBonus;
 
 	protected abstract T self();
 	public abstract Weapon build();

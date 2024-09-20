@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,7 +21,6 @@ public class WeaponFactory
 		this.objectMapper = objectMapper;
 	}
 
-	//todo - update for every other weapon type
 	public Weapon createWeapon(JsonNode weapon) throws JsonProcessingException
 	{
 		WeaponType weaponType = WeaponType.valueOf(weapon.get("weaponType").asText().toUpperCase());
@@ -29,10 +29,10 @@ public class WeaponFactory
 		{
 			return objectMapper.treeToValue(weapon, RangedWeapon.class);
 		}
-		//else if (weaponType.equals(WeaponType.RIFLE))
-		//{
-			//return rifle
-		//}
+		else if (weaponType.equals(WeaponType.ONEHANDED) || weaponType.equals(WeaponType.TWOHANDED))
+		{
+			return objectMapper.treeToValue(weapon, MeleeWeapon.class);
+		}
 		return null;
 	}
 }

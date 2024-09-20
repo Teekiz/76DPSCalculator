@@ -19,6 +19,17 @@ import org.springframework.stereotype.Service;
 @Scope(scopeName = "loadout")
 public class ModifierManager implements LoadoutScopeClearable
 {
+
+	/*
+		Order of operations:
+		weapons, enemy and environment
+		perks affect mutations, consumables and stats
+		mutations affect consumables and stats
+		consumables affect stats
+		legendary effects
+		stats last
+	 */
+
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
 	private HashMap<String, Modifiers> modifierData;

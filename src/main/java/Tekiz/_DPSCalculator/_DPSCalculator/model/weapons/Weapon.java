@@ -18,6 +18,8 @@ public abstract class Weapon
 	protected final DamageType damageType;
 	protected final HashMap<Integer, Double> weaponDamageByLevel;
 	protected final int apCost;
+	protected final double attackSpeed;
+	protected final int criticalBonus;
 
 	//todo change this - receiver damage is additive
 	public abstract double getBaseDamage(int weaponLevel);

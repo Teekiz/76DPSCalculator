@@ -20,30 +20,27 @@ public class RangedWeapon extends Weapon
 	private final int accuracy;
 
 	private final int projectileCount;
-	private final int criticalBonus;
 	private final int rangedPenalty;
 	private final double reloadTime;
-	private final double attackSpeed;
 	private final double attackDelay;
 	private Receiver receiver;
 
 	@Autowired
 	public RangedWeapon(String weaponName, WeaponType weaponType, DamageType damageType, HashMap<Integer, Double> weaponDamageByLevel, int apCost,
+						double attackSpeed, int criticalBonus,
 						int magazineSize, int fireRate, int range, int accuracy,
-						int projectileCount, int criticalBonus, int rangedPenalty,
-						double reloadTime, double attackSpeed, double attackDelay,
+						int projectileCount, int rangedPenalty,
+						double reloadTime, double attackDelay,
 						Receiver receiver)
 	{
-		super(weaponName, weaponType, damageType, weaponDamageByLevel, apCost);
+		super(weaponName, weaponType, damageType, weaponDamageByLevel, apCost, attackSpeed, criticalBonus);
 		this.magazineSize = magazineSize;
 		this.fireRate = fireRate;
 		this.range = range;
 		this.accuracy = accuracy;
 		this.projectileCount = projectileCount;
-		this.criticalBonus = criticalBonus;
 		this.rangedPenalty = rangedPenalty;
 		this.reloadTime = reloadTime;
-		this.attackSpeed = attackSpeed;
 		this.attackDelay = attackDelay;
 		this.receiver = receiver;
 
