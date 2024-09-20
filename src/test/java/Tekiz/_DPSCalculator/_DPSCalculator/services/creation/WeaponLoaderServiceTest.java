@@ -24,6 +24,11 @@ public class WeaponLoaderServiceTest
 		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
 		assertNotNull(weapon);
 		assertEquals("Test 10mm pistol", weapon.getWeaponName());
+
+		String meleeWeaponName = "ASSAULTRONBLADE";
+		Weapon meleeWeapon = weaponLoaderService.getWeapon(meleeWeaponName);
+		assertNotNull(meleeWeapon);
+		assertEquals("Assaultron blade", meleeWeapon.getWeaponName());
 	}
 
 	@Test

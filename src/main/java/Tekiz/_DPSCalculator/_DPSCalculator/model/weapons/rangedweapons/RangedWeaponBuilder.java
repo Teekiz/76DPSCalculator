@@ -17,16 +17,14 @@ public class RangedWeaponBuilder extends WeaponBuilder
 	private int range;
 	private int accuracy;
 	private int projectileCount;
-	private int criticalBonus;
 	private int rangedPenalty;
 	private double reloadTime;
-	private double attackSpeed;
 	private double attackDelay;
 	private Receiver receiver;
 
-	public RangedWeaponBuilder(String weaponName, WeaponType weaponType, DamageType damageType, HashMap<Integer, Double> weaponDamageByLevel, int apCost)
+	public RangedWeaponBuilder(String weaponName, WeaponType weaponType, DamageType damageType, HashMap<Integer, Double> weaponDamageByLevel, int apCost, double attackSpeed, int criticalBonus)
 	{
-		super(weaponName, weaponType, damageType, weaponDamageByLevel, apCost);
+		super(weaponName, weaponType, damageType, weaponDamageByLevel, apCost, attackSpeed, criticalBonus);
 	}
 
 	@JsonProperty("magazineSize")
@@ -47,28 +45,18 @@ public class RangedWeaponBuilder extends WeaponBuilder
 		this.range = range;
 		return self();
 	}
-
 	@JsonProperty("accuracy")
 	public RangedWeaponBuilder setAccuracy(int accuracy)
 	{
 		this.accuracy = accuracy;
 		return self();
 	}
-
 	@JsonProperty("projectileCount")
 	public RangedWeaponBuilder setProjectileCount(int projectileCount)
 	{
 		this.projectileCount = projectileCount;
 		return self();
 	}
-
-	@JsonProperty("criticalBonus")
-	public RangedWeaponBuilder setCriticalBonus(int criticalBonus)
-	{
-		this.criticalBonus = criticalBonus;
-		return self();
-	}
-
 	@JsonProperty("rangedPenalty")
 	public RangedWeaponBuilder setRangedPenalty(int rangedPenalty)
 	{
@@ -79,12 +67,6 @@ public class RangedWeaponBuilder extends WeaponBuilder
 	public RangedWeaponBuilder setReloadTime(double reloadTime)
 	{
 		this.reloadTime = reloadTime;
-		return self();
-	}
-	@JsonProperty("attackSpeed")
-	public RangedWeaponBuilder setAttackSpeed(double attackSpeed)
-	{
-		this.attackSpeed = attackSpeed;
 		return self();
 	}
 	@JsonProperty("attackDelay")
@@ -111,7 +93,7 @@ public class RangedWeaponBuilder extends WeaponBuilder
 	@Override
 	public RangedWeapon build()
 	{
-		return new RangedWeapon(weaponName, weaponType, damageType, weaponDamageByLevel, apCost, magazineSize, fireRate,
-			range, accuracy, projectileCount, criticalBonus, rangedPenalty, reloadTime, attackSpeed, attackDelay, receiver);
+		return new RangedWeapon(weaponName, weaponType, damageType, weaponDamageByLevel, apCost, attackSpeed, criticalBonus, magazineSize, fireRate,
+			range, accuracy, projectileCount,rangedPenalty, reloadTime, attackDelay, receiver);
 	}
 }
