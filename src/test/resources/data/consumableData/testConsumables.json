@@ -1,14 +1,14 @@
 {
   "AGEDMIRELURKQUEENSTEAK" :
   {
-    "consumableName" : "Test Aged mirelurk queen steak",
+    "name" : "Test Aged mirelurk queen steak",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
   "BALLISTICBOCK" :
   {
-    "consumableName" : "Test Ballistic Bock",
+    "name" : "Test Ballistic Bock",
     "consumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
     "conditionString" : "#weapon.getDamageType() == DamageType.BALLISTIC",
@@ -17,21 +17,21 @@
   },
   "BERRYMENTATS" :
   {
-    "consumableName" : "Test Berry Mentats",
+    "name" : "Test Berry Mentats",
     "consumableType" : "CHEMS",
     "addictionType" : "MENTATS",
     "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 5)"
   },
   "DADDY_O" :
   {
-    "consumableName" : "Daddy-O",
+    "name" : "Daddy-O",
     "consumableType" : "CHEMS",
     "addictionType" : "DADDY_O",
     "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 3); #player.setPerception(#player.getPerception + 3); #player.setCharisma(#player.getCharisma + 2);"
   },
   "FURY" :
   {
-    "consumableName" : "Fury",
+    "name" : "Fury",
     "consumableType" : "CHEMS",
     "addictionType" : "FURY",
     "conditionString" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
@@ -40,14 +40,14 @@
   },  
   "TESTMULTIPLEEFFECTS" :
   {
-    "consumableName" : "Test mutliple effects",
+    "name" : "Test mutliple effects",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   },
   "TESTCONDITION" :
   {
-    "consumableName" : "Test condition",
+    "name" : "Test condition",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
@@ -56,19 +56,19 @@
   },
   "TESTEVENT" :
   {
-    "consumableName" : "Test event",
+    "name" : "Test event",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#modifiers.addModifier(#this.getConsumableName(), #BonusType.SPECIAL_CHARISMA, 10)",
+    "conditionEffect" : "#modifiers.addModifier(#this.getName(), #BonusType.SPECIAL_CHARISMA, 10)",
     "consumableEffect" : ""
   }  ,
   "TESTEVENTTWO" :
   {
-    "consumableName" : "Testeventtwo",
+    "name" : "Testeventtwo",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#modifiers.addModifier(#this.getConsumableName(), #BonusType.DAMAGE_ADDITIVE, 0.20)",
+    "conditionEffect" : "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)",
     "consumableEffect" : ""
   }  }

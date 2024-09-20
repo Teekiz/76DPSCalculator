@@ -22,7 +22,7 @@ public class ConsumableLoaderServiceTest
 		String consumableName = "AGEDMIRELURKQUEENSTEAK";
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
 		assertNotNull(consumable);
-		assertEquals("Test Aged mirelurk queen steak", consumable.getConsumableName());
+		assertEquals("Test Aged mirelurk queen steak", consumable.getName());
 	}
 
 	@Test
@@ -30,8 +30,8 @@ public class ConsumableLoaderServiceTest
 	{
 		List<Consumable> consumables = consumableLoaderService.getAllConsumables();
 		assertNotNull(consumables);
-		assertEquals("Test Ballistic Bock", consumables.get(1).getConsumableName());
-		assertEquals("Test Berry Mentats", consumables.get(2).getConsumableName());
+		assertEquals("Test Ballistic Bock", consumables.get(1).getName());
+		assertEquals("Test Berry Mentats", consumables.get(2).getName());
 	}
 }
 

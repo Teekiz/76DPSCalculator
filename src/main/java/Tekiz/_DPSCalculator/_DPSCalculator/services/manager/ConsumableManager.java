@@ -74,7 +74,7 @@ public class ConsumableManager implements LoadoutScopeClearable
 
 	public void publishEvent(Consumable consumable)
 	{
-		ConditionChangedEvent conditionChangedEvent = new ConditionChangedEvent(consumable, consumable.getConsumableName());
+		ConditionChangedEvent conditionChangedEvent = new ConditionChangedEvent(consumable, consumable.getName());
 		logger.debug("ConditionChangedEvent has been created for consumable {}.", consumable);
 		applicationEventPublisher.publishEvent(conditionChangedEvent);
 	}

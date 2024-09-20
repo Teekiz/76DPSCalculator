@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -10,24 +11,24 @@ import org.springframework.expression.Expression;
 
 @Data
 @AllArgsConstructor
-public class Perk
+public class Perk implements Modifier
 {
-	private String perkName;
-	private int perkRank;
-	private String perkDescription;
+	private String name;
+	private int rank;
+	private String description;
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private Expression condition;
-	private List<PerkRankEffects> perkRankEffects;
+	private List<PerkRankEffects> effects;
 
-	public void setPerkRank(int newRank)
+	public void setRank(int newRank)
 	{
-		if (newRank <= 0) perkRank = 1;
-		else perkRank = Math.min(newRank, perkRankEffects.size());
+		if (newRank <= 0) rank = 1;
+		else rank = Math.min(newRank, effects.size());
 	}
 
 	public String getPerkEffect()
 	{
-		return perkRankEffects.get(getPerkRank() - 1).getEffect();
+		return effects.get(getRank() - 1).getEffect();
 	}
 }

@@ -39,5 +39,6 @@ public class Loadout
 		this.playerManager = playerManager;
 		this.environmentManager = environmentManager;
 		this.modifierManager = modifierManager;
+
 	}
 }

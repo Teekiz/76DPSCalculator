@@ -1,11 +1,11 @@
 {
   "HEAVYGUNNER" :
   {
-    "perkName" : "Test Heavy Gunner",
-    "perkRank" : 1,
-    "perkDescription" : "Your non-explosive heavy guns now do +10/15/20% damage.",
+    "name" : "Test Heavy Gunner",
+    "rank" : 1,
+    "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
-    "perkRankEffects":
+    "effects":
     [
       {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
       {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
@@ -14,11 +14,11 @@
   },
   "GLOWSIGHT" :
   {
-    "perkName" : "Glow Sight",
-    "perkRank" : 1,
-    "perkDescription" : "Deal +20/40/60% damage to glowing enemies.",
+    "name" : "Glow Sight",
+    "rank" : 1,
+    "description" : "Deal +20/40/60% damage to glowing enemies.",
     "conditionString": "#enemy.weaponType == 'GLOWING'",
-    "perkRankEffects":
+    "effects":
     [
       {"rank": 1, "effect": "0.10"},
       {"rank": 2, "effect": "0.15"},
@@ -28,11 +28,11 @@
   },
   "GUNSLINGER" :
   {
-    "perkName" : "Gunslinger",
-    "perkRank" : 1,
-    "perkDescription" : "Your non-automatic pistols now do +10/15/20% more damage.",
+    "name" : "Gunslinger",
+    "rank" : 1,
+    "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "perkRankEffects":
+    "effects":
     [
       {"rank": 1, "effect": "0.10"},
       {"rank": 2, "effect": "0.15"},
@@ -41,24 +41,24 @@
   },
   "TESTMODIFIER" :
   {
-    "perkName" : "TestModifierPerk",
-    "perkRank" : 1,
-    "perkDescription" : "Test to check if modifiers work.",
+    "name" : "TestModifierPerk",
+    "rank" : 1,
+    "description" : "Test to check if modifiers work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
-    "perkRankEffects":
+    "effects":
     [
-      {"rank": 1, "effect": "#modifiers.addModifier(#this.getPerkName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
+      {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
     ]
   },
   "TESTEVENT" :
   {
-    "perkName" : "TestEventPerk",
-    "perkRank" : 1,
-    "perkDescription" : "Test to check if modifiers events work.",
+    "name" : "TestEventPerk",
+    "rank" : 1,
+    "description" : "Test to check if modifiers events work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "perkRankEffects":
+    "effects":
     [
-      {"rank": 1, "effect": "#modifiers.addModifier(#this.getPerkName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
+      {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
     ]
   }
 }

@@ -21,6 +21,6 @@ public class PerkLoaderServiceTest
 		String perkName = "HEAVYGUNNER";
 		Perk perk = perkLoaderService.getPerk(perkName);
 		assertNotNull(perk);
-		assertEquals("Test Heavy Gunner", perk.getPerkName());
+		assertEquals("Test Heavy Gunner", perk.getName());
 	}
 }

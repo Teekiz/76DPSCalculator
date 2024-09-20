@@ -90,12 +90,12 @@ public class PerkLogicTest
 		assertEquals(2, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
 		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -1);
 
-		perk.setPerkRank(2);
+		perk.setRank(2);
 		perkLogic.applyEffect(perk);
 		assertEquals(3, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
 		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -2);
 
-		perk.setPerkRank(3);
+		perk.setRank(3);
 		perkLogic.applyEffect(perk);
 		assertEquals(4, loadout.getPlayerManager().getPlayer().getSpecials().getEndurance());
 		loadout.getPlayerManager().getPlayer().getSpecials().modifySpecial(Specials.ENDURANCE, -3);
