@@ -24,6 +24,6 @@ public class Consumable implements Modifier
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private Expression condition;
-	private String conditionEffect;
-	private String consumableEffect;
+	private String conditionEffects;
+	private String effects;
 }

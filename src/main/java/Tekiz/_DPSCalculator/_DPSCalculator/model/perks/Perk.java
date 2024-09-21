@@ -19,16 +19,17 @@ public class Perk implements Modifier
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private Expression condition;
-	private List<PerkRankEffects> effects;
+	private List<PerkRankEffects> conditionEffects;
+	private String effects;
 
 	public void setRank(int newRank)
 	{
 		if (newRank <= 0) rank = 1;
-		else rank = Math.min(newRank, effects.size());
+		else rank = Math.min(newRank, conditionEffects.size());
 	}
 
-	public String getPerkEffect()
+	public String getConditionEffects()
 	{
-		return effects.get(getRank() - 1).getEffect();
+		return conditionEffects.get(getRank() - 1).getEffect();
 	}
 }

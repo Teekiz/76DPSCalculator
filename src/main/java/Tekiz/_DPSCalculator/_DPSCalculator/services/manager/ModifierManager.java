@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.MiscModifiers;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifiers;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.ModifierData;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.SpecialModifiers;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ConditionChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
@@ -32,7 +32,7 @@ public class ModifierManager implements LoadoutScopeClearable
 
 	private final SpecialModifiers specialModifier;
 	private final MiscModifiers miscModifiers;
-	private HashMap<String, Modifiers> modifierData;
+	private HashMap<String, ModifierData> modifierData;
 	public ModifierManager()
 	{
 		this.specialModifier = new SpecialModifiers();
@@ -74,7 +74,7 @@ public class ModifierManager implements LoadoutScopeClearable
 		}
 		else
 		{
-			modifierData.put(sourceObjectName, new Modifiers());
+			modifierData.put(sourceObjectName, new ModifierData());
 			modifierData.get(sourceObjectName).addModifier(bonusType, bonus);
 			return true;
 		}
@@ -83,10 +83,10 @@ public class ModifierManager implements LoadoutScopeClearable
 	//this is used to remove bonuses if the boost should no longer be applied (e.g. the players weapon change so a perk does not apply)
 	public void removeModifier(String sourceObjectName)
 	{
-		Modifiers modifiers = modifierData.get(sourceObjectName);
-		if (modifiers != null)
+		ModifierData modifierData = this.modifierData.get(sourceObjectName);
+		if (modifierData != null)
 		{
-			for (Map.Entry<BonusTypes, Double> entry : modifiers.getModifiers().entrySet())
+			for (Map.Entry<BonusTypes, Double> entry : modifierData.getModifiers().entrySet())
 			{
 				BonusTypes bonusTypes = entry.getKey();
 				Double value = entry.getValue();
@@ -109,7 +109,7 @@ public class ModifierManager implements LoadoutScopeClearable
 						SPECIAL_LUCK -> specialModifier.removeSpecialBonus(bonusTypes, value);
 				}
 			}
-			modifierData.remove(sourceObjectName);
+			this.modifierData.remove(sourceObjectName);
 		}
 	}
 

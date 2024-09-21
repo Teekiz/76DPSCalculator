@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 	"perk.data.file.path=src/test/resources/data/perkData/testPerks.json",
 	"receivers.data.file.path=src/test/resources/data/weaponData/testReceivers.json",
 	"consumable.data.file.path=src/test/resources/data/consumableData/testConsumables.json"})
-public class ModifiersTest
+public class ModifierDataTest
 {
 	@Autowired
 	LoadoutManager loadoutManager;

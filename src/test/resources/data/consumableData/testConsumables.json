@@ -4,7 +4,7 @@
     "name" : "Test Aged mirelurk queen steak",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
-    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
+    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
   "BALLISTICBOCK" :
   {
@@ -13,21 +13,21 @@
     "addictionType" : "ALCOHOL",
     "conditionString" : "#weapon.getDamageType() == DamageType.BALLISTIC",
     "conditionEffect" : "#damage.add(0.15)",
-    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
+    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
   },
   "BERRYMENTATS" :
   {
     "name" : "Test Berry Mentats",
     "consumableType" : "CHEMS",
     "addictionType" : "MENTATS",
-    "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 5)"
+    "effects" : "#player.setIntelligence(#player.getIntelligence + 5)"
   },
   "DADDY_O" :
   {
     "name" : "Daddy-O",
     "consumableType" : "CHEMS",
     "addictionType" : "DADDY_O",
-    "consumableEffect" : "#player.setIntelligence(#player.getIntelligence + 3); #player.setPerception(#player.getPerception + 3); #player.setCharisma(#player.getCharisma + 2);"
+    "effects" : "#player.setIntelligence(#player.getIntelligence + 3); #player.setPerception(#player.getPerception + 3); #player.setCharisma(#player.getCharisma + 2);"
   },
   "FURY" :
   {
@@ -35,15 +35,15 @@
     "consumableType" : "CHEMS",
     "addictionType" : "FURY",
     "conditionString" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
-    "conditionEffect" : "#damage.add(0.30)",
-    "consumableEffect" : "#player.setPerception(#player.getPerception - 5);"
+    "conditionEffects" : "#damage.add(0.30)",
+    "effects" : "#player.setPerception(#player.getPerception - 5);"
   },  
   "TESTMULTIPLEEFFECTS" :
   {
     "name" : "Test mutliple effects",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
-    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
+    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   },
   "TESTCONDITION" :
   {
@@ -51,8 +51,8 @@
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#player.getSpecials().modifySpecial(#Special.CHARISMA, 10); #player.getSpecials().modifySpecial(#Special.CHARISMA, -5);",
-    "consumableEffect" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
+    "conditionEffects" : "#player.getSpecials().modifySpecial(#Special.CHARISMA, 10); #player.getSpecials().modifySpecial(#Special.CHARISMA, -5);",
+    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
   },
   "TESTEVENT" :
   {
@@ -60,8 +60,8 @@
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#modifiers.addModifier(#this.getName(), #BonusType.SPECIAL_CHARISMA, 10)",
-    "consumableEffect" : ""
+    "conditionEffects" : "#modifiers.addModifier(#this.getName(), #BonusType.SPECIAL_CHARISMA, 10)",
+    "effects" : ""
   }  ,
   "TESTEVENTTWO" :
   {
@@ -69,6 +69,6 @@
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffect" : "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)",
-    "consumableEffect" : ""
+    "conditionEffects" : "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)",
+    "effects" : ""
   }  }

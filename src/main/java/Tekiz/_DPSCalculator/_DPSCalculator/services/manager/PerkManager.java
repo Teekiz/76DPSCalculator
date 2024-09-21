@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ConditionChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.perks.PerkLogic;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
@@ -25,16 +25,16 @@ public class PerkManager implements LoadoutScopeClearable
 {
 	private HashSet<Perk> perks;
 	private final PerkLoaderService perkLoaderService;
-	private final PerkLogic perkLogic;
+	private final ModifierLogic modifierLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private static final Logger logger = LoggerFactory.getLogger(PerkManager.class);
 
 	@Autowired
-	public PerkManager(PerkLoaderService perkLoaderService, PerkLogic perkLogic, ApplicationEventPublisher applicationEventPublisher)
+	public PerkManager(PerkLoaderService perkLoaderService, ModifierLogic modifierLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.perks = new HashSet<>();
 		this.perkLoaderService = perkLoaderService;
-		this.perkLogic = perkLogic;
+		this.modifierLogic = modifierLogic;
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
@@ -55,9 +55,9 @@ public class PerkManager implements LoadoutScopeClearable
 
 	public synchronized void processPerk(Perk perk)
 	{
-		if (perkLogic.evaluateCondition(perk))
+		if (modifierLogic.evaluateCondition(perk))
 		{
-			perkLogic.applyEffect(perk);
+			modifierLogic.applyEffects(perk);
 		}
 		else
 		{

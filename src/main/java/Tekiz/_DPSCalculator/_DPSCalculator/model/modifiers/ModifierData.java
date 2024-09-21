@@ -4,12 +4,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
 import java.util.HashMap;
 import lombok.Getter;
 @Getter
-public class Modifiers
+public class ModifierData
 {
 	//all data will be checked at the same time
 	private final HashMap<BonusTypes, Double> modifiers;
 
-	public Modifiers()
+	public ModifierData()
 	{
 		this.modifiers = new HashMap<>();
 	}

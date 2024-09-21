@@ -5,7 +5,7 @@
     "rank" : 1,
     "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
-    "effects":
+    "conditionEffects":
     [
       {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
       {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
@@ -18,7 +18,7 @@
     "rank" : 1,
     "description" : "Deal +20/40/60% damage to glowing enemies.",
     "conditionString": "#enemy.weaponType == 'GLOWING'",
-    "effects":
+    "conditionEffects":
     [
       {"rank": 1, "effect": "0.10"},
       {"rank": 2, "effect": "0.15"},
@@ -32,11 +32,11 @@
     "rank" : 1,
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "effects":
+    "conditionEffects":
     [
-      {"rank": 1, "effect": "0.10"},
-      {"rank": 2, "effect": "0.15"},
-      {"rank": 3, "effect": "0.20"}
+      {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
+      {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
+      {"rank": 3, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"}
     ]
   },
   "TESTMODIFIER" :
@@ -45,7 +45,7 @@
     "rank" : 1,
     "description" : "Test to check if modifiers work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
-    "effects":
+    "conditionEffects":
     [
       {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
     ]
@@ -56,7 +56,7 @@
     "rank" : 1,
     "description" : "Test to check if modifiers events work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "effects":
+    "conditionEffects":
     [
       {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
     ]
