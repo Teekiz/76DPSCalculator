@@ -2,7 +2,6 @@ package Tekiz._DPSCalculator._DPSCalculator.services.scope;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

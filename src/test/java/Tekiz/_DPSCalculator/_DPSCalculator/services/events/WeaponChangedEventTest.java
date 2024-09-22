@@ -1,25 +1,25 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.events;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.TestInitializer;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.ModifierManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = {"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json", "perk.data.file.path=src/test/resources/data/perkData/testPerks.json", "receivers.data.file.path=src/test/resources/data/weaponData/testReceivers.json", "consumable.data.file.path=src/test/resources/data/consumableData/testConsumables.json"})
+@SpringBootTest
+@ContextConfiguration(initializers = TestInitializer.class)
 public class WeaponChangedEventTest
 {
 	@Autowired
@@ -28,48 +28,63 @@ public class WeaponChangedEventTest
 	@Autowired
 	ParsingService parsingService;
 
+	@Autowired
+	DamageCalculationService damageCalculationService;
+
+	@Autowired
+	SpecialBonusCalculationService specialBonusCalculationService;
+
 
 	@Test
 	public void testPerkWCE() throws IOException
 	{
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
-		assertEquals(1.00, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+
+		//condition to use perk does not match
+		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		assertNotNull(loadoutManager.getLoadout().getWeaponManager().getCurrentWeapon());
 		assertEquals(loadoutManager.getLoadout().getWeaponManager().getCurrentWeapon().getWeaponType(), WeaponType.PISTOL);
-		assertEquals(1.00, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
 
+		//receiver reduces the damage by 0.1
+		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+
+		//receiver does not change the damage
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
-		assertTrue(parsingService.evaluateCondition(null, loadoutManager.getLoadout().getPerkManager().getPerks().iterator().next().getCondition()));
-		assertEquals(1.20, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 		loadoutManager.deleteAllLoadouts();
 	}
+
 
 	@Test
 	public void testRemovePerkWCE() throws IOException
 	{
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
-		assertEquals(1.00, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
-		assertEquals(1.20, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("AUTOMATIC", ModType.RECEIVER);
-		assertEquals(1.00, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.deleteAllLoadouts();
 	}
+
+	//todo - add in service to read specials
+
 
 	@Test
 	public void testConsumableWCE() throws IOException
 	{
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
-		assertEquals(0, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
-		assertEquals(10, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+		assertEquals(10, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -78,27 +93,26 @@ public class WeaponChangedEventTest
 	{
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
-		assertEquals(10, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+		assertEquals(10, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
-		assertEquals(0, loadoutManager.getLoadout().getModifierManager().getSpecialModifier().getCharisma());
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 
 	@Test
 	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
 	{
-		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENTTWO");
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTMODIFIER");
-		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
-		assertEquals(1.4, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
-		assertEquals(1.0, loadoutManager.getLoadout().getModifierManager().getMiscModifiers().getAdditiveWeaponDamageBonus());
+		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 		loadoutManager.deleteAllLoadouts();
 	}
-
 }

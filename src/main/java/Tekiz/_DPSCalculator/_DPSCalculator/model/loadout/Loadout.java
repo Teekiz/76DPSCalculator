@@ -3,7 +3,6 @@ package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ArmourManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnvironmentManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.ModifierManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
@@ -25,11 +24,10 @@ public class Loadout
 	private final ArmourManager armourManager;
 	private final PlayerManager playerManager;
 	private final EnvironmentManager environmentManager;
-	private final ModifierManager modifierManager;
 
 	@Autowired
 	public Loadout(WeaponManager weaponManager, PerkManager perkManager, ConsumableManager consumableManager,
-				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager, ModifierManager modifierManager)
+				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager)
 	{
 		this.LoadoutID = LoadoutScope.loadoutIdStorage.get();
 		this.weaponManager = weaponManager;
@@ -38,7 +36,5 @@ public class Loadout
 		this.armourManager = armourManager;
 		this.playerManager = playerManager;
 		this.environmentManager = environmentManager;
-		this.modifierManager = modifierManager;
-
 	}
 }

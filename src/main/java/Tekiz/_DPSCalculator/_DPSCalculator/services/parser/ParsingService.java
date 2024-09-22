@@ -41,7 +41,6 @@ public class ParsingService
 
 		context.setVariable("player", loadout.getPlayerManager().getPlayer());
 		context.setVariable("weapon", loadout.getWeaponManager().getCurrentWeapon());
-		context.setVariable("modifiers", loadout.getModifierManager());
 
 		if (loadout.getWeaponManager().getCurrentWeapon() == null) {
 			logger.error("Warning: Weapon is null in context");
@@ -62,29 +61,5 @@ public class ParsingService
 			logger.error("Cannot process expression. Error : " + e);
 			return false;
 		}
-	}
-
-	public void applyEffect(Object rootObject, String effect)
-	{
-		try
-		{
-			if (effect.isEmpty())
-			{
-				return;
-			}
-
-			String[] effects = effect.split(";");
-			StandardEvaluationContext context = getContext(rootObject);
-
-			for (String splitEffect : effects)
-			{
-				parser.parseExpression(splitEffect).getValue(context);
-			}
-		}
-		catch (SpelEvaluationException e)
-		{
-			logger.error("Cannot process expression. Error : " + e);
-		}
-
 	}
 }

@@ -5,26 +5,21 @@
     "rank" : 1,
     "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
-    "conditionEffects":
-    [
-      {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
-      {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
-      {"rank": 3, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"}
-    ]
-  },
-  "GLOWSIGHT" :
-  {
-    "name" : "Glow Sight",
-    "rank" : 1,
-    "description" : "Deal +20/40/60% damage to glowing enemies.",
-    "conditionString": "#enemy.weaponType == 'GLOWING'",
-    "conditionEffects":
-    [
-      {"rank": 1, "effect": "0.10"},
-      {"rank": 2, "effect": "0.15"},
-      {"rank": 3, "effect": "0.20"}
-    ]
-
+    "conditionalEffects":
+    {
+        "1": 
+        {
+            "SPECIAL_ENDURANCE": 1
+        },
+        "2":
+        {
+            "SPECIAL_ENDURANCE": 2
+        },
+        "3":
+        {
+            "SPECIAL_ENDURANCE": 3
+        }
+    }
   },
   "GUNSLINGER" :
   {
@@ -32,12 +27,21 @@
     "rank" : 1,
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "conditionEffects":
-    [
-      {"rank": 1, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 1);"},
-      {"rank": 2, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 2);"},
-      {"rank": 3, "effect": "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"}
-    ]
+    "conditionalEffects":
+    {
+        "1": 
+        {
+            "SPECIAL_ENDURANCE": 1
+        },
+        "2":
+        {
+            "SPECIAL_ENDURANCE": 2
+        },
+        "3":
+        {
+            "SPECIAL_ENDURANCE": 3
+        }
+    }
   },
   "TESTMODIFIER" :
   {
@@ -45,10 +49,13 @@
     "rank" : 1,
     "description" : "Test to check if modifiers work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
-    "conditionEffects":
-    [
-      {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
-    ]
+    "conditionalEffects":
+    {
+        "1" :
+        {
+            "DAMAGE_ADDITIVE" : 0.2
+        }
+    }
   },
   "TESTEVENT" :
   {
@@ -56,9 +63,12 @@
     "rank" : 1,
     "description" : "Test to check if modifiers events work.",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "conditionEffects":
-    [
-      {"rank": 1, "effect": "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)"}
-    ]
+    "conditionalEffects":
+    {
+        "1" :
+        {
+            "DAMAGE_ADDITIVE" : 0.2
+        }
+    }
   }
 }

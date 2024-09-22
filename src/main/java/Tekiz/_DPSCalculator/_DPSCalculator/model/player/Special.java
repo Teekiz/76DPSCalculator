@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class Special
 {

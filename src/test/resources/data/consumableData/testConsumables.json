@@ -1,74 +1,92 @@
 {
-  "AGEDMIRELURKQUEENSTEAK" :
-  {
+  "AGEDMIRELURKQUEENSTEAK" : {
     "name" : "Test Aged mirelurk queen steak",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
-    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
+    "unconditionalEffects" : {
+      "SPECIAL_ENDURANCE" : 3
+    }
   },
-  "BALLISTICBOCK" :
-  {
+  "BALLISTICBOCK" : {
     "name" : "Test Ballistic Bock",
     "consumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
     "conditionString" : "#weapon.getDamageType() == DamageType.BALLISTIC",
-    "conditionEffect" : "#damage.add(0.15)",
-    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3);"
+    "conditionalEffects" : {
+      "DAMAGE_ADDITIVE" : 0.15
+    },
+    "unconditionalEffects" : {
+      "SPECIAL_ENDURANCE" : 3
+    }
   },
-  "BERRYMENTATS" :
-  {
+  "BERRYMENTATS" : {
     "name" : "Test Berry Mentats",
     "consumableType" : "CHEMS",
     "addictionType" : "MENTATS",
-    "effects" : "#player.setIntelligence(#player.getIntelligence + 5)"
+    "unconditionalEffects" : {
+      "SPECIAL_INTELLIGENCE" : 5
+    }
   },
-  "DADDY_O" :
-  {
+  "DADDY_O" : {
     "name" : "Daddy-O",
     "consumableType" : "CHEMS",
     "addictionType" : "DADDY_O",
-    "effects" : "#player.setIntelligence(#player.getIntelligence + 3); #player.setPerception(#player.getPerception + 3); #player.setCharisma(#player.getCharisma + 2);"
+    "unconditionalEffects" : {
+      "SPECIAL_INTELLIGENCE" : 3,
+      "SPECIAL_PERCEPTION" : 3,
+      "SPECIAL_CHARISMA" : 2
+    }
   },
-  "FURY" :
-  {
+  "FURY" : {
     "name" : "Fury",
     "consumableType" : "CHEMS",
     "addictionType" : "FURY",
     "conditionString" : "#weapon.getWeaponType() == WeaponType.ONEHANDED || weapon.getWeaponType() == WeaponType.TWOHANDED",
-    "conditionEffects" : "#damage.add(0.30)",
-    "effects" : "#player.setPerception(#player.getPerception - 5);"
-  },  
-  "TESTMULTIPLEEFFECTS" :
-  {
-    "name" : "Test mutliple effects",
+    "conditionalEffects" : {
+      "DAMAGE_ADDITIVE" : 0.30
+    },
+    "unconditionalEffects" : {
+      "SPECIAL_PERCEPTION" : -5
+    }
+  },
+  "TESTMULTIPLEEFFECTS" : {
+    "name" : "Test multiple effects",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
-    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
+    "unconditionalEffects" : {
+      "SPECIAL_INTELLIGENCE" : 3,
+      "SPECIAL_ENDURANCE" : 2
+    }
   },
-  "TESTCONDITION" :
-  {
+  "TESTCONDITION" : {
     "name" : "Test condition",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffects" : "#player.getSpecials().modifySpecial(#Special.CHARISMA, 10); #player.getSpecials().modifySpecial(#Special.CHARISMA, -5);",
-    "effects" : "#player.getSpecials().modifySpecial(#Special.ENDURANCE, 3); #player.getSpecials().modifySpecial(#Special.INTELLIGENCE, 2)"
+    "conditionalEffects" : {
+      "SPECIAL_CHARISMA" : 5
+    },
+    "unconditionalEffects" : {
+      "SPECIAL_INTELLIGENCE" : 2,
+      "SPECIAL_ENDURANCE" : 3
+    }
   },
-  "TESTEVENT" :
-  {
+  "TESTEVENT" : {
     "name" : "Test event",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffects" : "#modifiers.addModifier(#this.getName(), #BonusType.SPECIAL_CHARISMA, 10)",
-    "effects" : ""
-  }  ,
-  "TESTEVENTTWO" :
-  {
-    "name" : "Testeventtwo",
+    "conditionalEffects" : {
+      "SPECIAL_CHARISMA" : 10
+    }
+  },
+  "TESTEVENTTWO" : {
+    "name" : "Test event two",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
-    "conditionEffects" : "#modifiers.addModifier(#this.getName(), #BonusType.DAMAGE_ADDITIVE, 0.20)",
-    "effects" : ""
-  }  }
+    "conditionalEffects" : {
+      "DAMAGE_ADDITIVE" : 0.20
+    }
+  }
+}

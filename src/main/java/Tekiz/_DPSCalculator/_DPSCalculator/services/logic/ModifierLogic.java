@@ -24,16 +24,4 @@ public class ModifierLogic
 		}
 		return false;
 	}
-
-	public void applyEffects(Modifier modifier)
-	{
-		if (modifier.getCondition() != null && modifier.getConditionEffects() != null && evaluateCondition(modifier))
-		{
-			parsingService.applyEffect(modifier, modifier.getConditionEffects());
-		}
-		if (modifier.getEffects() != null)
-		{
-			parsingService.applyEffect(modifier, modifier.getEffects());
-		}
-	}
 }

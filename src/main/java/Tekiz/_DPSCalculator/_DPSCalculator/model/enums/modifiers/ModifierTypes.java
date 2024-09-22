@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers;
 
-public enum BonusTypes
+public enum ModifierTypes
 {
 	DAMAGE_ADDITIVE,
 	DAMAGE_MULTIPLICATIVE,

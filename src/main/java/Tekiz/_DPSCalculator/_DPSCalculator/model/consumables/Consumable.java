@@ -2,10 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.model.consumables;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.ConsumableType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.expression.Expression;
@@ -24,6 +26,6 @@ public class Consumable implements Modifier
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private Expression condition;
-	private String conditionEffects;
-	private String effects;
+	private HashMap<ModifierTypes, Number> conditionalEffects;
+	private HashMap<ModifierTypes, Number> unconditionalEffects;
 }

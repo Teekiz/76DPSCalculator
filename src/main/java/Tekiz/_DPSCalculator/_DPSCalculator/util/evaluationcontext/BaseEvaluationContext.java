@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.BonusTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
@@ -17,7 +17,7 @@ public class BaseEvaluationContext
 		context.setVariable("DamageType", DamageType.class);
 		context.setVariable("ReceiverType", ReceiverType.class);
 		context.setVariable("Special", Specials.class);
-		context.setVariable("BonusType", BonusTypes.class);
+		context.setVariable("BonusType", ModifierTypes.class);
 
 		return context;
 	}

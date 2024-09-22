@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DamageCalculationService
 {
+	@Autowired
 	private final BaseDamageService baseDamageService;
+	@Autowired
 	private final BonusDamageService bonusDamageService;
 	@Autowired
 	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService)
@@ -24,6 +26,14 @@ public class DamageCalculationService
 
 		OutgoingDamage = Base * (1 + DamageBonus) * DamageMultiplier1 * DamageMultiplier2 *...
 		DamageBonus comes for consumables and perks.
+
+		Order of operations:
+		weapons, enemy and environment
+		perks affect mutations, consumables and stats
+		mutations affect consumables and stats
+		consumables affect stats
+		legendary effects
+		stats last
 	 */
 	//todo - update getBaseDamage
 	public double calculateOutgoingDamage(Loadout loadout)
