@@ -6,7 +6,7 @@
         "positiveEffects" : 
         {
             "conditionString" : "true",
-            "unconditionalEffects" : 
+            "effects" : 
             {
                 "ADDITIONAL_CONTEXT_REQUIRED" : "ADRENALREACTION"
             }
@@ -14,7 +14,7 @@
         "negativeEffects" :
         {
             "conditionString" : "true",
-            "unconditionalEffects" : 
+            "effects" : 
             {
                 "HEALTH" : -50
             }

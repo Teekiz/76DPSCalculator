@@ -20,29 +20,19 @@ public class Perk<V> implements Modifier
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private final Expression condition;
-	private final HashMap<Integer, HashMap<ModifierTypes, V>> conditionalEffects;
-	private final HashMap<Integer, HashMap<ModifierTypes, V>> unconditionalEffects;
+	private final HashMap<Integer, HashMap<ModifierTypes, V>> effects;
 
 	public void setRank(int newRank)
 	{
 		if (newRank <= 0) rank = 1;
-		else rank = Math.min(newRank, conditionalEffects.size());
+		else rank = Math.min(newRank, effects.size());
 	}
 
-	public HashMap<ModifierTypes, V> getConditionalEffects()
+	public HashMap<ModifierTypes, V> getEffects()
 	{
-		if (conditionalEffects != null)
+		if (effects != null)
 		{
-			return conditionalEffects.get(rank);
-		}
-		return null;
-	}
-
-	public HashMap<ModifierTypes, V> getUnconditionalEffects()
-	{
-		if (unconditionalEffects != null)
-		{
-			return unconditionalEffects.get(rank);
+			return effects.get(rank);
 		}
 		return null;
 	}

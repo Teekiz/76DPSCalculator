@@ -26,6 +26,5 @@ public class Consumable<V> implements Modifier
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private final Expression condition;
-	private final HashMap<ModifierTypes, V> conditionalEffects;
-	private final HashMap<ModifierTypes, V> unconditionalEffects;
+	private final HashMap<ModifierTypes, V> effects;
 }

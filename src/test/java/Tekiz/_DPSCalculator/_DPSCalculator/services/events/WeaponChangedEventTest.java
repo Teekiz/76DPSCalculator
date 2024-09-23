@@ -38,6 +38,7 @@ public class WeaponChangedEventTest
 	@Test
 	public void testPerkWCE() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
 
 		//condition to use perk does not match
@@ -60,6 +61,8 @@ public class WeaponChangedEventTest
 	@Test
 	public void testRemovePerkWCE() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
+		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
@@ -69,7 +72,6 @@ public class WeaponChangedEventTest
 
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("AUTOMATIC", ModType.RECEIVER);
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
-
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -79,6 +81,7 @@ public class WeaponChangedEventTest
 	@Test
 	public void testConsumableWCE() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
 
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
@@ -91,6 +94,7 @@ public class WeaponChangedEventTest
 	@Test
 	public void testRemoveConsumableWCE() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
@@ -103,6 +107,7 @@ public class WeaponChangedEventTest
 	@Test
 	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENTTWO");
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTMODIFIER");

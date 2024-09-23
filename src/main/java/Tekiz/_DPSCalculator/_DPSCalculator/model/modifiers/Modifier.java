@@ -8,7 +8,6 @@ public interface Modifier<V>
 {
 	//todo - if AdditionalContextServiceWorks - conditional and unconditional could be merged, with the effect requiring context.
 	Expression getCondition();
-	HashMap<ModifierTypes, V> getConditionalEffects();
-	HashMap<ModifierTypes, V> getUnconditionalEffects();
+	HashMap<ModifierTypes, V> getEffects();
 
 }
