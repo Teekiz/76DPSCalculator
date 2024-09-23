@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.factory.WeaponFactory;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,11 +21,11 @@ public class WeaponLoaderService
 	private final File weaponFile;
 
 	@Autowired
-	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, @Value("${weapon.data.file.path}") String weaponDataFilePath) throws IOException
+	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
 	{
 		this.weaponFactory = weaponFactory;
 		this.objectMapper = objectMapper;
-		this.weaponFile = new File(weaponDataFilePath);
+		this.weaponFile = new File(fileConfig.getPaths().get("weapon"));
 	}
 
 	public Weapon getWeapon(String weaponName) throws IOException

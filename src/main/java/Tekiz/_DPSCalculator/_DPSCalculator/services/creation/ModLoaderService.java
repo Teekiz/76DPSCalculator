@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +20,10 @@ public class ModLoaderService
 	private final File receiversFile;
 
 	@Autowired
-	public ModLoaderService(ObjectMapper objectMapper, @Value("${receiver.data.file.path}") String receiverDataFilePath) throws IOException
+	public ModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
 	{
 		this.objectMapper = objectMapper;
-		this.receiversFile = new File(receiverDataFilePath);
+		this.receiversFile = new File(fileConfig.getPaths().get("receiver"));
 	}
 
 	public Receiver getReceiver(String receiverName) throws IOException

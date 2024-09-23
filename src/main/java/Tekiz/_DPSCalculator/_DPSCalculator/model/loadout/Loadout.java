@@ -7,7 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScope;
+import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScope;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

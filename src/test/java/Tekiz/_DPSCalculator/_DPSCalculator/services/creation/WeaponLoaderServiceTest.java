@@ -1,20 +1,19 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.config.TestInitializer;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@ContextConfiguration(initializers = TestInitializer.class)
+@ActiveProfiles("test")
 public class WeaponLoaderServiceTest
 {
 	@Autowired

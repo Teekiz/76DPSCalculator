@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +20,10 @@ public class ArmourLoaderService
 	private final File armourFile;
 
 	@Autowired
-	public ArmourLoaderService(ObjectMapper objectMapper, @Value("${armour.data.file.path}") String armourFilePath)
+	public ArmourLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
-		this.armourFile = new File(armourFilePath);
+		this.armourFile = new File(fileConfig.getPaths().get("armour"));
 	}
 
 	public Armour getArmour(String armourName) throws IOException

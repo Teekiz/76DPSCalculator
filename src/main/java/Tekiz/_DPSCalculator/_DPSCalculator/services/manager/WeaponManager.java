@@ -1,13 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScope;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
+import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import lombok.Getter;

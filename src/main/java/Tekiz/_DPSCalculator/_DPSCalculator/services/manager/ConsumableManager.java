@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierLogic;
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
+import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.HashMap;

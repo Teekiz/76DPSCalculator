@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +20,10 @@ public class MutationLoaderService
 	private final File mutationFile;
 
 	@Autowired
-	public MutationLoaderService(ObjectMapper objectMapper, @Value("${mutation.data.file.path}") String mutationFile)
+	public MutationLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
-		this.mutationFile = new File(mutationFile);
+		this.mutationFile = new File(fileConfig.getPaths().get("mutation"));
 	}
 
 	public Mutation getMutation(String mutationName) throws IOException

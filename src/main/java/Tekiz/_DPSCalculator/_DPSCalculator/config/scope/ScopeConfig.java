@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.config;
+package Tekiz._DPSCalculator._DPSCalculator.config.scope;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.Bean;

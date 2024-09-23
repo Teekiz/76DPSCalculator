@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScopeClearable;
+import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.MutationLoaderService;

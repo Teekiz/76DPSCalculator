@@ -1,19 +1,18 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.config.TestInitializer;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@ContextConfiguration(initializers = TestInitializer.class)
+@ActiveProfiles("test")
 public class ConsumableLoaderServiceTest
 {
 	@Autowired

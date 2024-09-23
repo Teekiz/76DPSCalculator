@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.config.LoadoutScope;
+import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScope;
 import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;

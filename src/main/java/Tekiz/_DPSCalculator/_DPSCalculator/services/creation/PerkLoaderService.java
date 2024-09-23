@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,10 @@ public class PerkLoaderService
 	private final File perkFile;
 
 	@Autowired
-	public PerkLoaderService(ObjectMapper objectMapper, @Value("${perk.data.file.path}") String perkDataFilePath) throws IOException
+	public PerkLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
 	{
 		this.objectMapper = objectMapper;
-		this.perkFile = new File(perkDataFilePath);
+		this.perkFile = new File(fileConfig.getPaths().get("perk"));
 	}
 
 	public Perk getPerk(String perkName) throws IOException

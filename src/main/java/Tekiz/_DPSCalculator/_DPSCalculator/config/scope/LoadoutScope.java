@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.config;
+package Tekiz._DPSCalculator._DPSCalculator.config.scope;
 
 import java.util.HashMap;
 import java.util.Map;

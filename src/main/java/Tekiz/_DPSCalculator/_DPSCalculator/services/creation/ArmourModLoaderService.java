@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
@@ -19,12 +20,11 @@ public class ArmourModLoaderService
 	private final File armourModMiscFile;
 
 	@Autowired
-	public ArmourModLoaderService(ObjectMapper objectMapper, @Value("${armourMaterial.data.file.path}") String armourModMaterialFilePath,
-								  @Value("${armourMisc.data.file.path}") String armourModMiscFilePath)
+	public ArmourModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
-		this.armourModMaterialFile = new File(armourModMaterialFilePath);
-		this.armourModMiscFile = new File(armourModMiscFilePath);
+		this.armourModMaterialFile = new File(fileConfig.getPaths().get("armourMaterial"));
+		this.armourModMiscFile = new File(fileConfig.getPaths().get("armourMisc"));
 	}
 
 	public Material getMaterial(String materialName) throws IOException

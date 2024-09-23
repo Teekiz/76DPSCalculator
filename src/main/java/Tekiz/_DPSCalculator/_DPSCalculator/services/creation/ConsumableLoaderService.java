@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
+import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +20,10 @@ public class ConsumableLoaderService
 	private final File consumableFile;
 
 	@Autowired
-	public ConsumableLoaderService(ObjectMapper objectMapper, @Value("${consumable.data.file.path}") String consumableFile) throws IOException
+	public ConsumableLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
 	{
 		this.objectMapper = objectMapper;
-		this.consumableFile = new File(consumableFile);
+		this.consumableFile = new File(fileConfig.getPaths().get("consumable"));
 	}
 
 	public Consumable getConsumable(String consumableName) throws IOException
