@@ -14,6 +14,7 @@ public enum ModifierTypes
 	RANGE,
 	SNEAK,
 	CRITICAL,
+	HEALTH,
 	SPECIAL_STRENGTH,
 	SPECIAL_PERCEPTION,
 	SPECIAL_ENDURANCE,
@@ -21,5 +22,6 @@ public enum ModifierTypes
 	SPECIAL_INTELLIGENCE,
 	SPECIAL_AGILITY,
 	SPECIAL_LUCK,
-	MUTATION;
+	//mutation is used when determining the value is much more complex than setting values
+	ADDITIONAL_CONTEXT_REQUIRED;
 }

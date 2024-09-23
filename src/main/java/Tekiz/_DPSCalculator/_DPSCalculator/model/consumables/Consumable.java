@@ -14,18 +14,18 @@ import org.springframework.expression.Expression;
 
 @Data
 @AllArgsConstructor
-public class Consumable implements Modifier
+public class Consumable<V> implements Modifier
 {
 	//todo - possibly add in condition check
 	/*
 		Addiction type is used to determine if the effect should stack or not.
 	 */
-	private String name;
-	private ConsumableType consumableType;
-	private AddictionType addictionType;
+	private final String name;
+	private final ConsumableType consumableType;
+	private final AddictionType addictionType;
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
-	private Expression condition;
-	private HashMap<ModifierTypes, Number> conditionalEffects;
-	private HashMap<ModifierTypes, Number> unconditionalEffects;
+	private final Expression condition;
+	private final HashMap<ModifierTypes, V> conditionalEffects;
+	private final HashMap<ModifierTypes, V> unconditionalEffects;
 }

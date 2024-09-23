@@ -4,11 +4,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
 
-public interface Modifier
+public interface Modifier<V>
 {
-	String getName();
+	//todo - if AdditionalContextServiceWorks - conditional and unconditional could be merged, with the effect requiring context.
 	Expression getCondition();
-	HashMap<ModifierTypes, Number> getUnconditionalEffects();
-	HashMap<ModifierTypes, Number> getConditionalEffects();
+	HashMap<ModifierTypes, V> getConditionalEffects();
+	HashMap<ModifierTypes, V> getUnconditionalEffects();
 
 }

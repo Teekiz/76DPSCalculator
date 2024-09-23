@@ -12,16 +12,16 @@ import org.springframework.expression.Expression;
 
 @Data
 @AllArgsConstructor
-public class Perk implements Modifier
+public class Perk<V> implements Modifier
 {
-	private String name;
+	private final String name;
 	private int rank;
-	private String description;
+	private final String description;
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
-	private Expression condition;
-	private HashMap<Integer, HashMap<ModifierTypes, Number>> conditionalEffects;
-	private HashMap<Integer, HashMap<ModifierTypes, Number>> unconditionalEffects;
+	private final Expression condition;
+	private final HashMap<Integer, HashMap<ModifierTypes, V>> conditionalEffects;
+	private final HashMap<Integer, HashMap<ModifierTypes, V>> unconditionalEffects;
 
 	public void setRank(int newRank)
 	{
@@ -29,7 +29,7 @@ public class Perk implements Modifier
 		else rank = Math.min(newRank, conditionalEffects.size());
 	}
 
-	public HashMap<ModifierTypes, Number> getConditionalEffects()
+	public HashMap<ModifierTypes, V> getConditionalEffects()
 	{
 		if (conditionalEffects != null)
 		{
@@ -38,7 +38,7 @@ public class Perk implements Modifier
 		return null;
 	}
 
-	public HashMap<ModifierTypes, Number> getUnconditionalEffects()
+	public HashMap<ModifierTypes, V> getUnconditionalEffects()
 	{
 		if (unconditionalEffects != null)
 		{
