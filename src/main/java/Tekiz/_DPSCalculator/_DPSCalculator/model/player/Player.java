@@ -7,8 +7,9 @@ public class Player
 {
 	private Special specials;
 	private int level;
-	//todo
-	private int maxHP;
+
+	private double maxHP;
+	private double currentHP;
 
 	private boolean isAiming = false;
 	private boolean isSneaking = false;
@@ -16,22 +17,25 @@ public class Player
 	public Player()
 	{
 		this.level = 1;
-		this.specials = new Special(1, 1, 1, 1, 1, 1, 1, 1, 15);
+		this.specials = new Special(1, 1, 1, 1, 1, 1, 1);
+
+		setMaxHP();
+		setCurrentHP(maxHP);
 	}
 
-	/*
-	public void clear()
+	public void setMaxHP()
 	{
-		if (this.specials != null)
-		{
-			this.specials = null;
-		}
+		maxHP = 245 + 5 * specials.getEndurance();
 	}
 
-	 */
+	public void setCurrentHP(double hp)
+	{
+		currentHP = Math.min(maxHP, hp);
+	}
 
-	//used to update the specials values based on enum provided. checks to make sure that specials cannot go over 100 or below 1.
-
-	//todo - implement the specifics for armour slots, consumables and specials
+	public double getHealthPercentage()
+	{
+		return (currentHP / maxHP) * 100;
+	}
 
 }

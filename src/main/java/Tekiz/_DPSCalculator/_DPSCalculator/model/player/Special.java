@@ -15,8 +15,8 @@ public class Special
 	private int agility;
 	private int luck;
 
-	private int minSpecialValue;
-	private int maxSpecialValue;
+	private final int minSpecialValue = 1;
+	private final int maxSpecialValue = 15;
 
 	public void modifySpecial(Specials special, int value)
 	{

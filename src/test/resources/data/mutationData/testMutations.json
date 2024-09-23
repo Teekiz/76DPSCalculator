@@ -1,0 +1,23 @@
+{
+    "ADRENALREACTION" : 
+    {
+        "name" : "Adrenal Reaction",
+        "description" : "Increased weapon damage at low hit points but maximum hit points are reduced (-50 HP).",
+        "positiveEffects" : 
+        {
+            "conditionString" : "true",
+            "unconditionalEffects" : 
+            {
+                "ADDITIONAL_CONTEXT_REQUIRED" : "ADRENALREACTION"
+            }
+        },
+        "negativeEffects" :
+        {
+            "conditionString" : "true",
+            "unconditionalEffects" : 
+            {
+                "HEALTH" : -50
+            }
+        }
+    }
+}

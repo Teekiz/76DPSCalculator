@@ -45,4 +45,12 @@ public class FileConfig
 	public String armourDataFilePath() {
 		return armourDataFilePath;
 	}
+
+	@Value("${mutation.data.file.path}")
+	private String mutationDataFilePath;
+
+	@Bean
+	public String mutationDataFilePath() {
+		return mutationDataFilePath;
+	}
 }

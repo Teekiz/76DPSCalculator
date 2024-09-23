@@ -13,7 +13,8 @@ public class TestInitializer implements ApplicationContextInitializer<Configurab
 			"weapon.data.file.path=src/test/resources/data/weaponData/testWeapons.json",
 			"perk.data.file.path=src/test/resources/data/perkData/testPerks.json",
 			"receiver.data.file.path=src/test/resources/data/weaponData/testReceivers.json",
-			"consumable.data.file.path=src/test/resources/data/consumableData/testConsumables.json"
+			"consumable.data.file.path=src/test/resources/data/consumableData/testConsumables.json",
+			"mutation.data.file.path=src/test/resources/data/mutationData/testMutations.json"
 		).applyTo(applicationContext.getEnvironment());
 	}
 }
