@@ -17,8 +17,7 @@ public class BaseEvaluationContext
 		context.setVariable("DamageType", DamageType.class);
 		context.setVariable("ReceiverType", ReceiverType.class);
 		context.setVariable("Special", Specials.class);
-		context.setVariable("BonusType", ModifierTypes.class);
-
+		context.setVariable("ModifierType", ModifierTypes.class);
 		return context;
 	}
 }

@@ -32,22 +32,23 @@ public class ModifierAggregationService<V>
 	public void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers)
 	{
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
-			Map<ModifierTypes, V> unconditionalEffects = modifier.getKey().getEffects();
 
-			if (unconditionalEffects != null) {
+			Map<ModifierTypes, V> effects = modifier.getKey().getEffects();
+
+			if (effects != null) {
 				// create a temporary list of keys to modify
 				List<ModifierTypes> keysToModify = new ArrayList<>();
 
-				unconditionalEffects.forEach((key, value) -> {
+				effects.forEach((key, value) -> {
 					if (key == ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED) {
 						keysToModify.add(key);
 					}
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, V> additionalContextEntry = additionalContextService.getAdditionalContext((String) unconditionalEffects.get(key));
+					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) additionalContextService.getAdditionalContext((String) effects.get(key));
 					if (additionalContextEntry != null) {
-						unconditionalEffects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
+						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 					}
 				}
 			}

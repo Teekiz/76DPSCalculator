@@ -6,7 +6,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class WeaponChangedEventTest
 {
 	@Autowired
 	LoadoutManager loadoutManager;
-
-	@Autowired
-	ParsingService parsingService;
 
 	@Autowired
 	DamageCalculationService damageCalculationService;
@@ -116,6 +112,21 @@ public class WeaponChangedEventTest
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
 		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		loadoutManager.deleteAllLoadouts();
+	}
+
+	@Test
+	public void testConsumableWithAdditionalContext() throws IOException
+	{
+		loadoutManager.deleteAllLoadouts();
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.INTELLIGENCE));
+		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTCONDITION");
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(2, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.INTELLIGENCE));
+		//this should enable the condition to boost charisma
+		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
+		assertEquals(5, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 }

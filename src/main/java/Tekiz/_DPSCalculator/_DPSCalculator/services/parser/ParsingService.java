@@ -1,9 +1,13 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.parser;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
+import java.util.AbstractMap;
+import java.util.Map;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 @Scope("singleton")
 public class ParsingService
 {
+	@Getter
 	private final ExpressionParser parser;
 	private final LoadoutManager loadoutManager;
 	private static final Logger logger = LoggerFactory.getLogger(WeaponManager.class);
@@ -60,6 +65,20 @@ public class ParsingService
 		{
 			logger.error("Cannot process expression. Error : " + e);
 			return false;
+		}
+	}
+
+	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
+	{
+		try
+		{
+			StandardEvaluationContext context = getContext(null);
+			return expression.getValue(context, Map.Entry.class);
+		}
+		catch (SpelEvaluationException e)
+		{
+			logger.error("Cannot process expression. Error : " + e);
+			return null;
 		}
 	}
 }

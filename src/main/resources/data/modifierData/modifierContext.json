@@ -1,0 +1,27 @@
+{
+    "ADRENALREACTION" : 
+    {
+        "expressionString" : "let hpPercentage = #loadoutManager.getLoadout().getPlayerManager().getPlayer().getHealthPercentage(), " +
+        "adrenalReactionMap = new java.util.TreeMap(); " +
+        "adrenalReactionMap.put(0.0, 0.50); adrenalReactionMap.put(20.0, 0.50); adrenalReactionMap.put(30.0, 0.44); " +
+        "adrenalReactionMap.put(40.0, 0.38); adrenalReactionMap.put(50.0, 0.31); adrenalReactionMap.put(60.0, 0.25); " +
+        "adrenalReactionMap.put(70.0, 0.19); adrenalReactionMap.put(80.0, 0.13); adrenalReactionMap.put(90.0, 0.06); " +
+        "adrenalReactionMap.put(100.0, 0.0); " +
+        "new java.util.AbstractMap$SimpleEntry(T(ModifierTypes).DAMAGE_ADDITIVE, adrenalReactionMap.floorEntry(hpPercentage).getValue())"
+    },
+    "BALLISTICBOCK" : 
+    {
+        "expressionString" : "#weapon.getDamageType().equals(#DamageType.BALLISTIC)" + 
+        "? new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0)"
+    },
+    "FURY" :
+    {
+        "expressionString" : "#weapon.getWeaponType().equals(#WeaponType.ONEHANDED) || #weapon.getWeaponType().equals(#WeaponType.TWOHANDED)" + 
+        "? new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0.30) : new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0)"
+    },
+    "TESTCONDITION" : 
+    {
+        "expressionString" : "#weapon.getDamageType().equals(#DamageType.BALLISTIC)" + 
+        "? new java.util.AbstractMap$SimpleEntry(#ModifierType.SPECIAL_CHARISMA, 5) : new java.util.AbstractMap$SimpleEntry(#ModifierType.SPECIAL_CHARISMA, 0"
+    }
+}

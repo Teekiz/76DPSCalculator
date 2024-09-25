@@ -20,7 +20,7 @@ public class ModLoaderService
 	private final File receiversFile;
 
 	@Autowired
-	public ModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
+	public ModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
 		this.receiversFile = new File(fileConfig.getPaths().get("receiver"));

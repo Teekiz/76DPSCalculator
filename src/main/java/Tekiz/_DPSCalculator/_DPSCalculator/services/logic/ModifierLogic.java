@@ -22,6 +22,6 @@ public class ModifierLogic
 		{
 			return parsingService.evaluateCondition(modifier, modifier.getCondition());
 		}
-		return false;
+		return true;
 	}
 }

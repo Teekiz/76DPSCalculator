@@ -17,7 +17,7 @@ public class PerkLoaderService
 	private final File perkFile;
 
 	@Autowired
-	public PerkLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
+	public PerkLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
 		this.perkFile = new File(fileConfig.getPaths().get("perk"));

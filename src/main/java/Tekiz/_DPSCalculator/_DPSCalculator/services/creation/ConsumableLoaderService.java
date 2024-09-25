@@ -20,7 +20,7 @@ public class ConsumableLoaderService
 	private final File consumableFile;
 
 	@Autowired
-	public ConsumableLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
+	public ConsumableLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
 		this.consumableFile = new File(fileConfig.getPaths().get("consumable"));

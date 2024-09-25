@@ -21,7 +21,7 @@ public class WeaponLoaderService
 	private final File weaponFile;
 
 	@Autowired
-	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, FileConfig fileConfig) throws IOException
+	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, FileConfig fileConfig)
 	{
 		this.weaponFactory = weaponFactory;
 		this.objectMapper = objectMapper;

@@ -16,7 +16,6 @@ public class AdditionalContextServicesTest
 {
 	@Autowired
 	LoadoutManager loadoutManager;
-
 	@Autowired
 	DamageCalculationService calculator;
 
