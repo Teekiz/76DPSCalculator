@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,21 +17,21 @@ import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModifierContextLoaderService
+public class ModifierExpressionsLoaderService
 {
 	private final ObjectMapper objectMapper;
 	private final ParsingService parsingService;
 	private final File modifierContextFile;
-	private static final Logger logger = LoggerFactory.getLogger(ModifierContextLoaderService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ModifierExpressionsLoaderService.class);
 
 
 	//todo - ensure file is loaded correctly
 	@Autowired
-	public ModifierContextLoaderService(ObjectMapper objectMapper, ParsingService parsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
+	public ModifierExpressionsLoaderService(ObjectMapper objectMapper, ParsingService parsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.parsingService = parsingService;
-		this.modifierContextFile = new File(fileConfig.getPaths().get("modifierContext"));
+		this.modifierContextFile = new File(fileConfig.getPaths().get("modifierExpression"));
 	}
 
 	public HashMap<String, Expression> getContextInformation() throws IOException

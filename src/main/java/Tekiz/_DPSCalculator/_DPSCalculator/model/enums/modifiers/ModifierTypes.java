@@ -23,5 +23,6 @@ public enum ModifierTypes
 	SPECIAL_AGILITY,
 	SPECIAL_LUCK,
 	ADDITIONAL_CONTEXT_REQUIRED,
-	ERROR_TYPE; //used to handle values that cannot be loaded
+	MODIFIES_MODIFIERS, //these are loaded first to ensure that all modifiers have the correct stat boosts
+	ERROR_TYPE, //used to handle values that cannot be loaded
 }

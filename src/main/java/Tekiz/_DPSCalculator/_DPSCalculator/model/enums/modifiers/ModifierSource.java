@@ -1,0 +1,26 @@
+package Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers;
+
+public enum ModifierSource
+{
+	/*
+		These are used in conjunction with ModifierTypes.MODIFIES_MODIFIERS:
+		e.g. Strange in numbers will affect MUTATION_POSITIVE modifiers.
+	 */
+
+	MUTATION_POSITIVE,
+	MUTATION_NEGATIVE,
+	CONSUMABLE_MEAT,
+	CONSUMABLE_PLANT,
+	CONSUMABLE_ALCOHOL,
+	CONSUMABLE_NUKA_COLA,
+	CONSUMABLE_CHEMS,
+	CONSUMABLE_STIMPACK,
+	CONSUMABLE_RADAWAY,
+	CONSUMABLE_DOG_FOOD,
+	CONSUMABLE_BLOOD_PACK,
+	CONSUMABLE_OTHER,
+	PERK,
+	LEGENDARY_WEAPON,
+	LEGENDARY_ARMOUR,
+	DISEASE
+}

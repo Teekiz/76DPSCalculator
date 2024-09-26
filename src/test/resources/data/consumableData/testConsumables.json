@@ -3,6 +3,7 @@
     "name" : "Test Aged mirelurk queen steak",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_MEAT",
     "effects" : {
         "SPECIAL_ENDURANCE" : 3
     }
@@ -11,6 +12,7 @@
     "name" : "Test Ballistic Bock",
     "consumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
+    "modifierSource" : "CONSUMABLE_ALCOHOL",
     "effects" : {
         "ADDITIONAL_CONTEXT_REQUIRED" : "BALLISTICBOCK",
         "SPECIAL_ENDURANCE" : 3
@@ -20,6 +22,7 @@
     "name" : "Test Berry Mentats",
     "consumableType" : "CHEMS",
     "addictionType" : "MENTATS",
+    "modifierSource" : "CONSUMABLE_CHEMS",
     "effects" : {
         "SPECIAL_INTELLIGENCE" : 5
     }
@@ -28,6 +31,7 @@
     "name" : "Daddy-O",
     "consumableType" : "CHEMS",
     "addictionType" : "DADDY_O",
+    "modifierSource" : "CONSUMABLE_CHEMS",
     "effects" : {
         "SPECIAL_INTELLIGENCE" : 3,
         "SPECIAL_PERCEPTION" : 3,
@@ -38,6 +42,7 @@
     "name" : "Fury",
     "consumableType" : "CHEMS",
     "addictionType" : "FURY",
+    "modifierSource" : "CONSUMABLE_CHEMS",
     "effects" : {
         "ADDITIONAL_CONTEXT_REQUIRED" : "FURY",
         "SPECIAL_PERCEPTION" : -5
@@ -47,6 +52,7 @@
     "name" : "Test multiple effects",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_PLANT",
     "effects" : {
         "SPECIAL_INTELLIGENCE" : 3,
         "SPECIAL_ENDURANCE" : 2
@@ -56,6 +62,7 @@
     "name" : "Test condition",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_MEAT",
     "effects" : {
         "ADDITIONAL_CONTEXT_REQUIRED" : "TESTCONDITION",
         "SPECIAL_INTELLIGENCE" : 2,
@@ -66,6 +73,7 @@
     "name" : "Test event",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_OTHER",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
     "effects" : {
       "SPECIAL_CHARISMA" : 10
@@ -75,6 +83,7 @@
     "name" : "Test event two",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_OTHER",
     "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
     "effects" : {
       "DAMAGE_ADDITIVE" : 0.20

@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModifierContextLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModifierExpressionsLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -24,10 +24,10 @@ public class ConditionService
 	private final HashMap<String, Expression> contextExpressions;
 
 	@Autowired
-	public ConditionService(ModifierContextLoaderService modifierContextLoaderService, ParsingService parsingService) throws IOException
+	public ConditionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService parsingService) throws IOException
 	{
 		this.parsingService = parsingService;
-		this.contextExpressions = modifierContextLoaderService.getContextInformation();
+		this.contextExpressions = modifierExpressionsLoaderService.getContextInformation();
 	}
 
 	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName)

@@ -1,0 +1,19 @@
+{
+    "ADRENALREACTION": {
+        "expressionString": "@conditionCalculationService.getAdrenalReactionValue(#player.getHealthPercentage())"
+    },
+    "BALLISTICBOCK" : 
+    {
+        "expressionString" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0)"
+    },
+    "FURY" :
+    {
+        "expressionString" : "#weapon != null && (#weapon.getWeaponType()?.equals(#WeaponType.ONEHANDED) || #weapon.getWeaponType()?.equals(#WeaponType.TWOHANDED)) ? new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0.30) : new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0)"
+    },
+    "TESTCONDITION" : 
+    {
+        "expressionString" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? new java.util.AbstractMap$SimpleEntry(#ModifierType.SPECIAL_CHARISMA, 5) : new java.util.AbstractMap$SimpleEntry(#ModifierType.SPECIAL_CHARISMA, 0)"
+    }
+}
+
+

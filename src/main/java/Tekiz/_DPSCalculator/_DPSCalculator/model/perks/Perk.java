@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
@@ -17,6 +18,7 @@ public class Perk<V> implements Modifier
 	private final String name;
 	private int rank;
 	private final String description;
+	private final ModifierSource modifierSource;
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private final Expression condition;

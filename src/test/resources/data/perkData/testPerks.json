@@ -4,6 +4,7 @@
     "name" : "Test Heavy Gunner",
     "rank" : 1,
     "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
+    "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
     "effects":
     {
@@ -26,6 +27,7 @@
     "name" : "Gunslinger",
     "rank" : 1,
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
+    "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
     "effects":
     {
@@ -48,6 +50,7 @@
     "name" : "TestModifierPerk",
     "rank" : 1,
     "description" : "Test to check if modifiers work.",
+    "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
     "effects":
     {
@@ -62,6 +65,7 @@
     "name" : "TestEventPerk",
     "rank" : 1,
     "description" : "Test to check if modifiers events work.",
+    "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
     "effects":
     {

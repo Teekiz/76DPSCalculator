@@ -5,6 +5,7 @@
         "description" : "Increased weapon damage at low hit points but maximum hit points are reduced (-50 HP).",
         "positiveEffects" : 
         {
+            "modifierSource" : "MUTATION_POSITIVE",
             "conditionString" : "true",
             "effects" : 
             {
@@ -13,6 +14,7 @@
         },
         "negativeEffects" :
         {
+            "modifierSource" : "MUTATION_NEGATIVE",
             "conditionString" : "true",
             "effects" : 
             {
