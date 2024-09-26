@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

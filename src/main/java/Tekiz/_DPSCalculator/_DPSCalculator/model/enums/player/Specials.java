@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.player;
+package Tekiz._DPSCalculator._DPSCalculator.model.enums.player;
 
 public enum Specials
 {

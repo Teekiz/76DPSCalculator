@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;

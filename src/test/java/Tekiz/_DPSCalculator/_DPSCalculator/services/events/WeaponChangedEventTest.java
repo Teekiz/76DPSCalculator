@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.events;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
