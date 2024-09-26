@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class PerkLoaderService
 	private final File perkFile;
 
 	@Autowired
-	public PerkLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
+	public PerkLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.perkFile = new File(fileConfig.getPaths().get("perk"));

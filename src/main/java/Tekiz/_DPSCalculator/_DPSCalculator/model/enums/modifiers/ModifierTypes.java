@@ -22,6 +22,6 @@ public enum ModifierTypes
 	SPECIAL_INTELLIGENCE,
 	SPECIAL_AGILITY,
 	SPECIAL_LUCK,
-	//mutation is used when determining the value is much more complex than setting values
-	ADDITIONAL_CONTEXT_REQUIRED;
+	ADDITIONAL_CONTEXT_REQUIRED,
+	ERROR_TYPE; //used to handle values that cannot be loaded
 }

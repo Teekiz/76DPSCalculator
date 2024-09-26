@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AdditionalContextServicesTest
+public class ConditionServicesTest
 {
 	@Autowired
 	LoadoutManager loadoutManager;

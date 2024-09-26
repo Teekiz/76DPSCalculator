@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class MutationLoaderService
 	private final File mutationFile;
 
 	@Autowired
-	public MutationLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
+	public MutationLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.mutationFile = new File(fileConfig.getPaths().get("mutation"));

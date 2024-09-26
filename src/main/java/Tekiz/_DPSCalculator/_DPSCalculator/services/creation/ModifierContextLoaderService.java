@@ -28,7 +28,7 @@ public class ModifierContextLoaderService
 
 	//todo - ensure file is loaded correctly
 	@Autowired
-	public ModifierContextLoaderService(ObjectMapper objectMapper, ParsingService parsingService, FileConfig fileConfig)
+	public ModifierContextLoaderService(ObjectMapper objectMapper, ParsingService parsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.parsingService = parsingService;
@@ -37,7 +37,6 @@ public class ModifierContextLoaderService
 
 	public HashMap<String, Expression> getContextInformation() throws IOException
 	{
-		//todo - handle exception for missing or extra comma
 		JsonNode rootNode = objectMapper.readTree(modifierContextFile);
 		HashMap<String, Expression> contextHashmap = new HashMap<>();
 		Iterator<String> fieldNames = rootNode.fieldNames();

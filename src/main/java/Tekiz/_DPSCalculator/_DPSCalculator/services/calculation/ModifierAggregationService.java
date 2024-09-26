@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.services.context.AdditionalContextService;
+import Tekiz._DPSCalculator._DPSCalculator.services.context.ConditionService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ModifierAggregationService<V>
 {
 	@Autowired
-	private AdditionalContextService additionalContextService;
+	private ConditionService conditionService;
 
 	//todo - add a check for all known boosts
 	public HashMap<Modifier, Boolean> getAllModifiers(Loadout loadout)
@@ -46,7 +46,7 @@ public class ModifierAggregationService<V>
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) additionalContextService.getAdditionalContext((String) effects.get(key));
+					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) conditionService.getAdditionalContext((String) effects.get(key));
 					if (additionalContextEntry != null) {
 						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 					}

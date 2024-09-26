@@ -1,4 +1,7 @@
 {
+    "ADRENALREACTION": {
+        "expressionString": "@conditionCalculationService.getAdrenalReactionValue(#player.getHealthPercentage())"
+    },
     "BALLISTICBOCK" : 
     {
         "expressionString" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : new java.util.AbstractMap$SimpleEntry(#ModifierType.DAMAGE_ADDITIVE, 0)"

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class WeaponLoaderService
 	private final File weaponFile;
 
 	@Autowired
-	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, FileConfig fileConfig)
+	public WeaponLoaderService(WeaponFactory weaponFactory, ObjectMapper objectMapper, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.weaponFactory = weaponFactory;
 		this.objectMapper = objectMapper;

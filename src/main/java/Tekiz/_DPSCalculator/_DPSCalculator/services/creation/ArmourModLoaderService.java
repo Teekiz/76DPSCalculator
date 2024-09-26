@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class ArmourModLoaderService
 	private final File armourModMiscFile;
 
 	@Autowired
-	public ArmourModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig)
+	public ArmourModLoaderService(ObjectMapper objectMapper, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.armourModMaterialFile = new File(fileConfig.getPaths().get("armourMaterial"));
