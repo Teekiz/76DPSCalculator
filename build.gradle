@@ -37,8 +37,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
     implementation 'org.slf4j:slf4j-api:2.0.9'
-    implementation 'ch.qos.logback:logback-classic:1.4.11'
-
+    implementation 'ch.qos.logback:logback-classic:1.4.12'
+    implementation files('C:/Program Files (x86)/Groovy/lib/groovy-5.0.0-alpha-9.jar')
 }
 
 tasks.named('test') {

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ParsingService
 {
-	@Getter
 	private final ExpressionParser parser;
 	private final LoadoutManager loadoutManager;
 	private final ApplicationContext applicationContext;
@@ -34,7 +33,6 @@ public class ParsingService
 		this.loadoutManager = loadoutManager;
 		this.applicationContext = applicationContext;
 	}
-
 	public Loadout getCurrentLoadout()
 	{
 		return loadoutManager.getLoadout();
@@ -55,6 +53,27 @@ public class ParsingService
 		return context;
 	}
 
+	public Expression parseString(String expressionString)
+	{
+		return parser.parseExpression(expressionString);
+	}
+
+	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
+	{
+		try
+		{
+			StandardEvaluationContext context = getContext(null);
+			//todo - bind this in the config file
+			context.setBeanResolver(new BeanFactoryResolver(applicationContext));
+			return expression.getValue(context, Map.Entry.class);
+		}
+		catch (SpelEvaluationException e)
+		{
+			logger.error("Cannot process expression. Error : " + e);
+			return null;
+		}
+	}
+
 	public Boolean evaluateCondition(Object rootObject, Expression condition)
 	{
 		try
@@ -66,22 +85,6 @@ public class ParsingService
 		{
 			logger.error("Cannot process expression. Error : " + e);
 			return false;
-		}
-	}
-
-	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
-	{
-		try
-		{
-			StandardEvaluationContext context = getContext(null);
-			context.setBeanResolver(new BeanFactoryResolver(applicationContext));
-			return expression.getValue(context, Map.Entry.class);
-		}
-		catch (SpelEvaluationException e)
-		{
-			System.out.println(e);
-			logger.error("Cannot process expression. Error : " + e);
-			return null;
 		}
 	}
 }

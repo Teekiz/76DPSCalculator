@@ -20,17 +20,16 @@ import org.springframework.stereotype.Service;
 public class ModifierExpressionsLoaderService
 {
 	private final ObjectMapper objectMapper;
-	private final ParsingService parsingService;
+	private final ParsingService ParsingService;
 	private final File modifierContextFile;
 	private static final Logger logger = LoggerFactory.getLogger(ModifierExpressionsLoaderService.class);
 
 
-	//todo - ensure file is loaded correctly
 	@Autowired
-	public ModifierExpressionsLoaderService(ObjectMapper objectMapper, ParsingService parsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
+	public ModifierExpressionsLoaderService(ObjectMapper objectMapper, ParsingService ParsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
-		this.parsingService = parsingService;
+		this.ParsingService = ParsingService;
 		this.modifierContextFile = new File(fileConfig.getPaths().get("modifierExpression"));
 	}
 
@@ -46,15 +45,12 @@ public class ModifierExpressionsLoaderService
 			String expressionString = childNode.get("expressionString").asText();
 			try {
 				// attempt to parse the expression
-				Expression contextExpression = parsingService.getParser().parseExpression(expressionString);
+				Expression contextExpression = ParsingService.parseString(expressionString);
 				contextHashmap.put(contextName, contextExpression);
 			} catch (ParseException e) {
 				logger.error("Failed to parse expression for context '{}': {}", contextName, e.getMessage());
-				contextHashmap.put(contextName, null);
-			} catch (Exception e)
-			{
+			} catch (Exception e) {
 				logger.error("Unexpected error while processing context '{}': {}", contextName, e.getMessage());
-				contextHashmap.put(contextName, null);
 			}
 		}
 		return contextHashmap;

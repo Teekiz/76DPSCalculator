@@ -20,13 +20,13 @@ public class ConditionService
 	 - if a modifier has a mix of conditional and unconditional effects, set the conditional effect to more context required and then create additional context for that object.
 	 */
 
-	private final ParsingService parsingService;
+	private final ParsingService ParsingService;
 	private final HashMap<String, Expression> contextExpressions;
 
 	@Autowired
-	public ConditionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService parsingService) throws IOException
+	public ConditionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService ParsingService) throws IOException
 	{
-		this.parsingService = parsingService;
+		this.ParsingService = ParsingService;
 		this.contextExpressions = modifierExpressionsLoaderService.getContextInformation();
 	}
 
@@ -36,7 +36,7 @@ public class ConditionService
 
 		if (expression != null)
 		{
-			return parsingService.parseContext(expression);
+			return ParsingService.parseContext(expression);
 		}
 		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, 0);
 	}

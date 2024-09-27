@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service;
 public class ModifierLogic
 {
 	//todo - consider changing the name to avoid confusion?
-	private final ParsingService parsingService;
+	private final ParsingService ParsingService;
 	@Autowired
-	public ModifierLogic(ParsingService parsingService)
+	public ModifierLogic(ParsingService ParsingService)
 	{
-		this.parsingService = parsingService;
+		this.ParsingService = ParsingService;
 	}
 	public boolean evaluateCondition(Modifier modifier)
 	{
 		//loadout should not be null but just in case
 		if (modifier != null && modifier.getCondition() != null)
 		{
-			return parsingService.evaluateCondition(modifier, modifier.getCondition());
+			return ParsingService.evaluateCondition(modifier, modifier.getCondition());
 		}
 		return true;
 	}
