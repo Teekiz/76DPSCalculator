@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModifierLogic
+public class ModifierConditionLogic
 {
 	//todo - consider changing the name to avoid confusion?
 	private final ParsingService ParsingService;
 	@Autowired
-	public ModifierLogic(ParsingService ParsingService)
+	public ModifierConditionLogic(ParsingService ParsingService)
 	{
 		this.ParsingService = ParsingService;
 	}

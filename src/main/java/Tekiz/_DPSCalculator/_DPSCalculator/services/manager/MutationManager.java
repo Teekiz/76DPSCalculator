@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.MutationLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierLogic;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,14 +22,14 @@ public class MutationManager implements LoadoutScopeClearable
 {
 	private Set<Mutation> mutations;
 	private final MutationLoaderService mutationLoaderService;
-	private final ModifierLogic modifierLogic;
+	private final ModifierConditionLogic modifierConditionLogic;
 
 	@Autowired
-	public MutationManager(MutationLoaderService mutationLoaderService, ModifierLogic modifierLogic)
+	public MutationManager(MutationLoaderService mutationLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
 		this.mutations = new HashSet<>();
 		this.mutationLoaderService = mutationLoaderService;
-		this.modifierLogic = modifierLogic;
+		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	public void addMutation(String mutationName) throws IOException

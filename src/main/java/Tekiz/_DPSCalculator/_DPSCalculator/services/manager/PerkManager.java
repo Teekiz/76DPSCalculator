@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierLogic;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
@@ -24,22 +24,22 @@ public class PerkManager implements LoadoutScopeClearable
 {
 	private HashMap<Perk, Boolean> perks;
 	private final PerkLoaderService perkLoaderService;
-	private final ModifierLogic modifierLogic;
+	private final ModifierConditionLogic modifierConditionLogic;
 	private static final Logger logger = LoggerFactory.getLogger(PerkManager.class);
 
 	@Autowired
-	public PerkManager(PerkLoaderService perkLoaderService, ModifierLogic modifierLogic)
+	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
 		this.perks = new HashMap();
 		this.perkLoaderService = perkLoaderService;
-		this.modifierLogic = modifierLogic;
+		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	//when a perk is added - it is automatically added to the effects.
 	public void addPerk(String perkName) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
-		perks.put(perk, modifierLogic.evaluateCondition(perk));
+		perks.put(perk, modifierConditionLogic.evaluateCondition(perk));
 	}
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
@@ -53,7 +53,7 @@ public class PerkManager implements LoadoutScopeClearable
 	{
 		for (Map.Entry<Perk, Boolean> entry : perks.entrySet())
 		{
-			Boolean newValue = modifierLogic.evaluateCondition(entry.getKey());
+			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
 			if (entry.getValue() != newValue)
 			{
 				entry.setValue(newValue);

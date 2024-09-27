@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
+package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;

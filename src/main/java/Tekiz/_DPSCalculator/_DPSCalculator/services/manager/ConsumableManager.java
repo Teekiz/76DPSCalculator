@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierLogic;
+import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
@@ -25,21 +25,21 @@ public class ConsumableManager implements LoadoutScopeClearable
 	//there can be many food effects but only one of each alcohol and chem.
 	private HashMap<Consumable, Boolean> consumables;
 	private final ConsumableLoaderService consumableLoaderService;
-	private final ModifierLogic modifierLogic;
+	private final ModifierConditionLogic modifierConditionLogic;
 	private static final Logger logger = LoggerFactory.getLogger(ConsumableManager.class);
 
 	@Autowired
-	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierLogic modifierLogic)
+	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
 		this.consumables = new HashMap();
 		this.consumableLoaderService = consumableLoaderService;
-		this.modifierLogic = modifierLogic;
+		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	public void addConsumable(String consumableName) throws IOException
 	{
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
-		consumables.put(consumable, modifierLogic.evaluateCondition(consumable));
+		consumables.put(consumable, modifierConditionLogic.evaluateCondition(consumable));
 	}
 	public void removeConsumable(String consumableName) throws IOException
 	{
@@ -51,7 +51,7 @@ public class ConsumableManager implements LoadoutScopeClearable
 	{
 		for (Map.Entry<Consumable, Boolean> entry : consumables.entrySet())
 		{
-			Boolean newValue = modifierLogic.evaluateCondition(entry.getKey());
+			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
 			if (entry.getValue() != newValue)
 			{
 				entry.setValue(newValue);
