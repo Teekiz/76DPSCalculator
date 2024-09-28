@@ -16,9 +16,9 @@ public class MeleeWeapon extends Weapon
 {
 	/**
 	 * The constructor for a melee weapon.
-	 * @param weaponName The name of the weapon. The user will be able to see the given value
+	 * @param weaponName The name of the weapon. The user will be able to see the given value.
 	 * @param weaponType The type of weapon. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
-	 * @param damageType /** The damage type the weapon afflicts. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
+	 * @param damageType The damage type the weapon afflicts. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
 	 * @param weaponDamageByLevel A {@link HashMap} of the weapons level ({@link Integer}) and the base damage it provides ({@link Double}).
 	 * @param apCost The {@link Integer} value that it costs to use the weapon.
 	 * @param attackSpeed The {@link Double} value of the speed the weapon attacks at. Different weapons will have varying rate of fires.
