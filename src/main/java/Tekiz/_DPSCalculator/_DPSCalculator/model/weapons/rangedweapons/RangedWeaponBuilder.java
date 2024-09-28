@@ -2,12 +2,17 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponBuilder;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+
+/**
+ * Builder for creating instances of {@link RangedWeapon}.
+ */
 
 @JsonDeserialize(builder = RangedWeaponBuilder.class)
 public class RangedWeaponBuilder extends WeaponBuilder
@@ -90,6 +95,14 @@ public class RangedWeaponBuilder extends WeaponBuilder
 	{
 		return this;
 	}
+
+	/**
+	 * Builds and returns a new {@link RangedWeapon} instance based on the current builder state.
+	 *
+	 * @return A new weapon object with the specified {@code weaponName}, {@code weaponType}, {@code damageType}, {@code weaponDamageByLevel},
+	 * {@code apCost}, {@code attackSpeed}, {@code criticalBonus}, {@code magazineSize}, {@code fireRate}, {@code range}, {@code accuracy}, {@code projectileCount},
+	 * {@code rangedPenalty}, {@code reloadTime}, {@code attackDelay} and {@code receiver}.
+	 */
 	@Override
 	public RangedWeapon build()
 	{

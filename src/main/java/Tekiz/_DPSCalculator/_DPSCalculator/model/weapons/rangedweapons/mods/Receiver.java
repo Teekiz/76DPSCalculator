@@ -3,6 +3,9 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import lombok.Getter;
 
+/**
+ * Represents a receiver modification for a ranged weapon.
+ */
 @Getter
 public class Receiver extends RangedMod
 {
@@ -16,6 +19,18 @@ public class Receiver extends RangedMod
 	private final boolean isPrime;
 	private final String ammoOverrideType;
 
+	/**
+	 * The constructor for a receiver.
+	 * @param name The name of the receiver. The user will be able to see the given value.
+	 * @param receiverType The type of receiver. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
+	 * @param damageChange The additive {@link Double} value that will be applied to the {@link Tekiz._DPSCalculator._DPSCalculator.services.calculation.BonusDamageService}.
+	 * @param damageCriticalMultiplier The {@link Integer} value that will be made to the critical damage.
+	 * @param fireRateChange The modification made to the weapons base rate of fire.
+	 * @param accuracyChange The modification made to the weapons base accuracy.
+	 * @param apChange The modification made to the weapons base action points usage.
+	 * @param isPrime Determines if the receiver is a prime receiver or not.
+	 * @param ammoOverrideType The ammo the weapon uses if the receiver changes from the base value.
+	 */
 	public Receiver(String name, ReceiverType receiverType,
 					double damageChange, int damageCriticalMultiplier, int fireRateChange,
 					int accuracyChange, double apChange, boolean isPrime, String ammoOverrideType)

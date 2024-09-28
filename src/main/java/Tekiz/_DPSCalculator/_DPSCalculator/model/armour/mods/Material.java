@@ -5,6 +5,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import java.util.HashMap;
 import lombok.Getter;
 
+/**
+ * Represents a material modification that can be made to a piece of armour.
+ * Each {@link Material} contains the bonus resistances and effect the mod may have.
+ */
+
 @Getter
 public class Material extends ArmourMod
 {

@@ -41,9 +41,9 @@ public class Perk<V> implements Modifier
 	private final ModifierSource modifierSource;
 
 	/**
-	 * The condition required to use the perk. If the condition is not met, the effects will not be used.
+	 * The condition required to use the perk. If the condition is not met, the effects will not be applied.
 	 * {@link ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic}
-	 * is used to check the condition
+	 * is used to check the condition. If a condition string is not included, the perk will always be used.
 	 */
 	@JsonProperty("conditionString")
 	@JsonDeserialize(using = ExpressionDeserializer.class)
@@ -51,7 +51,7 @@ public class Perk<V> implements Modifier
 
 	/**
 	 * The effects of the perk. Each perk can have multiple effects that will be applied per rank. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
-	 * If an effect has a value that changes based on a condition, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
+	 * If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
 	 * {@link Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService} to determine the appropriate value.
 	 */
 	private final HashMap<Integer, HashMap<ModifierTypes, V>> effects;
