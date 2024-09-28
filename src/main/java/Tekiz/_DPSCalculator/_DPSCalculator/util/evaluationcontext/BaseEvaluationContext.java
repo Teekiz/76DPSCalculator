@@ -1,12 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
-import java.util.AbstractMap;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class BaseEvaluationContext
@@ -20,6 +20,7 @@ public class BaseEvaluationContext
 		context.setVariable("ReceiverType", ReceiverType.class);
 		context.setVariable("Special", Specials.class);
 		context.setVariable("ModifierType", ModifierTypes.class);
+		context.setVariable("ModifierSource", ModifierSource.class);
 		context.setVariable("MapUtil", MapUtil.class);
 		return context;
 	}

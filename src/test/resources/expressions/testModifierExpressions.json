@@ -13,6 +13,10 @@
     "TESTCONDITION" : 
     {
         "expressionString" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? #MapUtil.createEntry(#ModifierType.SPECIAL_CHARISMA, 5) : #MapUtil.createEntry(#ModifierType.SPECIAL_CHARISMA, 0)"
+    },
+    "STRANGEINNUMBERS" :
+    {
+        "expressionString" : "@modifierBoostService.addBoost(#ModifierSource.MUTATION_POSITIVE, 1.25)"
     }
 }
 

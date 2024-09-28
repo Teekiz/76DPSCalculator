@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.services.context.ConditionService;
+import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +14,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ModifierAggregationService<V>
 {
+	private final ModifierExpressionService modifierExpressionService;
+	private final ModifierBoostService modifierBoostService;
+
 	@Autowired
-	private ConditionService conditionService;
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService)
+	{
+		this.modifierExpressionService = modifierExpressionService;
+		this.modifierBoostService = modifierBoostService;
+	}
 
 	//todo - add a check for all known boosts
 	public HashMap<Modifier, Boolean> getAllModifiers(Loadout loadout)
@@ -46,7 +53,7 @@ public class ModifierAggregationService<V>
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) conditionService.getAdditionalContext((String) effects.get(key));
+					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) modifierExpressionService.getAdditionalContext((String) effects.get(key));
 					if (additionalContextEntry != null) {
 						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 					}
@@ -63,10 +70,10 @@ public class ModifierAggregationService<V>
 		{
 			if (modifier.getValue())
 			{
-				Map<ModifierTypes, Number> conditionalEffects = modifier.getKey().getEffects();
-				if (conditionalEffects != null)
+				Map<ModifierTypes, Number> effectsMap = modifierBoostService.checkBoost(modifier.getKey());
+				if (effectsMap != null)
 				{
-					conditionalEffects.computeIfPresent(bonusType, (key, value) -> {
+					effectsMap.computeIfPresent(bonusType, (key, value) -> {
 						effects.add(value);
 						return value;
 					});

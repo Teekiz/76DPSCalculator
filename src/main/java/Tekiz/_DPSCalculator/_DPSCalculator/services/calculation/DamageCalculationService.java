@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DamageCalculationService
 {
-	@Autowired
 	private final BaseDamageService baseDamageService;
-	@Autowired
 	private final BonusDamageService bonusDamageService;
+	private final ModifierBoostService boostService;
+
 	@Autowired
-	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService)
+	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, ModifierBoostService boostService)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
+		this.boostService = boostService;
 	}
 
 	/*
@@ -42,6 +44,7 @@ public class DamageCalculationService
 		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
 
 		double outgoingDamage = baseDamage * bonusDamage;
+		boostService.clearBoosts();
 		return round(outgoingDamage);
 	}
 

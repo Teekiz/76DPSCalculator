@@ -12,7 +12,7 @@ import org.springframework.expression.Expression;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConditionService
+public class ModifierExpressionService
 {
 	/*
 	 - This service is to provide additional context for modifiers that cannot be applied to simple data formats,
@@ -24,7 +24,7 @@ public class ConditionService
 	private final HashMap<String, Expression> contextExpressions;
 
 	@Autowired
-	public ConditionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService ParsingService) throws IOException
+	public ModifierExpressionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService ParsingService) throws IOException
 	{
 		this.ParsingService = ParsingService;
 		this.contextExpressions = modifierExpressionsLoaderService.getContextInformation();

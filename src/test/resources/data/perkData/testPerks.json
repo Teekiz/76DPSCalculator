@@ -6,20 +6,20 @@
     "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",
-    "effects":
+    "effects" :
     {
-        "1": 
-        {
-            "SPECIAL_ENDURANCE": 1
-        },
-        "2":
-        {
-            "SPECIAL_ENDURANCE": 2
-        },
-        "3":
-        {
-            "SPECIAL_ENDURANCE": 3
-        }
+      "1" :
+      {
+        "SPECIAL_ENDURANCE" : 1
+      },
+      "2" :
+      {
+        "SPECIAL_ENDURANCE" : 2
+      },
+      "3" :
+      {
+        "SPECIAL_ENDURANCE" : 3
+      }
     }
   },
   "GUNSLINGER" :
@@ -29,20 +29,20 @@
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "effects":
+    "effects" :
     {
-        "1": 
-        {
-            "SPECIAL_ENDURANCE": 1
-        },
-        "2":
-        {
-            "SPECIAL_ENDURANCE": 2
-        },
-        "3":
-        {
-            "SPECIAL_ENDURANCE": 3
-        }
+      "1" :
+      {
+        "SPECIAL_ENDURANCE" : 1
+      },
+      "2" :
+      {
+        "SPECIAL_ENDURANCE" : 2
+      },
+      "3" :
+      {
+        "SPECIAL_ENDURANCE" : 3
+      }
     }
   },
   "TESTMODIFIER" :
@@ -52,12 +52,12 @@
     "description" : "Test to check if modifiers work.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
-    "effects":
+    "effects" :
     {
-        "1" :
-        {
-            "DAMAGE_ADDITIVE" : 0.2
-        }
+      "1" :
+      {
+        "DAMAGE_ADDITIVE" : 0.2
+      }
     }
   },
   "TESTEVENT" :
@@ -67,12 +67,26 @@
     "description" : "Test to check if modifiers events work.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
-    "effects":
+    "effects" :
     {
-        "1" :
+      "1" :
+      {
+        "DAMAGE_ADDITIVE" : 0.2
+      }
+    }
+  },
+  "STRANGEINNUMBERS" : 
+    {
+        "name" : "Strange in Numbers",
+        "rank" : 1,
+        "description" : "Positive mutation effects are 25% stronger if teammates are mutated too.",
+        "modifierSource" : "PERK",
+        "effects" :
         {
-            "DAMAGE_ADDITIVE" : 0.2
+            "1" :
+            {
+                "ADDITIONAL_CONTEXT_REQUIRED" : "STRANGEINNUMBERS"
+            }
         }
     }
-  }
 }

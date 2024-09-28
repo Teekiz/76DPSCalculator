@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class ConditionServicesTest
+public class ModifierExpressionServicesTest
 {
 	@Autowired
 	LoadoutManager loadoutManager;
@@ -22,6 +22,8 @@ public class ConditionServicesTest
 	@Test
 	public void testMutationEffect() throws IOException
 	{
+		loadoutManager.deleteAllLoadouts();
+
 		Loadout loadout = loadoutManager.getLoadout();
 		loadout.getWeaponManager().setWeapon("10MMPISTOL");
 		loadout.getPlayerManager().getPlayer().setCurrentHP(125.0);
