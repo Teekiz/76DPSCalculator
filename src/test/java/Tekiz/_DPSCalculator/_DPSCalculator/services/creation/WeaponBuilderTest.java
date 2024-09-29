@@ -6,7 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeapo
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeaponBuilder;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeaponBuilder;
-import Tekiz._DPSCalculator._DPSCalculator.services.factory.WeaponFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;

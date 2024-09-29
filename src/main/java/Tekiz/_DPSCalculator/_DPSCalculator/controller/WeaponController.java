@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

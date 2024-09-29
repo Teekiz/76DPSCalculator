@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;

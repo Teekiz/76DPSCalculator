@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;

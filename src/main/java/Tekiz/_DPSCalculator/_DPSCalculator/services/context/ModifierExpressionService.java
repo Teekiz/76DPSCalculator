@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModifierExpressionsLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModifierExpressionsLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
 import java.util.AbstractMap;

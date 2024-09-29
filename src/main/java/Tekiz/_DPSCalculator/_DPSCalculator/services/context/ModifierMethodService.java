@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.ModifierMethodLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModifierMethodLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.scripts.GroovyScriptService;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import java.io.IOException;

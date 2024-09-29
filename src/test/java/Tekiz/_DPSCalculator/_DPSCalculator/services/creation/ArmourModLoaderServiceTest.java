@@ -3,6 +3,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourModLoaderService;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

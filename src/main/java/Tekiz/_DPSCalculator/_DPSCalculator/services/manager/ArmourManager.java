@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.ArmourLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.util.HashSet;
