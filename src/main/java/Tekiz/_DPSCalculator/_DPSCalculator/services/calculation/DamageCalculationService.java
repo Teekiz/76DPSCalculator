@@ -16,19 +16,23 @@ public class DamageCalculationService
 {
 	private final BaseDamageService baseDamageService;
 	private final BonusDamageService bonusDamageService;
+	private final DamageMultiplierService damageMultiplierService;
 	private final ModifierBoostService boostService;
+
 
 	/**
 	 * The constructor for {@link DamageCalculationService}.
 	 * @param baseDamageService A service that calculates the base damage from a loadout.
 	 * @param bonusDamageService A service that calculates the bonus (additive) damage from a loadout.
+	 * @param damageMultiplierService A service that calculates the multiplicative damage from a loadout.
 	 * @param boostService A service that is used to store and apply boosts to {@link Modifier}'s values.
 	 */
 	@Autowired
-	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, ModifierBoostService boostService)
+	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
+		this.damageMultiplierService = damageMultiplierService;
 		this.boostService = boostService;
 	}
 
@@ -58,9 +62,10 @@ public class DamageCalculationService
 		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
 		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
 
-		double outgoingDamage = baseDamage * bonusDamage;
+		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(loadout,baseDamage * bonusDamage);
+
 		boostService.clearBoosts();
-		return round(outgoingDamage);
+		return round(totalDamage);
 	}
 
 	/**
