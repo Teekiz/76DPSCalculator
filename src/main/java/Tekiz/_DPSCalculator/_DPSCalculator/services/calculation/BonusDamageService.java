@@ -8,16 +8,29 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+
+/**
+ * A service that calculates the bonus (additive) damage from a loadout.
+ */
 @Service
 public class BonusDamageService
 {
 	private final ModifierAggregationService modifierAggregationService;
 
+	/**
+	 * The {@link BonusDamageService} constructor.
+	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
+	 */
 	public BonusDamageService(ModifierAggregationService modifierAggregationService)
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
 
+	/**
+	 * A method that calculates the bonus (additive) damage from a loadout.
+	 * @param loadout The loadout being used to determine the damage output.
+	 * @return A {@link Double} value of the loadouts bonus damage.
+	 */
 	public double calculateBonusDamage(Loadout loadout)
 	{
 		double bonusDamage = 1.0;

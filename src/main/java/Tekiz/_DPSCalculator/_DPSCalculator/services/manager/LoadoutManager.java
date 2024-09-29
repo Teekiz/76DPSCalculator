@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to manage {@link Loadout} objects.
+ */
 @Service
 public class LoadoutManager
 {
@@ -20,6 +23,12 @@ public class LoadoutManager
 
 	private final Map<Integer, Loadout> loadoutMap = new HashMap<>();
 
+	/**
+	 * Retrieves the current active {@link Loadout} based on the ID of the active loadout.
+	 * If no loadout exists for the given ID, a new one is created and added to the loadout map.
+	 *
+	 * @return The {@link Loadout} associated with the current active loadout ID.
+	 */
 	public Loadout getLoadout()
 	{
 		return loadoutMap.computeIfAbsent(activeLoadout,
@@ -30,6 +39,12 @@ public class LoadoutManager
 			});
 	}
 
+	/**
+	 * Deletes the given {@link Loadout} from the loadout map and its associated scoped beans.
+	 * This also clears the loadout from the {@link LoadoutScope}.
+	 *
+	 * @param loadout The loadout to be deleted.
+	 */
 	public void deleteLoadout(Loadout loadout)
 	{
 		//makes sure that the ID being used is the correctly set.
@@ -39,6 +54,10 @@ public class LoadoutManager
 		context.getBean(LoadoutScope.class).remove(String.valueOf(id));
 	}
 
+	/**
+	 * Deletes all loadouts from the loadout map and clears the associated scoped beans from the {@link LoadoutScope}.
+	 * This method is called before the service is destroyed to clean up the loadouts.
+	 */
 	@PreDestroy
 	public void deleteAllLoadouts() {
 		for (Loadout loadout : loadoutMap.values()) {

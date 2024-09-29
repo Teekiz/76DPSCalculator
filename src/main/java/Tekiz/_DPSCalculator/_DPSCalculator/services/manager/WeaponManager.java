@@ -16,7 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.RangedMod;
 
+/**
+ * A service used to manage {@link Weapon} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -29,6 +33,12 @@ public class WeaponManager implements LoadoutScopeClearable
 	private static final Logger logger = LoggerFactory.getLogger(WeaponManager.class);
 	//add mod manager
 
+	/**
+	 * The constructor for a {@link WeaponManager} object.
+	 * @param weaponLoaderService A service used to load and create {@link Weapon} objects.
+	 * @param modLoaderService A service used to load and create {@link RangedMod} objects.
+	 * @param applicationEventPublisher The event publisher for dispatching {@link WeaponChangedEvent}s.
+	 */
 	@Autowired
 	public WeaponManager(WeaponLoaderService weaponLoaderService, ModLoaderService modLoaderService, ApplicationEventPublisher applicationEventPublisher)
 	{
@@ -37,6 +47,13 @@ public class WeaponManager implements LoadoutScopeClearable
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
+	/**
+	 * Loads a weapon by its name and sets it as the current weapon.
+	 * If the weapon is successfully loaded, a {@link WeaponChangedEvent} is published.
+	 *
+	 * @param weaponName The name of the weapon to load.
+	 * @throws IOException If the weapon cannot be loaded.
+	 */
 	public synchronized void setWeapon(String weaponName) throws IOException
 	{
 		Weapon loadedWeapon = weaponLoaderService.getWeapon(weaponName);
@@ -52,6 +69,14 @@ public class WeaponManager implements LoadoutScopeClearable
 		}
 	}
 
+	/**
+	 * Modifies the current weapon by applying a specified modification (mod),
+	 * such as changing the receiver of a ranged weapon. After modification, a {@link WeaponChangedEvent} is published.
+	 *
+	 * @param modName The name of the mod to apply.
+	 * @param modType The type of mod being applied (e.g., receiver).
+	 * @throws IOException If the mod cannot be loaded.
+	 */
 	public synchronized void modifyWeapon(String modName, ModType modType) throws IOException
 	{
 		Weapon weapon = this.currentWeapon;
@@ -71,6 +96,9 @@ public class WeaponManager implements LoadoutScopeClearable
 		//else if (weapon instanceof MeleeWeapon)
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

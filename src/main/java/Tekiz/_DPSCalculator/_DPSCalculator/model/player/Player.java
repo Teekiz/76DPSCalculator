@@ -1,13 +1,14 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
 import lombok.Data;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 
 /** Represents a player including the players stats (SPECIAL, HP) and state (actions).*/
 @Data
 public class Player
 {
 	/** Represents the players base special stats. Each stat cannot have a value lower than 1 or higher than 15. Boosts to these stats are handled through
-	 * {@link Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService}.*/
+	 * {@link SpecialBonusCalculationService}.*/
 	private Special specials;
 	private int level;
 
@@ -17,6 +18,9 @@ public class Player
 	private boolean isAiming = false;
 	private boolean isSneaking = false;
 
+	/**
+	 * The constructor for a {@link Player} object.
+	 */
 	public Player()
 	{
 		this.level = 1;

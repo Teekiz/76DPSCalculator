@@ -4,6 +4,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
+import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 
 /**
  * Represents a generic modifier that can apply effects to a users loadout. This interface defines the core methods required for any modifier
@@ -19,9 +21,9 @@ import org.springframework.expression.Expression;
 public interface Modifier<V>
 {
 	/**
-	 * Retrieves the source of the modifier, indicating where it originates from (e.g., PERK, CONSUMABLE). This is used by {
-	 * @link Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService} to match up the boosts target and
-	 * modifier source. For example, the {@link Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk} "Strange in Numbers" boosts
+	 * Retrieves the source of the modifier, indicating where it originates from (e.g., PERK, CONSUMABLE). This is used by
+	 * {@link ModifierBoostService} to match up the boosts target and
+	 * modifier source. For example, the {@link Perk} "Strange in Numbers" boosts
 	 * {@link ModifierSource} "MUTATION_POSITIVE" by an additional 25% if the conditions are met.
 	 *
 	 * @return The source of the modifier, represented by {@link ModifierSource}.

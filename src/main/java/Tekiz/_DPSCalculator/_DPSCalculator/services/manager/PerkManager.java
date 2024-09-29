@@ -1,5 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
@@ -17,6 +19,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to manage {@link Perk} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -27,6 +32,11 @@ public class PerkManager implements LoadoutScopeClearable
 	private final ModifierConditionLogic modifierConditionLogic;
 	private static final Logger logger = LoggerFactory.getLogger(PerkManager.class);
 
+	/**
+	 * The constructor for a {@link PerkManager} object.
+	 * @param perkLoaderService A service used to load {@link Perk} objects.
+	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
+	 */
 	@Autowired
 	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
@@ -48,6 +58,10 @@ public class PerkManager implements LoadoutScopeClearable
 		perks.entrySet().removeIf(perk -> perk.getKey().getName().equals(perkName));
 	}
 
+	/**
+	 * An event listener used to receive events if a
+	 * @param event An event that is called when a change has been made to a {@link Loadout}'s weapon.
+	 */
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
@@ -61,6 +75,9 @@ public class PerkManager implements LoadoutScopeClearable
 		}
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

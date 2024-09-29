@@ -1,12 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * A calculation service to find out the damage output of a loadout.
+ */
 @Service
 public class DamageCalculationService
 {
@@ -14,6 +18,12 @@ public class DamageCalculationService
 	private final BonusDamageService bonusDamageService;
 	private final ModifierBoostService boostService;
 
+	/**
+	 * The constructor for {@link DamageCalculationService}.
+	 * @param baseDamageService A service that calculates the base damage from a loadout.
+	 * @param bonusDamageService A service that calculates the bonus (additive) damage from a loadout.
+	 * @param boostService A service that is used to store and apply boosts to {@link Modifier}'s values.
+	 */
 	@Autowired
 	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, ModifierBoostService boostService)
 	{
@@ -37,7 +47,12 @@ public class DamageCalculationService
 		legendary effects
 		stats last
 	 */
-	//todo - update getBaseDamage
+
+	/**
+	 * A method that calculates the total damage output of a given loadout.
+	 * @param loadout The {@code loadout} being used to determine the damage output.
+	 * @return A {@link Double} value of the loadout's damage output.
+	 */
 	public double calculateOutgoingDamage(Loadout loadout)
 	{
 		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
@@ -48,6 +63,11 @@ public class DamageCalculationService
 		return round(outgoingDamage);
 	}
 
+	/**
+	 * A method that rounds a {@link Double} value to a set number of decimal places.
+	 * @param value The value that will be rounded.
+	 * @return The rounded value.
+	 */
 	public double round(double value)
 	{
 		BigDecimal bigDecimal = BigDecimal.valueOf(value);

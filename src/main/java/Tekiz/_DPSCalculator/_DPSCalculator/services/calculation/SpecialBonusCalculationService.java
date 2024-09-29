@@ -8,15 +8,29 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to calculate the bonuses for a given SPECIAL stat.
+ */
 @Service
 public class SpecialBonusCalculationService
 {
 	private final ModifierAggregationService modifierAggregationService;
 
+	/**
+	 * The constructor for {@link SpecialBonusCalculationService},
+	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
+	 */
 	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService)
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
+
+	/**
+	 * A method that returns the bonuses for a given {@link Tekiz._DPSCalculator._DPSCalculator.model.player.Special} stat.
+	 * @param loadout The {@code loadout} being used to determine the bonuses.
+	 * @param special The type of SPECIAL that
+	 * @return A filtered {@link Integer} value of a given {@code special} from the provided loadout.
+	 */
 	public int getSpecialBonus(Loadout loadout, Specials special)
 	{
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);

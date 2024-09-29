@@ -3,10 +3,11 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeaponBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import lombok.Getter;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+
 /**
  * Represents a generic melee weapon that the user can add to their loadout.
  */
@@ -15,10 +16,10 @@ import lombok.Getter;
 public class MeleeWeapon extends Weapon
 {
 	/**
-	 * The constructor for a melee weapon.
+	 * The constructor for a {@link MeleeWeapon} object.
 	 * @param weaponName The name of the weapon. The user will be able to see the given value.
-	 * @param weaponType The type of weapon. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
-	 * @param damageType The damage type the weapon afflicts. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
+	 * @param weaponType The type of weapon. This is used for various {@link Modifier} conditions.
+	 * @param damageType The damage type the weapon afflicts. This is used for various {@link Modifier} conditions.
 	 * @param weaponDamageByLevel A {@link HashMap} of the weapons level ({@link Integer}) and the base damage it provides ({@link Double}).
 	 * @param apCost The {@link Integer} value that it costs to use the weapon.
 	 * @param attackSpeed The {@link Double} value of the speed the weapon attacks at. Different weapons will have varying rate of fires.

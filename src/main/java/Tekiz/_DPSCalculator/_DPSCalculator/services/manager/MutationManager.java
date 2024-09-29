@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to manage {@link Mutation} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -24,6 +27,11 @@ public class MutationManager implements LoadoutScopeClearable
 	private final MutationLoaderService mutationLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 
+	/**
+	 * The constructor for a {@link MutationManager} object.
+	 * @param mutationLoaderService A service used to load {@link Mutation} objects.
+	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
+	 */
 	@Autowired
 	public MutationManager(MutationLoaderService mutationLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
@@ -43,6 +51,10 @@ public class MutationManager implements LoadoutScopeClearable
 		mutations.removeIf(mutation -> mutation.getName().equals(mutationName));
 	}
 
+	/**
+	 * A method that aggregates and returns all positive and negative {@link Mutation} {@link Modifier}s.
+	 * @return A {@link HashMap} of {@link Modifier}s and condition values.
+	 */
 	public HashMap<Modifier, Boolean> getMutationModifiers()
 	{
 		HashMap<Modifier, Boolean> mutationMap = new HashMap<>();
@@ -59,6 +71,9 @@ public class MutationManager implements LoadoutScopeClearable
 		return mutationMap;
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

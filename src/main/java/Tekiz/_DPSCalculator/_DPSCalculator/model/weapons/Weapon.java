@@ -3,10 +3,9 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import java.util.HashMap;
-import java.util.Map;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 
 /**
  * Represents a generic weapon that the user can add to their loadout.
@@ -19,10 +18,10 @@ public abstract class Weapon
 	/** The name of the weapon. The user will be able to see the given value. */
 	protected final String weaponName;
 
-	/** The type of weapon. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions. */
+	/** The type of weapon. This is used for various {@link Modifier} conditions. */
 	protected final WeaponType weaponType;
 
-	/** The damage type the weapon afflicts. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions. */
+	/** The damage type the weapon afflicts. This is used for various {@link Modifier} conditions. */
 	protected final DamageType damageType;
 
 	/** A {@link HashMap} of the weapons level ({@link Integer}) and the base damage it provides ({@link Double}). */

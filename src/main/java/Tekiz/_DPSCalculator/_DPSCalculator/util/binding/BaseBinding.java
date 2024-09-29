@@ -6,9 +6,17 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 
+/**
+ * A utility service to provide binding used by the {@link GroovyShell} instance.
+ */
 public class BaseBinding
 {
+	/**
+	 * A method to return the provided binding context.
+	 * @return A new {@link Binding} object with applied context.
+	 */
 	public static Binding getBaseBinding()
 	{
 		Binding binding = new Binding();

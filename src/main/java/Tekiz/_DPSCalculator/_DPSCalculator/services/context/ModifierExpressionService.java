@@ -11,18 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.Expression;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service that is used to parse and return expressions for modifiers that require additional logic to apply a value.
+ * This includes mutations and perks such as adrenal reaction, herbivore/carnivore and suppressor.
+ * <p>If a modifier has a mix of conditional and unconditional effects, set the conditional effect to more context required and then create additional context for that object.</p>
+ */
 @Service
 public class ModifierExpressionService
 {
-	/*
-	 - This service is to provide additional context for modifiers that cannot be applied to simple data formats,
-	 - or require additional logic checks. This includes mutations and perks such as adrenal reaction, herbivore/carnivore and suppressor.
-	 - if a modifier has a mix of conditional and unconditional effects, set the conditional effect to more context required and then create additional context for that object.
-	 */
-
 	private final ParsingService ParsingService;
 	private final HashMap<String, Expression> contextExpressions;
 
+	/**
+	 * The constructor for {@link ModifierExpressionService}.
+	 * @param modifierExpressionsLoaderService A loader service.
+	 * @param ParsingService A service responsible for parsing and evaluating SpEL (Spring Expression Language) expressions.
+	 * @throws IOException
+	 */
 	@Autowired
 	public ModifierExpressionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService ParsingService) throws IOException
 	{
@@ -30,6 +35,11 @@ public class ModifierExpressionService
 		this.contextExpressions = modifierExpressionsLoaderService.getContextInformation();
 	}
 
+	/**
+	 * A method used to parse and apply a new {@link ModifierTypes} with a determined value.
+	 * @param contextName The name of a modifier that requires additional context.
+	 * @return A {@link Map.Entry} of a new {@link ModifierTypes} and a {@link Number} value.
+	 */
 	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName)
 	{
 		Expression expression = contextExpressions.get(contextName);

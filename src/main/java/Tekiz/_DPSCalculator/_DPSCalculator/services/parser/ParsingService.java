@@ -6,7 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Map;
-import lombok.Getter;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,15 @@ import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service responsible for parsing and evaluating SpEL (Spring Expression Language) expressions.
+ * in the context of a player's loadout. It manages the context setup, expression parsing,
+ * and expression evaluation.
+ *
+ * <p>This service interacts with the {@link LoadoutManager} to retrieve
+ * the current loadout of a user and manages the evaluation context for expressions.
+ * It can parse both {@link Expression} objects and string-based expressions.</p>
+ */
 @Service
 public class ParsingService
 {
@@ -26,6 +35,12 @@ public class ParsingService
 	private final ApplicationContext applicationContext;
 	private static final Logger logger = LoggerFactory.getLogger(WeaponManager.class);
 
+	/**
+	 * The constructor for a {@link ParsingService} object.
+	 * @param parser The SpEL {@link ExpressionParser} used for parsing string expressions.
+	 * @param loadoutManager The {@link LoadoutManager} used to retrieve the current loadout.
+	 * @param applicationContext The Spring {@link ApplicationContext} for resolving beans.
+	 */
 	@Autowired
 	public ParsingService(ExpressionParser parser, LoadoutManager loadoutManager, ApplicationContext applicationContext)
 	{
@@ -33,11 +48,21 @@ public class ParsingService
 		this.loadoutManager = loadoutManager;
 		this.applicationContext = applicationContext;
 	}
+
+	/**
+	 * A method that retrieves the loadout currently in use.
+	 * @return The loadout to be used.
+	 */
 	public Loadout getCurrentLoadout()
 	{
 		return loadoutManager.getLoadout();
 	}
 
+	/**
+	 * A method prepares a {@link StandardEvaluationContext} with applied contextual information for {@link Expression} evaluations.
+	 * @param rootObject The root object for the evaluation context, or {@code null} if no root is needed.
+	 * @return The configured {@link StandardEvaluationContext} for SpEL evaluations.
+	 */
 	public StandardEvaluationContext getContext(Object rootObject)
 	{
 		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
@@ -53,11 +78,23 @@ public class ParsingService
 		return context;
 	}
 
+	/**
+	 * A method used to parse {@link String} based expressions.
+	 * @param expressionString The {@link String} based on expression.
+	 * @return A parsed {@link Expression} object based on the {@code expressionString}.
+	 */
 	public Expression parseString(String expressionString)
 	{
 		return parser.parseExpression(expressionString);
 	}
 
+	/**
+	 * Evaluates a given SpEL {@link Expression} in the context of the player's current loadout,
+	 * and returns the result as a {@link Map.Entry} of {@link ModifierTypes} and {@link Number}.
+	 *
+	 * @param expression The SpEL {@link Expression} to evaluate.
+	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
+	 */
 	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
 	{
 		try
@@ -74,6 +111,14 @@ public class ParsingService
 		}
 	}
 
+	/**
+	 * Evaluates a given SpEL {@link Expression} as a boolean condition in the context of the provided root object. Used to determine
+	 * if a {@link Modifier} effects should be applied.
+	 *
+	 * @param rootObject The root object for the evaluation context.
+	 * @param condition The SpEL {@link Expression} of the condition to evaluate.
+	 * @return {@code true} if the condition evaluates to true, {@code false} otherwise.
+	 */
 	public Boolean evaluateCondition(Object rootObject, Expression condition)
 	{
 		try

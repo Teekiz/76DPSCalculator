@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to manage {@link Armour} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -19,6 +22,10 @@ public class ArmourManager implements LoadoutScopeClearable
 	private Set<Armour> armour;
 	private final ArmourLoaderService armourLoaderService;
 
+	/**
+	 * The constructor for a {@link ArmourManager} object.
+	 * @param armourLoaderService A service used to load {@link Armour} objects.
+	 */
 	@Autowired
 	public ArmourManager(ArmourLoaderService armourLoaderService)
 	{
@@ -26,6 +33,9 @@ public class ArmourManager implements LoadoutScopeClearable
 		this.armourLoaderService = armourLoaderService;
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

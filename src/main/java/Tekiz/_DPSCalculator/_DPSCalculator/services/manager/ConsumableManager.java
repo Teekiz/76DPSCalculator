@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -16,7 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 
+/**
+ * A service used to manage {@link Consumable} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -28,6 +33,11 @@ public class ConsumableManager implements LoadoutScopeClearable
 	private final ModifierConditionLogic modifierConditionLogic;
 	private static final Logger logger = LoggerFactory.getLogger(ConsumableManager.class);
 
+	/**
+	 * The constructor for a {@link ConsumableManager} object.
+	 * @param consumableLoaderService A service used to load {@link Consumable}.
+	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
+	 */
 	@Autowired
 	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic)
 	{
@@ -46,6 +56,10 @@ public class ConsumableManager implements LoadoutScopeClearable
 		consumables.entrySet().removeIf(consumable -> consumable.getKey().getName().equals(consumableName));
 	}
 
+	/**
+	 * An event listener used to receive events if a
+	 * @param event An event that is called when a change has been made to a {@link Loadout}'s weapon.
+	 */
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
@@ -59,6 +73,9 @@ public class ConsumableManager implements LoadoutScopeClearable
 		}
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+/**
+ * A service used to manage {@link Environment} objects.
+ */
 @Service
 @Scope(scopeName = "loadout")
 @Getter
@@ -15,12 +18,18 @@ public class EnvironmentManager implements LoadoutScopeClearable
 {
 	private Environment environment;
 
+	/**
+	 * The constructor for a {@link EnvironmentManager} object.
+	 */
 	@Autowired
 	public EnvironmentManager()
 	{
 		this.environment = new Environment();
 	}
 
+	/**
+	 * A method used during the cleanup of this service.
+	 */
 	@PreDestroy
 	public void clear()
 	{

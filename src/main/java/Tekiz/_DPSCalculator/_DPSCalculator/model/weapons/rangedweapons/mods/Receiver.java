@@ -2,6 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import lombok.Getter;
+import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.BonusDamageService;
 
 /**
  * Represents a receiver modification for a ranged weapon.
@@ -22,8 +24,8 @@ public class Receiver extends RangedMod
 	/**
 	 * The constructor for a receiver.
 	 * @param name The name of the receiver. The user will be able to see the given value.
-	 * @param receiverType The type of receiver. This is used for various {@link Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier} conditions.
-	 * @param damageChange The additive {@link Double} value that will be applied to the {@link Tekiz._DPSCalculator._DPSCalculator.services.calculation.BonusDamageService}.
+	 * @param receiverType The type of receiver. This is used for various {@link Modifier} conditions.
+	 * @param damageChange The additive {@link Double} value that will be applied to the {@link BonusDamageService}.
 	 * @param damageCriticalMultiplier The {@link Integer} value that will be made to the critical damage.
 	 * @param fireRateChange The modification made to the weapons base rate of fire.
 	 * @param accuracyChange The modification made to the weapons base accuracy.
