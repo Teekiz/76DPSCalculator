@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class SpecialBonusCalculationService
 {
 	private final ModifierAggregationService modifierAggregationService;
-	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for {@link SpecialBonusCalculationService},
@@ -27,7 +26,6 @@ public class SpecialBonusCalculationService
 	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService, LoadoutManager loadoutManager)
 	{
 		this.modifierAggregationService = modifierAggregationService;
-		this.loadoutManager = loadoutManager;
 	}
 
 	/**
@@ -37,8 +35,7 @@ public class SpecialBonusCalculationService
 	 */
 	public int getSpecialBonus(Specials special)
 	{
-		Loadout loadout = loadoutManager.getLoadout();
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
+		HashMap modifiers = modifierAggregationService.getAllModifiers();
 		List<Integer> specialList;
 		switch (special)
 		{

@@ -34,11 +34,11 @@ public class CalculationServicesTest
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(39.2, calculator.calculateOutgoingDamage());
 
 		//removing the perk should reduce the damage by 20%
 		loadoutManager.getLoadout().getPerkManager().removePerk("TestEventPerk");
-		assertEquals(33.6, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(33.6, calculator.calculateOutgoingDamage());
 
 		loadoutManager.deleteAllLoadouts();
 	}
@@ -54,12 +54,12 @@ public class CalculationServicesTest
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENTTWO");
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(39.2, calculator.calculateOutgoingDamage());
 
 		//level 1 tenderizer should add 5% extra damage on top of the existing damage
 		//39.2 * (1 + 0.05) = 41.16 (41.2)
 		loadoutManager.getLoadout().getPerkManager().addPerk("TENDERIZER");
-		assertEquals(41.2, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(41.2, calculator.calculateOutgoingDamage());
 
 	}
 }

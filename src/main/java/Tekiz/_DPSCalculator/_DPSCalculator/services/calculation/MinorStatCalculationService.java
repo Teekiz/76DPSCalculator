@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class MinorStatCalculationService
 {
 	private final ModifierAggregationService modifierAggregationService;
-	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for a {@link MinorStatCalculationService} object.
@@ -26,7 +25,6 @@ public class MinorStatCalculationService
 	public MinorStatCalculationService(ModifierAggregationService modifierAggregationService, LoadoutManager loadoutManager)
 	{
 		this.modifierAggregationService = modifierAggregationService;
-		this.loadoutManager = loadoutManager;
 	}
 
 	/**
@@ -37,8 +35,7 @@ public class MinorStatCalculationService
 	public double calculateHealthPointBonuses()
 	{
 		double bonusHealth = 0.0;
-		Loadout loadout = loadoutManager.getLoadout();
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
+		HashMap modifiers = modifierAggregationService.getAllModifiers();
 
 		List<Double> hpBoostList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.HEALTH);
 

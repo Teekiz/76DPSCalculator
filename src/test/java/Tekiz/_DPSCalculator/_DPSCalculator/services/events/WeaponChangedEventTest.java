@@ -36,18 +36,18 @@ public class WeaponChangedEventTest
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
 
 		//condition to use perk does not match
-		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		assertNotNull(loadoutManager.getLoadout().getWeaponManager().getCurrentWeapon());
 		assertEquals(loadoutManager.getLoadout().getWeaponManager().getCurrentWeapon().getWeaponType(), WeaponType.PISTOL);
 
 		//receiver reduces the damage by 0.1
-		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage());
 
 		//receiver does not change the damage
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
-		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage());
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -59,13 +59,13 @@ public class WeaponChangedEventTest
 		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("CALIBRATE", ModType.RECEIVER);
-		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTEVENT");
-		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getWeaponManager().modifyWeapon("AUTOMATIC", ModType.RECEIVER);
-		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage());
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -102,16 +102,16 @@ public class WeaponChangedEventTest
 	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
 	{
 		loadoutManager.deleteAllLoadouts();
-		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage());
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENTTWO");
 		loadoutManager.getLoadout().getPerkManager().addPerk("TESTMODIFIER");
-		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
-		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
-		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage());
 		loadoutManager.deleteAllLoadouts();
 	}
 

@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class ModifierAggregationService<V>
 {
 	private final ModifierExpressionService modifierExpressionService;
 	private final ModifierBoostService modifierBoostService;
+	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for the ModifierAggregationService.
@@ -32,20 +34,21 @@ public class ModifierAggregationService<V>
 	 * 		{@link Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource}.
 	 */
 	@Autowired
-	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService)
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService, LoadoutManager loadoutManager)
 	{
 		this.modifierExpressionService = modifierExpressionService;
 		this.modifierBoostService = modifierBoostService;
+		this.loadoutManager = loadoutManager;
 	}
 
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
-	 * @param loadout The loadout that will be used to source all {@link Modifier}.
 	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
 	 * whether the {@link Modifier}'s conditions have been met.
 	 */
-	public HashMap<Modifier, Boolean> getAllModifiers(Loadout loadout)
+	public HashMap<Modifier, Boolean> getAllModifiers()
 	{
+		Loadout loadout = loadoutManager.getLoadout();
 		HashMap<Modifier, Boolean> modifiers = new HashMap<>();
 		modifiers.putAll(loadout.getPerkManager().getPerks());
 		modifiers.putAll(loadout.getConsumableManager().getConsumables());

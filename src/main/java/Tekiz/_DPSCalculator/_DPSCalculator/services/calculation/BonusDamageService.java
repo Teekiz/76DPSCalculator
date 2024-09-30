@@ -38,7 +38,7 @@ public class BonusDamageService
 	{
 		double bonusDamage = 1.0;
 		Loadout loadout = loadoutManager.getLoadout();
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
+		HashMap modifiers = modifierAggregationService.getAllModifiers();
 
 		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_ADDITIVE);
 		for (Double bonus : doubleList)
