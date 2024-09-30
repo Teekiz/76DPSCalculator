@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModifierExpressionsLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ExpressionLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -24,15 +24,15 @@ public class ModifierExpressionService
 
 	/**
 	 * The constructor for {@link ModifierExpressionService}.
-	 * @param modifierExpressionsLoaderService A loader service.
+	 * @param expressionLoaderService A loader service.
 	 * @param ParsingService A service responsible for parsing and evaluating SpEL (Spring Expression Language) expressions.
 	 * @throws IOException
 	 */
 	@Autowired
-	public ModifierExpressionService(ModifierExpressionsLoaderService modifierExpressionsLoaderService, ParsingService ParsingService) throws IOException
+	public ModifierExpressionService(ExpressionLoaderService expressionLoaderService, ParsingService ParsingService) throws IOException
 	{
 		this.ParsingService = ParsingService;
-		this.contextExpressions = modifierExpressionsLoaderService.getContextInformation();
+		this.contextExpressions = expressionLoaderService.getContextInformation();
 	}
 
 	/**

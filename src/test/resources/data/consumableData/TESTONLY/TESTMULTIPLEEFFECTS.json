@@ -1,0 +1,10 @@
+{
+    "name" : "Test multiple effects",
+    "consumableType" : "FOOD",
+    "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_PLANT",
+    "effects" : {
+        "SPECIAL_INTELLIGENCE" : 3,
+        "SPECIAL_ENDURANCE" : 2
+    }
+}

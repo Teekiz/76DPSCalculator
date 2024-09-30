@@ -1,0 +1,11 @@
+{
+    "name" : "Test condition",
+    "consumableType" : "FOOD",
+    "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_MEAT",
+    "effects" : {
+        "ADDITIONAL_CONTEXT_REQUIRED" : "TESTCONDITION",
+        "SPECIAL_INTELLIGENCE" : 2,
+        "SPECIAL_ENDURANCE" : 3
+    }
+}

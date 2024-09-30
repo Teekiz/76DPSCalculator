@@ -1,0 +1,14 @@
+{
+    "name" : "TestEventPerk",
+    "rank" : 1,
+    "description" : "Test to check if modifiers events work.",
+    "modifierSource" : "PERK",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "effects" :
+    {
+      "1" :
+      {
+        "DAMAGE_ADDITIVE" : 0.2
+      }
+    }
+}

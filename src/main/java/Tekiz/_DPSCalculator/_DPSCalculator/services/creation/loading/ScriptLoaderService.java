@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModifierMethodLoaderService
+public class ScriptLoaderService
 {
 	private final ObjectMapper objectMapper;
 	private final GroovyScriptService scriptService;
 	private final File modifierMethodScriptFile;
-	private static final Logger logger = LoggerFactory.getLogger(ModifierMethodLoaderService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScriptLoaderService.class);
 
 	//todo - handle null pointer exceptions for missing data
 
 	@Autowired
-	public ModifierMethodLoaderService(ObjectMapper objectMapper, GroovyScriptService scriptService, FileConfig fileConfig)
+	public ScriptLoaderService(ObjectMapper objectMapper, GroovyScriptService scriptService, FileConfig fileConfig)
 	{
 		this.objectMapper = objectMapper;
 		this.scriptService = scriptService;

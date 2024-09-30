@@ -33,8 +33,14 @@ public class ConsumableLoaderServiceTest
 	{
 		List<Consumable> consumables = consumableLoaderService.getAllConsumables();
 		assertNotNull(consumables);
-		assertEquals("Test Ballistic Bock", consumables.get(1).getName());
-		assertEquals("Test Berry Mentats", consumables.get(2).getName());
+		assertNotNull(consumables.stream()
+			.filter(consumable -> consumable.getName().equalsIgnoreCase("Test Ballistic Bock"))
+			.findFirst()
+			.orElse(null));
+		assertNotNull(consumables.stream()
+			.filter(consumable -> consumable.getName().equalsIgnoreCase("Test Berry Mentats"))
+			.findFirst()
+			.orElse(null));
 	}
 }
 

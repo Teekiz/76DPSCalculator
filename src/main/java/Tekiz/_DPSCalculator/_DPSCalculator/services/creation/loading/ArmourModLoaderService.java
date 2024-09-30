@@ -3,14 +3,13 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation.loading;
 import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.util.loading.JSONLoader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,15 +29,15 @@ public class ArmourModLoaderService
 
 	public Material getMaterial(String materialName) throws IOException
 	{
-		JsonNode rootNode = objectMapper.readTree(armourModMaterialFile);
-		JsonNode materialNode = rootNode.get(materialName.toUpperCase());
-		return objectMapper.treeToValue(materialNode, Material.class);
+		File jsonFile = JSONLoader.getJSONFile(armourModMaterialFile, materialName);
+		JsonNode rootNode = objectMapper.readTree(jsonFile);
+		return objectMapper.treeToValue(rootNode, Material.class);
 	}
 
 	public Miscellaneous getMiscellaneous(String miscellaneousName) throws IOException
 	{
-		JsonNode rootNode = objectMapper.readTree(armourModMiscFile);
-		JsonNode miscellaneousNode = rootNode.get(miscellaneousName.toUpperCase());
-		return objectMapper.treeToValue(miscellaneousNode, Miscellaneous.class);
+		File jsonFile = JSONLoader.getJSONFile(armourModMiscFile, miscellaneousName);
+		JsonNode rootNode = objectMapper.readTree(jsonFile);
+		return objectMapper.treeToValue(rootNode, Miscellaneous.class);
 	}
 }

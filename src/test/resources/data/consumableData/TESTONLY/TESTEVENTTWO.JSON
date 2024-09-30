@@ -1,0 +1,10 @@
+{
+    "name" : "Test event two",
+    "consumableType" : "FOOD",
+    "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_OTHER",
+    "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
+    "effects" : {
+      "DAMAGE_ADDITIVE" : 0.20
+    }
+}

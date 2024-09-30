@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,9 +38,12 @@ public class WeaponLoaderServiceTest
 	@Test
 	void testLoadAllWeapons() throws IOException
 	{
-		HashMap<String, String> weapons = weaponLoaderService.getAllWeaponsWithName();
+		List<Weapon> weapons = weaponLoaderService.getAllWeapons();
 		assertNotNull(weapons);
-		assertTrue(weapons.containsKey("10MMPISTOL"));
-		assertEquals("Test 10mm pistol", weapons.get("10MMPISTOL"));
+		assertEquals("Test 10mm pistol", weapons.stream()
+			.filter(weapon -> weapon.getWeaponName().equalsIgnoreCase("Test 10mm pistol"))
+			.findFirst()
+			.orElse(null)
+			.getWeaponName());
 	}
 }

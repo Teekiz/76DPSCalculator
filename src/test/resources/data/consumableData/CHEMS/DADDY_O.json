@@ -1,0 +1,11 @@
+{
+    "name" : "Daddy-O",
+    "consumableType" : "CHEMS",
+    "addictionType" : "DADDY_O",
+    "modifierSource" : "CONSUMABLE_CHEMS",
+    "effects" : {
+        "SPECIAL_INTELLIGENCE" : 3,
+        "SPECIAL_PERCEPTION" : 3,
+        "SPECIAL_CHARISMA" : 2
+    }
+}

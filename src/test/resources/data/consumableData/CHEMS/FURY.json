@@ -1,0 +1,10 @@
+{
+    "name" : "Fury",
+    "consumableType" : "CHEMS",
+    "addictionType" : "FURY",
+    "modifierSource" : "CONSUMABLE_CHEMS",
+    "effects" : {
+        "ADDITIONAL_CONTEXT_REQUIRED" : "FURY",
+        "SPECIAL_PERCEPTION" : -5
+    }
+}

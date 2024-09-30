@@ -1,0 +1,15 @@
+{
+    "name" : "TestModifierPerk",
+    "rank" : 1,
+    "description" : "Test to check if modifiers work.",
+    "modifierSource" : "PERK",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",
+    "effects" :
+    {
+      "1" :
+      {
+        "DAMAGE_ADDITIVE" : 0.2
+      }
+    }
+
+}

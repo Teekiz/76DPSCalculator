@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModifierMethodLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ScriptLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.scripts.GroovyScriptService;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import java.io.IOException;
@@ -23,14 +23,14 @@ public class ModifierMethodService
 	/**
 	 * The constructor for a {@link ModifierMethodService} object.
 	 * @param scriptService A service for handling Groovy script parsing and execution.
-	 * @param modifierMethodLoaderService A service for loading script files.
+	 * @param scriptLoaderService A service for loading script files.
 	 * @throws IOException
 	 */
 	@Autowired
-	public ModifierMethodService(GroovyScriptService scriptService, ModifierMethodLoaderService modifierMethodLoaderService) throws IOException
+	public ModifierMethodService(GroovyScriptService scriptService, ScriptLoaderService scriptLoaderService) throws IOException
 	{
 		this.scriptService = scriptService;
-		this.methodScripts = modifierMethodLoaderService.loadMethodScript();
+		this.methodScripts = scriptLoaderService.loadMethodScript();
 	}
 
 	/**

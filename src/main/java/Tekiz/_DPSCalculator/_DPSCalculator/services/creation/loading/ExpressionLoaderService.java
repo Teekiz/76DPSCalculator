@@ -17,16 +17,16 @@ import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModifierExpressionsLoaderService
+public class ExpressionLoaderService
 {
 	private final ObjectMapper objectMapper;
 	private final ParsingService ParsingService;
 	private final File modifierContextFile;
-	private static final Logger logger = LoggerFactory.getLogger(ModifierExpressionsLoaderService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ExpressionLoaderService.class);
 
 
 	@Autowired
-	public ModifierExpressionsLoaderService(ObjectMapper objectMapper, ParsingService ParsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
+	public ExpressionLoaderService(ObjectMapper objectMapper, ParsingService ParsingService, FileConfig fileConfig) throws UnsatisfiedDependencyException
 	{
 		this.objectMapper = objectMapper;
 		this.ParsingService = ParsingService;

@@ -1,0 +1,14 @@
+{
+    "weaponName" : "Assaultron blade",
+    "weaponType" : "ONEHANDED",
+    "damageType" : "PHYSICAL",
+    "weaponDamageByLevel" :
+    {
+        "25" : 28.0,
+        "35" : 33.0,
+        "45" : 40.0
+    },
+    "apCost" : 35,
+    "attackSpeed" : 1.14,
+    "criticalBonus" : 100
+}
