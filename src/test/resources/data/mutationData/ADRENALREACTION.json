@@ -16,7 +16,7 @@
         "conditionString" : "true",
         "effects" : 
         {
-            "HEALTH" : -50
+            "HEALTH" : -50.0
         }
     }
 }

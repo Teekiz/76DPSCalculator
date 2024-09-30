@@ -78,10 +78,10 @@ public class WeaponChangedEventTest
 		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
 
-		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
-		assertEquals(10, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -91,10 +91,10 @@ public class WeaponChangedEventTest
 		loadoutManager.deleteAllLoadouts();
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTEVENT");
-		assertEquals(10, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
 
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("GAUSSRIFLE");
-		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 
@@ -119,14 +119,14 @@ public class WeaponChangedEventTest
 	public void testConsumableWithAdditionalContext() throws IOException
 	{
 		loadoutManager.deleteAllLoadouts();
-		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
-		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.INTELLIGENCE));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE));
 		loadoutManager.getLoadout().getConsumableManager().addConsumable("TESTCONDITION");
-		assertEquals(0, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
-		assertEquals(2, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.INTELLIGENCE));
+		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
+		assertEquals(2, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE));
 		//this should enable the condition to boost charisma
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
-		assertEquals(5, specialBonusCalculationService.getSpecialBonus(loadoutManager.getLoadout(), Specials.CHARISMA));
+		assertEquals(5, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA));
 		loadoutManager.deleteAllLoadouts();
 	}
 }

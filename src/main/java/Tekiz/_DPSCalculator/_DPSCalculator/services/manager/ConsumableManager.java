@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
@@ -14,6 +15,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class ConsumableManager implements LoadoutScopeClearable
 	private HashMap<Consumable, Boolean> consumables;
 	private final ConsumableLoaderService consumableLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
+	private final ApplicationEventPublisher applicationEventPublisher;
 	private static final Logger logger = LoggerFactory.getLogger(ConsumableManager.class);
 
 	/**
@@ -39,8 +42,9 @@ public class ConsumableManager implements LoadoutScopeClearable
 	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic)
+	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
+		this.applicationEventPublisher = applicationEventPublisher;
 		this.consumables = new HashMap();
 		this.consumableLoaderService = consumableLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
@@ -50,10 +54,23 @@ public class ConsumableManager implements LoadoutScopeClearable
 	{
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
 		consumables.put(consumable, modifierConditionLogic.evaluateCondition(consumable));
+
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been added.");
+		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 	public void removeConsumable(String consumableName) throws IOException
 	{
-		consumables.entrySet().removeIf(consumable -> consumable.getKey().getName().equals(consumableName));
+		Consumable consumable = consumables.keySet().stream()
+				.filter(key -> key.getName().equals(consumableName))
+				.findFirst()
+				.orElse(null);
+		if (consumable != null)
+		{
+			consumables.remove(consumable);
+
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been removed.");
+			applicationEventPublisher.publishEvent(modifierChangedEvent);
+		}
 	}
 
 	/**

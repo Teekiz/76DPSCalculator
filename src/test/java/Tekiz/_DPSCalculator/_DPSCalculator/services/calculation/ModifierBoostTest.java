@@ -49,22 +49,25 @@ public class ModifierBoostTest
 	@Test
 	public void testModifierBoostMutations() throws IOException
 	{
+		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getMaxHP());
+
 		loadoutManager.getLoadout().getMutationManager().addMutation("ADRENALREACTION");
 		loadoutManager.getLoadout().getPlayerManager().getPlayer().setCurrentHP(98.0);
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
 
-		//hp is set to 98.0 (39.2%), so it sound return 0.38 additional damage
-		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 35.8
-		//28 * (1 + 0.38 - 0.1) = 35.84 (35.8)
-
-		assertEquals(35.8, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
+		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 33.9
+		//28 * (1 + 0.31 - 0.1) = 33.9 (33.88)
+		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getHealthPercentage());
+		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getMaxHP());
+		assertEquals(33.9, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.getLoadout().getPerkManager().addPerk("STRANGEINNUMBERS");
-		//hp is still set to 39.2% or 0.38 additive damage
-		//0.38 * 1.25 = 0.475 (0.48 rounded up)
-		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 38.64
-		//28 * (1 + 0.48 - 0.1) = 38.64 (38.6)
-		assertEquals(38.6, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
+		//0.31 * 1.25 = 0.3875 (0.39 rounded up)
+		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 36.1
+		//28 * (1 + 0.39 - 0.1) = 36.1 (36.12)
+		assertEquals(36.1, damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		loadoutManager.deleteAllLoadouts();
 	}

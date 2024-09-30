@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class PerkManager implements LoadoutScopeClearable
 	private HashMap<Perk, Boolean> perks;
 	private final PerkLoaderService perkLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
+	private final ApplicationEventPublisher applicationEventPublisher;
 	private static final Logger logger = LoggerFactory.getLogger(PerkManager.class);
 
 	/**
@@ -38,8 +41,9 @@ public class PerkManager implements LoadoutScopeClearable
 	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic)
+	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
+		this.applicationEventPublisher = applicationEventPublisher;
 		this.perks = new HashMap();
 		this.perkLoaderService = perkLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
@@ -50,12 +54,25 @@ public class PerkManager implements LoadoutScopeClearable
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
 		perks.put(perk, modifierConditionLogic.evaluateCondition(perk));
+
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been added");
+		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
 	public void removePerk(String perkName) throws IOException
 	{
-		perks.entrySet().removeIf(perk -> perk.getKey().getName().equals(perkName));
+		Perk perk = perks.keySet().stream()
+			.filter(key -> key.getName().equals(perkName))
+			.findFirst()
+			.orElse(null);
+		if (perk != null)
+		{
+			perks.remove(perk);
+
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been removed");
+			applicationEventPublisher.publishEvent(modifierChangedEvent);
+		}
 	}
 
 	/**

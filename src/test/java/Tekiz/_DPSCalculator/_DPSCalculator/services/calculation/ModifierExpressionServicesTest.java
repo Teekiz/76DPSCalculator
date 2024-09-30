@@ -31,14 +31,14 @@ public class ModifierExpressionServicesTest
 		loadout.getMutationManager().addMutation("ADRENALREACTION");
 
 		/*
-			hp is set to half, so it sound return 0.31 additional damage
-			level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 33.9
-			28 * (1 + 0.31 - 0.1) = 33.88 (33.9)
+			hp is set to 125, so it sound return 0.19 additional damage
+			level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 30.5
+			28 * (1 + 0.19 - 0.1) = 30.5 (30.52)
 		 */
-		assertEquals(33.9, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
+		assertEquals(30.5, calculator.calculateOutgoingDamage(loadoutManager.getLoadout()));
 
 		/*
-			(33 / 250) * 100 = 13.2% hp left. This results in a damage boost of 0.50.
+			(33 / 200) * 100 = 16.5% hp left. This results in a damage boost of 0.50.
 			28 * (1 + 0.5 - 0.1) = 39.2
 		 */
 

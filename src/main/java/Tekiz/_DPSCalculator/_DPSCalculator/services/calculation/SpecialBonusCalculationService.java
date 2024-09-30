@@ -4,6 +4,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
+import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -15,24 +17,27 @@ import org.springframework.stereotype.Service;
 public class SpecialBonusCalculationService
 {
 	private final ModifierAggregationService modifierAggregationService;
+	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for {@link SpecialBonusCalculationService},
 	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
+	 * @param loadoutManager A service used to manage {@link Loadout} objects.
 	 */
-	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService)
+	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService, LoadoutManager loadoutManager)
 	{
 		this.modifierAggregationService = modifierAggregationService;
+		this.loadoutManager = loadoutManager;
 	}
 
 	/**
-	 * A method that returns the bonuses for a given {@link Tekiz._DPSCalculator._DPSCalculator.model.player.Special} stat.
-	 * @param loadout The {@code loadout} being used to determine the bonuses.
-	 * @param special The type of SPECIAL that
+	 * A method that returns the bonuses for a given {@link Special} stat.
+	 * @param special The type of SPECIAL that will be returned.
 	 * @return A filtered {@link Integer} value of a given {@code special} from the provided loadout.
 	 */
-	public int getSpecialBonus(Loadout loadout, Specials special)
+	public int getSpecialBonus(Specials special)
 	{
+		Loadout loadout = loadoutManager.getLoadout();
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 		List<Integer> specialList;
 		switch (special)

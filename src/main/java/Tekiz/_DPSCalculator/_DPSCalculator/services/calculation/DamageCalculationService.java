@@ -59,10 +59,10 @@ public class DamageCalculationService
 	 */
 	public double calculateOutgoingDamage(Loadout loadout)
 	{
-		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
-		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
+		double baseDamage = baseDamageService.calculateBaseDamage();
+		double bonusDamage = bonusDamageService.calculateBonusDamage();
 
-		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(loadout,baseDamage * bonusDamage);
+		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage);
 
 		boostService.clearBoosts();
 		return round(totalDamage);

@@ -1,10 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
-import lombok.Data;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
+import lombok.Getter;
 
 /** Represents a player including the players stats (SPECIAL, HP) and state (actions).*/
-@Data
+@Getter
 public class Player
 {
 	/** Represents the players base special stats. Each stat cannot have a value lower than 1 or higher than 15. Boosts to these stats are handled through
@@ -26,14 +26,14 @@ public class Player
 		this.level = 1;
 		this.specials = new Special(1, 1, 1, 1, 1, 1, 1);
 
-		setMaxHP();
+		setMaxHP(0,0);
 		setCurrentHP(maxHP);
 	}
 
 	/** Sets the maximum health points a player can have. This is calculated as 245 + 5 * Endurance. */
-	public void setMaxHP()
+	public void setMaxHP(int bonusEndurance, double bonusHP)
 	{
-		maxHP = 245 + 5 * specials.getEndurance();
+		maxHP = 245 + 5 * (specials.getEndurance() + bonusEndurance) + bonusHP;
 	}
 
 	/** Sets the current health points a player has. This cannot be higher than the maximum HP. */
