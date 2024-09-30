@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.io.IOException;
@@ -26,8 +27,14 @@ public class ModifierBoostTest
 	@Test
 	public void checkSourceTypes() throws IOException
 	{
-		loadoutManager.getLoadout().getConsumableManager().addConsumable("FURY");
-		Consumable consumable = loadoutManager.getLoadout().getConsumableManager().getConsumables().keySet().stream().findFirst().orElse(null);
+		Loadout loadout = loadoutManager.getLoadout();
+		loadout.getConsumableManager().addConsumable("FURY");
+		Consumable consumable = loadout.getConsumableManager().getConsumables().keySet().stream()
+			.filter(consumableObject -> consumableObject.getName().equalsIgnoreCase("Fury"))
+			.findFirst()
+			.orElse(null);
+
+
 		assertNotNull(consumable);
 		assertEquals(ModifierSource.CONSUMABLE_CHEMS, consumable.getModifierSource());
 
