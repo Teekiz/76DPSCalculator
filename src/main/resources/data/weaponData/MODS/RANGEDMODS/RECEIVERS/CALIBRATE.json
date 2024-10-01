@@ -1,0 +1,11 @@
+{
+    "name": "TestCalibrated",
+    "receiverType": "SEMIAUTOMATIC",
+    "damageChange": 0.0,
+    "damageCriticalMultiplier": 100,
+    "fireRateChange": 0,
+    "accuracyChange": 1,
+    "apChange": 0,
+    "prime": false,
+    "ammoOverrideType": null
+}

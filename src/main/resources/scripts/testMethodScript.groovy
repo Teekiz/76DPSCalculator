@@ -1,6 +1,6 @@
 package scripts
 
-class methodScript extends Script
+class testMethodScript extends Script
 {
     def getAdrenalReactionValue(double hpPercentage) {
         def adrenalReactionMap = [

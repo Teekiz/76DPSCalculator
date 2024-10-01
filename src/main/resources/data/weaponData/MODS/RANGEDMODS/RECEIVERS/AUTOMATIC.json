@@ -1,0 +1,11 @@
+{
+    "name": "TestAutomatic",
+    "receiverType": "AUTOMATIC",
+    "damageChange": -0.1,
+    "damageCriticalMultiplier": 0,
+    "fireRateChange": 32,
+    "accuracyChange": 0,
+    "apChange": 0.50,
+    "prime": false,
+    "ammoOverrideType": null
+}

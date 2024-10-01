@@ -1,0 +1,26 @@
+ {
+    "weaponName" : "Test 10mm pistol",
+    "weaponType" : "PISTOL",
+    "damageType" : "BALLISTIC",
+    "weaponDamageByLevel" :
+    {
+        "1" : 15.0,
+        "15" : 18.0,
+        "25" : 21.0,
+        "35" : 24.0,
+        "45" : 28.0
+    },
+    "apCost" : 20,
+    "attackSpeed" : 0.67,
+    "criticalBonus" : 100,
+    "ammo" : "10mm",    
+    "magazineSize" : 12,
+    "fireRate" : 43,
+    "range" : 120,
+    "accuracy" : 63,
+    "projectileCount" : 1,
+    "rangedPenalty" : -50,
+    "reloadTime" : 1.97,
+    "attackDelay" : 0.23,
+    "receiver" : "AUTOMATIC"
+}

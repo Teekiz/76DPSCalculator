@@ -1,34 +1,42 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/weapons")
+@RequestMapping("api/loadout/weapon")
 public class WeaponController
 {
-	private final WeaponLoaderService weaponLoaderService;
+	private final LoadoutManager loadoutManager;
 
 	@Autowired
-	public WeaponController(WeaponLoaderService weaponLoaderService)
+	public WeaponController(LoadoutManager loadoutManager)
 	{
-		this.weaponLoaderService = weaponLoaderService;
+
+		this.loadoutManager = loadoutManager;
 	}
 
-	@GetMapping("/create") //@RequestParam String weaponName
-	public String createWeapon() throws IOException
+	@GetMapping("/get")
+	public ResponseEntity<Weapon> getWeapon() throws IOException
 	{
-		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
-		if (weapon instanceof RangedWeapon)
+		Weapon weapon = loadoutManager.getLoadout().getWeaponManager().getCurrentWeapon();
+		if (weapon == null)
 		{
-			return "Base damage" + (weapon).getBaseDamage(45);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return "Weapon created: " + weapon.getWeaponName();
+		return ResponseEntity.ok(weapon);
+	}
+
+	@GetMapping("/test")
+	public String test()
+	{
+		return "hi";
 	}
 }

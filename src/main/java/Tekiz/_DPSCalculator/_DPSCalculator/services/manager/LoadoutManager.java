@@ -6,6 +6,8 @@ import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +26,7 @@ public class LoadoutManager
 	private int activeLoadout = 1;
 	@Autowired
 	private ApplicationContext context;
-
+	private static final Logger logger = LoggerFactory.getLogger(LoadoutManager.class);
 	private final Map<Integer, Loadout> loadoutMap = new HashMap<>();
 
 	/**
@@ -35,6 +37,7 @@ public class LoadoutManager
 	 */
 	public Loadout getLoadout()
 	{
+		logger.info("New getLoadout() request made for id {}.", activeLoadout);
 		return loadoutMap.computeIfAbsent(activeLoadout,
 			id ->
 			{
@@ -53,6 +56,7 @@ public class LoadoutManager
 	{
 		//makes sure that the ID being used is the correctly set.
 		int id = loadout.getLoadoutID();
+		logger.info("New deleteLoadout() request made for id {}.", id);
 		LoadoutScope.loadoutIdStorage.set(id);
 		loadoutMap.remove(id);
 		context.getBean(LoadoutScope.class).remove(String.valueOf(id));

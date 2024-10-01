@@ -1,0 +1,15 @@
+
+{
+    "modName" : "Boiled leather",
+    "armourPiece": "TORSO",
+    "armourResistance" :
+    {
+        "1": { "damageResistance": 1, "energyResistance": 1, "radiationResistance": 0, "cryoResistance": 0 },
+        "5": { "damageResistance": 1, "energyResistance": 2, "radiationResistance": 0, "cryoResistance": 0 },
+        "10": { "damageResistance": 1, "energyResistance": 3,"radiationResistance": 0, "cryoResistance": 0},
+        "20": {"damageResistance": 2, "energyResistance": 6, "radiationResistance": 0, "cryoResistance": 0},
+        "30": {"damageResistance": 3, "energyResistance": 9, "radiationResistance": 0, "cryoResistance": 0},
+        "40": { "damageResistance": 4, "energyResistance": 12, "radiationResistance": 0, "cryoResistance": 0},
+        "50": { "damageResistance": 5, "energyResistance": 15, "radiationResistance": 0, "cryoResistance": 0}
+    }
+}

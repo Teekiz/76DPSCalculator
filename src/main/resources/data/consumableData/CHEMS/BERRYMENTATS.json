@@ -1,0 +1,9 @@
+{
+    "name" : "Test Berry Mentats",
+    "consumableType" : "CHEMS",
+    "addictionType" : "MENTATS",
+    "modifierSource" : "CONSUMABLE_CHEMS",
+    "effects" : {
+        "SPECIAL_INTELLIGENCE" : 5
+    }
+}

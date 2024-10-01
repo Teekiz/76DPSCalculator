@@ -1,6 +1,4 @@
 {
-  "WOODCHEST" :
-  {
     "armourName" : "Wood chest",
     "armourLevel" : 1,
     "armourType" : "ARMOUR",
@@ -15,5 +13,4 @@
         "35": {"damageResistance": 37, "energyResistance": 8, "radiationResistance": 0, "cryoResistance": 0},
         "45": { "damageResistance": 45, "energyResistance": 9, "radiationResistance": 0, "cryoResistance": 0}
     }
-  }
 }

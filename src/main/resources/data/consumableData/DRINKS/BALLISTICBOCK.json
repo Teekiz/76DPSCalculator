@@ -1,0 +1,10 @@
+{
+    "name" : "Test Ballistic Bock",
+    "consumableType" : "DRINK",
+    "addictionType" : "ALCOHOL",
+    "modifierSource" : "CONSUMABLE_ALCOHOL",
+    "effects" : {
+        "ADDITIONAL_CONTEXT_REQUIRED" : "BALLISTICBOCK",
+        "SPECIAL_ENDURANCE" : 3
+    }
+}
