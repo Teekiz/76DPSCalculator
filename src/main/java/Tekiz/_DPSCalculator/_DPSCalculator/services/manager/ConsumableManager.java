@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +26,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 @Service
 @Scope(scopeName = "loadout")
 @Getter
+@Slf4j
 public class ConsumableManager implements LoadoutScopeClearable
 {
 	//there can be many food effects but only one of each alcohol and chem.
@@ -34,7 +34,6 @@ public class ConsumableManager implements LoadoutScopeClearable
 	private final ConsumableLoaderService consumableLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
-	private static final Logger logger = LoggerFactory.getLogger(ConsumableManager.class);
 
 	/**
 	 * The constructor for a {@link ConsumableManager} object.

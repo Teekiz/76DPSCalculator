@@ -5,8 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @param <V>  The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 @Service
+@Slf4j
 public class ModifierBoostService<V>
 {
 	/*
@@ -28,7 +28,6 @@ public class ModifierBoostService<V>
 	 * A {@link HashMap} that stores boosts that {@link Modifier}'s with a matching {@link ModifierSource} by the value of {@link Number}.
 	 */
 	private final HashMap<ModifierSource, Number> modifierBoosts;
-	private static final Logger logger = LoggerFactory.getLogger(ModifierBoostService.class);
 
 	@Autowired
 	public ModifierBoostService()
@@ -87,7 +86,7 @@ public class ModifierBoostService<V>
 			}
 		} catch (ClassCastException e)
 		{
-			logger.error("Unsupported number type for : {}", modifier.getModifierSource());
+			log.error("Unsupported number type for : {}", modifier.getModifierSource());
 			return modifier.getEffects();
 		}
 	}

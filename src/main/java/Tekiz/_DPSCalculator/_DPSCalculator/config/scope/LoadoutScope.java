@@ -3,20 +3,19 @@ package Tekiz._DPSCalculator._DPSCalculator.config.scope;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class LoadoutScope implements Scope {
 
 	//Integer is the ID of the loadout, used to identify the corresponding managers in maps.
 	private final Map<Integer, Map<String, Object>> scopedObjects = new ConcurrentHashMap<>(new HashMap<>());
 	private final Map<Integer, Map<String, Runnable>> destructionCallBacks = new ConcurrentHashMap<>(new HashMap<>());
 	public static final ThreadLocal<Integer> loadoutIdStorage = new ThreadLocal<>();
-	private static final Logger logger = LoggerFactory.getLogger(LoadoutScope.class);
 
 	@Override
 	public Object get(String name, ObjectFactory<?> objectFactory)
@@ -24,7 +23,7 @@ public class LoadoutScope implements Scope {
 		Integer loadoutID = loadoutIdStorage.get();
 
 		if (loadoutID == null) {
-			logger.error("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context.");
 			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
 		}
 
@@ -41,7 +40,7 @@ public class LoadoutScope implements Scope {
 			{
 				scopedObjectMap.put(name, object);
 			}
-			logger.debug("Created new object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
+			log.debug("Created new object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
 
 			destructionCallBacks.computeIfAbsent(loadoutID, id -> new HashMap<>())
 				.put(name, () -> {
@@ -60,11 +59,11 @@ public class LoadoutScope implements Scope {
 	public Object remove(String name) {
 		Integer loadoutID = loadoutIdStorage.get();
 		if (loadoutID == null) {
-			logger.error("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context.");
 			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
 		}
 
-		logger.debug("Removing object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
+		log.debug("Removing object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
 
 		// Get the scoped objects and destruction callbacks for this loadout
 		Map<String, Object> scopedObjectMap = scopedObjects.get(loadoutID);
@@ -97,7 +96,7 @@ public class LoadoutScope implements Scope {
 	{
 		Integer loadoutID = loadoutIdStorage.get();
 		if (loadoutID == null) {
-			logger.error("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context.");
 			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
 		}
 

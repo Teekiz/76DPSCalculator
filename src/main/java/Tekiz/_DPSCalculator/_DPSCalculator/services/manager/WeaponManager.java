@@ -10,8 +10,7 @@ import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
@@ -24,13 +23,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Rang
 @Service
 @Scope(scopeName = "loadout")
 @Getter
+@Slf4j
 public class WeaponManager implements LoadoutScopeClearable
 {
 	private Weapon currentWeapon;
 	private final WeaponLoaderService weaponLoaderService;
 	private final ModLoaderService modLoaderService;
 	private final ApplicationEventPublisher applicationEventPublisher;
-	private static final Logger logger = LoggerFactory.getLogger(WeaponManager.class);
 	//add mod manager
 
 	/**
@@ -61,11 +60,11 @@ public class WeaponManager implements LoadoutScopeClearable
 		{
 			currentWeapon = loadedWeapon;
 			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(this.currentWeapon, "Weapon has been set.");
-			logger.debug("WeaponChangedEvent has been created for weapon {}.", this.currentWeapon);
+			log.debug("WeaponChangedEvent has been created for weapon {}.", this.currentWeapon);
 			applicationEventPublisher.publishEvent(weaponChangedEvent);
 		}
 		else {
-			logger.error("Weapon loading failed for: " + weaponName);
+			log.error("Weapon loading failed for: " + weaponName);
 		}
 	}
 
@@ -90,7 +89,7 @@ public class WeaponManager implements LoadoutScopeClearable
 			}
 		}
 		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(this.currentWeapon, "Weapon has been modified.");
-		logger.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", this.currentWeapon);
+		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", this.currentWeapon);
 		applicationEventPublisher.publishEvent(weaponChangedEvent);
 		//todo - create
 		//else if (weapon instanceof MeleeWeapon)

@@ -8,8 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.Expression;
@@ -17,12 +16,12 @@ import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ExpressionLoaderService
 {
 	private final ObjectMapper objectMapper;
 	private final ParsingService ParsingService;
 	private final File modifierContextFile;
-	private static final Logger logger = LoggerFactory.getLogger(ExpressionLoaderService.class);
 
 
 	@Autowired
@@ -48,9 +47,9 @@ public class ExpressionLoaderService
 				Expression contextExpression = ParsingService.parseString(expressionString);
 				contextHashmap.put(contextName, contextExpression);
 			} catch (ParseException e) {
-				logger.error("Failed to parse expression for context '{}': {}", contextName, e.getMessage());
+				log.error("Failed to parse expression for context '{}': {}", contextName, e.getMessage());
 			} catch (Exception e) {
-				logger.error("Unexpected error while processing context '{}': {}", contextName, e.getMessage());
+				log.error("Unexpected error while processing context '{}': {}", contextName, e.getMessage());
 			}
 		}
 		return contextHashmap;

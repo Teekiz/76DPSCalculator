@@ -6,8 +6,7 @@ import jakarta.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -20,13 +19,13 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Slf4j
 public class LoadoutManager
 {
 	@Setter
 	private int activeLoadout = 1;
 	@Autowired
 	private ApplicationContext context;
-	private static final Logger logger = LoggerFactory.getLogger(LoadoutManager.class);
 	private final Map<Integer, Loadout> loadoutMap = new HashMap<>();
 
 	/**
@@ -37,7 +36,7 @@ public class LoadoutManager
 	 */
 	public Loadout getLoadout()
 	{
-		logger.info("New getLoadout() request made for id {}.", activeLoadout);
+		log.info("New getLoadout() request made for id {}.", activeLoadout);
 		return loadoutMap.computeIfAbsent(activeLoadout,
 			id ->
 			{
@@ -56,7 +55,7 @@ public class LoadoutManager
 	{
 		//makes sure that the ID being used is the correctly set.
 		int id = loadout.getLoadoutID();
-		logger.info("New deleteLoadout() request made for id {}.", id);
+		log.info("New deleteLoadout() request made for id {}.", id);
 		LoadoutScope.loadoutIdStorage.set(id);
 		loadoutMap.remove(id);
 		context.getBean(LoadoutScope.class).remove(String.valueOf(id));

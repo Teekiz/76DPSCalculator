@@ -3,12 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.services.parser;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Map;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
@@ -28,12 +26,12 @@ import org.springframework.stereotype.Service;
  * It can parse both {@link Expression} objects and string-based expressions.</p>
  */
 @Service
+@Slf4j
 public class ParsingService
 {
 	private final ExpressionParser parser;
 	private final LoadoutManager loadoutManager;
 	private final ApplicationContext applicationContext;
-	private static final Logger logger = LoggerFactory.getLogger(WeaponManager.class);
 
 	/**
 	 * The constructor for a {@link ParsingService} object.
@@ -72,7 +70,7 @@ public class ParsingService
 		context.setVariable("weapon", loadout.getWeaponManager().getCurrentWeapon());
 
 		if (loadout.getWeaponManager().getCurrentWeapon() == null) {
-			logger.error("Warning: Weapon is null in context");
+			log.error("Warning: Weapon is null in context");
 		}
 
 		return context;
@@ -106,7 +104,7 @@ public class ParsingService
 		}
 		catch (SpelEvaluationException e)
 		{
-			logger.error("Cannot process expression. Error : " + e);
+			log.error("Cannot process expression. Error : " + e);
 			return null;
 		}
 	}
@@ -128,7 +126,7 @@ public class ParsingService
 		}
 		catch (SpelEvaluationException e)
 		{
-			logger.error("Cannot process expression. Error : " + e);
+			log.error("Cannot process expression. Error : " + e);
 			return false;
 		}
 	}

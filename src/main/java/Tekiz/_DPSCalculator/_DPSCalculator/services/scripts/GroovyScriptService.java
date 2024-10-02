@@ -4,9 +4,8 @@ import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import java.io.File;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.codehaus.groovy.runtime.metaclass.MissingMethodExceptionNoStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +18,10 @@ import org.springframework.stereotype.Service;
  * enabling flexibility and customization for specific behaviors in runtime.</p>
  */
 @Service
+@Slf4j
 public class GroovyScriptService
 {
 	private final GroovyShell groovyShell;
-	private static final Logger logger = LoggerFactory.getLogger(GroovyScriptService.class);
 
 	/**
 	 * The constructor for a {@link GroovyScriptService} object.
@@ -56,13 +55,13 @@ public class GroovyScriptService
 		try {
 			return script.invokeMethod(methodName, values);
 		} catch (ClassCastException e) {
-			logger.error("Type casting error encountered while executing method '{}': {}", methodName, e.getMessage());
+			log.error("Type casting error encountered while executing method '{}': {}", methodName, e.getMessage());
 			return null;
 		} catch (MissingMethodExceptionNoStack e) {
-			logger.error("Could not find method: {} with arguments {}", methodName, values, e);
+			log.error("Could not find method: {} with arguments {}", methodName, values, e);
 			return null;
 		} catch (Exception e) {
-			logger.error("Unexpected error during script execution for method: {}",methodName, e);
+			log.error("Unexpected error during script execution for method: {}",methodName, e);
 			return null;
 		}
 	}
