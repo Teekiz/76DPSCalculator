@@ -23,8 +23,8 @@ public class LoadoutScope implements Scope {
 		Integer loadoutID = loadoutIdStorage.get();
 
 		if (loadoutID == null) {
-			log.error("Loadout ID is not set in the thread-local context.");
-			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context for method: get().");
+			throw new IllegalStateException("Loadout ID is not set in the thread-local context for method: get().");
 		}
 
 		//if the scopedObjects does not contain a matching loadout.
@@ -32,38 +32,31 @@ public class LoadoutScope implements Scope {
 		Map<String, Object> scopedObjectMap = scopedObjects.get(loadoutID);
 
 		//if the loadout has does not have a bean of the matching name
-		if (scopedObjectMap != null)
+		if (!scopedObjectMap.containsKey(name))
 		{
 			Object object = objectFactory.getObject();
-
-			if (!scopedObjectMap.containsKey(name))
-			{
-				scopedObjectMap.put(name, object);
-			}
-			log.debug("Created new object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
-
+			scopedObjectMap.put(name, object);
 			destructionCallBacks.computeIfAbsent(loadoutID, id -> new HashMap<>())
 				.put(name, () -> {
 					if (object instanceof LoadoutScopeClearable)
 					{
 						((LoadoutScopeClearable) object).clear();
 					}
-			});
-
-			return scopedObjectMap.get(name);
+				});
+			log.info("Created new object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
 		}
 
-		return null;
+		return scopedObjectMap.get(name);
 	}
 
 	public Object remove(String name) {
 		Integer loadoutID = loadoutIdStorage.get();
 		if (loadoutID == null) {
-			log.error("Loadout ID is not set in the thread-local context.");
-			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context for method: remove().");
+			throw new IllegalStateException("Loadout ID is not set in the thread-local context for method: remove().");
 		}
 
-		log.debug("Removing object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
+		log.info("Removing object {} in loadout scope for ID {}. Hashcode: {}", name, loadoutID, System.identityHashCode(this));
 
 		// Get the scoped objects and destruction callbacks for this loadout
 		Map<String, Object> scopedObjectMap = scopedObjects.get(loadoutID);
@@ -96,8 +89,8 @@ public class LoadoutScope implements Scope {
 	{
 		Integer loadoutID = loadoutIdStorage.get();
 		if (loadoutID == null) {
-			log.error("Loadout ID is not set in the thread-local context.");
-			throw new IllegalStateException("Loadout ID is not set in the thread-local context.");
+			log.error("Loadout ID is not set in the thread-local context for method: registerDestructionCallback().");
+			throw new IllegalStateException("Loadout ID is not set in the thread-local context for method: registerDestructionCallback().");
 		}
 
 		destructionCallBacks.computeIfAbsent(loadoutID, k -> new HashMap<>())
