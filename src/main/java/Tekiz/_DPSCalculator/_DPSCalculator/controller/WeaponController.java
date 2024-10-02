@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/loadout/weapon")
+//@RequestMapping("api/loadout/weapon")
 public class WeaponController
 {
 	private final LoadoutManager loadoutManager;
