@@ -49,8 +49,6 @@ public class ModifierBoostTest
 	@Test
 	public void testModifierBoostMutations() throws IOException
 	{
-		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getMaxHP());
-
 		loadoutManager.getLoadout().getMutationManager().addMutation("ADRENALREACTION");
 		loadoutManager.getLoadout().getPlayerManager().getPlayer().setCurrentHP(98.0);
 		loadoutManager.getLoadout().getWeaponManager().setWeapon("10MMPISTOL");
@@ -58,8 +56,6 @@ public class ModifierBoostTest
 		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
 		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 33.9
 		//28 * (1 + 0.31 - 0.1) = 33.9 (33.88)
-		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getHealthPercentage());
-		System.out.println(loadoutManager.getLoadout().getPlayerManager().getPlayer().getMaxHP());
 		assertEquals(33.9, damageCalculationService.calculateOutgoingDamage());
 
 		loadoutManager.getLoadout().getPerkManager().addPerk("STRANGEINNUMBERS");

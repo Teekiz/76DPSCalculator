@@ -3,7 +3,6 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.io.IOException;
-import org.codehaus.groovy.tools.shell.IO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

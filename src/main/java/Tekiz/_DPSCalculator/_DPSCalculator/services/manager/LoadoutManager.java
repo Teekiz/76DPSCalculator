@@ -24,9 +24,14 @@ public class LoadoutManager
 {
 	@Setter
 	private int activeLoadout = 1;
-	@Autowired
 	private ApplicationContext context;
 	private final Map<Integer, Loadout> loadoutMap = new HashMap<>();
+
+	@Autowired
+	public LoadoutManager(ApplicationContext context)
+	{
+		this.context = context;
+	}
 
 	/**
 	 * Retrieves the current active {@link Loadout} based on the ID of the active loadout.
@@ -36,7 +41,6 @@ public class LoadoutManager
 	 */
 	public Loadout getLoadout()
 	{
-		log.info("New getLoadout() request made for id {}.", activeLoadout);
 		return loadoutMap.computeIfAbsent(activeLoadout,
 			id ->
 			{
@@ -54,8 +58,8 @@ public class LoadoutManager
 	public void deleteLoadout(Loadout loadout)
 	{
 		//makes sure that the ID being used is the correctly set.
+		log.info("Delete loadout ({}) called. Loadout size is: {}.", System.identityHashCode(loadout), loadoutMap.size());
 		int id = loadout.getLoadoutID();
-		log.info("New deleteLoadout() request made for id {}.", id);
 		LoadoutScope.loadoutIdStorage.set(id);
 		loadoutMap.remove(id);
 		context.getBean(LoadoutScope.class).remove(String.valueOf(id));
@@ -67,8 +71,8 @@ public class LoadoutManager
 	 */
 	@PreDestroy
 	public void deleteAllLoadouts() {
+		log.info("Delete all loadouts called. Loadout size is: {}.", loadoutMap.size());
 		for (Loadout loadout : loadoutMap.values()) {
-
 			//makes sure that the ID being used is the correctly set.
 			int id = loadout.getLoadoutID();
 			LoadoutScope.loadoutIdStorage.set(id);

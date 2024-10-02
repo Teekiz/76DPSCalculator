@@ -58,10 +58,10 @@ public class GroovyScriptService
 			log.error("Type casting error encountered while executing method '{}': {}", methodName, e.getMessage());
 			return null;
 		} catch (MissingMethodExceptionNoStack e) {
-			log.error("Could not find method: {} with arguments {}", methodName, values, e);
+			log.error("Could not find method: {} with arguments {} using script: {}", methodName, values, script, e);
 			return null;
 		} catch (Exception e) {
-			log.error("Unexpected error during script execution for method: {}",methodName, e);
+			log.error("Unexpected error during script execution for method: {} using script: {}", methodName, script, e);
 			return null;
 		}
 	}

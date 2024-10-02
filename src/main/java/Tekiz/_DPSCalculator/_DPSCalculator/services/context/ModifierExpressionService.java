@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.Expression;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
  * <p>If a modifier has a mix of conditional and unconditional effects, set the conditional effect to more context required and then create additional context for that object.</p>
  */
 @Service
+@Slf4j
 public class ModifierExpressionService
 {
 	private final ParsingService ParsingService;
@@ -48,7 +50,8 @@ public class ModifierExpressionService
 		{
 			return ParsingService.parseContext(expression);
 		}
-		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, 0);
+		log.error("Unable to parse expression: {}.", contextName);
+		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, 0.0);
 	}
 
 

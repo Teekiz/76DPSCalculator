@@ -1,8 +1,9 @@
 package scripts
 
-class testMethodScript extends Script
+class methodScript extends Script
 {
     def getAdrenalReactionValue(double hpPercentage) {
+        hpPercentage = Math.min(hpPercentage, 100.0)
         def adrenalReactionMap = [
                 (0.0) : 0.50,
                 (20.0) : 0.50,
