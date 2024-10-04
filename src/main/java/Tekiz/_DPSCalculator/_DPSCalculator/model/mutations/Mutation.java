@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.mutations;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Mutation
+public class Mutation implements Serializable
 {
 	//while a mutation may be a form of modifier, its role is more complex.
 	private final String name;

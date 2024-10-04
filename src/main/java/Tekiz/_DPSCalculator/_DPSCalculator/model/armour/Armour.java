@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import java.io.Serializable;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.Getter;
 /** Represents an armour piece that may be added to a user's loadout. */
 @Getter
 @AllArgsConstructor
-public class Armour
+public class Armour implements Serializable
 {
 	/** The name of the armour. The user will be able to see the given value. */
 	private String armourName;

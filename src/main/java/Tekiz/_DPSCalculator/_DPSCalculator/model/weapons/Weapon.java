@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import java.io.Serializable;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
  */
 @Getter
 @AllArgsConstructor
-public abstract class Weapon
+public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
 	/** The name of the weapon. The user will be able to see the given value. */

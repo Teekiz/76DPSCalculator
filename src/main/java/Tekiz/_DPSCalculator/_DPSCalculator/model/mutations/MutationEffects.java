@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
 
 @Getter
 @AllArgsConstructor
-public class MutationEffects<V> implements Modifier
+public class MutationEffects<V> implements Modifier, Serializable
 {
 	/**
 	 * The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}

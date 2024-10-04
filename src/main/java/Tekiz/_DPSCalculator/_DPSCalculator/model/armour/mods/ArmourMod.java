@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour.mods;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public abstract class ArmourMod
+public abstract class ArmourMod implements Serializable
 {
 	private String modName;
 	private ArmourPiece armourPiece;
