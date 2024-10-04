@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScope;
 import jakarta.annotation.PreDestroy;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class LoadoutManager
 {
 	@Setter
 	private int activeLoadout = 1;
-	private ApplicationContext context;
+	private final ApplicationContext context;
 	private final Map<Integer, Loadout> loadoutMap = new HashMap<>();
 
 	@Autowired
