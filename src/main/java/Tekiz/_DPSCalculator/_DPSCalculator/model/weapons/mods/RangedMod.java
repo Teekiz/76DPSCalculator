@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

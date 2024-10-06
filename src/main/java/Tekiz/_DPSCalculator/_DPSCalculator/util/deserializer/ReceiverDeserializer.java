@@ -1,16 +1,18 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.Expression;
 
 /**
  * A utility service used to allow a {@link JsonParser} to convert the name of receiver into an {@link Receiver} object.
  */
+@Slf4j
 public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 {
 	//todo - consider making this to mod deserializer
@@ -36,6 +38,7 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 	public Receiver deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException
 	{
 		String receiverName = jsonParser.getText();
+		log.debug("Deserializing receiver: '{}'", receiverName);
 		return modLoaderService.getReceiver(receiverName);
 	}
 }

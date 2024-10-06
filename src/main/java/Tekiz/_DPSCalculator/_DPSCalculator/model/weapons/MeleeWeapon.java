@@ -1,10 +1,10 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.HashMap;
+import lombok.Builder;
 import lombok.Getter;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 
@@ -12,7 +12,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
  * Represents a generic melee weapon that the user can add to their loadout.
  */
 @Getter
-@JsonDeserialize(builder = MeleeWeaponBuilder.class)
+//@JsonDeserialize(builder = MeleeWeaponBuilder.class)
 public class MeleeWeapon extends Weapon
 {
 	/**
@@ -25,6 +25,8 @@ public class MeleeWeapon extends Weapon
 	 * @param attackSpeed The {@link Double} value of the speed the weapon attacks at. Different weapons will have varying rate of fires.
 	 * @param criticalBonus The {@link Integer} value of the bonus to critical damage the weapon provides.Primarily used for VATS.
 	 */
+	@Builder
+	@JsonCreator
 	public MeleeWeapon(String weaponName, WeaponType weaponType, DamageType damageType, HashMap<Integer, Double> weaponDamageByLevel, int apCost, double attackSpeed, int criticalBonus)
 	{
 		super(weaponName, weaponType, damageType, weaponDamageByLevel, apCost, attackSpeed, criticalBonus);

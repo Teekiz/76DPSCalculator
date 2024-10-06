@@ -2,10 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeaponBuilder;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeaponBuilder;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,7 +31,15 @@ public class WeaponBuilderTest
 		weaponDamageMap.put(35, 24.0);
 		weaponDamageMap.put(45, 28.0);
 
-		RangedWeapon pistol = new RangedWeaponBuilder("10mm Pistol", WeaponType.PISTOL, DamageType.BALLISTIC, weaponDamageMap, 20, 0.67, 100).setAccuracy(20).build();
+		RangedWeapon pistol = RangedWeapon.builder()
+			.weaponName("10mm Pistol")
+			.weaponType(WeaponType.PISTOL)
+			.damageType(DamageType.BALLISTIC)
+			.weaponDamageByLevel(weaponDamageMap)
+			.apCost(20)
+			.attackSpeed(0.67)
+			.criticalBonus(100)
+			.build();
 		assertNotNull(pistol);
 		assertEquals("10mm Pistol", pistol.getWeaponName());
 		assertEquals(21, pistol.getWeaponDamageByLevel().get(25));
@@ -47,7 +53,15 @@ public class WeaponBuilderTest
 		weaponDamageMap.put(25, 28.0);
 		weaponDamageMap.put(35, 33.0);
 		weaponDamageMap.put(45, 40.0);
-		MeleeWeapon blade = new MeleeWeaponBuilder("Assaultron blade", WeaponType.ONEHANDED, DamageType.PHYSICAL, weaponDamageMap, 35, 1.14, 100).build();
+		MeleeWeapon blade = MeleeWeapon.builder()
+			.weaponName("Assaultron blade")
+			.weaponType(WeaponType.ONEHANDED)
+			.damageType(DamageType.PHYSICAL)
+			.weaponDamageByLevel(weaponDamageMap)
+			.apCost(35)
+			.attackSpeed(1.14)
+			.criticalBonus(100)
+			.build();
 
 		assertNotNull(blade);
 		assertEquals("Assaultron blade", blade.getWeaponName());

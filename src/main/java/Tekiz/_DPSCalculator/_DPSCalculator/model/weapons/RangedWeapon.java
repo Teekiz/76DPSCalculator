@@ -1,32 +1,45 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.RangedMod;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 
 /**
  * Represents a generic ranged weapon that the user can add to their loadout.
  */
 @Getter
-@JsonDeserialize(builder = RangedWeaponBuilder.class)
+//@JsonDeserialize(builder = RangedWeaponBuilder.class)
 public class RangedWeapon extends Weapon
 {
+	@JsonProperty("magazineSize")
 	private final int magazineSize;
+	@JsonProperty("fireRate")
 	private final int fireRate;
+	@JsonProperty("range")
 	private final int range;
+	@JsonProperty("accuracy")
 	private final int accuracy;
 
+	@JsonProperty("projectileCount")
 	private final int projectileCount;
+	@JsonProperty("rangedPenalty")
 	private final int rangedPenalty;
+	@JsonProperty("reloadTime")
 	private final double reloadTime;
+	@JsonProperty("attackDelay")
 	private final double attackDelay;
+
+	@JsonDeserialize(using = ReceiverDeserializer.class)
+	@JsonProperty("receiver")
 	private Receiver receiver;
 
 	/**
@@ -48,7 +61,8 @@ public class RangedWeapon extends Weapon
 	 * @param attackDelay The time it takes for a weapon to be usable between each attack.
 	 * @param receiver The {@link Receiver} mod slot of the weapon.
 	 */
-	@Autowired
+	@Builder
+	@JsonCreator
 	public RangedWeapon(String weaponName, WeaponType weaponType, DamageType damageType, HashMap<Integer, Double> weaponDamageByLevel, int apCost,
 						double attackSpeed, int criticalBonus,
 						int magazineSize, int fireRate, int range, int accuracy,
