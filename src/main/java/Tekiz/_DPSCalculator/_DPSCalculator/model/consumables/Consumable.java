@@ -6,11 +6,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionSerializer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
@@ -22,7 +23,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Each consumable has a condition that must be met before any effects are applied.
  * @param <V> The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
-@AllArgsConstructor
+
 @Getter
 public class Consumable<V> implements Modifier
 {
@@ -50,7 +51,8 @@ public class Consumable<V> implements Modifier
 	 * {@link ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
 	 * is used to check the condition. If a condition string is not included, the consumable will always be used.
 	 */
-	@JsonProperty("conditionString")
+
+	@JsonSerialize(using = ExpressionSerializer.class)
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private final Expression condition;
 
@@ -60,4 +62,22 @@ public class Consumable<V> implements Modifier
 	 * {@link ModifierExpressionService} to determine the appropriate value.
 	 */
 	private final HashMap<ModifierTypes, V> effects;
+
+
+	/**
+	 * The constructor for a {@link Consumable} object.
+	 */
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+	public Consumable(@JsonProperty("name") String name, @JsonProperty("consumableType") ConsumableType consumableType, @JsonProperty("addictionType") AddictionType addictionType,
+					  @JsonProperty("modifierSource") ModifierSource modifierSource, @JsonProperty("conditionString") Expression condition,
+					  @JsonProperty("effects") HashMap<ModifierTypes, V> effects)
+	{
+		this.name = name;
+		this.consumableType = consumableType;
+		this.addictionType = addictionType;
+		this.modifierSource = modifierSource;
+		this.condition = condition;
+		this.effects = effects;
+	}
+
 }
