@@ -4,12 +4,16 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionSerializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.PerkEffectsDeserializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.io.Serializable;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -22,9 +26,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * @param <V> The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 
-@Data
-@AllArgsConstructor
-public class Perk<V> implements Modifier, Serializable
+@Getter
+public class Perk<V> implements Modifier
 {
 	/** The name of the perk. The user will be able to see the given value. */
 	private final String name;
@@ -49,7 +52,7 @@ public class Perk<V> implements Modifier, Serializable
 	 * {@link ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
 	 * is used to check the condition. If a condition string is not included, the perk will always be used.
 	 */
-	@JsonProperty("conditionString")
+	@JsonSerialize(using = ExpressionSerializer.class)
 	@JsonDeserialize(using = ExpressionDeserializer.class)
 	private final Expression condition;
 
@@ -59,6 +62,21 @@ public class Perk<V> implements Modifier, Serializable
 	 * {@link ModifierExpressionService} to determine the appropriate value.
 	 */
 	private final HashMap<Integer, HashMap<ModifierTypes, V>> effects;
+
+	/**
+	 * The constructor for a {@link Perk} object.
+	 */
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+	public Perk(@JsonProperty("name") String name, @JsonProperty("description") String description,
+				@JsonProperty("modifierSource") ModifierSource modifierSource, @JsonProperty("conditionString") Expression condition,
+				@JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, V>> effects)
+	{
+		this.name = name;
+		this.description = description;
+		this.modifierSource = modifierSource;
+		this.condition = condition;
+		this.effects = effects;
+	}
 
 	/**
 	 * Sets the rank of the perk, ensuring that it remains within valid bounds.
@@ -80,6 +98,7 @@ public class Perk<V> implements Modifier, Serializable
 	 * @return A map of {@link ModifierTypes} to their corresponding values for the current rank.
 	 *         Returns {@code null} if no effects are defined.
 	 */
+	@JsonIgnore
 	public HashMap<ModifierTypes, V> getEffects()
 	{
 		if (effects != null)
@@ -87,5 +106,14 @@ public class Perk<V> implements Modifier, Serializable
 			return effects.get(rank);
 		}
 		return null;
+	}
+	/**
+	 * A method used for deserialization by Jackson. As getEffects() is defined in {@link Modifier}, this method overwrites the default getter.
+	 * @return A {@link HashMap} of {@link Integer} and {@link HashMap} containing all the perk effects.
+	 */
+	@JsonGetter("effects")
+	public HashMap<Integer, HashMap<ModifierTypes, V>> getJsonEffects()
+	{
+		return effects;
 	}
 }
