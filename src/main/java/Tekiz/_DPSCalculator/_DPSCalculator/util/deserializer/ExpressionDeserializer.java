@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
  * A utility service used to allow a {@link JsonParser} to convert a {@link String} object into an {@link Expression} object.
  */
+@Slf4j
 public class ExpressionDeserializer extends JsonDeserializer<Expression>
 {
 	private final SpelExpressionParser parser = new SpelExpressionParser();
@@ -25,6 +27,7 @@ public class ExpressionDeserializer extends JsonDeserializer<Expression>
 	public Expression deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException
 	{
 		String conditionString = jsonParser.getText();
+		log.debug("Deserializing expression: '{}'", conditionString);
 		return parser.parseExpression(conditionString);
 	}
 }
