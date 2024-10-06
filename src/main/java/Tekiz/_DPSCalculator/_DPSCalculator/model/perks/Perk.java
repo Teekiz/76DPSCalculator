@@ -5,7 +5,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionDeserializer;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionSerializer;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.PerkEffectsDeserializer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
