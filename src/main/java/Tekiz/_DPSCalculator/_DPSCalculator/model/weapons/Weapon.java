@@ -2,19 +2,19 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Represents a generic weapon that the user can add to their loadout.
  */
 @Getter
-@AllArgsConstructor
+@SuperBuilder
 public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
@@ -51,5 +51,6 @@ public abstract class Weapon implements Serializable
 	 * @param weaponLevel The level used to retrieve the provided damage value by corresponding {@code weaponDamageByLevel} key.
 	 * @return The {@code weaponDamageByLevel} corresponding damage value.
 	 */
+	@JsonIgnore
 	public abstract double getBaseDamage(int weaponLevel);
 }
