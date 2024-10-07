@@ -1,5 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
@@ -7,6 +9,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
@@ -39,6 +43,10 @@ public class ObjectSerializationTest
 	WeaponLoaderService weaponLoaderService;
 	@Autowired
 	WeaponFactory weaponFactory;
+	@Autowired
+	ArmourLoaderService armourLoaderService;
+	@Autowired
+	ArmourModLoaderService armourModLoaderService;
 	static ObjectMapper objectMapper;
 
 	@BeforeAll
@@ -146,5 +154,24 @@ public class ObjectSerializationTest
 		Environment newEnvironment = objectMapper.readValue(jsonEnvironment, Environment.class);
 		assertNotNull(newEnvironment);
 		log.debug("Environment object deserialized: {}.", newEnvironment);
+	}
+
+	@Test
+	public void serializeAndDeserializeArmour() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeArmour in ObjectSerializationTest.", System.lineSeparator());
+		Armour armour = armourLoaderService.getArmour("WOODCHEST");
+		Material material = armourModLoaderService.getMaterial("BOILEDLEATHERCHEST");
+		armour.setMod(material);
+		assertNotNull(armour);
+		log.debug("Armour object deserialized: {}.", armour);
+
+		String jsonArmour = objectMapper.writeValueAsString(armour);
+		assertNotNull(jsonArmour);
+		log.debug("Armour object serialized: {}.", jsonArmour);
+
+		Armour newArmour = objectMapper.readValue(jsonArmour, Armour.class);
+		assertNotNull(newArmour);
+		log.debug("Armour object deserialized: {}.", newArmour);
 	}
 }
