@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
@@ -12,8 +13,10 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,9 +39,14 @@ public class ObjectSerializationTest
 	WeaponLoaderService weaponLoaderService;
 	@Autowired
 	WeaponFactory weaponFactory;
+	static ObjectMapper objectMapper;
 
-	ObjectMapper objectMapper = new ObjectMapper();
-
+	@BeforeAll
+	public static void setup() {
+		objectMapper = new ObjectMapper();
+		//this is because environment has yet to be created.
+		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	}
 	@Test
 	public void serializeAndDeserializeConsumable() throws IOException
 	{
@@ -122,5 +130,21 @@ public class ObjectSerializationTest
 		Weapon newWeapon = weaponFactory.createWeapon(weaponNode);
 		assertNotNull(newWeapon);
 		log.debug("Weapon object deserialized: {}.", newWeapon);
+	}
+
+	@Test
+	public void serializeAndDeserializeEnvironment() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeEnvironment in ObjectSerializationTest.", System.lineSeparator());
+		Environment environment = new Environment();
+		assertNotNull(environment);
+
+		String jsonEnvironment = objectMapper.writeValueAsString(environment);
+		assertNotNull(jsonEnvironment);
+		log.debug("Environment object serialized: {}.", jsonEnvironment);
+
+		Environment newEnvironment = objectMapper.readValue(jsonEnvironment, Environment.class);
+		assertNotNull(newEnvironment);
+		log.debug("Environment object deserialized: {}.", newEnvironment);
 	}
 }

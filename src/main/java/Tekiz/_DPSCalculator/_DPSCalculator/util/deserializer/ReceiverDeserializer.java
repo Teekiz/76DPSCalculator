@@ -45,9 +45,6 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 
 		try
 		{
-			//todo - delete
-			System.out.println(receiverNode);
-
 			if (receiverNode.isTextual())
 			{
 				String receiverName = receiverNode.asText();

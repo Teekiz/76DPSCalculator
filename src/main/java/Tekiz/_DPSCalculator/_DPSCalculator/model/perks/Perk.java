@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import org.springframework.expression.Expression;
@@ -28,7 +27,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * @param <V> The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 
-@Getter
 @Value
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Perk<V> implements Modifier

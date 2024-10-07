@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.io.Serializable;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 
 /** Represents a mutation that a player character might have. */
-@Getter
 @Value
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Mutation implements Serializable
