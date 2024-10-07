@@ -1,8 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -23,6 +25,8 @@ public class ObjectSerializationTest
 	ConsumableLoaderService consumableLoaderService;
 	@Autowired
 	PerkLoaderService perkLoaderService;
+	@Autowired
+	MutationLoaderService mutationLoaderService;
 
 	ObjectMapper objectMapper = new ObjectMapper();
 
@@ -55,10 +59,25 @@ public class ObjectSerializationTest
 		assertNotNull(jsonPerk);
 		log.debug("Perk object serialized: {}.", jsonPerk);
 
-		System.out.println(jsonPerk);
-
 		Perk newPerk = objectMapper.readValue(jsonPerk, Perk.class);
 		assertNotNull(newPerk);
 		log.debug("Perk object deserialized: {}.", newPerk);
+	}
+
+	@Test
+	public void serializeAndDeserializeMutation() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeMutation in ObjectSerializationTest.", System.lineSeparator());
+		Mutation mutation = mutationLoaderService.getMutation("ADRENALREACTION");
+		assertNotNull(mutation);
+		log.debug("Mutation object deserialized: {}.", mutation);
+
+		String jsonMutation = objectMapper.writeValueAsString(mutation);
+		assertNotNull(jsonMutation);
+		log.debug("Mutation object serialized: {}.", jsonMutation);
+
+		Mutation newMutation = objectMapper.readValue(jsonMutation, Mutation.class);
+		assertNotNull(newMutation);
+		log.debug("Mutation object deserialized: {}.", newMutation);
 	}
 }
