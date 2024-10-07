@@ -3,9 +3,14 @@ package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +32,10 @@ public class ObjectSerializationTest
 	PerkLoaderService perkLoaderService;
 	@Autowired
 	MutationLoaderService mutationLoaderService;
+	@Autowired
+	WeaponLoaderService weaponLoaderService;
+	@Autowired
+	WeaponFactory weaponFactory;
 
 	ObjectMapper objectMapper = new ObjectMapper();
 
@@ -79,5 +88,39 @@ public class ObjectSerializationTest
 		Mutation newMutation = objectMapper.readValue(jsonMutation, Mutation.class);
 		assertNotNull(newMutation);
 		log.debug("Mutation object deserialized: {}.", newMutation);
+	}
+
+	@Test
+	public void serializeAndDeserializePlayer() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializePlayer in ObjectSerializationTest.", System.lineSeparator());
+		Player player = new Player();
+		assertNotNull(player);
+
+		String jsonPlayer = objectMapper.writeValueAsString(player);
+		assertNotNull(jsonPlayer);
+		log.debug("Player object serialized: {}.", jsonPlayer);
+
+		Player newPlayer = objectMapper.readValue(jsonPlayer, Player.class);
+		assertNotNull(newPlayer);
+		log.debug("Player object deserialized: {}.", newPlayer);
+	}
+
+	@Test
+	public void serializeAndDeserializeWeapon() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
+		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
+		assertNotNull(weapon);
+		log.debug("Weapon object deserialized: {}.", weapon);
+
+		String jsonWeapon = objectMapper.writeValueAsString(weapon);
+		assertNotNull(jsonWeapon);
+		log.debug("Weapon object serialized: {}.", jsonWeapon);
+
+		JsonNode weaponNode = objectMapper.readTree(jsonWeapon);
+		Weapon newWeapon = weaponFactory.createWeapon(weaponNode);
+		assertNotNull(newWeapon);
+		log.debug("Weapon object deserialized: {}.", newWeapon);
 	}
 }

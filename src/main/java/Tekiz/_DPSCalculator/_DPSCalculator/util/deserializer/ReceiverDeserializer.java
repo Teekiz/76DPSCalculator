@@ -5,6 +5,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderSe
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.Expression;
@@ -17,6 +19,7 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 {
 	//todo - consider making this to mod deserializer
 	private final ModLoaderService modLoaderService;
+	private final ObjectMapper objectMapper;
 
 	/**
 	 * The constructor for a {@link ReceiverDeserializer} object.
@@ -25,6 +28,7 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 	public ReceiverDeserializer(ModLoaderService modLoaderService)
 	{
 		this.modLoaderService = modLoaderService;
+		this.objectMapper = new ObjectMapper();
 	}
 
 	 /**
@@ -37,8 +41,28 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 	@Override
 	public Receiver deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException
 	{
-		String receiverName = jsonParser.getText();
-		log.debug("Deserializing receiver: '{}'", receiverName);
-		return modLoaderService.getReceiver(receiverName);
+		JsonNode receiverNode = jsonParser.getCodec().readTree(jsonParser);
+
+		try
+		{
+			//todo - delete
+			System.out.println(receiverNode);
+
+			if (receiverNode.isTextual())
+			{
+				String receiverName = receiverNode.asText();
+				log.debug("Deserializing receiver: '{}'", receiverName);
+				return modLoaderService.getReceiver(receiverName);
+			}
+			else
+			{
+				log.debug("Deserializing receiver and creating object: '{}'", receiverNode.get("name").asText());
+				return objectMapper.treeToValue(receiverNode, Receiver.class);
+			}
+		} catch (Exception e)
+		{
+			log.error("Cannot deserialize receiver as node: {}. {}", receiverNode, e.getMessage(), e);
+			return null;
+		}
 	}
 }

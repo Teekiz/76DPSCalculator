@@ -28,7 +28,7 @@ public class Receiver extends RangedMod
 	int accuracyChange;
 	@JsonProperty("apChange")
 	double apChange;
-	@JsonProperty("isPrime")
+	@JsonProperty("prime")
 	boolean isPrime;
 	@JsonProperty("ammoOverrideType")
 	String ammoOverrideType;

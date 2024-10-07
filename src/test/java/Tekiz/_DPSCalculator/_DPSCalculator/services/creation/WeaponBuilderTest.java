@@ -4,11 +4,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -18,9 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class WeaponBuilderTest
 {
-	@Autowired
-	private WeaponFactory weaponFactory;
-
 	@Test
 	void testPistolBuilderWithOptionalData() throws IOException
 	{
