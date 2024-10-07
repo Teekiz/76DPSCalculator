@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -25,6 +27,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  */
 
 @Getter
+@Value
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Consumable<V> implements Modifier
 {
 	//todo - possibly add in condition check
@@ -32,19 +36,23 @@ public class Consumable<V> implements Modifier
 		Addiction type is used to determine if the effect should stack or not.
 	 */
 	/** The name of the consumable. The user will be able to see the given value. */
-	private final String name;
+	@JsonProperty("name")
+	String name;
 
 	/** The type of consumable. This is used when only a user may use only a limited amount of one type of consumable (e.g. chems). */
-	private final ConsumableType consumableType;
+	@JsonProperty("consumableType")
+	ConsumableType consumableType;
 
 	/** The addition type that the consumable causes. This is used to check if an addiction has been met. */
-	private final AddictionType addictionType;
+	@JsonProperty("addictionType")
+	AddictionType addictionType;
 
 	/**
 	 * The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}
 	 * to apply a modification to the consumable effects if a corresponding effect is available.
 	 */
-	private final ModifierSource modifierSource;
+	@JsonProperty("modifierSource")
+	ModifierSource modifierSource;
 
 	/**
 	 * The condition required to use the consumable. If the condition is not met, the effects will not be applied.
@@ -54,30 +62,14 @@ public class Consumable<V> implements Modifier
 
 	@JsonSerialize(using = ExpressionSerializer.class)
 	@JsonDeserialize(using = ExpressionDeserializer.class)
-	private final Expression condition;
+	@JsonProperty("conditionString")
+	Expression condition;
 
 	/**
 	 * The effects of the consumable. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
 	 * If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
 	 * {@link ModifierExpressionService} to determine the appropriate value.
 	 */
-	private final HashMap<ModifierTypes, V> effects;
-
-
-	/**
-	 * The constructor for a {@link Consumable} object.
-	 */
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-	public Consumable(@JsonProperty("name") String name, @JsonProperty("consumableType") ConsumableType consumableType, @JsonProperty("addictionType") AddictionType addictionType,
-					  @JsonProperty("modifierSource") ModifierSource modifierSource, @JsonProperty("conditionString") Expression condition,
-					  @JsonProperty("effects") HashMap<ModifierTypes, V> effects)
-	{
-		this.name = name;
-		this.consumableType = consumableType;
-		this.addictionType = addictionType;
-		this.modifierSource = modifierSource;
-		this.condition = condition;
-		this.effects = effects;
-	}
-
+	@JsonProperty("effects")
+	HashMap<ModifierTypes, V> effects;
 }

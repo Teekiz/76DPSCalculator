@@ -12,7 +12,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
+import lombok.experimental.NonFinal;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -26,25 +29,31 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  */
 
 @Getter
+@Value
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Perk<V> implements Modifier
 {
 	/** The name of the perk. The user will be able to see the given value. */
-	private final String name;
+	@JsonProperty("name")
+	String name;
 
 	/**
 	 * The current rank of the perk. This corresponds to the effects given.
 	 * The set rank cannot be below 1 or above the highest rank of effects.
 	 */
-	private int rank;
+	@NonFinal
+	int rank;
 
 	/** The description of the effects a perk provides. */
-	private final String description;
+	@JsonProperty("description")
+	String description;
 
 	/**
 	 * The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}
 	 * to apply a modification to the perks effects if a corresponding effect is available.
 	 */
-	private final ModifierSource modifierSource;
+	@JsonProperty("modifierSource")
+	ModifierSource modifierSource;
 
 	/**
 	 * The condition required to use the perk. If the condition is not met, the effects will not be applied.
@@ -53,29 +62,16 @@ public class Perk<V> implements Modifier
 	 */
 	@JsonSerialize(using = ExpressionSerializer.class)
 	@JsonDeserialize(using = ExpressionDeserializer.class)
-	private final Expression condition;
+	@JsonProperty("conditionString")
+	Expression condition;
 
 	/**
 	 * The effects of the perk. Each perk can have multiple effects that will be applied per rank. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
 	 * If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
 	 * {@link ModifierExpressionService} to determine the appropriate value.
 	 */
-	private final HashMap<Integer, HashMap<ModifierTypes, V>> effects;
-
-	/**
-	 * The constructor for a {@link Perk} object.
-	 */
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-	public Perk(@JsonProperty("name") String name, @JsonProperty("description") String description,
-				@JsonProperty("modifierSource") ModifierSource modifierSource, @JsonProperty("conditionString") Expression condition,
-				@JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, V>> effects)
-	{
-		this.name = name;
-		this.description = description;
-		this.modifierSource = modifierSource;
-		this.condition = condition;
-		this.effects = effects;
-	}
+	@JsonProperty("effects")
+	HashMap<Integer, HashMap<ModifierTypes, V>> effects;
 
 	/**
 	 * Sets the rank of the perk, ensuring that it remains within valid bounds.
