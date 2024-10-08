@@ -4,10 +4,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourModLoaderService;
@@ -19,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
+import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -47,6 +50,8 @@ public class ObjectSerializationTest
 	ArmourLoaderService armourLoaderService;
 	@Autowired
 	ArmourModLoaderService armourModLoaderService;
+	@Autowired
+	LoadoutFactory loadoutFactory;
 	static ObjectMapper objectMapper;
 
 	@BeforeAll
@@ -173,5 +178,36 @@ public class ObjectSerializationTest
 		Armour newArmour = objectMapper.readValue(jsonArmour, Armour.class);
 		assertNotNull(newArmour);
 		log.debug("Armour object deserialized: {}.", newArmour);
+	}
+
+	@Test
+	public void serializeAndDeserializeLoadout() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeLoadout in ObjectSerializationTest.", System.lineSeparator());
+		Loadout loadout = loadoutFactory.createNewLoadout();
+		assertNotNull(loadout);
+		log.debug("Loadout object deserialized: {}.", loadout);
+
+		String jsonLoadout = objectMapper.writeValueAsString(loadout);
+		assertNotNull(jsonLoadout);
+		log.debug("Loadout object serialized: {}.", jsonLoadout);
+
+		Loadout newLoadout = objectMapper.readValue(jsonLoadout, Loadout.class);
+		assertNotNull(newLoadout);
+		log.debug("Loadout object deserialized: {}.", newLoadout);
+	}
+
+	//todo - delete me
+	@Test
+	public void deleteMeTest() throws IOException
+	{
+		HashMap<Consumable, Boolean> hm = new HashMap<>();
+		Consumable consumable = consumableLoaderService.getConsumable("TESTEVENT");
+		hm.put(consumable, true);
+		String jsonhm = objectMapper.writeValueAsString(hm);
+		System.out.println(jsonhm);
+
+		HashMap<Consumable, Boolean> nhm = objectMapper.readValue(jsonhm, HashMap.class);
+		System.out.println(nhm);
 	}
 }

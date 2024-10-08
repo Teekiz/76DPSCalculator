@@ -7,38 +7,46 @@ import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.LoadoutDeserializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
-import lombok.Getter;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
+import lombok.Value;
+import lombok.experimental.NonFinal;
 
 /**
  * Represents a loadout.
  */
-@Getter
-@Service
+@Value
+@JsonDeserialize(using = LoadoutDeserializer.class)
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Loadout implements Serializable
 {
-	//@Autowired
-	private Weapon weapon;
-	private final HashMap<Perk, Boolean> perks;
-	private final HashMap<Consumable, Boolean> consumables;
-	private final Set<Armour> armour;
-	private final Player player;
-	private final Environment environment;
-	private final Set<Mutation> mutations;
+	@NonFinal
+	@Setter
+	@JsonProperty("weapon")
+	Weapon weapon;
 
-	public Loadout(Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
-				   Set<Armour> armour, Player player,
-				   Environment environment, Set<Mutation> mutations)
-	{
-		this.weapon = weapon;
-		this.perks = perks;
-		this.consumables = consumables;
-		this.armour = armour;
-		this.player = player;
-		this.environment = environment;
-		this.mutations = mutations;
-	}
+	@JsonProperty("perks")
+	HashMap<Perk, Boolean> perks;
+
+	@JsonProperty("consumables")
+	HashMap<Consumable, Boolean> consumables;
+
+	@JsonProperty("armour")
+	Set<Armour> armour;
+
+	@JsonProperty("player")
+	Player player;
+
+	@JsonProperty("environment")
+	Environment environment;
+
+	@JsonProperty("mutations")
+	Set<Mutation> mutations;
 }
