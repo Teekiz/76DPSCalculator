@@ -8,6 +8,7 @@ import java.util.Map;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.expression.Expression;
@@ -30,20 +31,17 @@ import org.springframework.stereotype.Service;
 public class ParsingService
 {
 	private final ExpressionParser parser;
-	private final LoadoutManager loadoutManager;
 	private final ApplicationContext applicationContext;
 
 	/**
 	 * The constructor for a {@link ParsingService} object.
 	 * @param parser The SpEL {@link ExpressionParser} used for parsing string expressions.
-	 * @param loadoutManager The {@link LoadoutManager} used to retrieve the current loadout.
 	 * @param applicationContext The Spring {@link ApplicationContext} for resolving beans.
 	 */
 	@Autowired
-	public ParsingService(ExpressionParser parser, LoadoutManager loadoutManager, ApplicationContext applicationContext)
+	public ParsingService(ExpressionParser parser, ApplicationContext applicationContext)
 	{
 		this.parser = parser;
-		this.loadoutManager = loadoutManager;
 		this.applicationContext = applicationContext;
 	}
 
@@ -51,9 +49,14 @@ public class ParsingService
 	 * A method that retrieves the loadout currently in use.
 	 * @return The loadout to be used.
 	 */
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
 	public Loadout getCurrentLoadout()
 	{
-		return loadoutManager.getLoadout();
+		return getLoadoutManager().getActiveLoadout();
 	}
 
 	/**
@@ -66,10 +69,10 @@ public class ParsingService
 		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
 		Loadout loadout = getCurrentLoadout();
 
-		context.setVariable("player", loadout.getPlayerManager().getPlayer());
-		context.setVariable("weapon", loadout.getWeaponManager().getCurrentWeapon());
+		context.setVariable("player", loadout.getPlayer());
+		context.setVariable("weapon", loadout.getWeapon());
 
-		if (loadout.getWeaponManager().getCurrentWeapon() == null) {
+		if (loadout.getWeapon() == null) {
 			log.error("Warning: Weapon is null in context");
 		}
 

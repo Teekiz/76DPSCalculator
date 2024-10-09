@@ -7,16 +7,14 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
-import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
-import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +22,10 @@ import org.springframework.stereotype.Service;
  * A service used to manage {@link Perk} objects.
  */
 @Service
-@Scope(scopeName = "loadout")
 @Getter
 @Slf4j
-public class PerkManager implements LoadoutScopeClearable
+public class PerkManager
 {
-	private HashMap<Perk, Boolean> perks;
 	private final PerkLoaderService perkLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -43,16 +39,23 @@ public class PerkManager implements LoadoutScopeClearable
 	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.perks = new HashMap();
 		this.perkLoaderService = perkLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
-
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
+	public HashMap<Perk, Boolean> getPerks()
+	{
+		return getLoadoutManager().getActiveLoadout().getPerks();
+	}
 	//when a perk is added - it is automatically added to the effects.
 	public void addPerk(String perkName) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
-		perks.put(perk, modifierConditionLogic.evaluateCondition(perk));
+		getPerks().put(perk, modifierConditionLogic.evaluateCondition(perk));
 
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been added");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
@@ -61,14 +64,14 @@ public class PerkManager implements LoadoutScopeClearable
 	//todo - consider changing from different perkNames (as the list doesn't match)
 	public void removePerk(String perkName) throws IOException
 	{
-		Perk perk = perks.keySet().stream()
+		Perk perk = getPerks()
+			.keySet().stream()
 			.filter(key -> key.getName().equals(perkName))
 			.findFirst()
 			.orElse(null);
 		if (perk != null)
 		{
-			perks.remove(perk);
-
+			getPerks().remove(perk);
 			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been removed");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
@@ -81,7 +84,7 @@ public class PerkManager implements LoadoutScopeClearable
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
-		for (Map.Entry<Perk, Boolean> entry : perks.entrySet())
+		for (Map.Entry<Perk, Boolean> entry : getPerks().entrySet())
 		{
 			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
 			if (entry.getValue() != newValue)
@@ -89,17 +92,5 @@ public class PerkManager implements LoadoutScopeClearable
 				entry.setValue(newValue);
 			}
 		}
-	}
-
-	/**
-	 * A method used during the cleanup of this service.
-	 */
-	@PreDestroy
-	public void clear()
-	{
-		if (this.perks != null) {
-			this.perks.clear();
-		}
-		this.perks = null;
 	}
 }

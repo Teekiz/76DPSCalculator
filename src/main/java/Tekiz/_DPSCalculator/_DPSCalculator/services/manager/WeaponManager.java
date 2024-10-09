@@ -2,31 +2,27 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
-import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.RangedMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 
 /**
  * A service used to manage {@link Weapon} objects.
  */
 @Service
-@Scope(scopeName = "loadout")
 @Getter
 @Slf4j
-public class WeaponManager implements LoadoutScopeClearable
+public class WeaponManager
 {
-	private Weapon currentWeapon;
 	private final WeaponLoaderService weaponLoaderService;
 	private final ModLoaderService modLoaderService;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -45,7 +41,15 @@ public class WeaponManager implements LoadoutScopeClearable
 		this.modLoaderService = modLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
-
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
+	public Weapon getWeapon()
+	{
+		return getLoadoutManager().getActiveLoadout().getWeapon();
+	}
 	/**
 	 * Loads a weapon by its name and sets it as the current weapon.
 	 * If the weapon is successfully loaded, a {@link WeaponChangedEvent} is published.
@@ -55,19 +59,18 @@ public class WeaponManager implements LoadoutScopeClearable
 	 */
 	public synchronized void setWeapon(String weaponName) throws IOException
 	{
-		Weapon loadedWeapon = weaponLoaderService.getWeapon(weaponName);
-		if (loadedWeapon != null)
+		Weapon newWeapon = weaponLoaderService.getWeapon(weaponName);
+		if (newWeapon != null)
 		{
-			currentWeapon = loadedWeapon;
-			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(this.currentWeapon, "Weapon has been set.");
-			log.debug("WeaponChangedEvent has been created for weapon {}.", this.currentWeapon);
+			getLoadoutManager().getActiveLoadout().setWeapon(newWeapon);
+			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(newWeapon, "Weapon has been set.");
+			log.debug("WeaponChangedEvent has been created for weapon {}.", newWeapon);
 			applicationEventPublisher.publishEvent(weaponChangedEvent);
 		}
 		else {
 			log.error("Weapon loading failed for: " + weaponName);
 		}
 	}
-
 	/**
 	 * Modifies the current weapon by applying a specified modification (mod),
 	 * such as changing the receiver of a ranged weapon. After modification, a {@link WeaponChangedEvent} is published.
@@ -78,7 +81,7 @@ public class WeaponManager implements LoadoutScopeClearable
 	 */
 	public synchronized void modifyWeapon(String modName, ModType modType) throws IOException
 	{
-		Weapon weapon = this.currentWeapon;
+		Weapon weapon = getWeapon();
 		if (weapon instanceof RangedWeapon)
 		{
 			switch (modType)
@@ -88,19 +91,10 @@ public class WeaponManager implements LoadoutScopeClearable
 				}
 			}
 		}
-		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(this.currentWeapon, "Weapon has been modified.");
-		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", this.currentWeapon);
+		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon, "Weapon has been modified.");
+		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", weapon);
 		applicationEventPublisher.publishEvent(weaponChangedEvent);
 		//todo - create
 		//else if (weapon instanceof MeleeWeapon)
-	}
-
-	/**
-	 * A method used during the cleanup of this service.
-	 */
-	@PreDestroy
-	public void clear()
-	{
-		this.currentWeapon = null;
 	}
 }

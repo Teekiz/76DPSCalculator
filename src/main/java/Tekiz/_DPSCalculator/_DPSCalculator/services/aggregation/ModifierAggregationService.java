@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,11 +21,11 @@ import org.springframework.stereotype.Service;
  * @param <V>  The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 @Service
+@Slf4j
 public class ModifierAggregationService<V>
 {
 	private final ModifierExpressionService modifierExpressionService;
 	private final ModifierBoostService modifierBoostService;
-	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for the ModifierAggregationService.
@@ -34,13 +36,16 @@ public class ModifierAggregationService<V>
 	 * 		{@link Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource}.
 	 */
 	@Autowired
-	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService, LoadoutManager loadoutManager)
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService)
 	{
 		this.modifierExpressionService = modifierExpressionService;
 		this.modifierBoostService = modifierBoostService;
-		this.loadoutManager = loadoutManager;
 	}
-
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
 	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
@@ -48,11 +53,12 @@ public class ModifierAggregationService<V>
 	 */
 	public HashMap<Modifier, Boolean> getAllModifiers()
 	{
-		Loadout loadout = loadoutManager.getLoadout();
+		Loadout loadout = getLoadoutManager().getActiveLoadout();
 		HashMap<Modifier, Boolean> modifiers = new HashMap<>();
-		modifiers.putAll(loadout.getPerkManager().getPerks());
-		modifiers.putAll(loadout.getConsumableManager().getConsumables());
-		modifiers.putAll(loadout.getMutationManager().getMutationModifiers());
+		modifiers.putAll(loadout.getPerks());
+		modifiers.putAll(loadout.getConsumables());
+		loadout.getMutations().forEach(mutation ->
+			modifiers.putAll(mutation.aggregateMutationEffects()));
 		applyAdditionalContext(modifiers);
 
 		return modifiers;

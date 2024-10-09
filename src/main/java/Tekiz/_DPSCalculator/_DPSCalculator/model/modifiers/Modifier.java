@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import java.io.Serializable;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
@@ -18,7 +19,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
  * @param <V> The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 
-public interface Modifier<V>
+public interface Modifier<V> extends Serializable
 {
 	/**
 	 * Retrieves the source of the modifier, indicating where it originates from (e.g., PERK, CONSUMABLE). This is used by

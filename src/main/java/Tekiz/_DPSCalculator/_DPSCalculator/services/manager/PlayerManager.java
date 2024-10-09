@@ -2,14 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
-import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MinorStatCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
-import jakarta.annotation.PreDestroy;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +15,9 @@ import org.springframework.stereotype.Service;
  * A service used to manage {@link Player} objects.
  */
 @Service
-@Scope(scopeName = "loadout")
 @Getter
-public class PlayerManager implements LoadoutScopeClearable
+public class PlayerManager
 {
-	private Player player;
 	private final MinorStatCalculationService minorStatCalculationService;
 	private final SpecialBonusCalculationService specialBonusCalculationService;
 
@@ -31,26 +27,23 @@ public class PlayerManager implements LoadoutScopeClearable
 	@Autowired
 	public PlayerManager(MinorStatCalculationService minorStatCalculationService, SpecialBonusCalculationService specialBonusCalculationService)
 	{
-		this.player = new Player();
 		this.minorStatCalculationService = minorStatCalculationService;
 		this.specialBonusCalculationService = specialBonusCalculationService;
 	}
-
-	/**
-	 * A method used during the cleanup of this service.
-	 */
-
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
+	public Player getPlayer()
+	{
+		return getLoadoutManager().getActiveLoadout().getPlayer();
+	}
 	@EventListener
 	public void onModifierChangedEvent(ModifierChangedEvent event)
 	{
 		int enduranceBonus = specialBonusCalculationService.getSpecialBonus(Specials.ENDURANCE);
 		double healthBonus = minorStatCalculationService.calculateHealthPointBonuses();
-		player.setMaxHP(enduranceBonus, healthBonus);
+		getPlayer().setMaxHP(enduranceBonus, healthBonus);
 	}
-
-	@PreDestroy
-	public void clear() {
-		player = null;
-	}
-
 }

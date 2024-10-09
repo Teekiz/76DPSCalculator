@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,16 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseDamageService
 {
-	private final LoadoutManager loadoutManager;
-
-	/**
-	 * The constructor for a {@link BaseDamageService} object.
-	 * @param loadoutManager A service used to manage {@link Loadout} objects.
-	 */
-	@Autowired
-	public BaseDamageService(LoadoutManager loadoutManager)
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
 	{
-		this.loadoutManager = loadoutManager;
+		return null;
 	}
 
 	/**
@@ -29,11 +23,11 @@ public class BaseDamageService
 	 */
 	public double calculateBaseDamage()
 	{
-		Loadout loadout = loadoutManager.getLoadout();
+		Loadout loadout = getLoadoutManager().getActiveLoadout();
 		double baseDamage = 0;
-		if (loadout.getWeaponManager().getCurrentWeapon() != null)
+		if (loadout.getWeapon() != null)
 		{
-			baseDamage += loadout.getWeaponManager().getCurrentWeapon().getBaseDamage(45);
+			baseDamage += loadout.getWeapon().getBaseDamage(45);
 		}
 		//todo - anything that modifies base damage
 

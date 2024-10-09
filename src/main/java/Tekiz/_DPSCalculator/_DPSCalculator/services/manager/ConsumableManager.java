@@ -6,16 +6,14 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableL
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
-import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScopeClearable;
-import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -24,13 +22,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
  * A service used to manage {@link Consumable} objects.
  */
 @Service
-@Scope(scopeName = "loadout")
 @Getter
 @Slf4j
-public class ConsumableManager implements LoadoutScopeClearable
+public class ConsumableManager
 {
 	//there can be many food effects but only one of each alcohol and chem.
-	private HashMap<Consumable, Boolean> consumables;
 	private final ConsumableLoaderService consumableLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -44,29 +40,36 @@ public class ConsumableManager implements LoadoutScopeClearable
 	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.consumables = new HashMap();
 		this.consumableLoaderService = consumableLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
-
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
+	}
+	public HashMap<Consumable, Boolean> getConsumables()
+	{
+		return getLoadoutManager().getActiveLoadout().getConsumables();
+	}
 	public void addConsumable(String consumableName) throws IOException
 	{
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
-		consumables.put(consumable, modifierConditionLogic.evaluateCondition(consumable));
+		getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable));
 
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 	public void removeConsumable(String consumableName) throws IOException
 	{
-		Consumable consumable = consumables.keySet().stream()
+		Consumable consumable = getConsumables()
+				.keySet().stream()
 				.filter(key -> key.getName().equals(consumableName))
 				.findFirst()
 				.orElse(null);
 		if (consumable != null)
 		{
-			consumables.remove(consumable);
-
+			getConsumables().remove(consumable);
 			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
@@ -79,7 +82,7 @@ public class ConsumableManager implements LoadoutScopeClearable
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
-		for (Map.Entry<Consumable, Boolean> entry : consumables.entrySet())
+		for (Map.Entry<Consumable, Boolean> entry :getConsumables().entrySet())
 		{
 			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
 			if (entry.getValue() != newValue)
@@ -87,17 +90,5 @@ public class ConsumableManager implements LoadoutScopeClearable
 				entry.setValue(newValue);
 			}
 		}
-	}
-
-	/**
-	 * A method used during the cleanup of this service.
-	 */
-	@PreDestroy
-	public void clear()
-	{
-		if (this.consumables != null) {
-			this.consumables.clear();
-		}
-		this.consumables = null;
 	}
 }

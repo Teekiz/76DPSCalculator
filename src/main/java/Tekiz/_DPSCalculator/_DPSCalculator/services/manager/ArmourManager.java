@@ -2,10 +2,9 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Getter
 public class ArmourManager
 {
-
 	private final ArmourLoaderService armourLoaderService;
 
 	/**
@@ -25,7 +23,11 @@ public class ArmourManager
 	@Autowired
 	public ArmourManager(ArmourLoaderService armourLoaderService)
 	{
-		this.armour = new HashSet<>();
 		this.armourLoaderService = armourLoaderService;
+	}
+	@Lookup
+	protected LoadoutManager getLoadoutManager()
+	{
+		return null;
 	}
 }
