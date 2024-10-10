@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
@@ -29,7 +30,8 @@ public class WeaponController
 	@GetMapping("/get")
 	public ResponseEntity<Weapon> getWeapon() throws IOException
 	{
-		Weapon weapon = weaponManager.getWeapon();
+		Loadout loadout = loadoutManager.getActiveLoadout();
+		Weapon weapon = loadout.getWeapon();
 		if (weapon == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

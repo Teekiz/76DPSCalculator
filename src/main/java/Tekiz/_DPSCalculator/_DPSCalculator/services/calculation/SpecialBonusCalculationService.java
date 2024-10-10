@@ -21,9 +21,8 @@ public class SpecialBonusCalculationService
 	/**
 	 * The constructor for {@link SpecialBonusCalculationService},
 	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
-	 * @param loadoutManager A service used to manage {@link Loadout} objects.
 	 */
-	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService, LoadoutManager loadoutManager)
+	public SpecialBonusCalculationService(ModifierAggregationService modifierAggregationService)
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
@@ -33,9 +32,9 @@ public class SpecialBonusCalculationService
 	 * @param special The type of SPECIAL that will be returned.
 	 * @return A filtered {@link Integer} value of a given {@code special} from the provided loadout.
 	 */
-	public int getSpecialBonus(Specials special)
+	public int getSpecialBonus(Specials special, Loadout loadout)
 	{
-		HashMap modifiers = modifierAggregationService.getAllModifiers();
+		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 		List<Integer> specialList;
 		switch (special)
 		{

@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import java.math.BigDecimal;
@@ -55,12 +56,12 @@ public class DamageCalculationService
 	 * A method that calculates the total damage output of the current loadout.
 	 * @return A {@link Double} value of the loadout's damage output.
 	 */
-	public double calculateOutgoingDamage()
+	public double calculateOutgoingDamage(Loadout loadout)
 	{
-		double baseDamage = baseDamageService.calculateBaseDamage();
-		double bonusDamage = bonusDamageService.calculateBonusDamage();
+		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
+		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
 
-		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage);
+		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
 
 		boostService.clearBoosts();
 		return round(totalDamage);

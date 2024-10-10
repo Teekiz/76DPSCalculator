@@ -31,7 +31,7 @@ public class RedisLoadoutService
 	public void saveLoadout(String sessionID, int loadoutID, Loadout loadout)
 	{
 		redisTemplate.opsForHash().put(sessionID, loadoutID, loadout);
-		log.debug("Saving loadouts for session: {}. Loadout. {}.", sessionID, loadoutID);
+		log.debug("Saving loadouts for session: {}. Loadout: {}.", sessionID, loadoutID);
 	}
 	public void saveAllLoadoutsInSession(String sessionID, HashMap<Integer, Loadout> loadouts)
 	{

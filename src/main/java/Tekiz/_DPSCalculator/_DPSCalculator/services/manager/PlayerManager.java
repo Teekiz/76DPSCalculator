@@ -1,13 +1,13 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MinorStatCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -30,20 +30,18 @@ public class PlayerManager
 		this.minorStatCalculationService = minorStatCalculationService;
 		this.specialBonusCalculationService = specialBonusCalculationService;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
+
+	public Player getPlayer(Loadout loadout)
 	{
-		return null;
+		return loadout.getPlayer();
 	}
-	public Player getPlayer()
-	{
-		return getLoadoutManager().getActiveLoadout().getPlayer();
-	}
+
 	@EventListener
 	public void onModifierChangedEvent(ModifierChangedEvent event)
 	{
-		int enduranceBonus = specialBonusCalculationService.getSpecialBonus(Specials.ENDURANCE);
-		double healthBonus = minorStatCalculationService.calculateHealthPointBonuses();
-		getPlayer().setMaxHP(enduranceBonus, healthBonus);
+		Loadout loadout = event.getLoadout();
+		int enduranceBonus = specialBonusCalculationService.getSpecialBonus(Specials.ENDURANCE, loadout);
+		double healthBonus = minorStatCalculationService.calculateHealthPointBonuses(loadout);
+		loadout.getPlayer().setMaxHP(enduranceBonus, healthBonus);
 	}
 }

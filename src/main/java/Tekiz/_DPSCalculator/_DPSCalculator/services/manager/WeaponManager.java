@@ -1,6 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
@@ -10,7 +12,6 @@ import java.io.IOException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
@@ -41,15 +42,6 @@ public class WeaponManager
 		this.modLoaderService = modLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
-	public Weapon getWeapon()
-	{
-		return getLoadoutManager().getActiveLoadout().getWeapon();
-	}
 	/**
 	 * Loads a weapon by its name and sets it as the current weapon.
 	 * If the weapon is successfully loaded, a {@link WeaponChangedEvent} is published.
@@ -57,13 +49,14 @@ public class WeaponManager
 	 * @param weaponName The name of the weapon to load.
 	 * @throws IOException If the weapon cannot be loaded.
 	 */
-	public synchronized void setWeapon(String weaponName) throws IOException
+	@SaveLoadout
+	public synchronized void setWeapon(String weaponName, Loadout loadout) throws IOException
 	{
 		Weapon newWeapon = weaponLoaderService.getWeapon(weaponName);
 		if (newWeapon != null)
 		{
-			getLoadoutManager().getActiveLoadout().setWeapon(newWeapon);
-			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(newWeapon, "Weapon has been set.");
+			loadout.setWeapon(newWeapon);
+			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(newWeapon, loadout,"Weapon has been set.");
 			log.debug("WeaponChangedEvent has been created for weapon {}.", newWeapon);
 			applicationEventPublisher.publishEvent(weaponChangedEvent);
 		}
@@ -79,9 +72,10 @@ public class WeaponManager
 	 * @param modType The type of mod being applied (e.g., receiver).
 	 * @throws IOException If the mod cannot be loaded.
 	 */
-	public synchronized void modifyWeapon(String modName, ModType modType) throws IOException
+	@SaveLoadout
+	public synchronized void modifyWeapon(String modName, ModType modType, Loadout loadout) throws IOException
 	{
-		Weapon weapon = getWeapon();
+		Weapon weapon = loadout.getWeapon();
 		if (weapon instanceof RangedWeapon)
 		{
 			switch (modType)
@@ -91,7 +85,7 @@ public class WeaponManager
 				}
 			}
 		}
-		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon, "Weapon has been modified.");
+		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon,  loadout, "Weapon has been modified.");
 		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", weapon);
 		applicationEventPublisher.publishEvent(weaponChangedEvent);
 		//todo - create

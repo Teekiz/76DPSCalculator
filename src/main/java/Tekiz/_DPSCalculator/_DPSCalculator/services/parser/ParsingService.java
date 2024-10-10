@@ -8,7 +8,6 @@ import java.util.Map;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.expression.Expression;
@@ -46,29 +45,13 @@ public class ParsingService
 	}
 
 	/**
-	 * A method that retrieves the loadout currently in use.
-	 * @return The loadout to be used.
-	 */
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
-	public Loadout getCurrentLoadout()
-	{
-		return getLoadoutManager().getActiveLoadout();
-	}
-
-	/**
 	 * A method prepares a {@link StandardEvaluationContext} with applied contextual information for {@link Expression} evaluations.
 	 * @param rootObject The root object for the evaluation context, or {@code null} if no root is needed.
 	 * @return The configured {@link StandardEvaluationContext} for SpEL evaluations.
 	 */
-	public StandardEvaluationContext getContext(Object rootObject)
+	public StandardEvaluationContext getContext(Object rootObject, Loadout loadout)
 	{
 		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
-		Loadout loadout = getCurrentLoadout();
-
 		context.setVariable("player", loadout.getPlayer());
 		context.setVariable("weapon", loadout.getWeapon());
 
@@ -96,11 +79,11 @@ public class ParsingService
 	 * @param expression The SpEL {@link Expression} to evaluate.
 	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
 	 */
-	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
+	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression, Loadout loadout)
 	{
 		try
 		{
-			StandardEvaluationContext context = getContext(null);
+			StandardEvaluationContext context = getContext(null, loadout);
 			//todo - bind this in the config file
 			context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 			return expression.getValue(context, Map.Entry.class);
@@ -120,11 +103,11 @@ public class ParsingService
 	 * @param condition The SpEL {@link Expression} of the condition to evaluate.
 	 * @return {@code true} if the condition evaluates to true, {@code false} otherwise.
 	 */
-	public Boolean evaluateCondition(Object rootObject, Expression condition)
+	public Boolean evaluateCondition(Object rootObject, Expression condition, Loadout loadout)
 	{
 		try
 		{
-			StandardEvaluationContext context = getContext(rootObject);
+			StandardEvaluationContext context = getContext(rootObject, loadout);
 			return condition.getValue(context, Boolean.class);
 		}
 		catch (SpelEvaluationException e)

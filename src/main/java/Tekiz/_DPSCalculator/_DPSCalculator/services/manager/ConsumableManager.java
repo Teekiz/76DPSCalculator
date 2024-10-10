@@ -7,12 +7,10 @@ import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 @Slf4j
 public class ConsumableManager
 {
-	//there can be many food effects but only one of each alcohol and chem.
 	private final ConsumableLoaderService consumableLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
@@ -43,34 +40,25 @@ public class ConsumableManager
 		this.consumableLoaderService = consumableLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
-	public HashMap<Consumable, Boolean> getConsumables()
-	{
-		return getLoadoutManager().getActiveLoadout().getConsumables();
-	}
-	public void addConsumable(String consumableName) throws IOException
+	public void addConsumable(String consumableName, Loadout loadout) throws IOException
 	{
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
-		getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable));
+		loadout.getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable, loadout));
 
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been added.");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.getName() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
-	public void removeConsumable(String consumableName) throws IOException
+	public void removeConsumable(String consumableName, Loadout loadout) throws IOException
 	{
-		Consumable consumable = getConsumables()
+		Consumable consumable = loadout.getConsumables()
 				.keySet().stream()
 				.filter(key -> key.getName().equals(consumableName))
 				.findFirst()
 				.orElse(null);
 		if (consumable != null)
 		{
-			getConsumables().remove(consumable);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, consumable.getName() + " has been removed.");
+			loadout.getConsumables().remove(consumable);
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.getName() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}
@@ -82,9 +70,10 @@ public class ConsumableManager
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
-		for (Map.Entry<Consumable, Boolean> entry :getConsumables().entrySet())
+		Loadout loadout = event.getLoadout();
+		for (Map.Entry<Consumable, Boolean> entry : loadout.getConsumables().entrySet())
 		{
-			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
+			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey(), loadout);
 			if (entry.getValue() != newValue)
 			{
 				entry.setValue(newValue);

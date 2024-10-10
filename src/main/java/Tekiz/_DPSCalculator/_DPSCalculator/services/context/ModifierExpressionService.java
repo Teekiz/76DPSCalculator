@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ExpressionLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.io.IOException;
@@ -42,13 +43,13 @@ public class ModifierExpressionService
 	 * @param contextName The name of a modifier that requires additional context.
 	 * @return A {@link Map.Entry} of a new {@link ModifierTypes} and a {@link Number} value.
 	 */
-	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName)
+	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName, Loadout loadout)
 	{
 		Expression expression = contextExpressions.get(contextName);
 
 		if (expression != null)
 		{
-			return ParsingService.parseContext(expression);
+			return ParsingService.parseContext(expression, loadout);
 		}
 		log.error("Unable to parse expression: {}.", contextName);
 		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, 0.0);

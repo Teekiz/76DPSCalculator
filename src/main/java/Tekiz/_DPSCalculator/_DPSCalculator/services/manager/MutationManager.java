@@ -1,15 +1,14 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
-import java.util.Set;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -36,33 +35,25 @@ public class MutationManager
 		this.mutationLoaderService = mutationLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
-	public Set<Mutation> getMutations()
-	{
-		return getLoadoutManager().getActiveLoadout().getMutations();
-	}
-	public void addMutation(String mutationName) throws IOException
+
+	public void addMutation(String mutationName, Loadout loadout) throws IOException
 	{
 		Mutation mutation = mutationLoaderService.getMutation(mutationName);
-		getMutations().add(mutation);
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, mutation.getName() + " has been added.");
+		loadout.getMutations().add(mutation);
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.getName() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
-	public void removeMutation(String mutationName) throws IOException
+	public void removeMutation(String mutationName, Loadout loadout) throws IOException
 	{
-		Mutation mutation = getMutations()
+		Mutation mutation = loadout.getMutations()
 			.stream()
 			.filter(object -> object.getName().equals(mutationName))
 			.findFirst()
 			.orElse(null);
 		if (mutation != null)
 		{
-			getMutations().remove(mutation);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, mutation.getName() + " has been removed.");
+			loadout.getMutations().remove(mutation);
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.getName() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}

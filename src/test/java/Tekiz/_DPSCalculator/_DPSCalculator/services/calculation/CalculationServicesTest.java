@@ -1,10 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CalculationServicesTest
 {
 	@Autowired
+	UserLoadoutTracker userLoadoutTracker;
+	@Autowired
 	LoadoutManager loadoutManager;
 	@Autowired
 	WeaponManager weaponManager;
@@ -34,39 +38,42 @@ public class CalculationServicesTest
 	public void testWithBaseDamage() throws IOException
 	{
 		log.debug("{}Running test - testWithBaseDamage in CalculationServicesTest.", System.lineSeparator());
-		//setting the conditions for the two base weapons
-		weaponManager.setWeapon("10MMPISTOL");
-		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER);
+		Loadout loadout = loadoutManager.getActiveLoadout();
 
-		perkManager.addPerk("TESTEVENT");
-		consumableManager.addConsumable("TESTEVENTTWO");
+		//setting the conditions for the two base weapons
+		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
+
+		perkManager.addPerk("TESTEVENT", loadout);
+		consumableManager.addConsumable("TESTEVENTTWO", loadout);
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage());
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
 		//removing the perk should reduce the damage by 20%
-		perkManager.removePerk("TestEventPerk");
-		assertEquals(33.6, calculator.calculateOutgoingDamage());
-		loadoutManager.deleteAllLoadouts();
+		perkManager.removePerk("TestEventPerk", loadout);
+		assertEquals(33.6, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
 	@Test
 	public void testMultiplicativeDamage() throws IOException
 	{
 		log.debug("{}Running test - testMultiplicativeDamage in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getActiveLoadout();
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		weaponManager.setWeapon("10MMPISTOL");
-		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER);
-		perkManager.addPerk("TESTEVENT");
-		consumableManager.addConsumable("TESTEVENTTWO");
-		assertEquals(39.2, calculator.calculateOutgoingDamage());
+		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
+		perkManager.addPerk("TESTEVENT", loadout);
+		consumableManager.addConsumable("TESTEVENTTWO", loadout);
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
 		//level 1 tenderizer should add 5% extra damage on top of the existing damage
 		//39.2 * (1 + 0.05) = 41.16 (41.2)
-		perkManager.addPerk("TENDERIZER");
-		assertEquals(41.2, calculator.calculateOutgoingDamage());
-		loadoutManager.deleteAllLoadouts();
+		perkManager.addPerk("TENDERIZER", loadout);
+		assertEquals(41.2, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 }

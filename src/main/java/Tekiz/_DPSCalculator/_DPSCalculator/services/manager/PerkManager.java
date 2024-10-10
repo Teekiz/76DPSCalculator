@@ -8,12 +8,10 @@ import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -42,37 +40,28 @@ public class PerkManager
 		this.perkLoaderService = perkLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
-	public HashMap<Perk, Boolean> getPerks()
-	{
-		return getLoadoutManager().getActiveLoadout().getPerks();
-	}
 	//when a perk is added - it is automatically added to the effects.
-	public void addPerk(String perkName) throws IOException
+	public void addPerk(String perkName, Loadout loadout) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
-		getPerks().put(perk, modifierConditionLogic.evaluateCondition(perk));
+		loadout.getPerks().put(perk, modifierConditionLogic.evaluateCondition(perk, loadout));
 
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been added");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.getName() + " has been added");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
-	public void removePerk(String perkName) throws IOException
+	public void removePerk(String perkName, Loadout loadout) throws IOException
 	{
-		Perk perk = getPerks()
+		Perk perk = loadout.getPerks()
 			.keySet().stream()
 			.filter(key -> key.getName().equals(perkName))
 			.findFirst()
 			.orElse(null);
 		if (perk != null)
 		{
-			getPerks().remove(perk);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, perk.getName() + " has been removed");
+			loadout.getPerks().remove(perk);
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.getName() + " has been removed");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}
@@ -84,9 +73,10 @@ public class PerkManager
 	@EventListener
 	public void onWeaponChangedEvent(WeaponChangedEvent event)
 	{
-		for (Map.Entry<Perk, Boolean> entry : getPerks().entrySet())
+		Loadout loadout = event.getLoadout();
+		for (Map.Entry<Perk, Boolean> entry : loadout.getPerks().entrySet())
 		{
-			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey());
+			Boolean newValue = modifierConditionLogic.evaluateCondition(entry.getKey(), loadout);
 			if (entry.getValue() != newValue)
 			{
 				entry.setValue(newValue);

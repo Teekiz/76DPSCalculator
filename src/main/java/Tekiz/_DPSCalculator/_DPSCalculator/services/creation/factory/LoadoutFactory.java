@@ -11,13 +11,16 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class LoadoutFactory
 {
+	//todo - modify loadout so loadoutID is contained within object
 	public Loadout createNewLoadout()
 	{
 		log.debug("Creating new loadout.");

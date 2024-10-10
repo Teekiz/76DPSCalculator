@@ -7,7 +7,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregat
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.util.HashMap;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 
@@ -27,20 +26,14 @@ public class BonusDamageService
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
-	@Lookup
-	protected LoadoutManager getLoadoutManager()
-	{
-		return null;
-	}
 	/**
 	 * A method that calculates the bonus (additive) damage from a loadout.
 	 * @return A {@link Double} value of the loadouts bonus damage.
 	 */
-	public double calculateBonusDamage()
+	public double calculateBonusDamage(Loadout loadout)
 	{
 		double bonusDamage = 1.0;
-		Loadout loadout = getLoadoutManager().getActiveLoadout();
-		HashMap modifiers = modifierAggregationService.getAllModifiers();
+		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 
 		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_ADDITIVE);
 		for (Double bonus : doubleList)
