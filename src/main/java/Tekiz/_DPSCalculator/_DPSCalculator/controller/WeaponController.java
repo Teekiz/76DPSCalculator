@@ -30,7 +30,8 @@ public class WeaponController
 	@GetMapping("/get")
 	public ResponseEntity<Weapon> getWeapon() throws IOException
 	{
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		//todo - change
+		Loadout loadout = loadoutManager.getLoadout(1);
 		Weapon weapon = loadout.getWeapon();
 		if (weapon == null)
 		{

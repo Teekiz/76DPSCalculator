@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.session.RedisLoadoutService;
 import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
-import java.util.HashMap;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,23 +35,26 @@ public class LoadoutManager
 	 *
 	 * @return The {@link Loadout} associated with the current active loadout ID.
 	 */
-	public Loadout getActiveLoadout()
+	public Loadout getLoadout(int loadoutID)
 	{
 		String sessionID = userLoadoutTracker.getSessionID();
-		int activeLoadoutNumber = userLoadoutTracker.getActiveID();
+		Set<Loadout> loadouts = redisLoadoutService.getSessionLoadouts(sessionID);
 
-		HashMap<Integer, Loadout> loadouts = redisLoadoutService.getSessionLoadouts(sessionID);
-		return loadouts.computeIfAbsent(activeLoadoutNumber, _ ->
+		Loadout loadout = loadouts.stream()
+			.filter(l -> l.getLoadoutID() == loadoutID)
+			.findFirst()
+			.orElseGet(() ->
 			{
-				log.info("Created new loadout (ID: {}) for session: {}", activeLoadoutNumber, sessionID);
-				Loadout loadout = loadoutFactory.createNewLoadout();
-				redisLoadoutService.saveLoadout(sessionID, activeLoadoutNumber, loadout);
-				return loadout;
+				log.info("Created new loadout (ID: {}) for session: {}", loadoutID, sessionID);
+				Loadout newLoadout = loadoutFactory.createNewLoadout(loadoutID);
+				redisLoadoutService.saveLoadout(sessionID, newLoadout);
+				return newLoadout;
 			});
+		return loadout;
 	}
-	public void saveActiveLoadout(String sessionID, int loadoutID, Loadout loadout)
+	public void saveActiveLoadout(String sessionID, Loadout loadout)
 	{
-		redisLoadoutService.saveLoadout(sessionID, loadoutID, loadout);
+		redisLoadoutService.saveLoadout(sessionID, loadout);
 	}
 	/**
 	 * Deletes the given {@link Loadout} from the loadout map and its associated scoped beans.

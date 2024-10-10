@@ -37,7 +37,7 @@ public class TestRedisSerialization
 	public void testRedisSerialization() throws IOException
 	{
 		log.debug("{}Running test - testRedisSerialization in TestRedisSerialization.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon("10MMPISTOL", loadout);
 		weaponManager.modifyWeapon("AUTOMATIC", ModType.RECEIVER, loadout);
 		consumableManager.addConsumable("FURY", loadout);

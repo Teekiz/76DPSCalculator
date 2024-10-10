@@ -46,7 +46,7 @@ public class WeaponChangedEventTest
 	public void testPerkWCE() throws IOException
 	{
 		log.debug("{}Running test - testPerkWCE in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		perkManager.addPerk("TESTEVENT", loadout);
 
 		//condition to use perk does not match
@@ -70,7 +70,7 @@ public class WeaponChangedEventTest
 	public void testRemovePerkWCE() throws IOException
 	{
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon("10MMPISTOL", loadout);
 		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadout));
@@ -90,7 +90,7 @@ public class WeaponChangedEventTest
 	public void testConsumableWCE() throws IOException
 	{
 		log.debug("{}Running test - testConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		consumableManager.addConsumable("TESTEVENT", loadout);
 
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
@@ -104,7 +104,7 @@ public class WeaponChangedEventTest
 	public void testRemoveConsumableWCE() throws IOException
 	{
 		log.debug("{}Running test - testRemoveConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon("10MMPISTOL", loadout);
 		consumableManager.addConsumable("TESTEVENT", loadout);
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
@@ -118,7 +118,7 @@ public class WeaponChangedEventTest
 	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
 	{
 		log.debug("{}Running test - testAddAndRemovePerkAndConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout));
 		consumableManager.addConsumable("TESTEVENTTWO", loadout);
 		perkManager.addPerk("TESTMODIFIER", loadout);
@@ -136,7 +136,7 @@ public class WeaponChangedEventTest
 	public void testConsumableWithAdditionalContext() throws IOException
 	{
 		log.debug("{}Running test - testConsumableWithAdditionalContext in WeaponChangedEventTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE, loadout));
 		consumableManager.addConsumable("TESTCONDITION", loadout);

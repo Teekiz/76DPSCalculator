@@ -38,7 +38,7 @@ public class CalculationServicesTest
 	public void testWithBaseDamage() throws IOException
 	{
 		log.debug("{}Running test - testWithBaseDamage in CalculationServicesTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 
 		//setting the conditions for the two base weapons
 		weaponManager.setWeapon("10MMPISTOL", loadout);
@@ -61,7 +61,8 @@ public class CalculationServicesTest
 	public void testMultiplicativeDamage() throws IOException
 	{
 		log.debug("{}Running test - testMultiplicativeDamage in CalculationServicesTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
+
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
 		weaponManager.setWeapon("10MMPISTOL", loadout);

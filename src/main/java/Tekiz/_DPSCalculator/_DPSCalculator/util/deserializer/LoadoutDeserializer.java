@@ -34,6 +34,7 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
 		JsonNode loadoutNode = jsonParser.getCodec().readTree(jsonParser);
+		int loadoutID = objectMapper.treeToValue(loadoutNode.get("loadoutID"), int.class);
 		Weapon weapon = weaponFactory.createWeapon(loadoutNode.get("weapon"));
 		Player player = objectMapper.treeToValue(loadoutNode.get("player"), Player.class);
 		Environment environment = objectMapper.treeToValue(loadoutNode.get("environment"), Environment.class);
@@ -44,7 +45,7 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 		Set<Armour> armour = objectMapper.treeToValue(loadoutNode.get("armour"), Set.class);
 		Set<Mutation> mutations = objectMapper.treeToValue(loadoutNode.get("mutations"), Set.class);
 
-		Loadout loadout = loadoutFactory.createNewLoadout(weapon, perks, consumables, armour, player, environment, mutations);
+		Loadout loadout = loadoutFactory.createNewLoadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
 
 		log.debug("Deserialized new loadout: {}", loadout);
 		return loadout;

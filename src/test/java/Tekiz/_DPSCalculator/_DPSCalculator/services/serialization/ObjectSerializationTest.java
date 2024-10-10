@@ -184,7 +184,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeLoadout() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeLoadout in ObjectSerializationTest.", System.lineSeparator());
-		Loadout loadout = loadoutFactory.createNewLoadout();
+		Loadout loadout = loadoutFactory.createNewLoadout(1);
 		assertNotNull(loadout);
 		log.debug("Loadout object deserialized: {}.", loadout);
 

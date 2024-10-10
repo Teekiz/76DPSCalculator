@@ -2,9 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.services.session;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.support.collections.RedisZSet;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,36 +18,43 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RedisLoadoutService
 {
-	private final RedisTemplate<String, HashMap<Integer, Loadout>> redisTemplate;
-	public HashMap<Integer, Loadout> getSessionLoadouts(String sessionID) {
+	private final RedisTemplate<String, Loadout> redisTemplate;
+	public Set<Loadout> getSessionLoadouts(String sessionID) {
 		log.debug("Getting loadouts for session: {}", sessionID);
 
-		HashMap<Integer, Loadout> redisHashmap = redisTemplate.opsForValue().get("session:" + sessionID + ":loadouts");
+		Set<Loadout> redisZSet = redisTemplate.opsForZSet().range("session:" + sessionID + ":loadouts", 0, -1);
 
-		if (redisHashmap == null)
+		if (redisZSet == null)
 		{
 			log.info("Could not find loadouts for {}. Creating new loadout map.", sessionID);
-			return new HashMap<>();
+			return new HashSet<>();
 		}
-		return redisHashmap;
+		return redisZSet;
 	}
-	public void saveLoadout(String sessionID, int loadoutID, Loadout loadout)
+	public void saveLoadout(String sessionID, Loadout loadout)
 	{
-		redisTemplate.opsForHash().put(sessionID, loadoutID, loadout);
-		log.debug("Saving loadouts for session: {}. Loadout: {}.", sessionID, loadoutID);
+		redisTemplate.opsForZSet().add("session:" + sessionID + ":loadouts", loadout, loadout.getLoadoutID());
+		log.debug("Saving loadouts for session: {}. Loadout: {}.", sessionID, loadout.getLoadoutID());
 	}
-	public void saveAllLoadoutsInSession(String sessionID, HashMap<Integer, Loadout> loadouts)
+	public void saveAllLoadoutsInSession(String sessionID, Set<Loadout> loadouts)
 	{
-		redisTemplate.opsForValue().set("session:" + sessionID + ":loadouts", loadouts);
+		redisTemplate.delete("session:" + sessionID + ":loadouts"); // Clear the existing set
+
+		for (Loadout loadout : loadouts) {
+			redisTemplate.opsForZSet().add("session:" + sessionID + ":loadouts", loadout, loadout.getLoadoutID());
+		}
+
 		log.debug("Saving loadouts for session: {}", sessionID);
 	}
 	public void deleteSessionLoadout(String sessionID, int loadoutID)
 	{
-		HashMap<Integer, Loadout> loadouts = getSessionLoadouts(sessionID);
+		Loadout loadoutToDelete = getSessionLoadouts(sessionID).stream()
+			.filter(loadout -> loadout.getLoadoutID() == loadoutID)
+			.findFirst()
+			.orElse(null);
 
-		if (loadouts != null && loadouts.containsKey(loadoutID)) {
-			loadouts.remove(loadoutID);
-			saveAllLoadoutsInSession(sessionID, loadouts);
+		if (loadoutToDelete != null) {
+			redisTemplate.opsForZSet().remove("session:" + sessionID + ":loadouts", loadoutToDelete);
 			log.debug("Deleted loadout: {} from session: {}", loadoutID, sessionID);
 		} else {
 			log.error("Tried to delete loadout: {} for session: {} but it does not exist", loadoutID, sessionID);

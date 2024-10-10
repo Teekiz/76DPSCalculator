@@ -47,7 +47,7 @@ public class ModifierBoostTest
 	public void checkSourceTypes() throws IOException
 	{
 		log.debug("{}Running test - checkSourceTypes in ModifierBoostTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		consumableManager.addConsumable("FURY", loadout);
 		Consumable consumable = loadout.getConsumables().keySet().stream()
 			.filter(consumableObject -> consumableObject.getName().equalsIgnoreCase("Fury"))
@@ -69,7 +69,7 @@ public class ModifierBoostTest
 	public void testModifierBoostMutations() throws IOException
 	{
 		log.debug("{}Running test - testModifierBoostMutations in ModifierBoostTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		mutationManager.addMutation("ADRENALREACTION", loadout);
 		playerManager.getPlayer(loadout).setCurrentHP(98.0);
 		weaponManager.setWeapon("10MMPISTOL", loadout);

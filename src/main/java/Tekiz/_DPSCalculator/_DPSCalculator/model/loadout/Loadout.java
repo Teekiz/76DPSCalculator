@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,9 @@ import lombok.experimental.NonFinal;
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Loadout implements Serializable
 {
+	@JsonProperty("loadoutID")
+	int loadoutID;
+
 	@NonFinal
 	@Setter
 	@JsonProperty("weapon")
@@ -49,4 +53,17 @@ public class Loadout implements Serializable
 
 	@JsonProperty("mutations")
 	Set<Mutation> mutations;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Loadout loadout = (Loadout) o;
+		return loadoutID == loadout.loadoutID;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(loadoutID);
+	}
 }

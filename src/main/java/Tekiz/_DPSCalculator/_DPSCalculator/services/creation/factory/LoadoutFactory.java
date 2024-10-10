@@ -21,16 +21,16 @@ import org.springframework.stereotype.Component;
 public class LoadoutFactory
 {
 	//todo - modify loadout so loadoutID is contained within object
-	public Loadout createNewLoadout()
+	public Loadout createNewLoadout(int loadoutID)
 	{
 		log.debug("Creating new loadout.");
-		return new Loadout(null, new HashMap<>(), new HashMap<>(),
+		return new Loadout(loadoutID,null, new HashMap<>(), new HashMap<>(),
 			new HashSet<>(), new Player(), new Environment(), new HashSet<>());
 	}
-	public Loadout createNewLoadout(Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
+	public Loadout createNewLoadout(int loadoutID, Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
 									Set<Armour> armour, Player player, Environment environment, Set<Mutation> mutations)
 	{
 		log.debug("Creating new loadout.");
-		return new Loadout(weapon, perks, consumables, armour, player, environment, mutations);
+		return new Loadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
 	}
 }

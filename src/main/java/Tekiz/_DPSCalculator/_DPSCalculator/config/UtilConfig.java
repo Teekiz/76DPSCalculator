@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.config.util;
+package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
 import groovy.lang.GroovyShell;

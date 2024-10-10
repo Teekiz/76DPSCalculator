@@ -37,7 +37,7 @@ public class ModifierExpressionServicesTest
 	public void testMutationEffect() throws IOException
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
-		Loadout loadout = loadoutManager.getActiveLoadout();
+		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon("10MMPISTOL", loadout);
 		playerManager.getPlayer(loadout).setCurrentHP(125.0);
 
