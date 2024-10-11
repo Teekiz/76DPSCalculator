@@ -14,13 +14,11 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 @Component
 @Slf4j
 @AllArgsConstructor
 public class LoadoutFactory
 {
-	//todo - modify loadout so loadoutID is contained within object
 	public Loadout createNewLoadout(int loadoutID)
 	{
 		log.debug("Creating new loadout.");
