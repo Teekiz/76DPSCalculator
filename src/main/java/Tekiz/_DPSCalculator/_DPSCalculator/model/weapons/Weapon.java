@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
  * Represents a generic weapon that the user can add to their loadout.
  */
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
