@@ -2,8 +2,10 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -39,6 +41,7 @@ public class RangedWeapon extends Weapon
 	double attackDelay;
 
 	@NonFinal
+	@JsonDeserialize(using = ReceiverDeserializer.class)
 	@JsonProperty("receiver")
 	Receiver receiver;
 
