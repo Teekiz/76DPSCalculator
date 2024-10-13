@@ -45,7 +45,7 @@ public class BonusDamageService
 		{
 			if (((RangedWeapon) loadout.getWeapon()).getReceiver() != null)
 			{
-				bonusDamage += ((RangedWeapon) loadout.getWeapon()).getReceiver().getDamageChange();
+				bonusDamage += ((RangedWeapon) loadout.getWeapon()).getReceiver().damageChange();
 			}
 		}
 

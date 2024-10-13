@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,6 +26,7 @@ public class WeaponFactory
 	 * The constructor for a {@link WeaponFactory} object.
 	 * @param objectMapper The ObjectMapper instance used to parse JSON into weapon objects.
 	 */
+	@Lazy
 	@Autowired
 	public WeaponFactory(ObjectMapper objectMapper)
 	{
