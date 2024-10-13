@@ -4,7 +4,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class ModifierAggregationService<V>
 	{
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
 
-			Map<ModifierTypes, V> effects = modifier.getKey().getEffects();
+			Map<ModifierTypes, V> effects = modifier.getKey().effects();
 
 			if (effects != null) {
 				// create a temporary list of keys to modify

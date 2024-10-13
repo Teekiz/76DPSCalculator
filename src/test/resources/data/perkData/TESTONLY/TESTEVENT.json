@@ -1,6 +1,11 @@
 {
     "name" : "TestEventPerk",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Test to check if modifiers events work.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",

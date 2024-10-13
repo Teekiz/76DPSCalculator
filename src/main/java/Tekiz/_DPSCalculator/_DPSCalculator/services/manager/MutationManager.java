@@ -40,20 +40,20 @@ public class MutationManager
 	{
 		Mutation mutation = mutationLoaderService.getMutation(mutationName);
 		loadout.getMutations().add(mutation);
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.getName() + " has been added.");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 	public void removeMutation(String mutationName, Loadout loadout) throws IOException
 	{
 		Mutation mutation = loadout.getMutations()
 			.stream()
-			.filter(object -> object.getName().equals(mutationName))
+			.filter(object -> object.name().equals(mutationName))
 			.findFirst()
 			.orElse(null);
 		if (mutation != null)
 		{
 			loadout.getMutations().remove(mutation);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.getName() + " has been removed.");
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}

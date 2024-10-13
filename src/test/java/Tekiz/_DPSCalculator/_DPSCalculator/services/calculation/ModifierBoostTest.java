@@ -50,18 +50,18 @@ public class ModifierBoostTest
 		Loadout loadout = loadoutManager.getLoadout(1);
 		consumableManager.addConsumable("FURY", loadout);
 		Consumable consumable = loadout.getConsumables().keySet().stream()
-			.filter(consumableObject -> consumableObject.getName().equalsIgnoreCase("Fury"))
+			.filter(consumableObject -> consumableObject.name().equalsIgnoreCase("Fury"))
 			.findFirst()
 			.orElse(null);
 
 		assertNotNull(consumable);
-		assertEquals(ModifierSource.CONSUMABLE_CHEMS, consumable.getModifierSource());
+		assertEquals(ModifierSource.CONSUMABLE_CHEMS, consumable.modifierSource());
 
 		mutationManager.addMutation("ADRENALREACTION", loadout);
 		Mutation mutation = loadout.getMutations().stream().findFirst().orElse(null);
 		assertNotNull(mutation);
-		assertEquals(ModifierSource.MUTATION_POSITIVE, mutation.getPositiveEffects().getModifierSource());
-		assertEquals(ModifierSource.MUTATION_NEGATIVE, mutation.getNegativeEffects().getModifierSource());
+		assertEquals(ModifierSource.MUTATION_POSITIVE, mutation.positiveEffects().modifierSource());
+		assertEquals(ModifierSource.MUTATION_NEGATIVE, mutation.negativeEffects().modifierSource());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 

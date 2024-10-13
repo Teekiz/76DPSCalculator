@@ -66,15 +66,15 @@ public class ModifierBoostService<V>
 	{
 		try
 		{
-			if (!modifierBoosts.containsKey(modifier.getModifierSource()))
+			if (!modifierBoosts.containsKey(modifier.modifierSource()))
 			{
-				return modifier.getEffects();
+				return modifier.effects();
 			}
 			else
 			{
 				Map<ModifierTypes, Number> effectsWithBoost = new HashMap<>();
-				Number valueChange = modifierBoosts.get(modifier.getModifierSource());
-				Map<ModifierTypes, V> effects = modifier.getEffects();
+				Number valueChange = modifierBoosts.get(modifier.modifierSource());
+				Map<ModifierTypes, V> effects = modifier.effects();
 				effects.forEach((key, value) ->
 				{
 					if (value instanceof Number)
@@ -86,8 +86,8 @@ public class ModifierBoostService<V>
 			}
 		} catch (ClassCastException e)
 		{
-			log.error("Unsupported number type for : {}", modifier.getModifierSource());
-			return modifier.getEffects();
+			log.error("Unsupported number type for : {}", modifier.modifierSource());
+			return modifier.effects();
 		}
 	}
 

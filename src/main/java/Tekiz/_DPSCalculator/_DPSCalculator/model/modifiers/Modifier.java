@@ -29,7 +29,7 @@ public interface Modifier<V> extends Serializable
 	 *
 	 * @return The source of the modifier, represented by {@link ModifierSource}.
 	 */
-	ModifierSource getModifierSource();
+	ModifierSource modifierSource();
 
 	/**
 	 * Retrieves the condition that must be met for the modifier's effects to be applied.
@@ -39,7 +39,7 @@ public interface Modifier<V> extends Serializable
 	 *
 	 * @return The condition of the modifier as an {@link Expression}.
 	 */
-	Expression getCondition();
+	Expression condition();
 
 	/**
 	 * Retrieves the effects associated with the modifier. The effects are defined as a map
@@ -49,5 +49,5 @@ public interface Modifier<V> extends Serializable
 	 * @return A {@link HashMap} of {@link ModifierTypes} to their corresponding values,
 	 *         where the values are of type {@code V}.
 	 */
-	HashMap<ModifierTypes, V> getEffects();
+	HashMap<ModifierTypes, V> effects();
 }

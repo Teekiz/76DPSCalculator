@@ -46,7 +46,7 @@ public class PerkManager
 		Perk perk = perkLoaderService.getPerk(perkName);
 		loadout.getPerks().put(perk, modifierConditionLogic.evaluateCondition(perk, loadout));
 
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.getName() + " has been added");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.name() + " has been added");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 
@@ -55,13 +55,13 @@ public class PerkManager
 	{
 		Perk perk = loadout.getPerks()
 			.keySet().stream()
-			.filter(key -> key.getName().equals(perkName))
+			.filter(key -> key.name().equals(perkName))
 			.findFirst()
 			.orElse(null);
 		if (perk != null)
 		{
 			loadout.getPerks().remove(perk);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.getName() + " has been removed");
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.name() + " has been removed");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}

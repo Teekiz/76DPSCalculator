@@ -34,9 +34,9 @@ public class ModifierConditionLogic
 	public boolean evaluateCondition(Modifier modifier, Loadout loadout)
 	{
 		//loadout should not be null but just in case
-		if (modifier != null && modifier.getCondition() != null)
+		if (modifier != null && modifier.condition() != null)
 		{
-			return ParsingService.evaluateCondition(modifier, modifier.getCondition(), loadout);
+			return ParsingService.evaluateCondition(modifier, modifier.condition(), loadout);
 		}
 		return true;
 	}

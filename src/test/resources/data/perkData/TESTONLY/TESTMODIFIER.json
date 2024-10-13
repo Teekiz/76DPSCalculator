@@ -1,6 +1,11 @@
 {
     "name" : "TestModifierPerk",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Test to check if modifiers work.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL",

@@ -45,20 +45,20 @@ public class ConsumableManager
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
 		loadout.getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable, loadout));
 
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.getName() + " has been added.");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.name() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 	public void removeConsumable(String consumableName, Loadout loadout) throws IOException
 	{
 		Consumable consumable = loadout.getConsumables()
 				.keySet().stream()
-				.filter(key -> key.getName().equals(consumableName))
+				.filter(key -> key.name().equals(consumableName))
 				.findFirst()
 				.orElse(null);
 		if (consumable != null)
 		{
 			loadout.getConsumables().remove(consumable);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.getName() + " has been removed.");
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.name() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}
