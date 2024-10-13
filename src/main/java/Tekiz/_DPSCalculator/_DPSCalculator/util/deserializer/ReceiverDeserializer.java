@@ -18,10 +18,7 @@ import org.springframework.expression.Expression;
 @JsonComponent
 public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 {
-	//todo - consider making this to mod deserializer
-	private ModLoaderService modLoaderService;
-
-	 /**
+	/**
 	 * A method used to convert the name of a receiver into an {@link Expression} object.
 	 * @param jsonParser The {@link JsonParser} providing the JSON input as a string.
 	 * @param context The context for deserialization (not used in this implementation).
@@ -32,13 +29,19 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 	public Receiver deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException
 	{
 		JsonNode receiverNode = jsonParser.getCodec().readTree(jsonParser);
+
+		if (receiverNode == null)
+		{
+			return null;
+		}
+
 		try
 		{
 			if (receiverNode.isTextual())
 			{
 				String receiverName = receiverNode.asText();
 				log.debug("Deserializing receiver: '{}'", receiverName);
-				modLoaderService = (ModLoaderService) context.findInjectableValue(ModLoaderService.class.getName(), null, null);
+				ModLoaderService modLoaderService = (ModLoaderService) context.findInjectableValue(ModLoaderService.class.getName(), null, null);
 				return modLoaderService.getReceiver(receiverName);
 			}
 			else if (receiverNode.isObject())
