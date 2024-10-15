@@ -4,10 +4,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
@@ -19,6 +18,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Each perk has a condition that must be met which will then apply effects based on the rank of the perk.
  * A rank cannot be higher than the total amount of effect ranks and cannot be lower than 1.
  * @param <V> 				The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
+ * @param id                An identifier if the object has been retrieved from a database.
+ *         				    This is not required if object has been stored in a JSON file.
  * @param name 				The name of the perk. The user will be able to see the given value.
  * @param perkRank 			The current rank of the perk. This corresponds to the effects given.
  * 	 						The set rank cannot be below 1 or above the highest rank of effects.
@@ -32,14 +33,13 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * 	 						If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
  * 	 						{@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Perk<V>(@JsonProperty("name") String name,
+public record Perk<V>(@JsonProperty("id") int id,
+					  @JsonProperty("name") String name,
 					  @JsonProperty("rank") PerkRank perkRank,
 					  @JsonProperty("description") String description,
 					  @JsonProperty("modifierSource") ModifierSource modifierSource,
-					  @JsonSerialize(using = ExpressionSerializer.class)
-					  @JsonDeserialize(using = ExpressionDeserializer.class)
 					  @JsonProperty("conditionString") Expression condition,
-					  @JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, V>> effectsPerRank) implements Modifier
+					  @JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, V>> effectsPerRank) implements Modifier, Keyable
 {
 	/**
 	 * Retrieves the effects associated with the current rank of the perk.

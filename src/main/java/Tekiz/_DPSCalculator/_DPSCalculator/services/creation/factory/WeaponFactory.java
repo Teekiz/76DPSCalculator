@@ -20,6 +20,7 @@ public class WeaponFactory
 {
 
 	//todo - could introduce null object pattern. Create a weapon which has no stats.
+	//todo - consider switching around, so that the factory calls the loader
 	private final ObjectMapper objectMapper;
 
 	/**

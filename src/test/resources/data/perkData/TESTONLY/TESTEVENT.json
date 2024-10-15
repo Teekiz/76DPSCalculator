@@ -1,5 +1,5 @@
 {
-    "name" : "TestEventPerk",
+    "name" : "TestEvent",
     "rank" : 
     {
         "currentRank" : 1,
@@ -8,7 +8,7 @@
     },
     "description" : "Test to check if modifiers events work.",
     "modifierSource" : "PERK",
-    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().receiverType() == #ReceiverType.SEMIAUTOMATIC",
     "effects" :
     {
       "1" :

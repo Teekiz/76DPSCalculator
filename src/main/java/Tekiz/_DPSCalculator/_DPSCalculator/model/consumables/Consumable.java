@@ -6,9 +6,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
@@ -20,6 +19,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Each consumable has a condition that must be met before any effects are applied.
  *
  * @param <V>            The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
+ * @param id             An identifier if the object has been retrieved from a database.
+ *           		     This is not required if object has been stored in a JSON file.
  * @param name           The name of the consumable. The user will be able to see the given value.
  * @param consumableType The type of consumable. This is used when only a user may use only a limited amount of one type of consumable (e.g. chems).
  * @param addictionType  The addition type that the consumable causes. This is used to check if an addiction has been met.
@@ -32,12 +33,11 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Consumable<V>(@JsonProperty("name") String name,
+public record Consumable<V>(@JsonProperty("id") int id,
+							@JsonProperty("name") String name,
 							@JsonProperty("consumableType") ConsumableType consumableType,
 							@JsonProperty("addictionType") AddictionType addictionType,
 							@JsonProperty("modifierSource") ModifierSource modifierSource,
-							@JsonSerialize(using = ExpressionSerializer.class)
-							@JsonDeserialize(using = ExpressionDeserializer.class)
 							@JsonProperty("conditionString") Expression condition,
-							@JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier
+							@JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier, Keyable
 {}

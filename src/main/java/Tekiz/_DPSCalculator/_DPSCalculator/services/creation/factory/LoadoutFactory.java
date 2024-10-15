@@ -21,7 +21,7 @@ public class LoadoutFactory
 {
 	public Loadout createNewLoadout(int loadoutID)
 	{
-		log.debug("Creating new loadout.");
+		log.debug("Creating new blank loadout.");
 		return new Loadout(loadoutID,null, new HashMap<>(), new HashMap<>(),
 			new HashSet<>(), new Player(), new Environment(), new HashSet<>());
 	}

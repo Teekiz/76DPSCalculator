@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -41,9 +42,11 @@ public class PerkManager
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 	//when a perk is added - it is automatically added to the effects.
+	@SaveLoadout
 	public void addPerk(String perkName, Loadout loadout) throws IOException
 	{
 		Perk perk = perkLoaderService.getPerk(perkName);
+		log.debug("Adding {} to loadout {}.", perk.name(), loadout.getLoadoutID());
 		loadout.getPerks().put(perk, modifierConditionLogic.evaluateCondition(perk, loadout));
 
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.name() + " has been added");
@@ -51,11 +54,12 @@ public class PerkManager
 	}
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
+	@SaveLoadout
 	public void removePerk(String perkName, Loadout loadout) throws IOException
 	{
 		Perk perk = loadout.getPerks()
 			.keySet().stream()
-			.filter(key -> key.name().equals(perkName))
+			.filter(key -> key.name().equalsIgnoreCase(perkName))
 			.findFirst()
 			.orElse(null);
 		if (perk != null)

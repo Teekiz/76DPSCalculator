@@ -5,8 +5,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
@@ -28,7 +26,5 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
 public record MutationEffects<V>(@JsonProperty("modifierSource") ModifierSource modifierSource,
-								 @JsonSerialize(using = ExpressionSerializer.class)
-								 @JsonDeserialize(using = ExpressionDeserializer.class)
 								 @JsonProperty("conditionString") Expression condition,
 								 @JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier {}

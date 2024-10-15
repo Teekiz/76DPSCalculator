@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
@@ -40,19 +41,22 @@ public class ConsumableManager
 		this.consumableLoaderService = consumableLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
+	@SaveLoadout
 	public void addConsumable(String consumableName, Loadout loadout) throws IOException
 	{
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
+		log.debug("Adding {} to loadout {}.", consumable.name(), loadout.getLoadoutID());
 		loadout.getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable, loadout));
 
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(consumable, loadout,consumable.name() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
+	@SaveLoadout
 	public void removeConsumable(String consumableName, Loadout loadout) throws IOException
 	{
 		Consumable consumable = loadout.getConsumables()
 				.keySet().stream()
-				.filter(key -> key.name().equals(consumableName))
+				.filter(key -> key.name().equalsIgnoreCase(consumableName))
 				.findFirst()
 				.orElse(null);
 		if (consumable != null)

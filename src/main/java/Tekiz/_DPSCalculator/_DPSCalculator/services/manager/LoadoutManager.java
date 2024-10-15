@@ -40,17 +40,16 @@ public class LoadoutManager
 		String sessionID = userLoadoutTracker.getSessionID();
 		Set<Loadout> loadouts = redisLoadoutService.getSessionLoadouts(sessionID);
 
-		Loadout loadout = loadouts.stream()
+		return loadouts.stream()
 			.filter(l -> l.getLoadoutID() == loadoutID)
 			.findFirst()
 			.orElseGet(() ->
 			{
 				log.info("Created new loadout (ID: {}) for session: {}", loadoutID, sessionID);
 				Loadout newLoadout = loadoutFactory.createNewLoadout(loadoutID);
-				redisLoadoutService.saveLoadout(sessionID, newLoadout);
+				saveActiveLoadout(sessionID, newLoadout);
 				return newLoadout;
 			});
-		return loadout;
 	}
 	public void saveActiveLoadout(String sessionID, Loadout loadout)
 	{

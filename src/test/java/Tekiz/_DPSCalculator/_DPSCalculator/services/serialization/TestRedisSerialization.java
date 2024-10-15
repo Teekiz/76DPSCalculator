@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @Slf4j
 @SpringBootTest
 @ActiveProfiles("test")
@@ -39,15 +42,22 @@ public class TestRedisSerialization
 		log.debug("{}Running test - testRedisSerialization in TestRedisSerialization.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon("10MMPISTOL", loadout);
-		weaponManager.modifyWeapon("AUTOMATIC", ModType.RECEIVER, loadout);
+		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
 		consumableManager.addConsumable("FURY", loadout);
 		consumableManager.addConsumable("BALLISTICBOCK", loadout);
 		perkManager.addPerk("GUNSLINGER", loadout);
 		perkManager.addPerk("STRANGEINNUMBERS", loadout);
 		mutationManager.addMutation("ADRENALREACTION", loadout);
 
-		log.debug("Attempting to save loadout.");
-		//loadoutManager.saveActiveLoadout();
+		loadout = null;
+
+		Loadout newLoadout = loadoutManager.getLoadout(1);
+		assertNotNull(newLoadout);
+
+		assertNotNull(newLoadout.getWeapon());
+		assertEquals("Test 10mm pistol", newLoadout.getWeapon().getWeaponName());
+
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
 }

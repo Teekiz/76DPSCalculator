@@ -17,13 +17,12 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableL
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
-import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,14 +51,13 @@ public class ObjectSerializationTest
 	ArmourModLoaderService armourModLoaderService;
 	@Autowired
 	LoadoutFactory loadoutFactory;
-	static ObjectMapper objectMapper;
+	@Autowired
+	ObjectMapper objectMapper;
+	@Autowired
+	ConsumableManager consumableManager;
+	@Autowired
+	PerkManager perkManager;
 
-	@BeforeAll
-	public static void setup() {
-		objectMapper = new ObjectMapper();
-		//this is because environment has yet to be created.
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	}
 	@Test
 	public void serializeAndDeserializeConsumable() throws IOException
 	{
@@ -197,17 +195,23 @@ public class ObjectSerializationTest
 		log.debug("Loadout object deserialized: {}.", newLoadout);
 	}
 
-	//todo - delete me
 	@Test
-	public void deleteMeTest() throws IOException
+	public void serializeAndDeserializeLoadoutWithHashMaps() throws IOException
 	{
-		HashMap<Consumable, Boolean> hm = new HashMap<>();
-		Consumable consumable = consumableLoaderService.getConsumable("TESTEVENT");
-		hm.put(consumable, true);
-		String jsonhm = objectMapper.writeValueAsString(hm);
-		System.out.println(jsonhm);
+		log.debug("{}Running test - serializeAndDeserializeLoadoutWithHashMaps in ObjectSerializationTest.", System.lineSeparator());
+		Loadout loadout = loadoutFactory.createNewLoadout(1);
+		assertNotNull(loadout);
+		log.debug("Loadout object deserialized: {}.", loadout);
 
-		HashMap<Consumable, Boolean> nhm = objectMapper.readValue(jsonhm, HashMap.class);
-		System.out.println(nhm);
+		perkManager.addPerk("GUNSLINGER", loadout);
+		consumableManager.addConsumable("TESTCONDITION", loadout);
+
+		String jsonLoadout = objectMapper.writeValueAsString(loadout);
+		assertNotNull(jsonLoadout);
+		log.debug("Loadout object serialized: {}.", jsonLoadout);
+
+		Loadout newLoadout = objectMapper.readValue(jsonLoadout, Loadout.class);
+		assertNotNull(newLoadout);
+		log.debug("Loadout object deserialized: {}.", newLoadout);
 	}
 }

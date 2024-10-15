@@ -12,42 +12,54 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFact
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.jackson.JsonComponent;
 
 @Slf4j
+@JsonComponent
 public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 {
-	private final ObjectMapper objectMapper = new ObjectMapper();
-	private final WeaponFactory weaponFactory = new WeaponFactory(objectMapper);
-	private final LoadoutFactory loadoutFactory = new LoadoutFactory();
-
 	@Override
-	public Loadout deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException
+	public Loadout deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException
 	{
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
+		ObjectMapper objectMapper = (ObjectMapper) jsonParser.getCodec();
 		JsonNode loadoutNode = jsonParser.getCodec().readTree(jsonParser);
-		int loadoutID = objectMapper.treeToValue(loadoutNode.get("loadoutID"), int.class);
-		Weapon weapon = weaponFactory.createWeapon(loadoutNode.get("weapon"));
-		Player player = objectMapper.treeToValue(loadoutNode.get("player"), Player.class);
-		Environment environment = objectMapper.treeToValue(loadoutNode.get("environment"), Environment.class);
 
-		HashMap<Perk, Boolean> perks = objectMapper.treeToValue(loadoutNode.get("perks"), HashMap.class);
-		HashMap<Consumable, Boolean> consumables = objectMapper.treeToValue(loadoutNode.get("consumables"), HashMap.class);
+		WeaponFactory weaponFactory = (WeaponFactory) context.findInjectableValue(WeaponFactory.class.getName(), null, null);
+		LoadoutFactory loadoutFactory = (LoadoutFactory) context.findInjectableValue(LoadoutFactory.class.getName(), null, null);
 
-		Set<Armour> armour = objectMapper.treeToValue(loadoutNode.get("armour"), Set.class);
-		Set<Mutation> mutations = objectMapper.treeToValue(loadoutNode.get("mutations"), Set.class);
+		try
+		{
+			int loadoutID = objectMapper.treeToValue(loadoutNode.get("loadoutID"), int.class);
+			Weapon weapon = weaponFactory.createWeapon(loadoutNode.get("weapon"));
+			Player player = objectMapper.treeToValue(loadoutNode.get("player"), Player.class);
+			Environment environment = objectMapper.treeToValue(loadoutNode.get("environment"), Environment.class);
 
-		Loadout loadout = loadoutFactory.createNewLoadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
+			JavaType perkHashMapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, Perk.class, Boolean.class);
+			HashMap<Perk, Boolean> perks = objectMapper.treeToValue(loadoutNode.get("perks"), perkHashMapType);
 
-		log.debug("Deserialized new loadout: {}", loadout);
-		return loadout;
+			JavaType consumableHashMapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, Consumable.class, Boolean.class);
+			HashMap<Consumable, Boolean> consumables = objectMapper.treeToValue(loadoutNode.get("consumables"), consumableHashMapType);
+
+			Set<Armour> armour = objectMapper.treeToValue(loadoutNode.get("armour"), Set.class);
+			Set<Mutation> mutations = objectMapper.treeToValue(loadoutNode.get("mutations"), Set.class);
+
+			Loadout loadout = loadoutFactory.createNewLoadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
+
+			log.debug("Deserialized new loadout: {}", loadout);
+			return loadout;
+		}
+		catch (Exception e)
+		{
+			log.error("Cannot deserialize loadout {}. JSON: {}. Message: {}.", loadoutNode.get("loadoutID"), loadoutNode, e.getMessage(), e);
+			return null;
+		}
 	}
 }

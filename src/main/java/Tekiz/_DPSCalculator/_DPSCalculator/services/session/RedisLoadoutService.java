@@ -1,13 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.session;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.support.collections.RedisZSet;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,6 +31,7 @@ public class RedisLoadoutService
 	}
 	public void saveLoadout(String sessionID, Loadout loadout)
 	{
+		redisTemplate.opsForZSet().removeRangeByScore("session:" + sessionID + ":loadouts", loadout.getLoadoutID(), loadout.getLoadoutID());
 		redisTemplate.opsForZSet().add("session:" + sessionID + ":loadouts", loadout, loadout.getLoadoutID());
 		log.debug("Saving loadouts for session: {}. Loadout: {}.", sessionID, loadout.getLoadoutID());
 	}

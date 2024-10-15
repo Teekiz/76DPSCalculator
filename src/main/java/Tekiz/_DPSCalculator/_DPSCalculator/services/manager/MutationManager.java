@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
@@ -36,6 +37,7 @@ public class MutationManager
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
+	@SaveLoadout
 	public void addMutation(String mutationName, Loadout loadout) throws IOException
 	{
 		Mutation mutation = mutationLoaderService.getMutation(mutationName);
@@ -43,11 +45,12 @@ public class MutationManager
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
+	@SaveLoadout
 	public void removeMutation(String mutationName, Loadout loadout) throws IOException
 	{
 		Mutation mutation = loadout.getMutations()
 			.stream()
-			.filter(object -> object.name().equals(mutationName))
+			.filter(object -> object.name().equalsIgnoreCase(mutationName))
 			.findFirst()
 			.orElse(null);
 		if (mutation != null)

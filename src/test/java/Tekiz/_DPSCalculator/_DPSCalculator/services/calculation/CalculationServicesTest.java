@@ -52,7 +52,7 @@ public class CalculationServicesTest
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
 		//removing the perk should reduce the damage by 20%
-		perkManager.removePerk("TestEventPerk", loadout);
+		perkManager.removePerk("TESTEVENT", loadout);
 		assertEquals(33.6, calculator.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

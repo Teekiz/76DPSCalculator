@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @param receiverType todo - change receivertype and ammo override type
  */
-public record Receiver(@JsonProperty("name") String name, @JsonProperty("receiverType") ReceiverType receiverType,
+public record Receiver(@JsonProperty("name") String name,
+					   @JsonProperty("receiverType") ReceiverType receiverType,
 					   @JsonProperty("damageChange") double damageChange,
 					   @JsonProperty("damageCriticalMultiplier") int damageCriticalMultiplier,
 					   @JsonProperty("fireRateChange") int fireRateChange,

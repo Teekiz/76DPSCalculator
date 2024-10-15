@@ -1,5 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PerkRank implements Serializable
 {
+	@JsonProperty("currentRank")
 	private int currentRank;
+	@JsonProperty("baseCost")
 	private int baseCost;
+	@JsonProperty("maxRank")
 	private int maxRank;
 	/**
 	 * Sets the rank of the perk, ensuring that it remains within valid bounds.
@@ -17,6 +22,7 @@ public class PerkRank implements Serializable
 	 *
 	 * @param newRank The new rank to set for the perk.
 	 */
+	@JsonIgnore
 	public void setCurrentRank(int newRank)
 	{
 		if (newRank <= 0) currentRank = 1;
