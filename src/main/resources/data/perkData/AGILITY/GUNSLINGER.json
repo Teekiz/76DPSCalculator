@@ -1,9 +1,14 @@
 {
     "name" : "Gunslinger",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "modifierSource" : "PERK",
-    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getReceiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().receiverType() == #ReceiverType.SEMIAUTOMATIC",
     "effects" :
     {
       "1" :

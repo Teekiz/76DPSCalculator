@@ -30,30 +30,18 @@ import org.springframework.stereotype.Service;
 public class ParsingService
 {
 	private final ExpressionParser parser;
-	private final LoadoutManager loadoutManager;
 	private final ApplicationContext applicationContext;
 
 	/**
 	 * The constructor for a {@link ParsingService} object.
 	 * @param parser The SpEL {@link ExpressionParser} used for parsing string expressions.
-	 * @param loadoutManager The {@link LoadoutManager} used to retrieve the current loadout.
 	 * @param applicationContext The Spring {@link ApplicationContext} for resolving beans.
 	 */
 	@Autowired
-	public ParsingService(ExpressionParser parser, LoadoutManager loadoutManager, ApplicationContext applicationContext)
+	public ParsingService(ExpressionParser parser, ApplicationContext applicationContext)
 	{
 		this.parser = parser;
-		this.loadoutManager = loadoutManager;
 		this.applicationContext = applicationContext;
-	}
-
-	/**
-	 * A method that retrieves the loadout currently in use.
-	 * @return The loadout to be used.
-	 */
-	public Loadout getCurrentLoadout()
-	{
-		return loadoutManager.getLoadout();
 	}
 
 	/**
@@ -61,15 +49,13 @@ public class ParsingService
 	 * @param rootObject The root object for the evaluation context, or {@code null} if no root is needed.
 	 * @return The configured {@link StandardEvaluationContext} for SpEL evaluations.
 	 */
-	public StandardEvaluationContext getContext(Object rootObject)
+	public StandardEvaluationContext getContext(Object rootObject, Loadout loadout)
 	{
 		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
-		Loadout loadout = getCurrentLoadout();
+		context.setVariable("player", loadout.getPlayer());
+		context.setVariable("weapon", loadout.getWeapon());
 
-		context.setVariable("player", loadout.getPlayerManager().getPlayer());
-		context.setVariable("weapon", loadout.getWeaponManager().getCurrentWeapon());
-
-		if (loadout.getWeaponManager().getCurrentWeapon() == null) {
+		if (loadout.getWeapon() == null) {
 			log.error("Warning: Weapon is null in context");
 		}
 
@@ -93,11 +79,11 @@ public class ParsingService
 	 * @param expression The SpEL {@link Expression} to evaluate.
 	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
 	 */
-	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression)
+	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression, Loadout loadout)
 	{
 		try
 		{
-			StandardEvaluationContext context = getContext(null);
+			StandardEvaluationContext context = getContext(null, loadout);
 			//todo - bind this in the config file
 			context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 			return expression.getValue(context, Map.Entry.class);
@@ -117,11 +103,11 @@ public class ParsingService
 	 * @param condition The SpEL {@link Expression} of the condition to evaluate.
 	 * @return {@code true} if the condition evaluates to true, {@code false} otherwise.
 	 */
-	public Boolean evaluateCondition(Object rootObject, Expression condition)
+	public Boolean evaluateCondition(Object rootObject, Expression condition, Loadout loadout)
 	{
 		try
 		{
-			StandardEvaluationContext context = getContext(rootObject);
+			StandardEvaluationContext context = getContext(rootObject, loadout);
 			return condition.getValue(context, Boolean.class);
 		}
 		catch (SpelEvaluationException e)

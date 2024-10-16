@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation.loading;
 
-import Tekiz._DPSCalculator._DPSCalculator.config.data.FileConfig;
+import Tekiz._DPSCalculator._DPSCalculator.config.FileConfig;
 import Tekiz._DPSCalculator._DPSCalculator.services.scripts.GroovyScriptService;
 import groovy.lang.Script;
 import java.io.File;

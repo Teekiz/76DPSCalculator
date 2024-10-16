@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import java.math.BigDecimal;
@@ -27,7 +28,8 @@ public class DamageCalculationService
 	 * @param boostService A service that is used to store and apply boosts to {@link Modifier}'s values.
 	 */
 	@Autowired
-	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
+	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
+									DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
@@ -53,14 +55,15 @@ public class DamageCalculationService
 
 	/**
 	 * A method that calculates the total damage output of the current loadout.
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadout's damage output.
 	 */
-	public double calculateOutgoingDamage()
+	public double calculateOutgoingDamage(Loadout loadout)
 	{
-		double baseDamage = baseDamageService.calculateBaseDamage();
-		double bonusDamage = bonusDamageService.calculateBonusDamage();
+		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
+		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
 
-		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage);
+		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
 
 		boostService.clearBoosts();
 		return round(totalDamage);

@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.logic;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,12 @@ public class ModifierConditionLogic
 	 * @param modifier The modifier containing the condition {@link Expression}.
 	 * @return A {@link Boolean} value of evaluated condition.
 	 */
-	public boolean evaluateCondition(Modifier modifier)
+	public boolean evaluateCondition(Modifier modifier, Loadout loadout)
 	{
 		//loadout should not be null but just in case
-		if (modifier != null && modifier.getCondition() != null)
+		if (modifier != null && modifier.condition() != null)
 		{
-			return ParsingService.evaluateCondition(modifier, modifier.getCondition());
+			return ParsingService.evaluateCondition(modifier, modifier.condition(), loadout);
 		}
 		return true;
 	}

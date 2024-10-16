@@ -4,11 +4,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,41 +20,39 @@ import org.springframework.stereotype.Service;
  * @param <V>  The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 @Service
+@Slf4j
 public class ModifierAggregationService<V>
 {
 	private final ModifierExpressionService modifierExpressionService;
 	private final ModifierBoostService modifierBoostService;
-	private final LoadoutManager loadoutManager;
 
 	/**
 	 * The constructor for the ModifierAggregationService.
 	 * @param modifierExpressionService A service that {@code applyAdditionalContext} uses to search for expressions
 	 *       corresponding to the name of the {@link Modifier}.
-	 *
 	 * @param modifierBoostService A service that {@code filterEffects} uses to apply bonus effects to any values of a given {@link Modifier}'s
-	 * 		{@link Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource}.
+	 * 		{@link ModifierSource}.
 	 */
 	@Autowired
-	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService, LoadoutManager loadoutManager)
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService)
 	{
 		this.modifierExpressionService = modifierExpressionService;
 		this.modifierBoostService = modifierBoostService;
-		this.loadoutManager = loadoutManager;
 	}
-
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
 	 * whether the {@link Modifier}'s conditions have been met.
 	 */
-	public HashMap<Modifier, Boolean> getAllModifiers()
+	public HashMap<Modifier, Boolean> getAllModifiers(Loadout loadout)
 	{
-		Loadout loadout = loadoutManager.getLoadout();
 		HashMap<Modifier, Boolean> modifiers = new HashMap<>();
-		modifiers.putAll(loadout.getPerkManager().getPerks());
-		modifiers.putAll(loadout.getConsumableManager().getConsumables());
-		modifiers.putAll(loadout.getMutationManager().getMutationModifiers());
-		applyAdditionalContext(modifiers);
+		modifiers.putAll(loadout.getPerks());
+		modifiers.putAll(loadout.getConsumables());
+		loadout.getMutations().forEach(mutation ->
+			modifiers.putAll(mutation.aggregateMutationEffects()));
+		applyAdditionalContext(modifiers, loadout);
 
 		return modifiers;
 	}
@@ -62,12 +61,13 @@ public class ModifierAggregationService<V>
 	 * A method that is used for to identify and apply {@link Modifier}'s
 	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param modifiers The {@link HashMap} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
-	public void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers)
+	public void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers, Loadout loadout)
 	{
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
 
-			Map<ModifierTypes, V> effects = modifier.getKey().getEffects();
+			Map<ModifierTypes, V> effects = modifier.getKey().effects();
 
 			if (effects != null) {
 				// create a temporary list of keys to modify
@@ -80,7 +80,7 @@ public class ModifierAggregationService<V>
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) modifierExpressionService.getAdditionalContext((String) effects.get(key));
+					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) modifierExpressionService.getAdditionalContext((String) effects.get(key), loadout);
 					if (additionalContextEntry != null) {
 						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 					}

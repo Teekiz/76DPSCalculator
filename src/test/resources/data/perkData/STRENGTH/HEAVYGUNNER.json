@@ -1,6 +1,11 @@
 {
     "name" : "Test Heavy Gunner",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Your non-explosive heavy guns now do +10/15/20% damage.",
     "modifierSource" : "PERK",
     "conditionString" : "#weapon.getWeaponType() == #WeaponType.HEAVY",

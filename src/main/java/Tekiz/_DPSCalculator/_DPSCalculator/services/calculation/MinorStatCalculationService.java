@@ -22,20 +22,20 @@ public class MinorStatCalculationService
 	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
 	 */
 	@Autowired
-	public MinorStatCalculationService(ModifierAggregationService modifierAggregationService, LoadoutManager loadoutManager)
+	public MinorStatCalculationService(ModifierAggregationService modifierAggregationService)
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
 
 	/**
 	 * A method that calculates any flat health point bonuses from a loadout.
-	 * @param
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts bonus health.
 	 */
-	public double calculateHealthPointBonuses()
+	public double calculateHealthPointBonuses(Loadout loadout)
 	{
 		double bonusHealth = 0.0;
-		HashMap modifiers = modifierAggregationService.getAllModifiers();
+		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 
 		List<Double> hpBoostList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.HEALTH);
 

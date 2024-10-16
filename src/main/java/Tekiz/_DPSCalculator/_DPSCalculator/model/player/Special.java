@@ -1,23 +1,35 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /** Represents a players SPECIAL stats. */
 @Getter
-@AllArgsConstructor
-public class Special
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
+public class Special implements Serializable
 {
+	@JsonProperty("strength")
 	private int strength;
+	@JsonProperty("perception")
 	private int perception;
+	@JsonProperty("endurance")
 	private int endurance;
+	@JsonProperty("charisma")
 	private int charisma;
+	@JsonProperty("intelligence")
 	private int intelligence;
+	@JsonProperty("agility")
 	private int agility;
+	@JsonProperty("luck")
 	private int luck;
 
+	@JsonProperty("minSpecialValue")
 	private final int minSpecialValue = 1;
+	@JsonProperty("maxSpecialValue")
 	private final int maxSpecialValue = 15;
 
 	/**

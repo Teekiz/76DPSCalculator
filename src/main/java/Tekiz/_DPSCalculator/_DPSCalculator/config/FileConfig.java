@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.config.data;
+package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ModLoaderServiceTest
 {
 	@Autowired
-	private ModLoaderService modLoaderService;
+	ModLoaderService modLoaderService;
 
 	@Test
 	void testLoadReceiver() throws IOException
@@ -26,7 +26,7 @@ public class ModLoaderServiceTest
 		String receiverName = "AUTOMATIC";
 		Receiver receiver = modLoaderService.getReceiver(receiverName);
 		assertNotNull(receiver);
-		assertEquals("TestAutomatic", receiver.getName());
+		assertEquals("TestAutomatic", receiver.name());
 	}
 
 	@Test
@@ -34,8 +34,8 @@ public class ModLoaderServiceTest
 	{
 		List<Receiver> receivers = modLoaderService.getAllReceivers();
 		assertNotNull(receivers);
-		assertEquals("TestAutomatic", receivers.get(0).getName());
+		assertEquals("TestAutomatic", receivers.get(0).name());
 		assertFalse(receivers.get(0).isPrime());
-		assertEquals("TestCalibrated", receivers.get(1).getName());
+		assertEquals("TestCalibrated", receivers.get(1).name());
 	}
 }

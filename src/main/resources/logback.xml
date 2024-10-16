@@ -19,7 +19,7 @@
 
 	<!-- Enable logging for your application -->
 	<logger name="Tekiz._DPSCalculator._DPSCalculator" level="DEBUG"/>
-	<logger name="Tekiz._DPSCalculator._DPSCalculator.tests" level="OFF"/>
+	<logger name="Tekiz._DPSCalculator._DPSCalculator.tests" level="DEBUG"/>
 
 	<!--Logging for redis -->
 	<logger name="org.springframework.session.data.redis" level="ERROR" />

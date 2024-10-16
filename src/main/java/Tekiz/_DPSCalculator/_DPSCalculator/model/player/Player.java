@@ -1,26 +1,44 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /** Represents a player including the players stats (SPECIAL, HP) and state (actions).*/
 @Getter
-public class Player
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
+public class Player implements Serializable
 {
 	/** Represents the players base special stats. Each stat cannot have a value lower than 1 or higher than 15. Boosts to these stats are handled through
-	 * {@link SpecialBonusCalculationService}.*/
-	private Special specials;
-	private int level;
-
+	 * {@link SpecialBonusCalculationService}.
+	 */
+	@JsonProperty("specials")
+	private final Special specials;
+	@JsonProperty("maxHP")
 	private double maxHP;
+	@JsonProperty("currentHP")
 	private double currentHP;
 
+	@Setter
+	@JsonProperty("level")
+	private int level;
+
+	@Setter
+	@JsonProperty("isAiming")
 	private boolean isAiming = false;
+	@Setter
+	@JsonProperty("isSneaking")
 	private boolean isSneaking = false;
 
 	/**
 	 * The constructor for a {@link Player} object.
 	 */
+	@JsonIgnore
 	public Player()
 	{
 		this.level = 1;
@@ -46,6 +64,7 @@ public class Player
 	 * Gets the percentage of health remaining. Useful for mutations such as Adrenal Reaction or effects such as Bloodied.
 	 * @return {@link Double} healthPercentage.
 	 * */
+	@JsonIgnore
 	public double getHealthPercentage()
 	{
 		return (currentHP / maxHP) * 100;

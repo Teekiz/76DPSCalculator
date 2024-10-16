@@ -2,26 +2,32 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.meleeweapons.MeleeWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.rangedweapons.RangedWeapon;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
  * A factory service for a creating {@link Weapon} objects based on their {@link WeaponType}.
  */
 @Component
+@Slf4j
 public class WeaponFactory
 {
+
+	//todo - could introduce null object pattern. Create a weapon which has no stats.
+	//todo - consider switching around, so that the factory calls the loader
 	private final ObjectMapper objectMapper;
 
 	/**
 	 * The constructor for a {@link WeaponFactory} object.
 	 * @param objectMapper The ObjectMapper instance used to parse JSON into weapon objects.
 	 */
+	@Lazy
 	@Autowired
 	public WeaponFactory(ObjectMapper objectMapper)
 	{
@@ -35,20 +41,34 @@ public class WeaponFactory
 	 *
 	 * @param weapon The JSON node containing the weapon data.
 	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weapon type is not recognized.
-	 * @throws JsonProcessingException If there is an error processing the JSON input.
 	 */
-	public Weapon createWeapon(JsonNode weapon) throws JsonProcessingException
+	public Weapon createWeapon(JsonNode weapon)
 	{
-		WeaponType weaponType = WeaponType.valueOf(weapon.get("weaponType").asText().toUpperCase());
-
-		if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE))
+		try
 		{
-			return objectMapper.treeToValue(weapon, RangedWeapon.class);
+			JsonNode weaponTypeNode = weapon.get("weaponType");
+			if (weaponTypeNode == null || !weaponTypeNode.isTextual()) {
+				log.error("Cannot deserialize node. WeaponType is missing or null.");
+				return null;
+			}
+			WeaponType weaponType = WeaponType.valueOf(weaponTypeNode.asText().toUpperCase());
+			if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE)) {
+				return objectMapper.treeToValue(weapon, RangedWeapon.class);
+			}
+			else if (weaponType.equals(WeaponType.ONEHANDED) || weaponType.equals(WeaponType.TWOHANDED)) {
+				return objectMapper.treeToValue(weapon, MeleeWeapon.class);
+			}
+			return null;
 		}
-		else if (weaponType.equals(WeaponType.ONEHANDED) || weaponType.equals(WeaponType.TWOHANDED))
+		catch (NullPointerException | IllegalArgumentException e)
 		{
-			return objectMapper.treeToValue(weapon, MeleeWeapon.class);
+			log.error("Cannot deserialise node. {}", e.getMessage(), e);
+			return null;
 		}
-		return null;
+		catch (Exception e)
+		{
+			log.error("Failed to create weapon. {}", e.getMessage(), e);
+			return null;
+		}
 	}
 }

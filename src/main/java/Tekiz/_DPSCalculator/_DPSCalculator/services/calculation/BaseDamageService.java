@@ -11,29 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseDamageService
 {
-	private final LoadoutManager loadoutManager;
-
-	/**
-	 * The constructor for a {@link BaseDamageService} object.
-	 * @param loadoutManager A service used to manage {@link Loadout} objects.
-	 */
-	@Autowired
-	public BaseDamageService(LoadoutManager loadoutManager)
-	{
-		this.loadoutManager = loadoutManager;
-	}
-
 	/**
 	 * A method that calculates and returns the base damage from a loadout.
+	 * @param loadout The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts base damage.
 	 */
-	public double calculateBaseDamage()
+	public double calculateBaseDamage(Loadout loadout)
 	{
-		Loadout loadout = loadoutManager.getLoadout();
 		double baseDamage = 0;
-		if (loadout.getWeaponManager().getCurrentWeapon() != null)
+		if (loadout.getWeapon() != null)
 		{
-			baseDamage += loadout.getWeaponManager().getCurrentWeapon().getBaseDamage(45);
+			baseDamage += loadout.getWeapon().getBaseDamage(45);
 		}
 		//todo - anything that modifies base damage
 

@@ -1,57 +1,63 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.ArmourManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnvironmentManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
-import Tekiz._DPSCalculator._DPSCalculator.config.scope.LoadoutScope;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
+import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
+import lombok.Setter;
+import lombok.Value;
+import lombok.experimental.NonFinal;
 
 /**
- * Represents a storage object so that each manager is grouped to the same loadout based on {@code LoadoutID}.
+ * Represents a loadout.
  */
-
-@Data
-@Service
-@Scope(value = "loadout")
-public class Loadout
+@Value
+public class Loadout implements Serializable
 {
-	private final int LoadoutID;
-	private final WeaponManager weaponManager;
-	private final PerkManager perkManager;
-	private final ConsumableManager consumableManager;
-	private final ArmourManager armourManager;
-	private final PlayerManager playerManager;
-	private final EnvironmentManager environmentManager;
-	private final MutationManager mutationManager;
+	@JsonProperty("loadoutID")
+	int loadoutID;
 
-	/**
-	 *
-	 * @param weaponManager A {@link WeaponManager} service for storing and controlling all weapon details, including modifications.
-	 * @param perkManager A {@link PerkManager} service for storing and controlling perks.
-	 * @param consumableManager A {@link ConsumableManager} service for storing and controlling consumables.
-	 * @param armourManager A {@link ArmourManager} service for storing and controlling all armour details, including modifications.
-	 * @param playerManager A {@link PlayerManager} service for storing and controlling all player details.
-	 * @param environmentManager A {@link EnvironmentManager} service for storing and controlling all environmental details.
-	 * @param mutationManager A {@link MutationManager} service for storing and controlling all mutations.
-	 */
-	@Autowired
-	public Loadout(WeaponManager weaponManager, PerkManager perkManager, ConsumableManager consumableManager,
-				   ArmourManager armourManager, PlayerManager playerManager, EnvironmentManager environmentManager, MutationManager mutationManager)
-	{
-		this.LoadoutID = LoadoutScope.loadoutIdStorage.get();
-		this.weaponManager = weaponManager;
-		this.perkManager = perkManager;
-		this.consumableManager = consumableManager;
-		this.armourManager = armourManager;
-		this.playerManager = playerManager;
-		this.environmentManager = environmentManager;
-		this.mutationManager = mutationManager;
+	@NonFinal
+	@Setter
+	@JsonProperty("weapon")
+	Weapon weapon;
+
+	@JsonProperty("perks")
+	HashMap<Perk, Boolean> perks;
+
+	@JsonProperty("consumables")
+	HashMap<Consumable, Boolean> consumables;
+
+	@JsonProperty("armour")
+	Set<Armour> armour;
+
+	@JsonProperty("player")
+	Player player;
+
+	@JsonProperty("environment")
+	Environment environment;
+
+	@JsonProperty("mutations")
+	Set<Mutation> mutations;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Loadout loadout = (Loadout) o;
+		return loadoutID == loadout.loadoutID;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(loadoutID);
 	}
 }
