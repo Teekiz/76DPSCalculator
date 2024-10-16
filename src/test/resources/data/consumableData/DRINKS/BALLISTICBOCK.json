@@ -1,5 +1,5 @@
 {
-    "name" : "Test Ballistic Bock",
+    "name" : "Ballistic Bock",
     "consumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
     "modifierSource" : "CONSUMABLE_ALCOHOL",

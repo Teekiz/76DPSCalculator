@@ -25,7 +25,7 @@ public class ConsumableLoaderServiceTest
 		String consumableName = "AGEDMIRELURKQUEENSTEAK";
 		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
 		assertNotNull(consumable);
-		assertEquals("Test Aged mirelurk queen steak", consumable.name());
+		assertEquals("Aged mirelurk queen steak", consumable.name());
 	}
 
 	@Test
@@ -34,11 +34,11 @@ public class ConsumableLoaderServiceTest
 		List<Consumable> consumables = consumableLoaderService.getAllConsumables();
 		assertNotNull(consumables);
 		assertNotNull(consumables.stream()
-			.filter(consumable -> consumable.name().equalsIgnoreCase("Test Ballistic Bock"))
+			.filter(consumable -> consumable.name().equalsIgnoreCase("Ballistic Bock"))
 			.findFirst()
 			.orElse(null));
 		assertNotNull(consumables.stream()
-			.filter(consumable -> consumable.name().equalsIgnoreCase("Test Berry Mentats"))
+			.filter(consumable -> consumable.name().equalsIgnoreCase("Berry Mentats"))
 			.findFirst()
 			.orElse(null));
 	}

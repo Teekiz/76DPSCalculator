@@ -7,10 +7,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class PerkLoaderService
 {
@@ -27,7 +29,16 @@ public class PerkLoaderService
 	public Perk getPerk(String perkName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(perkFile, perkName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Perk.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Perk.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Perk file is null ({}).", perkName, perkFile);
+			return null;
+		}
+
 	}
 }

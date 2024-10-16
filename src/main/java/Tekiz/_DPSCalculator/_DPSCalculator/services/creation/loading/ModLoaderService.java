@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ModLoaderService
 {
@@ -31,8 +33,16 @@ public class ModLoaderService
 	public Receiver getReceiver(String receiverName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(receiversFile, receiverName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Receiver.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Receiver.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Receiver file is null ({}).", receiverName, receiverName);
+			return null;
+		}
 	}
 
 	public List<Receiver> getAllReceivers() throws IOException

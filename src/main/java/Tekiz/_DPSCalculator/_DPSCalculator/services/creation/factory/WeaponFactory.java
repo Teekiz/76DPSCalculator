@@ -48,7 +48,8 @@ public class WeaponFactory
 		{
 			JsonNode weaponTypeNode = weapon.get("weaponType");
 			if (weaponTypeNode == null || !weaponTypeNode.isTextual()) {
-				log.error("Cannot deserialize node. WeaponType is missing or null.");
+				//an error log is not thrown as this will be expected if the loadout has been deserialized with no set weapon.
+				log.warn("Cannot deserialize node. WeaponType is missing or null.");
 				return null;
 			}
 			WeaponType weaponType = WeaponType.valueOf(weaponTypeNode.asText().toUpperCase());

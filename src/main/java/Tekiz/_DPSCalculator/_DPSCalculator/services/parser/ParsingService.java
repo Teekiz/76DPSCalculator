@@ -56,7 +56,7 @@ public class ParsingService
 		context.setVariable("weapon", loadout.getWeapon());
 
 		if (loadout.getWeapon() == null) {
-			log.error("Warning: Weapon is null in context");
+			log.warn("Warning: Weapon is null in context");
 		}
 
 		return context;
@@ -112,8 +112,23 @@ public class ParsingService
 		}
 		catch (SpelEvaluationException e)
 		{
-			log.error("Cannot process expression. Error : " + e);
+			//if the weapon or some part of the weapon has not been set, the user will already have been warned. Therefore, an error log is not need.
+			if (!isNullObjectMethodCall(e))
+			{
+				log.error("Cannot process expression. Error : " + e);
+			}
 			return false;
 		}
+	}
+	/**
+	 * A method used to determine if the exception is a null method call.
+	 * @param e The exception thrown.
+	 * @return Returns true if the exception thrown was because of a null method call, otherwise false.
+	 */
+	private boolean isNullObjectMethodCall(SpelEvaluationException e)
+	{
+		String message = e.getMessage();
+		return message.contains("Attempted to call method")
+			&& message.contains("on null context object");
 	}
 }

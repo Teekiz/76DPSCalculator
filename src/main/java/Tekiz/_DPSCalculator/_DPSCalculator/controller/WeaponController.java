@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @Slf4j
-//@RequestMapping("api/loadout/weapon")
+@RestController
+@RequestMapping("/api")
 public class WeaponController
 {
 	private final LoadoutManager loadoutManager;
@@ -27,22 +29,21 @@ public class WeaponController
 		this.weaponManager = weaponManager;
 	}
 
-	@GetMapping("/get")
-	public ResponseEntity<Weapon> getWeapon() throws IOException
+	@GetMapping("/getWeapon")
+	public ResponseEntity<Weapon> getWeapon(@RequestParam int loadoutID) throws IOException
 	{
-		//todo - change
-		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (loadout.getWeapon() == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(loadout.getWeapon());
 	}
-
-	@GetMapping("/test")
-	public String test()
+	@GetMapping("/setWeapon")
+	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponName) throws IOException
 	{
-		return "hi";
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		weaponManager.setWeapon(weaponName, loadout);
+		return ResponseEntity.ok("Weapon has been updated.");
 	}
 }

@@ -28,7 +28,7 @@ public class LoadoutFactory
 	public Loadout createNewLoadout(int loadoutID, Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
 									Set<Armour> armour, Player player, Environment environment, Set<Mutation> mutations)
 	{
-		log.debug("Creating new loadout.");
+		log.debug("Retrieved loadout. Creating new object.");
 		return new Loadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
 	}
 }
