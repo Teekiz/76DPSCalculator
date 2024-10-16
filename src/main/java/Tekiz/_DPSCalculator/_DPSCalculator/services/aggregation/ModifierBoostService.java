@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class ModifierBoostService<V>
 	 */
 	private final HashMap<ModifierSource, Number> modifierBoosts;
 
+	/** The constructor for a {@link ModifierBoostService} object. */
 	@Autowired
 	public ModifierBoostService()
 	{
@@ -36,7 +38,7 @@ public class ModifierBoostService<V>
 	}
 
 	/**
-	 * A method that used to store boosts. Used by {@link Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService} if
+	 * A method that used to store boosts. Used by {@link ModifierExpressionService} if
 	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED". The expression can call this method to store boosts for later application.
 	 * @param modifierSource The type of modifier that the boost will be applied to. For example, {@link ModifierSource}.MUTATION_POSITIVE will apply
 	 *                          the {@code valueChange} to all positive mutations.

@@ -15,7 +15,8 @@ import lombok.Setter;
 public class Player implements Serializable
 {
 	/** Represents the players base special stats. Each stat cannot have a value lower than 1 or higher than 15. Boosts to these stats are handled through
-	 * {@link SpecialBonusCalculationService}.*/
+	 * {@link SpecialBonusCalculationService}.
+	 */
 	@JsonProperty("specials")
 	private final Special specials;
 	@JsonProperty("maxHP")

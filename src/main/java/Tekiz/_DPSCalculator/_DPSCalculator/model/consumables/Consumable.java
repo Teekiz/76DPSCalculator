@@ -19,7 +19,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Each consumable has a condition that must be met before any effects are applied.
  *
  * @param <V>            The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
- * @param id             An identifier if the object has been retrieved from a database.
+ * @param id             An identifier used if the object has been retrieved from a database.
  *           		     This is not required if object has been stored in a JSON file.
  * @param name           The name of the consumable. The user will be able to see the given value.
  * @param consumableType The type of consumable. This is used when only a user may use only a limited amount of one type of consumable (e.g. chems).

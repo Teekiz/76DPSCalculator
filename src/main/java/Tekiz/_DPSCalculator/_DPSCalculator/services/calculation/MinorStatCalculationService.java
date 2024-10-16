@@ -29,7 +29,7 @@ public class MinorStatCalculationService
 
 	/**
 	 * A method that calculates any flat health point bonuses from a loadout.
-	 * @param
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts bonus health.
 	 */
 	public double calculateHealthPointBonuses(Loadout loadout)

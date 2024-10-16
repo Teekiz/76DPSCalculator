@@ -30,7 +30,6 @@ public class ModifierAggregationService<V>
 	 * The constructor for the ModifierAggregationService.
 	 * @param modifierExpressionService A service that {@code applyAdditionalContext} uses to search for expressions
 	 *       corresponding to the name of the {@link Modifier}.
-	 *
 	 * @param modifierBoostService A service that {@code filterEffects} uses to apply bonus effects to any values of a given {@link Modifier}'s
 	 * 		{@link ModifierSource}.
 	 */
@@ -42,6 +41,7 @@ public class ModifierAggregationService<V>
 	}
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
 	 * whether the {@link Modifier}'s conditions have been met.
 	 */
@@ -61,6 +61,7 @@ public class ModifierAggregationService<V>
 	 * A method that is used for to identify and apply {@link Modifier}'s
 	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param modifiers The {@link HashMap} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
 	public void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers, Loadout loadout)
 	{

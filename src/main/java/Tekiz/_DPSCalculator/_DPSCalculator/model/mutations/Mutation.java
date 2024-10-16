@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * Represents a mutation that a player character might have.
- * @param id An identifier if the object has been retrieved from a database.
+ * @param id An identifier used if the object has been retrieved from a database.
  *           This is not required if object has been stored in a JSON file.
  * @param name The name of the mutation.
  * @param description The description of the perks effects.

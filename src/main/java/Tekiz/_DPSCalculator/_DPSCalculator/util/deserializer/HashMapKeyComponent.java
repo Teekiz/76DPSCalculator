@@ -8,13 +8,27 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import java.util.HashMap;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+
+/**
+ * A utility service to serialize and deserialize key objects in a {@link HashMap}.
+ */
 @Slf4j
 public class HashMapKeyComponent
 {
 	public static class HashMapKeySerializer extends JsonSerializer<Keyable>
 	{
+		/**
+		 * A method used to serialize a concrete {@link Keyable} object into a JSON string.
+		 * Strings will contain either the {@link String} name or {@link Integer} ID when serializing and will be stored as:
+		 * CLASSNAME_OBJECTNAME.
+		 * @param keyable The object to be serialized.
+		 * @param jsonGenerator An object used to convert the resulted string into Json.
+		 * @param serializerProvider The serializerProvider (not used in this implementation).
+		 * @throws IOException If expression cannot be converted or the {@link JsonGenerator} cannot write the string to Json.
+		 */
 		@Override
 		public void serialize(Keyable keyable, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
 		{
@@ -37,11 +51,15 @@ public class HashMapKeyComponent
 			jsonGenerator.writeFieldName(identifier.toString());
 		}
 	}
-
-	//https://stackoverflow.com/questions/70812652/how-to-create-form-in-spring-mvc-that-allows-to-choose-item-from-menu-and-its-q/70813855#70813855
-	//right now this is used above the perk class
 	public static class HashMapKeyDeserializer extends KeyDeserializer
 	{
+		/**
+		 * A method to deserialize an object that is a key in a {@link HashMap}.
+		 * @param string The string representation of the object formatted as CLASSNAME_OBJECTNAME_EXTRAINFO
+		 * @param context The context for deserialization. Used for dependency injection.
+		 * @return An object based on the {@code sting} data.
+		 * @throws IOException If an object cannot be created.
+		 */
 		@Override
 		public Object deserializeKey(String string, DeserializationContext context) throws IOException
 		{

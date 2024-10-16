@@ -28,6 +28,7 @@ public class BonusDamageService
 	}
 	/**
 	 * A method that calculates the bonus (additive) damage from a loadout.
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts bonus damage.
 	 */
 	public double calculateBonusDamage(Loadout loadout)

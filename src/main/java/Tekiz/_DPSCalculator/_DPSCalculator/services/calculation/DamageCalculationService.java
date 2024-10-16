@@ -28,7 +28,8 @@ public class DamageCalculationService
 	 * @param boostService A service that is used to store and apply boosts to {@link Modifier}'s values.
 	 */
 	@Autowired
-	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService, DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
+	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
+									DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
@@ -54,6 +55,7 @@ public class DamageCalculationService
 
 	/**
 	 * A method that calculates the total damage output of the current loadout.
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadout's damage output.
 	 */
 	public double calculateOutgoingDamage(Loadout loadout)

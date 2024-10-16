@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+/**
+ * An object that represents the rank and the restrictions placed on a rank.
+ */
 @Getter
 @AllArgsConstructor
 public class PerkRank implements Serializable
@@ -18,7 +22,7 @@ public class PerkRank implements Serializable
 	/**
 	 * Sets the rank of the perk, ensuring that it remains within valid bounds.
 	 * If the new rank is less than or equal to 0, the rank is set to 1.
-	 * If the new rank exceeds the highest available rank in {@code effects}, the rank is capped.
+	 * If the new rank exceeds the highest available rank in {@code maxRank}, the rank is capped.
 	 *
 	 * @param newRank The new rank to set for the perk.
 	 */

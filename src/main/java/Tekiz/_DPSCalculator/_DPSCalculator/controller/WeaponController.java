@@ -32,12 +32,12 @@ public class WeaponController
 	{
 		//todo - change
 		Loadout loadout = loadoutManager.getLoadout(1);
-		Weapon weapon = loadout.getWeapon();
-		if (weapon == null)
+		weaponManager.setWeapon("10MMPISTOL", loadout);
+		if (loadout.getWeapon() == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.ok(weapon);
+		return ResponseEntity.ok(loadout.getWeapon());
 	}
 
 	@GetMapping("/test")

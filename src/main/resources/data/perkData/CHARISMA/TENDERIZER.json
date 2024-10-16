@@ -1,6 +1,11 @@
 {
     "name" : "Tenderizer",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Make your target receive 5/7/10% more damage for 5/7/10 seconds after you attack.",
     "modifierSource" : "PERK",
     "effects" :

@@ -30,6 +30,7 @@ public class DamageMultiplierService
 	/**
 	 * A method to calculate the multiplicative damage.
 	 * @param outgoingDamage The damage total from {@link BaseDamageService} and {@link BonusDamageService}.
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return The total value of the {@code outgoingDamage} multiplied by all multiplicative bonuses.
 	 */
 	public Double calculateMultiplicativeDamage(Double outgoingDamage, Loadout loadout)

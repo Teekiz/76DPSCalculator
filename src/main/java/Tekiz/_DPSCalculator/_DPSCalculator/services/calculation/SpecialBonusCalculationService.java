@@ -30,6 +30,7 @@ public class SpecialBonusCalculationService
 	/**
 	 * A method that returns the bonuses for a given {@link Special} stat.
 	 * @param special The type of SPECIAL that will be returned.
+	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A filtered {@link Integer} value of a given {@code special} from the provided loadout.
 	 */
 	public int getSpecialBonus(Specials special, Loadout loadout)

@@ -1,6 +1,11 @@
 {
     "name" : "Strange in Numbers",
-    "rank" : 1,
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
     "description" : "Positive mutation effects are 25% stronger if teammates are mutated too.",
     "modifierSource" : "PERK",
     "effects" :

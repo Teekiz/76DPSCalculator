@@ -20,26 +20,36 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized @SuperBuilder(toBuilder = true)
 public class RangedWeapon extends Weapon
 {
+	/** The ammo the gun uses. */
 	@JsonProperty("ammo")
 	String ammo;
+	/** The amount of times a weapon can shoot before requiring a reload. */
 	@JsonProperty("magazineSize")
 	int magazineSize;
+	/** The speed that the weapon attacks at when the trigger is held. */
 	@JsonProperty("fireRate")
 	int fireRate;
+	/** The range the weapon can operate at without loosing damage. */
 	@JsonProperty("range")
 	int range;
+	/** How accurate the weapon will be. */
 	@JsonProperty("accuracy")
 	int accuracy;
 
+	/** How many projectiles are fired per shot. */
 	@JsonProperty("projectileCount")
 	int projectileCount;
+	/** How much damage is lost if the weapon is fired at a target outside optimal range. */
 	@JsonProperty("rangedPenalty")
 	int rangedPenalty;
+	/** How long it takes to before the weapon can be fired again after running out of ammunition. */
 	@JsonProperty("reloadTime")
 	double reloadTime;
+	/** The time it takes before another shot can be fired. */
 	@JsonProperty("attackDelay")
 	double attackDelay;
 
+	/** The receiver the weapon uses. */
 	@NonFinal
 	@JsonDeserialize(using = ReceiverDeserializer.class)
 	@JsonProperty("receiver")

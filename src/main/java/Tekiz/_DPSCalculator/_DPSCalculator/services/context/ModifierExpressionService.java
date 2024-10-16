@@ -41,6 +41,7 @@ public class ModifierExpressionService
 	/**
 	 * A method used to parse and apply a new {@link ModifierTypes} with a determined value.
 	 * @param contextName The name of a modifier that requires additional context.
+	 * @param loadout  The loadout that will be used to check against the context expression.
 	 * @return A {@link Map.Entry} of a new {@link ModifierTypes} and a {@link Number} value.
 	 */
 	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName, Loadout loadout)

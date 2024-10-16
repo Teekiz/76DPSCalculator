@@ -22,10 +22,20 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.jackson.JsonComponent;
 
+/**
+ * A component used to deserialize {@link Loadout} objects.
+ */
 @Slf4j
 @JsonComponent
 public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 {
+	/**
+	 * A method used to deserialize a {@link Loadout} object.
+	 * @param jsonParser The {@link JsonParser} providing the JSON input as a string.
+	 * @param context The context for deserialization. Used for dependency injection.
+	 * @return A {@link Loadout} object.
+	 * @throws IOException If the JSON string cannot be parsed.
+	 */
 	@Override
 	public Loadout deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException
 	{
