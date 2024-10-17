@@ -8,10 +8,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ArmourModLoaderService
 {
@@ -30,14 +32,30 @@ public class ArmourModLoaderService
 	public Material getMaterial(String materialName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(armourModMaterialFile, materialName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Material.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Material.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Material file is null ({}).", materialName, armourModMaterialFile);
+			return null;
+		}
 	}
 
 	public Miscellaneous getMiscellaneous(String miscellaneousName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(armourModMiscFile, miscellaneousName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Miscellaneous.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Miscellaneous.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Miscellaneous file is null ({}).", miscellaneousName, armourModMiscFile);
+			return null;
+		}
 	}
 }

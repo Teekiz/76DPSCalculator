@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ConsumableLoaderService
 {
@@ -29,8 +31,16 @@ public class ConsumableLoaderService
 	public Consumable getConsumable(String consumableName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(consumableFile, consumableName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Consumable.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Consumable.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Consumable file is null ({}).", consumableName, consumableFile);
+			return null;
+		}
 	}
 
 	public List<Consumable> getAllConsumables() throws IOException

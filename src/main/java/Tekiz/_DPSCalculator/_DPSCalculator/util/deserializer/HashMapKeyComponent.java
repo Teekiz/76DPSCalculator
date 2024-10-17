@@ -68,21 +68,21 @@ public class HashMapKeyComponent
 			String objectName = splitString[1];
 			log.debug("Received string: {}. ObjectType: {}. ObjectName: {}", string, objectType, objectName);
 
-			switch (objectType)
+			switch (objectType.toUpperCase())
 			{
-				case "Perk" ->
+				case "PERK" ->
 				{
 					log.debug("Deserializing Perk KeyObject: {}.", objectName);
 					PerkFactory perkFactory = (PerkFactory) context.findInjectableValue(PerkFactory.class.getName(), null, null);
 					return perkFactory.createPerk(objectName);
 				}
-				case "Consumable" ->
+				case "CONSUMABLE" ->
 				{
 					log.debug("Deserializing Consumable KeyObject: {}.", string);
 					ConsumableFactory consumableFactory = (ConsumableFactory) context.findInjectableValue(ConsumableFactory.class.getName(), null, null);
 					return consumableFactory.createConsumable(objectName);
 				}
-				case "Mutation" ->
+				case "MUTATION" ->
 				{
 					log.debug("Deserializing Mutation KeyObject: {}.", string);
 					MutationFactory mutationFactory = (MutationFactory) context.findInjectableValue(MutationFactory.class.getName(), null, null);
@@ -90,7 +90,7 @@ public class HashMapKeyComponent
 				}
 				case null, default ->
 				{
-					log.error("Could not deserialize key of type: {}.", objectType);
+					log.error("Could not deserialize key of type: {}. Name: {}.", objectType, objectName);
 					return null;
 				}
 			}

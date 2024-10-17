@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ArmourLoaderService
 {
@@ -29,8 +31,16 @@ public class ArmourLoaderService
 	public Armour getArmour(String armourName) throws IOException
 	{
 		File jsonFile = JSONLoader.getJSONFile(armourFile, armourName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		return objectMapper.treeToValue(rootNode, Armour.class);
+		if (jsonFile != null)
+		{
+			JsonNode rootNode = objectMapper.readTree(jsonFile);
+			return objectMapper.treeToValue(rootNode, Armour.class);
+		}
+		else
+		{
+			log.error("Cannot deserialize {}. Armour file is null ({}).", armourName, armourFile);
+			return null;
+		}
 	}
 
 	public List<Armour> getAllArmourPieces() throws IOException
