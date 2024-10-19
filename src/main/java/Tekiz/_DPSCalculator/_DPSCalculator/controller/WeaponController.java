@@ -2,9 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import java.io.IOException;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,23 +24,26 @@ public class WeaponController
 {
 	private final LoadoutManager loadoutManager;
 	private final WeaponManager weaponManager;
+	private final WeaponMapper weaponMapper;
 	@Autowired
-	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager)
+	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper)
 	{
+
 		log.info("Weapon controller created.");
 		this.loadoutManager = loadoutManager;
 		this.weaponManager = weaponManager;
+		this.weaponMapper = weaponMapper;
 	}
 
 	@GetMapping("/getWeapon")
-	public ResponseEntity<Weapon> getWeapon(@RequestParam int loadoutID) throws IOException
+	public ResponseEntity<WeaponNameDTO> getWeapon(@RequestParam int loadoutID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (loadout.getWeapon() == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.ok(loadout.getWeapon());
+		return ResponseEntity.ok(weaponMapper.convertToNameDTO(loadout.getWeapon()));
 	}
 	@GetMapping("/setWeapon")
 	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponName) throws IOException
@@ -45,5 +51,10 @@ public class WeaponController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		weaponManager.setWeapon(weaponName, loadout);
 		return ResponseEntity.ok("Weapon has been updated.");
+	}
+	@GetMapping("/getAvailableWeapons")
+	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
+	{
+		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponManager.getAllWeapons()));
 	}
 }

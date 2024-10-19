@@ -9,6 +9,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderSe
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import java.io.IOException;
+import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,15 @@ public class WeaponManager
 		applicationEventPublisher.publishEvent(weaponChangedEvent);
 		//todo - create
 		//else if (weapon instanceof MeleeWeapon)
+	}
+
+	/**
+	 * A method to retrieve all weapons from the loading service.
+	 * @return	A {@link List} of {@link Weapon} objects.
+	 * @throws IOException
+	 */
+	public List<Weapon> getAllWeapons() throws IOException
+	{
+		return weaponLoaderService.getAllWeapons();
 	}
 }

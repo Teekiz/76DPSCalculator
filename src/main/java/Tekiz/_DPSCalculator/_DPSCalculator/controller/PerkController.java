@@ -31,7 +31,7 @@ public class PerkController
 	@Autowired
 	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper)
 	{
-		log.info("Weapon controller created.");
+		log.info("Perk controller created.");
 		this.loadoutManager = loadoutManager;
 		this.perkManager = perkManager;
 		this.perkMapper = perkMapper;

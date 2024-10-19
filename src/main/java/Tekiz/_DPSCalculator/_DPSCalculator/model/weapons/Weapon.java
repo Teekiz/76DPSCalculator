@@ -18,6 +18,10 @@ import lombok.experimental.SuperBuilder;
 public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
+	/** The id of the weapon. Used if mapped to a database. */
+	@JsonProperty("weaponID")
+	protected final int weaponID;
+
 	/** The name of the weapon. The user will be able to see the given value. */
 	@JsonProperty("weaponName")
 	protected final String weaponName;
