@@ -55,6 +55,7 @@ public class WeaponController
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
+		log.debug("getAvailableWeapons called.");
 		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponManager.getAllWeapons()));
 	}
 }
