@@ -3,6 +3,8 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponNameDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponWithDetailsDTO;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
@@ -25,14 +27,15 @@ public class WeaponController
 	private final LoadoutManager loadoutManager;
 	private final WeaponManager weaponManager;
 	private final WeaponMapper weaponMapper;
+	private final WeaponLoaderService weaponLoaderService;
 	@Autowired
-	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper)
+	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, WeaponLoaderService weaponLoaderService)
 	{
-
 		log.info("Weapon controller created.");
 		this.loadoutManager = loadoutManager;
 		this.weaponManager = weaponManager;
 		this.weaponMapper = weaponMapper;
+		this.weaponLoaderService = weaponLoaderService;
 	}
 
 	@GetMapping("/getWeapon")
@@ -55,7 +58,16 @@ public class WeaponController
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
-		log.debug("getAvailableWeapons called.");
-		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponManager.getAllWeapons()));
+		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.getAllWeapons()));
+	}
+	@GetMapping("/getWeaponDetails")
+	public ResponseEntity<WeaponWithDetailsDTO> getWeaponDetails(@RequestParam String weaponName) throws IOException
+	{
+		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
+		if (weapon == null)
+		{
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(weaponMapper.convertToWithDetailsDTO(weapon));
 	}
 }

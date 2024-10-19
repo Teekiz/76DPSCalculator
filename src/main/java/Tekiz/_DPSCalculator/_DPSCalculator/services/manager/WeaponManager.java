@@ -92,14 +92,4 @@ public class WeaponManager
 		//todo - create
 		//else if (weapon instanceof MeleeWeapon)
 	}
-
-	/**
-	 * A method to retrieve all weapons from the loading service.
-	 * @return	A {@link List} of {@link Weapon} objects.
-	 * @throws IOException
-	 */
-	public List<Weapon> getAllWeapons() throws IOException
-	{
-		return weaponLoaderService.getAllWeapons();
-	}
 }

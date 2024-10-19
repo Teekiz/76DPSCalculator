@@ -31,7 +31,9 @@ public class WeaponLoaderService
 
 	public Weapon getWeapon(String weaponName) throws IOException
 	{
-		File jsonFile = JSONLoader.getJSONFile(weaponFile, weaponName);
+		//removes spaces and converts to uppercase
+		String modifiedWeaponName = weaponName.replaceAll("\\s+", "").toUpperCase();
+		File jsonFile = JSONLoader.getJSONFile(weaponFile, modifiedWeaponName);
 		JsonNode rootNode = objectMapper.readTree(jsonFile);
 		if (rootNode != null)
 		{
