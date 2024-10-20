@@ -1,5 +1,5 @@
  {
-    "weaponName" : "Test 10mm pistol",
+    "weaponName" : "10mm pistol",
     "weaponType" : "PISTOL",
     "damageType" : "BALLISTIC",
     "weaponDamageByLevel" :

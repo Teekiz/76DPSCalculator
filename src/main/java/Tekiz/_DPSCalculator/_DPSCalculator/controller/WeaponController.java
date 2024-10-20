@@ -68,6 +68,8 @@ public class WeaponController
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.ok(weaponMapper.convertToWithDetailsDTO(weapon));
+		WeaponWithDetailsDTO weaponDetails = weaponMapper.convertToWithDetailsDTO(weapon);
+		log.debug("Request for weapon: {}. Returning: {}.", weaponName, weaponDetails);
+		return ResponseEntity.ok(weaponDetails);
 	}
 }

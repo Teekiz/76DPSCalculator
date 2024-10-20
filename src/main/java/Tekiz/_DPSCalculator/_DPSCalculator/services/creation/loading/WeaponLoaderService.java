@@ -10,10 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class WeaponLoaderService
 {
@@ -34,12 +36,18 @@ public class WeaponLoaderService
 		//removes spaces and converts to uppercase
 		String modifiedWeaponName = weaponName.replaceAll("\\s+", "").toUpperCase();
 		File jsonFile = JSONLoader.getJSONFile(weaponFile, modifiedWeaponName);
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		if (rootNode != null)
+		if (jsonFile == null)
 		{
-			return weaponFactory.createWeapon(rootNode);
+			log.error("Cannot find file for weapon: {}.", weaponName);
+			return null;
 		}
-		return null;
+		JsonNode rootNode = objectMapper.readTree(jsonFile);
+		if (rootNode == null)
+		{
+			log.error("Cannot read weapon node ({}). File: {}.", weaponName, jsonFile);
+			return null;
+		}
+		return weaponFactory.createWeapon(rootNode);
 	}
 
 	//This will be used to for weapon displays so that unnecessary objects are not created.
