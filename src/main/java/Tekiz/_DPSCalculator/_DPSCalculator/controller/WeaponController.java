@@ -2,8 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponNameDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponDetailsDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;

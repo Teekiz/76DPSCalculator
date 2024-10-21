@@ -3,9 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponNameDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponDetailsDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeaponDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.MeleeWeaponDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.RangedWeaponDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -78,8 +79,14 @@ public class WeaponMapper
 				.accuracy(((RangedWeapon) weapon).getAccuracy())
 				.build();
 		} else if (weapon instanceof MeleeWeapon) {
-			//todo - change
-			return convertToDetailsDTO(weapon);
+			return MeleeWeaponDTO.builder()
+				.weaponID(weapon.getWeaponID())
+				.weaponName(weapon.getWeaponName())
+				.weaponType(weapon.getWeaponType().toString())
+				.damageType(weapon.getDamageType().toString())
+				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
+				.apCost(weapon.getApCost())
+				.build();
 		} else {
 			return convertToDetailsDTO(weapon);
 		}

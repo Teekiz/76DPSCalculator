@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
+package Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
