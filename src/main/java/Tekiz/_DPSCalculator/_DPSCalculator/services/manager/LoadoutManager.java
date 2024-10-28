@@ -51,6 +51,16 @@ public class LoadoutManager
 				return newLoadout;
 			});
 	}
+
+	/**
+	 * Retrieves all loadouts tied to a session key.
+	 * @return A {@link Set} of {@link Loadout} objects.
+	 */
+	public Set<Loadout> getLoadouts()
+	{
+		String sessionID = userLoadoutTracker.getSessionID();
+		return redisLoadoutService.getSessionLoadouts(sessionID);
+	}
 	public void saveActiveLoadout(String sessionID, Loadout loadout)
 	{
 		redisLoadoutService.saveLoadout(sessionID, loadout);
