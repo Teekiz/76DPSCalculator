@@ -15,6 +15,7 @@ public class PerkDTO
 {
 	private int id;
 	private String name;
+	private String special;
 	@Setter
 	private int currentRank;
 	private int baseCost;

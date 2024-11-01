@@ -1,5 +1,6 @@
 {
     "name" : "Gunslinger",
+    "special": "AGILITY",
     "rank" : 
     {
         "currentRank" : 1,

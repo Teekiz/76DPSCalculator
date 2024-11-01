@@ -21,18 +21,29 @@ public class PerkMapper
 	public PerkDTO convertToDTO(Perk perk)
 	{
 		if (perk == null) {return null;}
-		return new PerkDTO(perk.id(), perk.name(), perk.perkRank().getCurrentRank(),
+		return new PerkDTO(perk.id(), perk.name(), perk.special(), perk.perkRank().getCurrentRank(),
 			perk.perkRank().getBaseCost(), perk.perkRank().getMaxRank(), perk.description());
 	}
 
 	/**
 	 * A method to convert all perks in a HashMap to a data transfer object (DTO) representation.
-	 * @param perks A {@link List} of {@link Perk} to be converted.
+	 * @param perks A {@link HashMap} of {@link Perk} to be converted.
 	 * @return A {@link List} of {@link Perk} represented as a DTOs ({@link PerkDTO}).
 	 */
 	public List<PerkDTO> convertAllToDTO(HashMap<Perk, Boolean> perks)
 	{
 		return perks.keySet().stream()
+			.map(this::convertToDTO)
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * A method to convert all perks in a list to a data transfer object (DTO) representation.
+	 * @param perks A {@link List} of {@link Perk} to be converted.
+	 * @return A {@link List} of {@link Perk} represented as a DTOs ({@link PerkDTO}).
+	 */
+	public List<PerkDTO> convertAllPerksToDTO(List<Perk> perks){
+		return perks.stream()
 			.map(this::convertToDTO)
 			.collect(Collectors.toList());
 	}

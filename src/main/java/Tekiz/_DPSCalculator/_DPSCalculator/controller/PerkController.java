@@ -1,12 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PerkMapper;
 import java.io.IOException;
 import java.util.Collections;
@@ -28,13 +26,15 @@ public class PerkController
 	private final LoadoutManager loadoutManager;
 	private final PerkManager perkManager;
 	private final PerkMapper perkMapper;
+	private final PerkLoaderService perkLoaderService;
 	@Autowired
-	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper)
+	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper, PerkLoaderService perkLoaderService)
 	{
 		log.info("Perk controller created.");
 		this.loadoutManager = loadoutManager;
 		this.perkManager = perkManager;
 		this.perkMapper = perkMapper;
+		this.perkLoaderService = perkLoaderService;
 	}
 
 	@GetMapping("/getPerks")
@@ -55,5 +55,11 @@ public class PerkController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.addPerk(perkName, loadout);
 		return ResponseEntity.ok(perkName + " has been added to your loadout.");
+	}
+
+	@GetMapping("/getAvailablePerks")
+	public ResponseEntity<List<PerkDTO>> getAvailablePerks() throws IOException
+	{
+		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.getAllPerks()));
 	}
 }

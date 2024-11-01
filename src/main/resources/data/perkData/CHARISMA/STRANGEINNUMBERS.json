@@ -1,5 +1,6 @@
 {
     "name" : "Strange in Numbers",
+    "special": "CHARISMA",
     "rank" : 
     {
         "currentRank" : 1,

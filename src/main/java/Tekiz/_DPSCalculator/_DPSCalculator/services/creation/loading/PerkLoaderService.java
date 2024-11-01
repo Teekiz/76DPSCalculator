@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,22 @@ public class PerkLoaderService
 			log.error("Cannot deserialize {}. Perk file is null ({}).", perkName, perkFile);
 			return null;
 		}
-
 	}
+
+	public List<Perk> getAllPerks() throws IOException
+	{
+		List<Perk> perks = new ArrayList<>();
+		List<File> jsonFiles = JSONLoader.getAllJSONFiles(perkFile);
+
+		for (File file : jsonFiles)
+		{
+			JsonNode rootNode = objectMapper.readTree(file);
+			if (rootNode != null)
+			{
+				perks.add(objectMapper.treeToValue(rootNode, Perk.class));
+			}
+		}
+		return perks;
+	}
+
 }

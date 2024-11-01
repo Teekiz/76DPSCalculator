@@ -21,6 +21,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * @param id                An identifier if the object has been retrieved from a database.
  *         				    This is not required if object has been stored in a JSON file.
  * @param name 				The name of the perk. The user will be able to see the given value.
+ * @param special 			The special stat the perk belongs to.
  * @param perkRank 			An object that represents the rank and the restrictions placed on a rank.
  * 	 						The set rank cannot be below 1 or above the highest rank of effects.
  * @param description		The description of the effects a perk provides.
@@ -35,6 +36,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  */
 public record Perk<V>(@JsonProperty("id") int id,
 					  @JsonProperty("name") String name,
+					  @JsonProperty("special") String special,
 					  @JsonProperty("rank") PerkRank perkRank,
 					  @JsonProperty("description") String description,
 					  @JsonProperty("modifierSource") ModifierSource modifierSource,
