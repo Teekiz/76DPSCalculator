@@ -50,7 +50,6 @@ public class Special implements Serializable
 			case LUCK -> luck = modifySpecialCheck(luck, value);
 		}
 	}
-
 	/**
 	 * A method that the special class uses internally to ensure that a SPECIALs value does not go above 1 or below 15.
 	 * @param current The {@link Integer} value of the chosen special stat.
@@ -61,5 +60,27 @@ public class Special implements Serializable
 	{
 		if (current + value > maxSpecialValue) return maxSpecialValue;
 		else return Math.max(current + value, minSpecialValue);
+	}
+
+	/**
+	 * A method to change all specials in one go. Each value is checked against the minimum and maximum values before being applied.
+	 * @param strength The new {@code strength} value.
+	 * @param perception The new {@code perception} value.
+	 * @param endurance The new {@code endurance} value.
+	 * @param charisma The new {@code charisma} value.
+	 * @param intelligence The new {@code intelligence} value.
+	 * @param agility The new {@code agility} value.
+	 * @param luck The new {@code luck} value.
+	 */
+	public void modifyAllSpecials(int strength, int perception, int endurance, int charisma, int intelligence, int agility, int luck)
+	{
+		//checks each special before applying them
+		this.strength = modifySpecialCheck(0, strength);
+		this.perception = modifySpecialCheck(0, perception);
+		this.endurance = modifySpecialCheck(0, endurance);
+		this.charisma = modifySpecialCheck(0, charisma);
+		this.intelligence = modifySpecialCheck(0, intelligence);
+		this.agility = modifySpecialCheck(0, agility);
+		this.luck = modifySpecialCheck(0, luck);
 	}
 }
