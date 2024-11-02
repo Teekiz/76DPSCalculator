@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,12 +50,21 @@ public class PerkController
 	}
 
 	//todo - handle exceptions and if perk cannot be found
-	@GetMapping("/addPerk")
+	@PostMapping("/addPerk")
 	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkName) throws IOException
 	{
+		log.debug("Add perk called for perk: {}.", perkName);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.addPerk(perkName, loadout);
 		return ResponseEntity.ok(perkName + " has been added to your loadout.");
+	}
+
+	@PostMapping("/removePerk")
+	public ResponseEntity<String> removePerk(@RequestParam int loadoutID, @RequestParam String perkName) throws IOException
+	{
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		perkManager.removePerk(perkName, loadout);
+		return ResponseEntity.ok(perkName + " has been removed from your loadout.");
 	}
 
 	@GetMapping("/getAvailablePerks")

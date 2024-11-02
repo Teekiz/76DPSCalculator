@@ -30,7 +30,8 @@ public class PerkLoaderService
 
 	public Perk getPerk(String perkName) throws IOException
 	{
-		File jsonFile = JSONLoader.getJSONFile(perkFile, perkName);
+		String modifiedPerkName = perkName.replaceAll("\\s+", "").toUpperCase();
+		File jsonFile = JSONLoader.getJSONFile(perkFile, modifiedPerkName);
 		if (jsonFile != null)
 		{
 			JsonNode rootNode = objectMapper.readTree(jsonFile);
