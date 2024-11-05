@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ConsumableFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.MutationFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.PerkFactory;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,12 @@ public class HashMapKeyComponent
 
 			switch (keyable.getClass().getSimpleName())
 			{
-				case "Perk" -> identifier.insert(0, "PERK");
+				//A PERK object requires additional information to set the rank, so it will look like PERK_NAME_2 is set to 2.
+				case "Perk" -> {
+					Perk perk = (Perk) keyable;
+					identifier.insert(0, "PERK");
+					identifier.append("_").append(perk.perkRank().getCurrentRank());
+				}
 				case "Consumable" -> identifier.insert(0, "CONSUMABLE");
 				case "Mutation" -> identifier.insert(0, "MUTATION");
 				default -> identifier.insert(0, "UNKNOWN");
@@ -66,7 +73,9 @@ public class HashMapKeyComponent
 			String[] splitString = string.split("_");
 			String objectType = splitString[0];
 			String objectName = splitString[1];
-			log.debug("Received string: {}. ObjectType: {}. ObjectName: {}", string, objectType, objectName);
+			String objectProperties[] = Arrays.copyOfRange(splitString, 2, splitString.length);
+
+			log.debug("Received string: {}. ObjectType: {}. ObjectName: {}.", string, objectType, objectName);
 
 			switch (objectType.toUpperCase())
 			{
@@ -74,7 +83,8 @@ public class HashMapKeyComponent
 				{
 					log.debug("Deserializing Perk KeyObject: {}.", objectName);
 					PerkFactory perkFactory = (PerkFactory) context.findInjectableValue(PerkFactory.class.getName(), null, null);
-					return perkFactory.createPerk(objectName);
+					int rank = objectProperties.length >= 1 ? Integer.parseInt(objectProperties[0]) : 1;
+					return perkFactory.createPerk(objectName, rank);
 				}
 				case "CONSUMABLE" ->
 				{

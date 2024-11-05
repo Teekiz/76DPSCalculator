@@ -41,6 +41,21 @@ public class PerkManager
 		this.perkLoaderService = perkLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
+
+	/**
+	 * A method to find a perk within a given loadout.
+	 * @param perkName The name of the {@link Perk} object.
+	 * @param loadout The {@link Loadout} object containing the perk.
+	 * @return A {@link Perk} or null object.
+	 */
+	public Perk getPerkInLoadout(String perkName, Loadout loadout){
+		return loadout.getPerks()
+			.keySet().stream()
+			.filter(key -> key.name().equalsIgnoreCase(perkName))
+			.findFirst()
+			.orElse(null);
+	}
+
 	//when a perk is added - it is automatically added to the effects.
 	@SaveLoadout
 	public void addPerk(String perkName, Loadout loadout) throws IOException
@@ -57,16 +72,27 @@ public class PerkManager
 	@SaveLoadout
 	public void removePerk(String perkName, Loadout loadout) throws IOException
 	{
-		Perk perk = loadout.getPerks()
-			.keySet().stream()
-			.filter(key -> key.name().equalsIgnoreCase(perkName))
-			.findFirst()
-			.orElse(null);
+		Perk perk = getPerkInLoadout(perkName, loadout);
 		if (perk != null)
 		{
 			loadout.getPerks().remove(perk);
 			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.name() + " has been removed");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
+		}
+	}
+
+	/**
+	 * A method used to adjust the rank of a given perk.
+	 * @param perkName The name of the perk to adjust.
+	 * @param rank The new rank that will be applied to the perk.
+	 * @param loadout The loadout the change will take place on.
+	 */
+	@SaveLoadout
+	public void changePerkRank(String perkName, int rank, Loadout loadout)
+	{
+		Perk perk = getPerkInLoadout(perkName, loadout);
+		if (perk != null) {
+			perk.perkRank().setCurrentRank(rank);
 		}
 	}
 

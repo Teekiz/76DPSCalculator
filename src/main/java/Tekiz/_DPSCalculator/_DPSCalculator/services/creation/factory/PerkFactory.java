@@ -20,8 +20,11 @@ public class PerkFactory
 	{
 		this.perkLoaderService = perkLoaderService;
 	}
-	public Perk createPerk(String perkName) throws IOException
+	public Perk createPerk(String perkName, int currentRank) throws IOException
 	{
-		return perkLoaderService.getPerk(perkName);
+
+		Perk perk = perkLoaderService.getPerk(perkName);
+		perk.perkRank().setCurrentRank(currentRank);
+		return perk;
 	}
 }

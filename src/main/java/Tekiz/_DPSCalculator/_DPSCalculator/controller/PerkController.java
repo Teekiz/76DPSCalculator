@@ -72,4 +72,13 @@ public class PerkController
 	{
 		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.getAllPerks()));
 	}
+
+	@PostMapping("/changePerkRank")
+	public ResponseEntity<String> changePerkRank(@RequestParam int loadoutID, @RequestParam String perkName, @RequestParam int perkRank) throws IOException
+	{
+		log.debug("Received request to change perk rank for loadout {}. Perk name: {}, new rank: {}.", loadoutID, perkName, perkRank);
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		perkManager.changePerkRank(perkName, perkRank, loadout);
+		return ResponseEntity.ok(perkName + "'s rank has been modified.");
+	}
 }
