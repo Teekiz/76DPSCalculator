@@ -37,29 +37,27 @@ public class Special implements Serializable
 	 * @param special The stat the user wishes to modify. See {@link Specials} for valid values.
 	 * @param value The {@link Integer} value the user wishes to add or subtract to the {@code special}. The target stat cannot be set below 1 or higher than 15.
 	 */
-	public void modifySpecial(Specials special, int value)
+	public void setSpecial(Specials special, int value)
 	{
 		switch (special)
 		{
-			case STRENGTH -> strength = modifySpecialCheck(strength, value);
-			case PERCEPTION -> perception = modifySpecialCheck(perception, value);
-			case ENDURANCE -> endurance = modifySpecialCheck(endurance, value);
-			case CHARISMA -> charisma = modifySpecialCheck(charisma, value);
-			case INTELLIGENCE -> intelligence = modifySpecialCheck(intelligence, value);
-			case AGILITY -> agility = modifySpecialCheck(agility, value);
-			case LUCK -> luck = modifySpecialCheck(luck, value);
+			case STRENGTH -> strength = setSpecialCheck(value);
+			case PERCEPTION -> perception = setSpecialCheck(value);
+			case ENDURANCE -> endurance = setSpecialCheck(value);
+			case CHARISMA -> charisma = setSpecialCheck(value);
+			case INTELLIGENCE -> intelligence = setSpecialCheck(value);
+			case AGILITY -> agility = setSpecialCheck(value);
+			case LUCK -> luck = setSpecialCheck(value);
 		}
 	}
 	/**
 	 * A method that the special class uses internally to ensure that a SPECIALs value does not go above 1 or below 15.
-	 * @param current The {@link Integer} value of the chosen special stat.
 	 * @param value The {@link Integer} value that the user wishes to add or subtract from the @{code current} value.
 	 * @return {@link Integer} The modified value between the defined range (1 - 15).
 	 */
-	private int modifySpecialCheck(int current, int value)
+	private int setSpecialCheck(int value)
 	{
-		if (current + value > maxSpecialValue) return maxSpecialValue;
-		else return Math.max(current + value, minSpecialValue);
+		return Math.min(Math.max(value, minSpecialValue), maxSpecialValue);
 	}
 
 	/**
@@ -72,15 +70,35 @@ public class Special implements Serializable
 	 * @param agility The new {@code agility} value.
 	 * @param luck The new {@code luck} value.
 	 */
-	public void modifyAllSpecials(int strength, int perception, int endurance, int charisma, int intelligence, int agility, int luck)
+	public void setAllSpecials(int strength, int perception, int endurance, int charisma, int intelligence, int agility, int luck)
 	{
 		//checks each special before applying them
-		this.strength = modifySpecialCheck(0, strength);
-		this.perception = modifySpecialCheck(0, perception);
-		this.endurance = modifySpecialCheck(0, endurance);
-		this.charisma = modifySpecialCheck(0, charisma);
-		this.intelligence = modifySpecialCheck(0, intelligence);
-		this.agility = modifySpecialCheck(0, agility);
-		this.luck = modifySpecialCheck(0, luck);
+		this.strength = setSpecialCheck(strength);
+		this.perception = setSpecialCheck(perception);
+		this.endurance = setSpecialCheck(endurance);
+		this.charisma = setSpecialCheck(charisma);
+		this.intelligence = setSpecialCheck(intelligence);
+		this.agility = setSpecialCheck(agility);
+		this.luck = setSpecialCheck(luck);
+	}
+
+	/**
+	 * A method used to get the corresponding special value.
+	 * @param special The special value to retrieve.
+	 * @return A {@link Integer} value of the corresponding {@code special} value.
+	 */
+	public int getSpecialValue(Specials special){
+		int value = 1;
+		switch (special)
+		{
+			case STRENGTH -> value = strength;
+			case PERCEPTION -> value = perception;
+			case ENDURANCE -> value = endurance;
+			case CHARISMA -> value = charisma;
+			case INTELLIGENCE -> value = intelligence;
+			case AGILITY -> value = agility;
+			case LUCK -> value = luck;
+		}
+		return value;
 	}
 }

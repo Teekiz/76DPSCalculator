@@ -1,5 +1,6 @@
 {
     "name" : "Tenderizer",
+    "special": "CHARISMA",
     "rank" : 
     {
         "currentRank" : 1,

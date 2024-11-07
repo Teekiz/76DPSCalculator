@@ -1,5 +1,6 @@
 {
     "name" : "TestModifier",
+    "special": "AGILITY",
     "rank" : 
     {
         "currentRank" : 1,

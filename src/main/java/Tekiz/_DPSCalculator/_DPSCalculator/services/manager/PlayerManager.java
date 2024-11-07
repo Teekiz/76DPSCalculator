@@ -47,10 +47,10 @@ public class PlayerManager
 	 * @param value The value the special will be changed to.
 	 */
 	@SaveLoadout
-	public void modifySpecial(Loadout loadout, Specials special, int value)
+	public void setSpecial(Loadout loadout, Specials special, int value)
 	{
 		Special playerSpecials = loadout.getPlayer().getSpecials();
-		playerSpecials.modifySpecial(special, value);
+		playerSpecials.setSpecial(special, value);
 	}
 
 	/**
@@ -59,10 +59,10 @@ public class PlayerManager
 	 * @param newSpecials A {@link SpecialDTO} of the new values that will be modified.
 	 */
 	@SaveLoadout
-	public void modifySpecialsFromDTO(Loadout loadout, SpecialDTO newSpecials)
+	public void setSpecialsFromDTO(Loadout loadout, SpecialDTO newSpecials)
 	{
 		Special playerSpecials = loadout.getPlayer().getSpecials();
-		playerSpecials.modifyAllSpecials(newSpecials.getStrength(), newSpecials.getPerception(), newSpecials.getEndurance(),
+		playerSpecials.setAllSpecials(newSpecials.getStrength(), newSpecials.getPerception(), newSpecials.getEndurance(),
 			newSpecials.getCharisma(), newSpecials.getIntelligence(), newSpecials.getAgility(), newSpecials.getLuck());
 
 	}

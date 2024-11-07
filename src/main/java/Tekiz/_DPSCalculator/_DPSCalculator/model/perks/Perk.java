@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
@@ -36,7 +37,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  */
 public record Perk<V>(@JsonProperty("id") int id,
 					  @JsonProperty("name") String name,
-					  @JsonProperty("special") String special,
+					  @JsonProperty("special") Specials special,
 					  @JsonProperty("rank") PerkRank perkRank,
 					  @JsonProperty("description") String description,
 					  @JsonProperty("modifierSource") ModifierSource modifierSource,

@@ -7,7 +7,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PlayerMapper;
 import java.io.IOException;
-import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,7 @@ public class PlayerController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (loadout != null){
-			playerManager.modifySpecial(loadout, Specials.valueOf(special), value);
+			playerManager.setSpecial(loadout, Specials.valueOf(special), value);
 			return ResponseEntity.status(HttpStatus.OK).body(special + " has been changed to " + value + ".");
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find loadout of ID " + loadoutID);
@@ -53,7 +52,7 @@ public class PlayerController
 		log.debug("/changeSpecialsCalled for loadout {}. Specials: {}.", loadoutID, specials);
 		if (loadout != null){
 
-			playerManager.modifySpecialsFromDTO(loadout, specials);
+			playerManager.setSpecialsFromDTO(loadout, specials);
 			return ResponseEntity.status(HttpStatus.OK).body(loadoutID + " has been changed.");
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find loadout of ID " + loadoutID);

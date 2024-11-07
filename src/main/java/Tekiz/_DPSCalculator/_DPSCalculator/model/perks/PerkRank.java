@@ -32,4 +32,14 @@ public class PerkRank implements Serializable
 		if (newRank <= 0) currentRank = 1;
 		else currentRank = Math.min(newRank, maxRank);
 	}
+
+	/**
+	 * A method to calculate the points required to use this perk. Calculated by base cost + current rank - 1.
+	 * @return A {@link Integer} of the points required to use this perk.
+	 */
+	@JsonIgnore
+	public int getPointsCost(){
+		//1 point is removed due to this point already being accounted for in the initial base cost.
+		return baseCost + currentRank - 1;
+	}
 }

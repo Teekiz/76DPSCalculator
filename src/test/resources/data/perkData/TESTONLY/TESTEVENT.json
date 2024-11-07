@@ -1,5 +1,6 @@
 {
     "name" : "TestEvent",
+    "special": "AGILITY",
     "rank" : 
     {
         "currentRank" : 1,

@@ -21,7 +21,7 @@ public class PerkMapper
 	public PerkDTO convertToDTO(Perk perk)
 	{
 		if (perk == null) {return null;}
-		return new PerkDTO(perk.id(), perk.name(), perk.special(), perk.perkRank().getCurrentRank(),
+		return new PerkDTO(perk.id(), perk.name(), perk.special().toString(), perk.perkRank().getCurrentRank(),
 			perk.perkRank().getBaseCost(), perk.perkRank().getMaxRank(), perk.description());
 	}
 

@@ -1,5 +1,6 @@
 {
     "name" : "Test Heavy Gunner",
+    "special": "STRENGTH",
     "rank" : 
     {
         "currentRank" : 1,
