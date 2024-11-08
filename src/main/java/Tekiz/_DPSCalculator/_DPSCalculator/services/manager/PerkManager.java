@@ -103,7 +103,7 @@ public class PerkManager
 	public void changePerkRank(String perkName, int rank, Loadout loadout)
 	{
 		Perk perk = getPerkInLoadout(perkName, loadout);
-		if (perk != null) {
+		if (perk != null && (ignoreSpecialRestrictions || hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials(), rank))) {
 			perk.perkRank().setCurrentRank(rank);
 		}
 	}
@@ -113,13 +113,17 @@ public class PerkManager
 	 * @param perks A {@link HashMap} of {@link Perk} objects to be used.
 	 * @param perkToAdd The perk to be added.
 	 * @param playerStats The amount of points available to be allocated.
+	 * @param temporaryRank An optional argument which is used to determine how
 	 * @return {@code true} if there are points available, otherwise {@code false}.
 	 */
-	public boolean hasAvailableSpecialPoints(HashMap<Perk, Boolean> perks, Perk perkToAdd, Special playerStats){
+	public boolean hasAvailableSpecialPoints(HashMap<Perk, Boolean> perks, Perk perkToAdd, Special playerStats, int... temporaryRank){
 
 		Specials special = perkToAdd.special();
 		int availablePoints = playerStats.getSpecialValue(special);
-		int requiredPoints = perkToAdd.perkRank().getPointsCost();
+
+		//uses either the perks current rank
+		int requiredPoints = (temporaryRank.length > 0 && temporaryRank[0] > 0) ? perkToAdd.perkRank().getPointsCost(temporaryRank[0]) :
+			perkToAdd.perkRank().getPointsCost();
 
 		int totalUsedPoints = perks.keySet().stream()
 			.filter(perk -> perk.special().equals(special) && !perk.name().equals(perkToAdd.name()))

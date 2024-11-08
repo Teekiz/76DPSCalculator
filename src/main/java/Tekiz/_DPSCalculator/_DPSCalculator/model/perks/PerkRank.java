@@ -35,11 +35,13 @@ public class PerkRank implements Serializable
 
 	/**
 	 * A method to calculate the points required to use this perk. Calculated by base cost + current rank - 1.
+	 * @param temporaryRank An optional argument that can temporarily modify the perk cost (used for projected perk cost).
 	 * @return A {@link Integer} of the points required to use this perk.
 	 */
 	@JsonIgnore
-	public int getPointsCost(){
+	public int getPointsCost(int... temporaryRank){
 		//1 point is removed due to this point already being accounted for in the initial base cost.
-		return baseCost + currentRank - 1;
+		int rank = temporaryRank.length > 0 ? temporaryRank[0] : currentRank;
+		return baseCost + rank - 1;
 	}
 }

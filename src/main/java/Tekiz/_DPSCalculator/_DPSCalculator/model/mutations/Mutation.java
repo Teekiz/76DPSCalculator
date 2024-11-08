@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Represents a mutation that a player character might have.
@@ -40,5 +41,26 @@ public record Mutation(@JsonProperty("id") int id,
 			mutationMap.put(positiveEffects, true);
 		}
 		return mutationMap;
+	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		if (this == object)
+		{
+			return true;
+		}
+		if (object == null || getClass() != object.getClass())
+		{
+			return false;
+		}
+		Mutation mutation = (Mutation) object;
+		return id == mutation.id && Objects.equals(name, mutation.name);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id, name);
 	}
 }

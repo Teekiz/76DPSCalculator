@@ -9,6 +9,7 @@ import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
+import java.util.Objects;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -40,4 +41,25 @@ public record Consumable<V>(@JsonProperty("id") int id,
 							@JsonProperty("modifierSource") ModifierSource modifierSource,
 							@JsonProperty("conditionString") Expression condition,
 							@JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier, Keyable
-{}
+{
+	@Override
+	public boolean equals(Object object)
+	{
+		if (this == object)
+		{
+			return true;
+		}
+		if (object == null || getClass() != object.getClass())
+		{
+			return false;
+		}
+		Consumable<?> that = (Consumable<?>) object;
+		return id == that.id && Objects.equals(name, that.name);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id, name);
+	}
+}

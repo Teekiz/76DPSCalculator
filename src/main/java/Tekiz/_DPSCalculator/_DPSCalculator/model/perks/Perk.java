@@ -9,6 +9,7 @@ import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
+import java.util.Objects;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -59,5 +60,26 @@ public record Perk<V>(@JsonProperty("id") int id,
 			return effectsPerRank.get(perkRank.getCurrentRank());
 		}
 		return null;
+	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		if (this == object)
+		{
+			return true;
+		}
+		if (object == null || getClass() != object.getClass())
+		{
+			return false;
+		}
+		Perk<?> perk = (Perk<?>) object;
+		return id == perk.id && Objects.equals(name, perk.name);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id, name);
 	}
 }

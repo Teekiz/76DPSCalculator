@@ -78,6 +78,19 @@ public class PerkManagerTest
 		perkManager.addPerk("STRANGEINNUMBERS", loadout);
 		assertEquals(3, loadout.getPerks().keySet().size());
 
+		//adding duplicate object.
+		playerManager.setSpecial(loadout, Specials.CHARISMA, 2);
+		perkManager.addPerk("TENDERIZER", loadout);
+		assertEquals(3, loadout.getPerks().keySet().size());
+
+		perkManager.changePerkRank("Strange in Numbers", 2, loadout);
+		//this shouldn't really be used to determine the name, which is why the capitalisation is different
+		assertEquals(1, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
+
+		playerManager.setSpecial(loadout, Specials.CHARISMA, 3);
+		perkManager.changePerkRank("Strange in Numbers", 2, loadout);
+		assertEquals(2, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
+
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 }
