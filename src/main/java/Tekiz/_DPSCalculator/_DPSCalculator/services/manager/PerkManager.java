@@ -122,7 +122,7 @@ public class PerkManager
 		int requiredPoints = perkToAdd.perkRank().getPointsCost();
 
 		int totalUsedPoints = perks.keySet().stream()
-			.filter(perk -> perk.special().equals(special))
+			.filter(perk -> perk.special().equals(special) && !perk.name().equals(perkToAdd.name()))
 			.mapToInt(perk -> perk.perkRank().getPointsCost())
 			.sum();
 
