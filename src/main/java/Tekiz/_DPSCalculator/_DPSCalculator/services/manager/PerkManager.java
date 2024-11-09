@@ -5,9 +5,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
+import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialsChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
@@ -94,6 +97,28 @@ public class PerkManager
 	}
 
 	/**
+	 * A method used to remove perks from a loadout while the total points used exceeds the points available.
+	 * @param loadout The loadout to remove the perks from.
+	 * @param special The special that the perks will be used from.
+	 * @param availablePoints The amount of points available to be used.
+	 * @throws IOException
+	 */
+	private void removeExcessPerksForSpecial(Loadout loadout, Specials special, int availablePoints) throws IOException
+	{
+		List<Perk> perksUsed = loadout.getPerks().keySet().stream()
+			.filter(perk -> perk.special().equals(special))
+			.toList();
+		for (Perk perk : perksUsed.reversed()){
+			log.debug("Not enough points available. Removing {}.", perk.name());
+			removePerk(perk.name(), loadout);
+			int pointsUsed = getPerkPointsUsed(special, loadout.getPerks());
+			if (availablePoints >= pointsUsed) {
+				break;
+			}
+		}
+	}
+
+	/**
 	 * A method used to adjust the rank of a given perk.
 	 * @param perkName The name of the perk to adjust.
 	 * @param rank The new rank that will be applied to the perk.
@@ -113,7 +138,7 @@ public class PerkManager
 	 * @param perks A {@link HashMap} of {@link Perk} objects to be used.
 	 * @param perkToAdd The perk to be added.
 	 * @param playerStats The amount of points available to be allocated.
-	 * @param temporaryRank An optional argument which is used to determine how
+	 * @param temporaryRank An optional argument which is used to determine what the rank of the card is. (if not included, the rank is set to the perks {@code currentRank}.)
 	 * @return {@code true} if there are points available, otherwise {@code false}.
 	 */
 	public boolean hasAvailableSpecialPoints(HashMap<Perk, Boolean> perks, Perk perkToAdd, Special playerStats, int... temporaryRank){
@@ -124,15 +149,25 @@ public class PerkManager
 		//uses either the perks current rank
 		int requiredPoints = (temporaryRank.length > 0 && temporaryRank[0] > 0) ? perkToAdd.perkRank().getPointsCost(temporaryRank[0]) :
 			perkToAdd.perkRank().getPointsCost();
+		int totalUsedPoints = getPerkPointsUsed(special, perks, perkToAdd.name());
+		int remainingPoints = availablePoints - totalUsedPoints;
+		return remainingPoints >= requiredPoints;
+	}
 
-		int totalUsedPoints = perks.keySet().stream()
-			.filter(perk -> perk.special().equals(special) && !perk.name().equals(perkToAdd.name()))
+	/**
+	 * A method used to determine how many points a SPECIAL stat currently has allocated.
+	 * @param special The special stat used to find associated cards.
+	 * @param perks A {@link HashMap} of {@link Perk} objects to be used.
+	 * @param perkToAddName An optional argument to filter out matching cards.
+	 * @return The {@link Integer} the total allocated special perk points.
+	 */
+	private int getPerkPointsUsed(Specials special, HashMap<Perk, Boolean> perks, String... perkToAddName){
+		String filter = perkToAddName.length > 0 ? perkToAddName[0] : "";
+
+		return perks.keySet().stream()
+			.filter(perk -> perk.special().equals(special) && (!perk.name().equals(filter)))
 			.mapToInt(perk -> perk.perkRank().getPointsCost())
 			.sum();
-
-		int remainingPoints = availablePoints - totalUsedPoints;
-
-		return remainingPoints >= requiredPoints;
 	}
 
 	/**
@@ -149,6 +184,46 @@ public class PerkManager
 			if (entry.getValue() != newValue)
 			{
 				entry.setValue(newValue);
+			}
+		}
+	}
+
+	/**
+	 * An event listener used to receive events if a players special stat changes. It checks to make sure that the player has
+	 * enough special points left to fit in each card. Otherwise, it removes one perk card in the perk list until there is enough room.
+	 * @param event An event that is called when a change has been made to a {@link Loadout}'s player special stat.
+	 */
+	@EventListener
+	public void onSpecialChangedEvent(SpecialChangedEvent event) throws IOException
+	{
+		int availablePoints = event.getAvailablePoints();
+		int pointsUsed = getPerkPointsUsed(event.getSpecial(), event.getLoadout().getPerks());
+
+		//if there is not enough available points left in the changed special slot or this check should be bypassed.
+		if (ignoreSpecialRestrictions || availablePoints < pointsUsed){
+			removeExcessPerksForSpecial(event.getLoadout(), event.getSpecial(), availablePoints);
+		}
+	}
+
+	/**
+	 * An event listener used to receive events if all of a players special stats change. It checks to make sure that the player has
+	 * enough special points left to fit in each card. Otherwise, it removes one perk card in the perk list until there is enough room.
+	 * @param event An event that is called when a change has been made to a {@link Loadout}'s player special stat.
+	 */
+	@EventListener
+	public void onSpecialsChangedEvent(SpecialsChangedEvent event) throws IOException
+	{
+		Loadout loadout = event.getLoadout();
+		Special specials = loadout.getPlayer().getSpecials();
+		HashMap<Perk, Boolean> perks = loadout.getPerks();
+
+		if (!ignoreSpecialRestrictions){
+			for (Specials special : Specials.values()) {
+				int availablePoints = specials.getSpecialValue(special);
+				int pointsUsed = getPerkPointsUsed(special, perks);
+				if (availablePoints < pointsUsed) {
+					removeExcessPerksForSpecial(loadout, special, availablePoints);
+				}
 			}
 		}
 	}

@@ -9,8 +9,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.player.SpecialDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MinorStatCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialChangedEvent;
+import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialsChangedEvent;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +26,17 @@ public class PlayerManager
 {
 	private final MinorStatCalculationService minorStatCalculationService;
 	private final SpecialBonusCalculationService specialBonusCalculationService;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * The constructor of a {@link PlayerManager} object.
 	 */
 	@Autowired
-	public PlayerManager(MinorStatCalculationService minorStatCalculationService, SpecialBonusCalculationService specialBonusCalculationService)
+	public PlayerManager(MinorStatCalculationService minorStatCalculationService, SpecialBonusCalculationService specialBonusCalculationService, ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.minorStatCalculationService = minorStatCalculationService;
 		this.specialBonusCalculationService = specialBonusCalculationService;
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	//todo - possibly delete
@@ -51,6 +56,9 @@ public class PlayerManager
 	{
 		Special playerSpecials = loadout.getPlayer().getSpecials();
 		playerSpecials.setSpecial(special, value);
+		SpecialChangedEvent specialChangedEvent = new SpecialChangedEvent(this, special,
+			playerSpecials.getSpecialValue(special), loadout);
+		applicationEventPublisher.publishEvent(specialChangedEvent);
 	}
 
 	/**
@@ -64,7 +72,8 @@ public class PlayerManager
 		Special playerSpecials = loadout.getPlayer().getSpecials();
 		playerSpecials.setAllSpecials(newSpecials.getStrength(), newSpecials.getPerception(), newSpecials.getEndurance(),
 			newSpecials.getCharisma(), newSpecials.getIntelligence(), newSpecials.getAgility(), newSpecials.getLuck());
-
+		SpecialsChangedEvent specialsChangedEvent = new SpecialsChangedEvent(this, loadout);
+		applicationEventPublisher.publishEvent(specialsChangedEvent);
 	}
 
 	@EventListener

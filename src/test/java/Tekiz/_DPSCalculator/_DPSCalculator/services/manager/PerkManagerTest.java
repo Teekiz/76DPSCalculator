@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @SpringBootTest
 @ActiveProfiles("test")
 public class PerkManagerTest
@@ -33,6 +35,7 @@ public class PerkManagerTest
 	@Test
 	void testCanPerkBeAddedDirectly() throws IOException
 	{
+		log.debug("{}Running test - testCanPerkBeAddedDirectly in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//loadout current specials are 1, which should be enough to add a single perk costing 1 point
 		Perk perk = perkLoaderService.getPerk("STRANGEINNUMBERS");
@@ -64,6 +67,7 @@ public class PerkManagerTest
 
 	@Test
 	void testCanPerkBeAdded() throws IOException {
+		log.debug("{}Running test - testCanPerkBeAdded in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		perkManager.addPerk("TENDERIZER", loadout);
 		assertEquals(1, loadout.getPerks().keySet().size());
