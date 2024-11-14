@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
+import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class WeaponFactory
+public class JSONWeaponFactory implements Factory<Weapon, JsonNode>
 {
 
 	//todo - could introduce null object pattern. Create a weapon which has no stats.
@@ -24,12 +25,12 @@ public class WeaponFactory
 	private final ObjectMapper objectMapper;
 
 	/**
-	 * The constructor for a {@link WeaponFactory} object.
+	 * The constructor for a {@link JSONWeaponFactory} object.
 	 * @param objectMapper The ObjectMapper instance used to parse JSON into weapon objects.
 	 */
 	@Lazy
 	@Autowired
-	public WeaponFactory(ObjectMapper objectMapper)
+	public JSONWeaponFactory(ObjectMapper objectMapper)
 	{
 		this.objectMapper = objectMapper;
 	}
@@ -42,7 +43,8 @@ public class WeaponFactory
 	 * @param weapon The JSON node containing the weapon data.
 	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weapon type is not recognized.
 	 */
-	public Weapon createWeapon(JsonNode weapon)
+	@Override
+	public Weapon createObject(JsonNode weapon, String id)
 	{
 		try
 		{
@@ -52,6 +54,11 @@ public class WeaponFactory
 				log.warn("Cannot deserialize node. WeaponType is missing or null.");
 				return null;
 			}
+
+			//this is for the ID
+			InjectableValues.Std injectableValues = new InjectableValues.Std().addValue("id", id);
+			objectMapper.setInjectableValues(injectableValues);
+
 			WeaponType weaponType = WeaponType.valueOf(weaponTypeNode.asText().toUpperCase());
 			if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE)) {
 				return objectMapper.treeToValue(weapon, RangedWeapon.class);
