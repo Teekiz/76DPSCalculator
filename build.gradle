@@ -51,6 +51,8 @@ dependencies {
 
     testAnnotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
+
+    implementation files('libs/JSONToObjectIDMapper.jar')
 }
 
 tasks.named('test') {
