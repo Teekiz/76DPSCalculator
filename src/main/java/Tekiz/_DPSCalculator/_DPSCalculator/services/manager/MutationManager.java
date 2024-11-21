@@ -2,12 +2,14 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,27 +22,27 @@ import org.springframework.stereotype.Service;
 @Getter
 public class MutationManager
 {
-	private final MutationLoaderService mutationLoaderService;
+	private final DataLoaderService dataLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * The constructor for a {@link MutationManager} object.
-	 * @param mutationLoaderService A service used to load {@link Mutation} objects.
+	 * @param dataLoaderService A service used to load {@link Mutation} objects.
 	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public MutationManager(MutationLoaderService mutationLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
+	public MutationManager(DataLoaderService dataLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
+		this.dataLoaderService = dataLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.mutationLoaderService = mutationLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	@SaveLoadout
-	public void addMutation(String mutationName, Loadout loadout) throws IOException
+	public void addMutation(String mutationID, Loadout loadout) throws IOException
 	{
-		Mutation mutation = mutationLoaderService.getMutation(mutationName);
+		Mutation mutation = dataLoaderService.loadData(mutationID, Mutation.class, null);
 		loadout.getMutations().add(mutation);
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);

@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param ammoOverrideType			Used if the receiver changes the ammunition the weapon uses.
  */
 //todo - change receivertype and ammo override type
-public record Receiver(@JsonProperty("name") String name,
+public record Receiver(@JsonProperty("id") String id,
+					   @JsonProperty("name") String name,
 					   @JsonProperty("receiverType") ReceiverType receiverType,
 					   @JsonProperty("damageChange") double damageChange,
 					   @JsonProperty("damageCriticalMultiplier") int damageCriticalMultiplier,

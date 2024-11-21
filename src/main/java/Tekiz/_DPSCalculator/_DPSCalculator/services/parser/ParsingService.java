@@ -5,7 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Map;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

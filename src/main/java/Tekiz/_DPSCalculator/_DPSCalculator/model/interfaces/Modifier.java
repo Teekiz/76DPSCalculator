@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.model.modifiers;
+package Tekiz._DPSCalculator._DPSCalculator.model.interfaces;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;

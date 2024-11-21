@@ -2,12 +2,13 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
 import lombok.Getter;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -19,8 +20,8 @@ public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
 	/** The id of the weapon. Used if mapped to a database. */
-	@JsonProperty("weaponID")
-	protected final int weaponID;
+	@JsonProperty("id")
+	protected final String weaponID;
 
 	/** The name of the weapon. The user will be able to see the given value. */
 	@JsonProperty("weaponName")

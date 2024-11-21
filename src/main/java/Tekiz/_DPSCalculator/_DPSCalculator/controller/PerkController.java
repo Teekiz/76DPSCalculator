@@ -1,14 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PerkMapper;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,9 @@ public class PerkController
 	private final LoadoutManager loadoutManager;
 	private final PerkManager perkManager;
 	private final PerkMapper perkMapper;
-	private final PerkLoaderService perkLoaderService;
+	private final ObjectLoaderStrategy perkLoaderService;
 	@Autowired
-	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper, PerkLoaderService perkLoaderService)
+	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper, ObjectLoaderStrategy perkLoaderService)
 	{
 		log.info("Perk controller created.");
 		this.loadoutManager = loadoutManager;
@@ -51,34 +53,34 @@ public class PerkController
 
 	//todo - handle exceptions and if perk cannot be found
 	@PostMapping("/addPerk")
-	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkName) throws IOException
+	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
 	{
-		log.debug("Add perk called for perk: {}.", perkName);
+		log.debug("Add perk called for perk: {}.", perkID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		perkManager.addPerk(perkName, loadout);
-		return ResponseEntity.ok(perkName + " has been added to your loadout.");
+		perkManager.addPerk(perkID, loadout);
+		return ResponseEntity.ok(perkID + " has been added to your loadout.");
 	}
 
 	@PostMapping("/removePerk")
-	public ResponseEntity<String> removePerk(@RequestParam int loadoutID, @RequestParam String perkName) throws IOException
+	public ResponseEntity<String> removePerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		perkManager.removePerk(perkName, loadout);
-		return ResponseEntity.ok(perkName + " has been removed from your loadout.");
+		perkManager.removePerk(perkID, loadout);
+		return ResponseEntity.ok(perkID + " has been removed from your loadout.");
 	}
 
 	@GetMapping("/getAvailablePerks")
 	public ResponseEntity<List<PerkDTO>> getAvailablePerks() throws IOException
 	{
-		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.getAllPerks()));
+		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.getAllData("perks", Perk.class, null)));
 	}
 
 	@PostMapping("/changePerkRank")
-	public ResponseEntity<String> changePerkRank(@RequestParam int loadoutID, @RequestParam String perkName, @RequestParam int perkRank) throws IOException
+	public ResponseEntity<String> changePerkRank(@RequestParam int loadoutID, @RequestParam String perkID, @RequestParam int perkRank) throws IOException
 	{
-		log.debug("Received request to change perk rank for loadout {}. Perk name: {}, new rank: {}.", loadoutID, perkName, perkRank);
+		log.debug("Received request to change perk rank for loadout {}. Perk name: {}, new rank: {}.", loadoutID, perkID, perkRank);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		perkManager.changePerkRank(perkName, perkRank, loadout);
-		return ResponseEntity.ok(perkName + "'s rank has been modified.");
+		perkManager.changePerkRank(perkID, perkRank, loadout);
+		return ResponseEntity.ok(perkID + "'s rank has been modified.");
 	}
 }

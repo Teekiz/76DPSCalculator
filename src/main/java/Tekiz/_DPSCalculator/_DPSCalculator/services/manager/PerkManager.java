@@ -3,11 +3,11 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialsChangedEvent;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,43 +33,43 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PerkManager
 {
-	private final PerkLoaderService perkLoaderService;
+	private final DataLoaderService dataLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final Boolean ignoreSpecialRestrictions = false;
 
 	/**
 	 * The constructor for a {@link PerkManager} object.
-	 * @param perkLoaderService A service used to load {@link Perk} objects.
+	 * @param dataLoaderService A service used to load {@link Perk} objects.
 	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public PerkManager(PerkLoaderService perkLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
+	public PerkManager(DataLoaderService dataLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
+		this.dataLoaderService = dataLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.perkLoaderService = perkLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	/**
 	 * A method to find a perk within a given loadout.
-	 * @param perkName The name of the {@link Perk} object.
+	 * @param perkID The name of the {@link Perk} object.
 	 * @param loadout The {@link Loadout} object containing the perk.
 	 * @return A {@link Perk} or null object.
 	 */
-	public Perk getPerkInLoadout(String perkName, Loadout loadout){
+	public Perk getPerkInLoadout(String perkID, Loadout loadout){
 		return loadout.getPerks()
 			.keySet().stream()
-			.filter(key -> key.name().equalsIgnoreCase(perkName))
+			.filter(key -> key.id().equalsIgnoreCase(perkID))
 			.findFirst()
 			.orElse(null);
 	}
 
 	//when a perk is added - it is automatically added to the effects.
 	@SaveLoadout
-	public void addPerk(String perkName, Loadout loadout) throws IOException
+	public void addPerk(String perkID, Loadout loadout) throws IOException
 	{
-		Perk perk = perkLoaderService.getPerk(perkName);
+		Perk perk = dataLoaderService.loadData(perkID, Perk.class, null);
 		//checks whether to ignore special point enforcement or if the player has the points available.
 		if (ignoreSpecialRestrictions || hasAvailableSpecialPoints(loadout.getPerks(),
 			perk, loadout.getPlayer().getSpecials()))
@@ -79,15 +80,15 @@ public class PerkManager
 			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(perk, loadout,perk.name() + " has been added");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		} else {
-			log.debug("Could not add perk {} as there were insufficent points available.", perkName);
+			log.debug("Could not add perk {} as there were insufficent points available.", perkID);
 		}
 	}
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
 	@SaveLoadout
-	public void removePerk(String perkName, Loadout loadout) throws IOException
+	public void removePerk(String perkID, Loadout loadout) throws IOException
 	{
-		Perk perk = getPerkInLoadout(perkName, loadout);
+		Perk perk = getPerkInLoadout(perkID, loadout);
 		if (perk != null)
 		{
 			loadout.getPerks().remove(perk);
@@ -110,7 +111,7 @@ public class PerkManager
 			.toList();
 		for (Perk perk : perksUsed.reversed()){
 			log.debug("Not enough points available. Removing {}.", perk.name());
-			removePerk(perk.name(), loadout);
+			removePerk(perk.id(), loadout);
 			int pointsUsed = getPerkPointsUsed(special, loadout.getPerks());
 			if (availablePoints >= pointsUsed) {
 				break;
@@ -120,14 +121,14 @@ public class PerkManager
 
 	/**
 	 * A method used to adjust the rank of a given perk.
-	 * @param perkName The name of the perk to adjust.
+	 * @param perkID The name of the perk to adjust.
 	 * @param rank The new rank that will be applied to the perk.
 	 * @param loadout The loadout the change will take place on.
 	 */
 	@SaveLoadout
-	public void changePerkRank(String perkName, int rank, Loadout loadout)
+	public void changePerkRank(String perkID, int rank, Loadout loadout)
 	{
-		Perk perk = getPerkInLoadout(perkName, loadout);
+		Perk perk = getPerkInLoadout(perkID, loadout);
 		if (perk != null && (ignoreSpecialRestrictions || hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials(), rank))) {
 			perk.perkRank().setCurrentRank(rank);
 		}

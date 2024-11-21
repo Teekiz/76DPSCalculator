@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PerkDTO
 {
-	private int id;
+	private String id;
 	private String name;
 	private String special;
 	private int currentRank;

@@ -29,15 +29,7 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 	{
 		File jsonFile = jsonIDMapper.getFileFromID(id);
 		if (jsonFile == null) return null;
-
-		JsonNode rootNode = objectMapper.readTree(jsonFile);
-		//sets the ID
-		((ObjectNode) rootNode).put("id", id);
-		if (factory != null){
-			return factory.createObject((A) rootNode);
-		} else {
-			return objectMapper.treeToValue(rootNode, classType);
-		}
+		return loadObject(jsonFile, id, classType, factory);
 	}
 
 	@Override
@@ -54,5 +46,24 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 			}
 		}
 		return resultList;
+	}
+
+	@Override
+	public <T, A> T getDataByName(String objectName, Class<T> classType, Factory<T, A> factory) throws IOException
+	{
+		Map.Entry<String, File> entry = jsonIDMapper.getFileByName(objectName);
+		if (entry.getValue() == null) return null;
+		return loadObject(entry.getValue(), entry.getKey(), classType, factory);
+	}
+
+	private <T, A> T loadObject(File jsonFile, String id, Class<T> classType, Factory<T, A> factory) throws IOException
+	{
+		JsonNode rootNode = objectMapper.readTree(jsonFile);
+		((ObjectNode) rootNode).put("id", id);
+		if (factory != null){
+			return factory.createObject((A) rootNode);
+		} else {
+			return objectMapper.treeToValue(rootNode, classType);
+		}
 	}
 }

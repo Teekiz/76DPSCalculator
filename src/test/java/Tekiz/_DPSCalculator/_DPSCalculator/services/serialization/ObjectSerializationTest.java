@@ -11,12 +11,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ArmourModLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.MutationLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,19 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ObjectSerializationTest
 {
 	@Autowired
-	ConsumableLoaderService consumableLoaderService;
-	@Autowired
-	PerkLoaderService perkLoaderService;
-	@Autowired
-	MutationLoaderService mutationLoaderService;
-	@Autowired
-	WeaponLoaderService weaponLoaderService;
+	DataLoaderService dataLoaderService;
 	@Autowired
 	WeaponFactory weaponFactory;
-	@Autowired
-	ArmourLoaderService armourLoaderService;
-	@Autowired
-	ArmourModLoaderService armourModLoaderService;
 	@Autowired
 	LoadoutFactory loadoutFactory;
 	@Autowired
@@ -62,7 +48,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeConsumable() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeConsumable in ObjectSerializationTest.", System.lineSeparator());
-		Consumable consumable = consumableLoaderService.getConsumable("TESTEVENT");
+		Consumable consumable = dataLoaderService.loadData("consu7", Consumable.class, null);
 		assertNotNull(consumable);
 		log.debug("Consumable object deserialized: {}.", consumable);
 
@@ -79,7 +65,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializePerk() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializePerk in ObjectSerializationTest.", System.lineSeparator());
-		Perk perk = perkLoaderService.getPerk("GUNSLINGER");
+		Perk perk = dataLoaderService.loadData("perks1", Perk.class, null);
 		assertNotNull(perk);
 		log.debug("Perk object deserialized: {}.", perk);
 
@@ -96,7 +82,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeMutation() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeMutation in ObjectSerializationTest.", System.lineSeparator());
-		Mutation mutation = mutationLoaderService.getMutation("ADRENALREACTION");
+		Mutation mutation = dataLoaderService.loadData("mutat1", Mutation.class, null);
 		assertNotNull(mutation);
 		log.debug("Mutation object deserialized: {}.", mutation);
 
@@ -129,7 +115,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeWeapon() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
-		Weapon weapon = weaponLoaderService.getWeapon("10MMPISTOL");
+		Weapon weapon = dataLoaderService.loadData("weapo2", Weapon.class, weaponFactory);
 		assertNotNull(weapon);
 		log.debug("Weapon object deserialized: {}.", weapon);
 
@@ -138,7 +124,7 @@ public class ObjectSerializationTest
 		log.debug("Weapon object serialized: {}.", jsonWeapon);
 
 		JsonNode weaponNode = objectMapper.readTree(jsonWeapon);
-		Weapon newWeapon = weaponFactory.createWeapon(weaponNode);
+		Weapon newWeapon = weaponFactory.createObject(weaponNode);
 		assertNotNull(newWeapon);
 		log.debug("Weapon object deserialized: {}.", newWeapon);
 	}
@@ -163,8 +149,8 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeArmour() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeArmour in ObjectSerializationTest.", System.lineSeparator());
-		Armour armour = armourLoaderService.getArmour("WOODCHEST");
-		Material material = armourModLoaderService.getMaterial("BOILEDLEATHERCHEST");
+		Armour armour = dataLoaderService.loadData("armou1", Armour.class, null);
+		Material material = dataLoaderService.loadData("modAr1", Material.class, null);
 		armour.setMod(material);
 		assertNotNull(armour);
 		log.debug("Armour object deserialized: {}.", armour);
@@ -203,8 +189,8 @@ public class ObjectSerializationTest
 		assertNotNull(loadout);
 		log.debug("Loadout object deserialized: {}.", loadout);
 
-		perkManager.addPerk("GUNSLINGER", loadout);
-		consumableManager.addConsumable("TESTCONDITION", loadout);
+		perkManager.addPerk("perks1", loadout);
+		consumableManager.addConsumable("consu6", loadout);
 
 		String jsonLoadout = objectMapper.writeValueAsString(loadout);
 		assertNotNull(jsonLoadout);

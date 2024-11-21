@@ -38,10 +38,10 @@ public class ModifierExpressionServicesTest
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
 		playerManager.getPlayer(loadout).setCurrentHP(125.0);
 
-		mutationManager.addMutation("ADRENALREACTION", loadout);
+		mutationManager.addMutation("mutat1", loadout);//ADRENALREACTION
 
 			//hp is set to 125, so it sound return 0.19 additional damage
 			//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 30.5

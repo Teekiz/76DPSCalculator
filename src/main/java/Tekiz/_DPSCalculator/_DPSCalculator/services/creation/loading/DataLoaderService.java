@@ -21,9 +21,14 @@ public class DataLoaderService {
 		this.objectLoaderStrategy = objectLoaderStrategy;
 	}
 
-	public <T, A> T loadData(String id, Class<T> classType, Factory<T, A> factory) throws IOException, IOException
+	public <T, A> T loadData(String id, Class<T> classType, Factory<T, A> factory) throws IOException
 	{
 		return objectLoaderStrategy.getData(id, classType, factory);
+	}
+
+	public <T, A> T loadDataByName(String name, Class<T> classType, Factory<T, A> factory) throws IOException
+	{
+		return objectLoaderStrategy.getDataByName(name, classType, factory);
 	}
 
 	public <T, A> List<T> loadAllData(String prefix, Class<T> classType, Factory<T, A> factory) throws IOException {

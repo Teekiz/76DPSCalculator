@@ -2,13 +2,15 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,26 +27,26 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 @Slf4j
 public class ConsumableManager
 {
-	private final ConsumableLoaderService consumableLoaderService;
+	private final DataLoaderService dataLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * The constructor for a {@link ConsumableManager} object.
-	 * @param consumableLoaderService A service used to load {@link Consumable}.
+	 * @param dataLoaderService A service used to load {@link Consumable}.
 	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public ConsumableManager(ConsumableLoaderService consumableLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
+	public ConsumableManager(DataLoaderService dataLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
 	{
+		this.dataLoaderService = dataLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.consumableLoaderService = consumableLoaderService;
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 	@SaveLoadout
-	public void addConsumable(String consumableName, Loadout loadout) throws IOException
+	public void addConsumable(String consumableID, Loadout loadout) throws IOException
 	{
-		Consumable consumable = consumableLoaderService.getConsumable(consumableName);
+		Consumable consumable = dataLoaderService.loadData(consumableID, Consumable.class, null);
 		log.debug("Adding {} to loadout {}.", consumable.name(), loadout.getLoadoutID());
 		loadout.getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable, loadout));
 

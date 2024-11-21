@@ -4,7 +4,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
@@ -28,10 +29,12 @@ public class WeaponController
 	private final LoadoutManager loadoutManager;
 	private final WeaponManager weaponManager;
 	private final WeaponMapper weaponMapper;
-	private final WeaponLoaderService weaponLoaderService;
+	private final ObjectLoaderStrategy weaponLoaderService;
+	private final WeaponFactory weaponFactory;
 	@Autowired
-	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, WeaponLoaderService weaponLoaderService)
+	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, ObjectLoaderStrategy weaponLoaderService, WeaponFactory weaponFactory)
 	{
+		this.weaponFactory = weaponFactory;
 		log.info("Weapon controller created.");
 		this.loadoutManager = loadoutManager;
 		this.weaponManager = weaponManager;
@@ -51,27 +54,27 @@ public class WeaponController
 		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 	@PostMapping("/setWeapon")
-	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponName) throws IOException
+	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		weaponManager.setWeapon(weaponName, loadout);
+		weaponManager.setWeapon(weaponID, loadout);
 		return ResponseEntity.ok("Weapon has been updated.");
 	}
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
-		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.getAllWeapons()));
+		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.getAllData("Weapon", Weapon.class, weaponFactory)));
 	}
 	@GetMapping("/getWeaponDetails")
-	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponName) throws IOException
+	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponID) throws IOException
 	{
-		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
+		Weapon weapon = weaponLoaderService.getData(weaponID, Weapon.class, weaponFactory);
 		if (weapon == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		WeaponDetailsDTO weaponDetails = weaponMapper.convertToDetailsDTO(weapon);
-		log.debug("Request for weapon: {}. Returning: {}.", weaponName, weaponDetails);
+		log.debug("Request for weapon: {}. Returning: {}.", weaponID, weaponDetails);
 		return ResponseEntity.ok(weaponDetails);
 	}
 }

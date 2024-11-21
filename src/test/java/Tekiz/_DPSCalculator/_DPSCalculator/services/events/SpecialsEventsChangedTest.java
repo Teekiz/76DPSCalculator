@@ -38,13 +38,13 @@ public class SpecialsEventsChangedTest
 		//setting the value to 4.
 		Loadout loadout = loadoutManager.getLoadout(1);
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 4);
-		perkManager.addPerk("STRANGEINNUMBERS", loadout);
-		perkManager.changePerkRank("Strange in Numbers", 3, loadout);
-		perkManager.addPerk("TENDERIZER", loadout);
+		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
+		perkManager.changePerkRank("perks2", 3, loadout);//Strange in Numbers
+		perkManager.addPerk("perks3", loadout);//TENDERIZER
 
 		//ensuring that each perk has been added and that all four spaces are used.
-		assertEquals(3, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
-		assertEquals(1, perkManager.getPerkInLoadout("Tenderizer", loadout).perkRank().getCurrentRank());
+		assertEquals(3, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
+		assertEquals(1, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Tenderizer
 		assertEquals(2, loadout.getPerks().size());
 
 		//setting the players charisma to 3, therefore, one of the perks should be removed
@@ -63,16 +63,16 @@ public class SpecialsEventsChangedTest
 		SpecialDTO specialDTO = new SpecialDTO(3,2,1,4,4,1,1);
 		playerManager.setSpecialsFromDTO(loadout, specialDTO);
 
-		perkManager.addPerk("STRANGEINNUMBERS", loadout);
-		perkManager.changePerkRank("Strange in Numbers", 3, loadout);
-		perkManager.addPerk("TENDERIZER", loadout);
-		perkManager.addPerk("HEAVYGUNNER", loadout);
-		perkManager.changePerkRank("Test Heavy Gunner", 3, loadout);
+		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
+		perkManager.changePerkRank("perks2", 3, loadout);//Strange in Numbers
+		perkManager.addPerk("perks3", loadout);//TENDERIZER
+		perkManager.addPerk("perks4", loadout);//HEAVYGUNNER
+		perkManager.changePerkRank("perks4", 3, loadout);//Test Heavy Gunner
 
 		//ensuring that each perk has been added and that all four spaces are used.
-		assertEquals(3, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
-		assertEquals(1, perkManager.getPerkInLoadout("Tenderizer", loadout).perkRank().getCurrentRank());
-		assertEquals(3, perkManager.getPerkInLoadout("Test Heavy Gunner", loadout).perkRank().getCurrentRank());
+		assertEquals(3, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
+		assertEquals(1, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Tenderizer
+		assertEquals(3, perkManager.getPerkInLoadout("perks4", loadout).perkRank().getCurrentRank());//Test Heavy Gunner
 		assertEquals(3, loadout.getPerks().size());
 
 		//setting the players charisma to 3, therefore, one of the perks should be removed

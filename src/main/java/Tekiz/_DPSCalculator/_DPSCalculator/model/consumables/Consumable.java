@@ -4,9 +4,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.ConsumableType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Objects;
@@ -19,7 +19,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Represents a consumable modifier that adds various effects to a user's loadout.
  * Each consumable has a condition that must be met before any effects are applied.
  *
- * @param <V>            The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  * @param id             An identifier used if the object has been retrieved from a database.
  *           		     This is not required if object has been stored in a JSON file.
  * @param name           The name of the consumable. The user will be able to see the given value.
@@ -34,13 +33,13 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Consumable<V>(@JsonProperty("id") int id,
+public record Consumable(@JsonProperty("id") String id,
 							@JsonProperty("name") String name,
 							@JsonProperty("consumableType") ConsumableType consumableType,
 							@JsonProperty("addictionType") AddictionType addictionType,
 							@JsonProperty("modifierSource") ModifierSource modifierSource,
 							@JsonProperty("conditionString") Expression condition,
-							@JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier, Keyable
+							@JsonProperty("effects") HashMap<ModifierTypes, ?> effects) implements Modifier, Keyable
 {
 	@Override
 	public boolean equals(Object object)
@@ -53,7 +52,7 @@ public record Consumable<V>(@JsonProperty("id") int id,
 		{
 			return false;
 		}
-		Consumable<?> that = (Consumable<?>) object;
+		Consumable that = (Consumable) object;
 		return id == that.id && Objects.equals(name, that.name);
 	}
 

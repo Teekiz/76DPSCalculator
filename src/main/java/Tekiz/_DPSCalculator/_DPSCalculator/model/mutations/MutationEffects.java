@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.mutations;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Represents a mutation modifier that adds various effects to a user's loadout.
  * Each mutation has a condition that must be met before any effects are applied.
  *
- * @param <V>            The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  * @param modifierSource The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}
  *                       to apply a modification to the mutations effects if a corresponding effect is available.
  * @param condition      The condition required to use the mutation. If the condition is not met, the effects will not be applied.
@@ -25,6 +24,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
-public record MutationEffects<V>(@JsonProperty("modifierSource") ModifierSource modifierSource,
+public record MutationEffects(@JsonProperty("modifierSource") ModifierSource modifierSource,
 								 @JsonProperty("conditionString") Expression condition,
-								 @JsonProperty("effects") HashMap<ModifierTypes, V> effects) implements Modifier {}
+								 @JsonProperty("effects") HashMap<ModifierTypes, ?> effects) implements Modifier {}
