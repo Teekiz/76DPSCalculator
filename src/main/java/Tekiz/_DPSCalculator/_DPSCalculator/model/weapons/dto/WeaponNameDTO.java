@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeaponNameDTO
 {
-	private int weaponID;
+	private String weaponID;
 	private String weaponName;
 }

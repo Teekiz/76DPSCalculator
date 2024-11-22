@@ -1,8 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import java.util.ArrayList;
@@ -17,11 +18,10 @@ import org.springframework.stereotype.Service;
  * A service that retrieves and returns all known modifiers.
  * This service also applies values to "ADDITIONAL_CONTEXT_REQUIRED" {@link ModifierTypes} and retrieve all modifiers of a given type.
  *
- * @param <V>  The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 @Service
 @Slf4j
-public class ModifierAggregationService<V>
+public class ModifierAggregationService
 {
 	private final ModifierExpressionService modifierExpressionService;
 	private final ModifierBoostService modifierBoostService;
@@ -67,7 +67,7 @@ public class ModifierAggregationService<V>
 	{
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
 
-			Map<ModifierTypes, V> effects = modifier.getKey().effects();
+			Map<ModifierTypes, ModifierValue<?>> effects = modifier.getKey().effects();
 
 			if (effects != null) {
 				// create a temporary list of keys to modify
@@ -80,7 +80,8 @@ public class ModifierAggregationService<V>
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, V> additionalContextEntry = (Map.Entry<ModifierTypes, V>) modifierExpressionService.getAdditionalContext((String) effects.get(key), loadout);
+					Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+						modifierExpressionService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
 					if (additionalContextEntry != null) {
 						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 					}
@@ -103,11 +104,11 @@ public class ModifierAggregationService<V>
 		{
 			if (modifier.getValue())
 			{
-				Map<ModifierTypes, Number> effectsMap = modifierBoostService.checkBoost(modifier.getKey());
+				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier.getKey());
 				if (effectsMap != null)
 				{
 					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
-						effects.add(value);
+						effects.add(value.getValue());
 						return value;
 					});
 				}

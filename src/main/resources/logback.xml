@@ -29,6 +29,8 @@
 	<logger name="io.lettuce.core" level="ERROR" />
 	<logger name="org.apache.catalina.core" level="ERROR" />
 
+	<logger name="org.jsonidmapper" level="DEBUG"/>
+
 	<!-- Optionally capture any other global logs -->
 	<root level="OFF">  <!-- Set this to OFF, INFO, or DEBUG based on your needs -->
 		<appender-ref ref="FILE"/>

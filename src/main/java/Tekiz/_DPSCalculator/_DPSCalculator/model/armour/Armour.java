@@ -20,6 +20,10 @@ import lombok.experimental.NonFinal;
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class Armour implements Serializable
 {
+	/** The id of the armour */
+	@JsonProperty("id")
+	String armourID;
+
 	/** The name of the armour. The user will be able to see the given value. */
 	@JsonProperty("armourName")
 	String armourName;

@@ -2,12 +2,15 @@ package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Objects;
 import org.springframework.expression.Expression;
@@ -19,7 +22,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * Represents a perk modifier that adds various effects to a user's loadout based on the current rank.
  * Each perk has a condition that must be met which will then apply effects based on the rank of the perk.
  * A rank cannot be higher than the total amount of effect ranks and cannot be lower than 1.
- * @param <V> 				The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  * @param id                An identifier if the object has been retrieved from a database.
  *         				    This is not required if object has been stored in a JSON file.
  * @param name 				The name of the perk. The user will be able to see the given value.
@@ -36,14 +38,15 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * 	 						If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
  * 	 						{@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Perk<V>(@JsonProperty("id") int id,
+public record Perk(@JsonProperty("id") String id,
 					  @JsonProperty("name") String name,
 					  @JsonProperty("special") Specials special,
 					  @JsonProperty("rank") PerkRank perkRank,
 					  @JsonProperty("description") String description,
 					  @JsonProperty("modifierSource") ModifierSource modifierSource,
 					  @JsonProperty("conditionString") Expression condition,
-					  @JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, V>> effectsPerRank) implements Modifier, Keyable
+					  @JsonProperty("effects") @JsonDeserialize(contentUsing = ModifiersDeserializer.class)
+				      HashMap<Integer, HashMap<ModifierTypes,  ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
 {
 	/**
 	 * Retrieves the effects associated with the current rank of the perk.
@@ -53,7 +56,7 @@ public record Perk<V>(@JsonProperty("id") int id,
 	 *         Returns {@code null} if no effects are defined.
 	 */
 	@JsonIgnore
-	public HashMap<ModifierTypes, V> effects()
+	public HashMap<ModifierTypes, ModifierValue<?>> effects()
 	{
 		if (effectsPerRank != null)
 		{
@@ -73,7 +76,7 @@ public record Perk<V>(@JsonProperty("id") int id,
 		{
 			return false;
 		}
-		Perk<?> perk = (Perk<?>) object;
+		Perk perk = (Perk) object;
 		return id == perk.id && Objects.equals(name, perk.name);
 	}
 

@@ -48,7 +48,7 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 		try
 		{
 			int loadoutID = objectMapper.treeToValue(loadoutNode.get("loadoutID"), int.class);
-			Weapon weapon = weaponFactory.createWeapon(loadoutNode.get("weapon"));
+			Weapon weapon = weaponFactory.createObject(loadoutNode.get("weapon"));
 			Player player = objectMapper.treeToValue(loadoutNode.get("player"), Player.class);
 			Environment environment = objectMapper.treeToValue(loadoutNode.get("environment"), Environment.class);
 

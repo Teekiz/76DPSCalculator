@@ -1,7 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -39,10 +40,10 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 		{
 			if (receiverNode.isTextual())
 			{
-				String receiverName = receiverNode.asText();
-				log.debug("Deserializing receiver: '{}'", receiverName);
-				ModLoaderService modLoaderService = (ModLoaderService) context.findInjectableValue(ModLoaderService.class.getName(), null, null);
-				return modLoaderService.getReceiver(receiverName);
+				String receiverIdentifier = receiverNode.asText();
+				log.debug("Deserializing receiver: '{}'", receiverIdentifier);
+				DataLoaderService loaderService = (DataLoaderService) context.findInjectableValue(DataLoaderService.class.getName(), null, null);
+				return loaderService.loadData(receiverIdentifier, Receiver.class, null);
 			}
 			else if (receiverNode.isObject())
 			{

@@ -6,5 +6,6 @@ import java.io.Serializable;
  */
 public interface RangedMod extends Serializable
 {
+	String id();
 	String name();
 }

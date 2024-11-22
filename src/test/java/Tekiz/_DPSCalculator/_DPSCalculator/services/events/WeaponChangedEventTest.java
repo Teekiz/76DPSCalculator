@@ -47,12 +47,12 @@ public class WeaponChangedEventTest
 	{
 		log.debug("{}Running test - testPerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		perkManager.addPerk("TESTEVENT", loadout);
+		perkManager.addPerk("perks5", loadout); //TESTEVENT
 
 		//condition to use perk does not match
 		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.setWeapon("weapo2", loadout); //10MMPISTOL
 		assertNotNull(loadout.getWeapon());
 		assertEquals(loadout.getWeapon().getWeaponType(), WeaponType.PISTOL);
 
@@ -60,7 +60,7 @@ public class WeaponChangedEventTest
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout));
 
 		//receiver does not change the damage
-		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
+		weaponManager.modifyWeapon("modRe2", ModType.RECEIVER, loadout);//CALIBRATE
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -71,14 +71,14 @@ public class WeaponChangedEventTest
 	{
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("10MMPISTOL", loadout);
-		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("modRe2", ModType.RECEIVER, loadout);//CALLIBRATE
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		perkManager.addPerk("TESTEVENT", loadout);
+		perkManager.addPerk("perks5", loadout); //TESTEVENT
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.modifyWeapon("AUTOMATIC", ModType.RECEIVER, loadout);
+		weaponManager.modifyWeapon("modRe1", ModType.RECEIVER, loadout);//AUTOMATIC
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -91,11 +91,11 @@ public class WeaponChangedEventTest
 	{
 		log.debug("{}Running test - testConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		consumableManager.addConsumable("TESTEVENT", loadout);
+		consumableManager.addConsumable("consu7", loadout);//TESTEVENT
 
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -105,11 +105,11 @@ public class WeaponChangedEventTest
 	{
 		log.debug("{}Running test - testRemoveConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("10MMPISTOL", loadout);
-		consumableManager.addConsumable("TESTEVENT", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
+		consumableManager.addConsumable("consu7", loadout); //TEST EVENT
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 
-		weaponManager.setWeapon("GAUSSRIFLE", loadout);
+		weaponManager.setWeapon("weapo3", loadout);//GAUSSRIFLE
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -120,14 +120,14 @@ public class WeaponChangedEventTest
 		log.debug("{}Running test - testAddAndRemovePerkAndConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout));
-		consumableManager.addConsumable("TESTEVENTTWO", loadout);
-		perkManager.addPerk("TESTMODIFIER", loadout);
+		consumableManager.addConsumable("consu16", loadout); //TESTEVENTTWO
+		perkManager.addPerk("perks6", loadout);//TESTMODIFIER
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
 		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.setWeapon("GAUSSRIFLE", loadout);
+		weaponManager.setWeapon("weapo3", loadout);//GAUSSRIFLE
 		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -139,11 +139,11 @@ public class WeaponChangedEventTest
 		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE, loadout));
-		consumableManager.addConsumable("TESTCONDITION", loadout);
+		consumableManager.addConsumable("consu6", loadout);//TESTCONDITION
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		assertEquals(2, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE, loadout));
 		//this should enable the condition to boost charisma
-		weaponManager.setWeapon("10MMPISTOL", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
 		assertEquals(5, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

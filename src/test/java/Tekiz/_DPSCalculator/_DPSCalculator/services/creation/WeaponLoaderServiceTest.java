@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +19,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class WeaponLoaderServiceTest
 {
 	@Autowired
-	private WeaponLoaderService weaponLoaderService;
+	private DataLoaderService dataLoaderService;
+	@Autowired
+	private WeaponFactory weaponFactory;
 
 	@Test
 	void testGetWeapon() throws IOException
 	{
 		String weaponName = "10MMPISTOL";
-		Weapon weapon = weaponLoaderService.getWeapon(weaponName);
+		Weapon weapon = dataLoaderService.loadDataByName(weaponName, Weapon.class, weaponFactory);
 		assertNotNull(weapon);
 		assertEquals("Test 10mm pistol", weapon.getWeaponName());
 
 		String meleeWeaponName = "ASSAULTRONBLADE";
-		Weapon meleeWeapon = weaponLoaderService.getWeapon(meleeWeaponName);
+		Weapon meleeWeapon = dataLoaderService.loadDataByName(meleeWeaponName, Weapon.class, weaponFactory);
 		assertNotNull(meleeWeapon);
 		assertEquals("Assaultron blade", meleeWeapon.getWeaponName());
 	}
@@ -38,7 +40,7 @@ public class WeaponLoaderServiceTest
 	@Test
 	void testLoadAllWeapons() throws IOException
 	{
-		List<Weapon> weapons = weaponLoaderService.getAllWeapons();
+		List<Weapon> weapons = dataLoaderService.loadAllData("weapons", Weapon.class, weaponFactory);
 		assertNotNull(weapons);
 		assertEquals("Test 10mm pistol", weapons.stream()
 			.filter(weapon -> weapon.getWeaponName().equalsIgnoreCase("Test 10mm pistol"))

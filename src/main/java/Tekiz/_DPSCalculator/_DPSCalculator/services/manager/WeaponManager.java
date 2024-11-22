@@ -5,17 +5,17 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.WeaponLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import java.io.IOException;
-import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 
 /**
  * A service used to manage {@link Weapon} objects.
@@ -25,35 +25,35 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 @Slf4j
 public class WeaponManager
 {
-	private final WeaponLoaderService weaponLoaderService;
-	private final ModLoaderService modLoaderService;
+	private final DataLoaderService dataLoaderService;
+	private final WeaponFactory weaponFactory;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	//add mod manager
 
 	/**
 	 * The constructor for a {@link WeaponManager} object.
-	 * @param weaponLoaderService A service used to load and create {@link Weapon} objects.
-	 * @param modLoaderService A service used to load and create {@link RangedMod} objects.
+	 * @param dataLoaderService A service used to load and create {@link Weapon} objects.
 	 * @param applicationEventPublisher The event publisher for dispatching {@link WeaponChangedEvent}s.
 	 */
 	@Autowired
-	public WeaponManager(WeaponLoaderService weaponLoaderService, ModLoaderService modLoaderService, ApplicationEventPublisher applicationEventPublisher)
+	public WeaponManager(DataLoaderService dataLoaderService, WeaponFactory weaponFactory, ApplicationEventPublisher applicationEventPublisher)
 	{
-		this.weaponLoaderService = weaponLoaderService;
-		this.modLoaderService = modLoaderService;
+		this.dataLoaderService = dataLoaderService;
+		this.weaponFactory = weaponFactory;
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 	/**
 	 * Loads a weapon by its name and sets it as the current weapon.
 	 * If the weapon is successfully loaded, a {@link WeaponChangedEvent} is published.
 	 *
-	 * @param weaponName The name of the weapon to load.
+	 * @param weaponID The name of the weapon to load.
 	 * @throws IOException If the weapon cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void setWeapon(String weaponName, Loadout loadout) throws IOException
+	public synchronized void setWeapon(String weaponID, Loadout loadout) throws IOException
 	{
-		Weapon newWeapon = weaponLoaderService.getWeapon(weaponName);
+		Weapon newWeapon = dataLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
+
 		if (newWeapon != null)
 		{
 			loadout.setWeapon(newWeapon);
@@ -62,19 +62,19 @@ public class WeaponManager
 			applicationEventPublisher.publishEvent(weaponChangedEvent);
 		}
 		else {
-			log.error("Weapon loading failed for: " + weaponName);
+			log.error("Weapon loading failed for: " + weaponID);
 		}
 	}
 	/**
 	 * Modifies the current weapon by applying a specified modification (mod),
 	 * such as changing the receiver of a ranged weapon. After modification, a {@link WeaponChangedEvent} is published.
 	 *
-	 * @param modName The name of the mod to apply.
+	 * @param modID The name of the mod to apply.
 	 * @param modType The type of mod being applied (e.g., receiver).
 	 * @throws IOException If the mod cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void modifyWeapon(String modName, ModType modType, Loadout loadout) throws IOException
+	public synchronized void modifyWeapon(String modID, ModType modType, Loadout loadout) throws IOException
 	{
 		Weapon weapon = loadout.getWeapon();
 		if (weapon instanceof RangedWeapon)
@@ -82,7 +82,7 @@ public class WeaponManager
 			switch (modType)
 			{
 				case RECEIVER -> {
-					((RangedWeapon) weapon).setMod(modLoaderService.getReceiver(modName));
+					((RangedWeapon) weapon).setMod(dataLoaderService.loadData(modID, Receiver.class, null));
 				}
 			}
 		}

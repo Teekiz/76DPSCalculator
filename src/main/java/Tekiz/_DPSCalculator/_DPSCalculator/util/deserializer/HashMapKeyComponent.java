@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ConsumableFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.MutationFactory;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +38,7 @@ public class HashMapKeyComponent
 		{
 			log.debug("Received keyable: {}.", keyable);
 			StringBuilder identifier = new StringBuilder("_");
-			if (keyable.id() == 0) {
+			if (keyable.id().equals("0")) {
 				 identifier.append(keyable.name().replaceAll(" ", "").toUpperCase());
 			} else {
 				identifier.append(keyable.id());
@@ -72,35 +74,35 @@ public class HashMapKeyComponent
 		{
 			String[] splitString = string.split("_");
 			String objectType = splitString[0];
-			String objectName = splitString[1];
+			String objectIdentifier = splitString[1];
 			String objectProperties[] = Arrays.copyOfRange(splitString, 2, splitString.length);
 
-			log.debug("Received string: {}. ObjectType: {}. ObjectName: {}.", string, objectType, objectName);
+			log.debug("Received string: {}. ObjectType: {}. ObjectName: {}.", string, objectType, objectIdentifier);
 
 			switch (objectType.toUpperCase())
 			{
 				case "PERK" ->
 				{
-					log.debug("Deserializing Perk KeyObject: {}.", objectName);
+					log.debug("Deserializing Perk KeyObject: {}.", objectIdentifier);
 					PerkFactory perkFactory = (PerkFactory) context.findInjectableValue(PerkFactory.class.getName(), null, null);
 					int rank = objectProperties.length >= 1 ? Integer.parseInt(objectProperties[0]) : 1;
-					return perkFactory.createPerk(objectName, rank);
+					return perkFactory.createPerk(objectIdentifier, rank);
 				}
 				case "CONSUMABLE" ->
 				{
 					log.debug("Deserializing Consumable KeyObject: {}.", string);
 					ConsumableFactory consumableFactory = (ConsumableFactory) context.findInjectableValue(ConsumableFactory.class.getName(), null, null);
-					return consumableFactory.createConsumable(objectName);
+					return consumableFactory.createConsumable(objectIdentifier);
 				}
 				case "MUTATION" ->
 				{
 					log.debug("Deserializing Mutation KeyObject: {}.", string);
 					MutationFactory mutationFactory = (MutationFactory) context.findInjectableValue(MutationFactory.class.getName(), null, null);
-					return mutationFactory.createMutation(objectName);
+					return mutationFactory.createMutation(objectIdentifier);
 				}
 				case null, default ->
 				{
-					log.error("Could not deserialize key of type: {}. Name: {}.", objectType, objectName);
+					log.error("Could not deserialize key of type: {}. Name: {}.", objectType, objectIdentifier);
 					return null;
 				}
 			}

@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ScriptLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.scripts.GroovyScriptService;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import java.io.IOException;
 import groovy.lang.Script;
 import org.springframework.beans.factory.annotation.Autowired;

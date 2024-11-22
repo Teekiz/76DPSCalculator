@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ExpressionLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
@@ -44,7 +45,7 @@ public class ModifierExpressionService
 	 * @param loadout  The loadout that will be used to check against the context expression.
 	 * @return A {@link Map.Entry} of a new {@link ModifierTypes} and a {@link Number} value.
 	 */
-	public Map.Entry<ModifierTypes, Number> getAdditionalContext(String contextName, Loadout loadout)
+	public Map.Entry<ModifierTypes, ModifierValue<?>> getAdditionalContext(String contextName, Loadout loadout)
 	{
 		Expression expression = contextExpressions.get(contextName);
 
@@ -53,7 +54,7 @@ public class ModifierExpressionService
 			return ParsingService.parseContext(expression, loadout);
 		}
 		log.error("Unable to parse expression: {}.", contextName);
-		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, 0.0);
+		return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, new ModifierValue<>(ModifierTypes.ERROR_TYPE, "ERROR"));
 	}
 
 

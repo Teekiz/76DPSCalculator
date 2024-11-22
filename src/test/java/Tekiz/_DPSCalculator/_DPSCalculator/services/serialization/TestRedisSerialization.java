@@ -41,13 +41,13 @@ public class TestRedisSerialization
 	{
 		log.debug("{}Running test - testRedisSerialization in TestRedisSerialization.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("10MMPISTOL", loadout);
-		weaponManager.modifyWeapon("CALIBRATE", ModType.RECEIVER, loadout);
-		consumableManager.addConsumable("FURY", loadout);
-		consumableManager.addConsumable("BALLISTICBOCK", loadout);
-		perkManager.addPerk("GUNSLINGER", loadout);
-		perkManager.addPerk("STRANGEINNUMBERS", loadout);
-		mutationManager.addMutation("ADRENALREACTION", loadout);
+		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("modRe2", ModType.RECEIVER, loadout);//CALLIBRATE
+		consumableManager.addConsumable("consu3", loadout);//FURY
+		consumableManager.addConsumable("consu4", loadout);//BALLISTICBOCK
+		perkManager.addPerk("perks1", loadout);//GUNSLINGER
+		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
+		mutationManager.addMutation("mutat1", loadout);//ADRENALREACTION
 
 		loadout = null;
 

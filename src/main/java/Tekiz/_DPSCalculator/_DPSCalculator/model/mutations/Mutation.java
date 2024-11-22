@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.mutations;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Objects;
  * @param positiveEffects Stores the positive effects a mutation has.
  * @param negativeEffects Stores the negative effects a mutation has.
  */
-public record Mutation(@JsonProperty("id") int id,
+public record Mutation(@JsonProperty("id") String id,
 					   @JsonProperty("name") String name,
 					   @JsonProperty("description") String description,
 					   @JsonProperty("positiveEffects") MutationEffects positiveEffects,
@@ -55,7 +55,7 @@ public record Mutation(@JsonProperty("id") int id,
 			return false;
 		}
 		Mutation mutation = (Mutation) object;
-		return id == mutation.id && Objects.equals(name, mutation.name);
+		return Objects.equals(id, mutation.id) && Objects.equals(name, mutation.name);
 	}
 
 	@Override

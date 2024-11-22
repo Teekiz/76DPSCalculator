@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class WeaponFactory
+public class WeaponFactory implements Factory<Weapon, JsonNode>
 {
 
 	//todo - could introduce null object pattern. Create a weapon which has no stats.
@@ -39,25 +39,27 @@ public class WeaponFactory
 	 * Depending on the {@code weaponType} field, the method returns a {@link RangedWeapon}
 	 * or {@link MeleeWeapon}.
 	 *
-	 * @param weapon The JSON node containing the weapon data.
-	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weapon type is not recognized.
+	 * @param weaponNode The JSON node containing the weaponNode data.
+	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weaponNode type is not recognized.
 	 */
-	public Weapon createWeapon(JsonNode weapon)
+	@Override
+	public Weapon createObject(JsonNode weaponNode)
 	{
 		try
 		{
-			JsonNode weaponTypeNode = weapon.get("weaponType");
+			JsonNode weaponTypeNode = weaponNode.get("weaponType");
 			if (weaponTypeNode == null || !weaponTypeNode.isTextual()) {
-				//an error log is not thrown as this will be expected if the loadout has been deserialized with no set weapon.
+				//an error log is not thrown as this will be expected if the loadout has been deserialized with no set weaponNode.
 				log.warn("Cannot deserialize node. WeaponType is missing or null.");
 				return null;
 			}
+
 			WeaponType weaponType = WeaponType.valueOf(weaponTypeNode.asText().toUpperCase());
 			if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE)) {
-				return objectMapper.treeToValue(weapon, RangedWeapon.class);
+				return objectMapper.treeToValue(weaponNode, RangedWeapon.class);
 			}
 			else if (weaponType.equals(WeaponType.ONEHANDED) || weaponType.equals(WeaponType.TWOHANDED)) {
-				return objectMapper.treeToValue(weapon, MeleeWeapon.class);
+				return objectMapper.treeToValue(weaponNode, MeleeWeapon.class);
 			}
 			return null;
 		}
@@ -68,7 +70,7 @@ public class WeaponFactory
 		}
 		catch (Exception e)
 		{
-			log.error("Failed to create weapon. {}", e.getMessage(), e);
+			log.error("Failed to create weaponNode. {}", e.getMessage(), e);
 			return null;
 		}
 	}

@@ -3,7 +3,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.PerkLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class PerkManagerTest
 	@Autowired
 	PerkManager perkManager;
 	@Autowired
-	PerkLoaderService perkLoaderService;
+	DataLoaderService dataLoaderService;
 	@Autowired
 	PlayerManager playerManager;
 
@@ -38,7 +39,7 @@ public class PerkManagerTest
 		log.debug("{}Running test - testCanPerkBeAddedDirectly in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//loadout current specials are 1, which should be enough to add a single perk costing 1 point
-		Perk perk = perkLoaderService.getPerk("STRANGEINNUMBERS");
+		Perk perk = dataLoaderService.loadData("perks2", Perk.class, null);//STRANGEINNUMBERS
 
 		assertTrue(perkManager.hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials()));
 		//by upgrading the perk, it should cost 2 points
@@ -50,11 +51,11 @@ public class PerkManagerTest
 		assertTrue(perkManager.hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials()));
 
 		//adding tenderizer which should cost 1 perk point (5 remaining)
-		perkManager.addPerk("TENDERIZER", loadout);
+		perkManager.addPerk("perks3", loadout);//TENDERIZER
 		assertTrue(perkManager.hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials()));
 
 		//adding tenderizer which should cost 3 perk points (0 remaining)
-		perkManager.changePerkRank("TENDERIZER", 3, loadout);
+		perkManager.changePerkRank("perks3", 3, loadout);//TENDERIZER
 		assertTrue(perkManager.hasAvailableSpecialPoints(loadout.getPerks(), perk, loadout.getPlayer().getSpecials()));
 
 		//3 points should already be taken up by tenderizer, so the level 3 card should not have enough points
@@ -69,31 +70,31 @@ public class PerkManagerTest
 	void testCanPerkBeAdded() throws IOException {
 		log.debug("{}Running test - testCanPerkBeAdded in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		perkManager.addPerk("TENDERIZER", loadout);
+		perkManager.addPerk("perks3", loadout);//TENDERIZER
 		assertEquals(1, loadout.getPerks().keySet().size());
 
-		perkManager.addPerk("STRANGEINNUMBERS", loadout);
+		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
 		assertEquals(1, loadout.getPerks().keySet().size());
 
-		perkManager.addPerk("GUNSLINGER", loadout);
+		perkManager.addPerk("perks1", loadout);//GUNSLINGER
 		assertEquals(2, loadout.getPerks().keySet().size());
 
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 2);
-		perkManager.addPerk("STRANGEINNUMBERS", loadout);
+		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
 		assertEquals(3, loadout.getPerks().keySet().size());
 
 		//adding duplicate object.
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 2);
-		perkManager.addPerk("TENDERIZER", loadout);
+		perkManager.addPerk("perks3", loadout);//TENDERIZER
 		assertEquals(3, loadout.getPerks().keySet().size());
 
-		perkManager.changePerkRank("Strange in Numbers", 2, loadout);
+		perkManager.changePerkRank("perks2", 2, loadout);//STRANGEINNUMBERS
 		//this shouldn't really be used to determine the name, which is why the capitalisation is different
-		assertEquals(1, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
+		assertEquals(1, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
 
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 3);
-		perkManager.changePerkRank("Strange in Numbers", 2, loadout);
-		assertEquals(2, perkManager.getPerkInLoadout("Strange in Numbers", loadout).perkRank().getCurrentRank());
+		perkManager.changePerkRank("perks2", 2, loadout);//Strange in Numbers
+		assertEquals(2, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
 
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

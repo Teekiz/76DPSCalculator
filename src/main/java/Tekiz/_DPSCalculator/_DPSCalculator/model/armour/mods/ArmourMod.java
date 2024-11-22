@@ -14,6 +14,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public abstract class ArmourMod implements Serializable
 {
+	@JsonProperty("id")
+	private final String modId;
 	@JsonProperty("modName")
 	private final String modName;
 	@JsonProperty("armourPiece")

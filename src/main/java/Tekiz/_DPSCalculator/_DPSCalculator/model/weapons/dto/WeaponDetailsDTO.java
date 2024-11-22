@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class WeaponDetailsDTO
 {
-	private int weaponID;
+	private String weaponID;
 	private String weaponName;
 	private String weaponType;
 	private String damageType;

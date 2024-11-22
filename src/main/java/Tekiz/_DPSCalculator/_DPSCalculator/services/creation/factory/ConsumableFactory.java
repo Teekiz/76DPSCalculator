@@ -1,7 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ConsumableLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +13,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConsumableFactory
 {
-	private final ConsumableLoaderService consumableLoaderService;
+	private final DataLoaderService dataLoaderService;
 
 	@Lazy
 	@Autowired
-	public ConsumableFactory(ConsumableLoaderService consumableLoaderService)
+	public ConsumableFactory(DataLoaderService dataLoaderService)
 	{
-		this.consumableLoaderService = consumableLoaderService;
+		this.dataLoaderService = dataLoaderService;
 	}
-	public Consumable createConsumable(String consumableName) throws IOException
+	public Consumable createConsumable(String consumableID) throws IOException
 	{
-		return consumableLoaderService.getConsumable(consumableName);
+		return dataLoaderService.loadData(consumableID, Consumable.class, null);
 	}
 }

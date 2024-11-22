@@ -1,11 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.parser;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
 import java.util.Map;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -79,7 +80,7 @@ public class ParsingService
 	 * @param expression The SpEL {@link Expression} to evaluate.
 	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
 	 */
-	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression, Loadout loadout)
+	public Map.Entry<ModifierTypes, ModifierValue<?>> parseContext(Expression expression, Loadout loadout)
 	{
 		try
 		{

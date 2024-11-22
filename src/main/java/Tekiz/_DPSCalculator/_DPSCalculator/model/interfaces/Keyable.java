@@ -1,5 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
+package Tekiz._DPSCalculator._DPSCalculator.model.interfaces;
 
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -9,6 +10,6 @@ import java.util.HashMap;
  */
 public interface Keyable extends Serializable
 {
-	int id();
+	String id();
 	String name();
 }

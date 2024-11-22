@@ -9,7 +9,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFact
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.MutationFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.PerkFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ModLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import groovy.lang.GroovyShell;
+import org.jsonidmapper.JsonIDMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -37,16 +39,25 @@ public class UtilConfig
 	@Bean
 	public GroovyShell groovyShell() {return new GroovyShell(BaseBinding.getBaseBinding());}
 
+	@Value("${files.path.properties}")
+	private String filePathProperties;
+	@Value("${storage.path.properties}")
+	private String storagePathProperties;
+
+	@Bean
+	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties ,5,
+		storagePathProperties, false);}
+
 	@Bean
 	@Primary
-	public ObjectMapper objectMapper(ModLoaderService modLoaderService, WeaponFactory weaponFactory,
+	public ObjectMapper objectMapper(DataLoaderService loaderService, WeaponFactory weaponFactory,
 									 LoadoutFactory loadoutFactory, PerkFactory perkFactory,
 									 ConsumableFactory consumableFactory, MutationFactory mutationFactory) {
 		ObjectMapper objectMapper = new  ObjectMapper();
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
 		InjectableValues.Std injectableValues = new InjectableValues.Std();
-		injectableValues.addValue(ModLoaderService.class, modLoaderService);
+		injectableValues.addValue(DataLoaderService.class, loaderService);
 		injectableValues.addValue(WeaponFactory.class, weaponFactory);
 		injectableValues.addValue(LoadoutFactory.class, loadoutFactory);
 		injectableValues.addValue(PerkFactory.class, perkFactory);

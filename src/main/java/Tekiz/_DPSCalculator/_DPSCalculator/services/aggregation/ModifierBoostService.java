@@ -2,10 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.model.modifiers.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,11 +16,10 @@ import org.springframework.stereotype.Service;
 
 /**
  * A service that is used to store and apply boosts to {@link Modifier}'s values.
- * @param <V>  The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 @Service
 @Slf4j
-public class ModifierBoostService<V>
+public class ModifierBoostService
 {
 	/*
 		Condition service adds to this service, each boost applied is checked against this list
@@ -64,33 +65,36 @@ public class ModifierBoostService<V>
 	 * @param modifier The {@link Modifier} that the boosts will be applied to.
 	 * @return A new {@link HashMap} with all boosts applied (if applicable).
 	 */
-	public Map<ModifierTypes, Number> checkBoost(Modifier modifier)
+	public Map<ModifierTypes, ModifierValue<Number>> checkBoost(Modifier modifier)
 	{
-		try
-		{
-			if (!modifierBoosts.containsKey(modifier.modifierSource()))
-			{
-				return modifier.effects();
-			}
-			else
-			{
-				Map<ModifierTypes, Number> effectsWithBoost = new HashMap<>();
-				Number valueChange = modifierBoosts.get(modifier.modifierSource());
-				Map<ModifierTypes, V> effects = modifier.effects();
-				effects.forEach((key, value) ->
-				{
-					if (value instanceof Number)
-					{
-						effectsWithBoost.put(key, modifyValue((Number) value, valueChange));
-					}
-				});
-				return effectsWithBoost;
-			}
-		} catch (ClassCastException e)
-		{
-			log.error("Unsupported number type for : {}", modifier.modifierSource());
-			return modifier.effects();
+		if (modifier.effects() == null){
+			return null;
 		}
+		//returns only filtered effects.
+		Map<ModifierTypes, ModifierValue<Number>> filteredEffects = modifier.effects()
+			.entrySet()
+			.stream()
+			.filter(entry -> entry.getValue().getValue() instanceof Number)
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> (ModifierValue<Number>) entry.getValue()));
+
+		if (!modifierBoosts.containsKey(modifier.modifierSource())) {
+			return filteredEffects;
+		}
+
+		Map<ModifierTypes, ModifierValue<Number>> effectsWithBoost = new HashMap<>();
+		Number valueChange = modifierBoosts.get(modifier.modifierSource());
+
+		filteredEffects.forEach((key, value) -> {
+			if (value.getValue() != null) {
+				try {
+					Number modifiedValue = modifyValue(value.getValue(), valueChange);
+					effectsWithBoost.put(key, new ModifierValue<>(key, modifiedValue));
+				} catch (Exception e) {
+					log.error("Failed to apply boost for {}: {}", key, e.getMessage());
+				}
+			}
+		});
+		return effectsWithBoost.isEmpty() ? filteredEffects : effectsWithBoost;
 	}
 
 	/**
