@@ -20,7 +20,6 @@ public class MapUtil
 	 * @param <T> The value to be used.
 	 */
 	public static <T> AbstractMap.SimpleEntry<ModifierTypes, ModifierValue<?>> createEntry(ModifierTypes key, T value) {
-		System.out.println(key + " " + value + " " + value.getClass());
 		return new AbstractMap.SimpleEntry<>(key, new ModifierValue<>(key, value));
 	}
 }
