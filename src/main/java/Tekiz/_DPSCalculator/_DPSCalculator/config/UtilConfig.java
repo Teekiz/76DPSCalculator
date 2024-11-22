@@ -51,8 +51,7 @@ public class UtilConfig
 	@Bean
 	@Primary
 	public ObjectMapper objectMapper(DataLoaderService loaderService, WeaponFactory weaponFactory,
-									 LoadoutFactory loadoutFactory, PerkFactory perkFactory,
-									 ConsumableFactory consumableFactory, MutationFactory mutationFactory) {
+									 LoadoutFactory loadoutFactory) {
 		ObjectMapper objectMapper = new  ObjectMapper();
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
@@ -60,9 +59,6 @@ public class UtilConfig
 		injectableValues.addValue(DataLoaderService.class, loaderService);
 		injectableValues.addValue(WeaponFactory.class, weaponFactory);
 		injectableValues.addValue(LoadoutFactory.class, loadoutFactory);
-		injectableValues.addValue(PerkFactory.class, perkFactory);
-		injectableValues.addValue(ConsumableFactory.class, consumableFactory);
-		injectableValues.addValue(MutationFactory.class, mutationFactory);
 		objectMapper.setInjectableValues(injectableValues);
 
 		HashMapKeyComponent.HashMapKeySerializer hashMapKeySerializer = new HashMapKeyComponent.HashMapKeySerializer();
