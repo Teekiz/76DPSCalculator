@@ -4,10 +4,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.ConsumableType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Objects;
 import org.springframework.expression.Expression;
@@ -39,7 +42,8 @@ public record Consumable(@JsonProperty("id") String id,
 							@JsonProperty("addictionType") AddictionType addictionType,
 							@JsonProperty("modifierSource") ModifierSource modifierSource,
 							@JsonProperty("conditionString") Expression condition,
-							@JsonProperty("effects") HashMap<ModifierTypes, ?> effects) implements Modifier, Keyable
+							@JsonProperty("effects") @JsonDeserialize(using = ModifiersDeserializer.class)
+						 	HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier, Keyable
 {
 	@Override
 	public boolean equals(Object object)
@@ -53,7 +57,7 @@ public record Consumable(@JsonProperty("id") String id,
 			return false;
 		}
 		Consumable that = (Consumable) object;
-		return id == that.id && Objects.equals(name, that.name);
+		return Objects.equals(id, that.id) && Objects.equals(name, that.name);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.map;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import java.util.AbstractMap;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 
@@ -15,10 +17,10 @@ public class MapUtil
 	 * @param key The type of the value.
 	 * @param value The type of the value.
 	 * @return  A new {@link AbstractMap.SimpleEntry} containing the specified key and value.
-	 * @param <K> The type of the key.
-	 * @param <V> The type of the value.
+	 * @param <T> The value to be used.
 	 */
-	public static <K, V> AbstractMap.SimpleEntry<K, V> createEntry(K key, V value) {
-		return new AbstractMap.SimpleEntry<>(key, value);
+	public static <T> AbstractMap.SimpleEntry<ModifierTypes, ModifierValue<?>> createEntry(ModifierTypes key, T value) {
+		System.out.println(key + " " + value + " " + value.getClass());
+		return new AbstractMap.SimpleEntry<>(key, new ModifierValue<>(key, value));
 	}
 }

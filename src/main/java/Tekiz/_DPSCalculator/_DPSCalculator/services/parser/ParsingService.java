@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.parser;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
@@ -79,7 +80,7 @@ public class ParsingService
 	 * @param expression The SpEL {@link Expression} to evaluate.
 	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
 	 */
-	public Map.Entry<ModifierTypes, Number> parseContext(Expression expression, Loadout loadout)
+	public Map.Entry<ModifierTypes, ModifierValue<?>> parseContext(Expression expression, Loadout loadout)
 	{
 		try
 		{

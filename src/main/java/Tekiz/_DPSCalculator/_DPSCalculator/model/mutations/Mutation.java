@@ -55,7 +55,7 @@ public record Mutation(@JsonProperty("id") String id,
 			return false;
 		}
 		Mutation mutation = (Mutation) object;
-		return id == mutation.id && Objects.equals(name, mutation.name);
+		return Objects.equals(id, mutation.id) && Objects.equals(name, mutation.name);
 	}
 
 	@Override

@@ -2,12 +2,15 @@ package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Objects;
 import org.springframework.expression.Expression;
@@ -42,7 +45,8 @@ public record Perk(@JsonProperty("id") String id,
 					  @JsonProperty("description") String description,
 					  @JsonProperty("modifierSource") ModifierSource modifierSource,
 					  @JsonProperty("conditionString") Expression condition,
-					  @JsonProperty("effects") HashMap<Integer, HashMap<ModifierTypes, ?>> effectsPerRank) implements Modifier, Keyable
+					  @JsonProperty("effects") @JsonDeserialize(contentUsing = ModifiersDeserializer.class)
+				      HashMap<Integer, HashMap<ModifierTypes,  ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
 {
 	/**
 	 * Retrieves the effects associated with the current rank of the perk.
@@ -52,7 +56,7 @@ public record Perk(@JsonProperty("id") String id,
 	 *         Returns {@code null} if no effects are defined.
 	 */
 	@JsonIgnore
-	public HashMap<ModifierTypes, ?> effects()
+	public HashMap<ModifierTypes, ModifierValue<?>> effects()
 	{
 		if (effectsPerRank != null)
 		{

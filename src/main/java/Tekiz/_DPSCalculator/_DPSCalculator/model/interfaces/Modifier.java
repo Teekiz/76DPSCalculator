@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.interfaces;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import java.io.Serializable;
 import java.util.HashMap;
 import org.springframework.expression.Expression;
@@ -16,10 +17,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
  * aspects of the users loadout. The actual effects are determined by the
  * implementing class and the type of value used for those effects.
  *
- * @param <V> The type of value used for the modifier effects, such as {@link Integer} or {@link Double}.
  */
 
-public interface Modifier<V> extends Serializable
+public interface Modifier extends Serializable
 {
 	/**
 	 * Retrieves the source of the modifier, indicating where it originates from (e.g., PERK, CONSUMABLE). This is used by
@@ -49,5 +49,5 @@ public interface Modifier<V> extends Serializable
 	 * @return A {@link HashMap} of {@link ModifierTypes} to their corresponding values,
 	 *         where the values are of type {@code V}.
 	 */
-	HashMap<ModifierTypes, V> effects();
+	HashMap<ModifierTypes, ModifierValue<?>> effects();
 }
