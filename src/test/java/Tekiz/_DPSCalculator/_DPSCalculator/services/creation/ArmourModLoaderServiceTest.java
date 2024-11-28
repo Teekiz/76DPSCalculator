@@ -4,21 +4,18 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class ArmourModLoaderServiceTest
+public class ArmourModLoaderServiceTest extends BaseTestClass
 {
 	@Autowired
-	private DataLoaderService dataLoaderService;
+	DataLoaderService dataLoaderService;
 
 	@Test
 	public void testMaterialLoader() throws IOException

@@ -4,22 +4,19 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class ArmourLoaderServiceTest
+public class ArmourLoaderServiceTest extends BaseTestClass
 {
 	@Autowired
-	private DataLoaderService dataLoaderService;
+	DataLoaderService dataLoaderService;
 
 	@Test
 	void testLoadArmour() throws IOException
@@ -36,7 +33,7 @@ public class ArmourLoaderServiceTest
 	{
 		List<Armour> armours = dataLoaderService.loadAllData("armour", Armour.class, null);
 		assertNotNull(armours);
-		assertEquals(ArmourType.ARMOUR, armours.get(0).getArmourType());
-		assertEquals(ArmourSet.WOOD, armours.get(0).getArmourSet());
+		assertEquals(ArmourType.ARMOUR, armours.getFirst().getArmourType());
+		assertEquals(ArmourSet.WOOD, armours.getFirst().getArmourSet());
 	}
 }

@@ -4,17 +4,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class WeaponBuilderTest
+public class WeaponBuilderTest extends BaseTestClass
 {
 	@Test
 	void testPistolBuilderWithOptionalData() throws IOException

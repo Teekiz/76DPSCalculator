@@ -34,8 +34,6 @@ public class ModifiersDeserializer extends JsonDeserializer<Map<ModifierTypes, M
 		ObjectNode node = jsonParser.getCodec().readTree(jsonParser);
 		Map<ModifierTypes, ModifierValue<?>> result = new HashMap<>();
 
-		log.debug("Received node: {}", node);
-
 		Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
 		while (fields.hasNext()) {
 			Map.Entry<String, JsonNode> field = fields.next();

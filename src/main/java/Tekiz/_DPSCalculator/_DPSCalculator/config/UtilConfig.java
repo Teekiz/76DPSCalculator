@@ -4,10 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ConsumableFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.MutationFactory;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.PerkFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
@@ -45,7 +42,7 @@ public class UtilConfig
 	private String storagePathProperties;
 
 	@Bean
-	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties ,5,
+	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties ,
 		storagePathProperties, false);}
 
 	@Bean

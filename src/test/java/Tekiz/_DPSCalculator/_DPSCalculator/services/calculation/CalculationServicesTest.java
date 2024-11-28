@@ -3,28 +3,19 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-public class CalculationServicesTest
+public class CalculationServicesTest extends BaseTestClass
 {
-	@Autowired
-	UserLoadoutTracker userLoadoutTracker;
-	@Autowired
-	LoadoutManager loadoutManager;
 	@Autowired
 	WeaponManager weaponManager;
 	@Autowired
@@ -41,18 +32,18 @@ public class CalculationServicesTest
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		//setting the conditions for the two base weapons
-		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
-		weaponManager.modifyWeapon("modRe2", ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 
-		perkManager.addPerk("perks5", loadout);//TESTEVENT
-		consumableManager.addConsumable("consu16", loadout);//TESTEVENTTWO
+		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
+		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
 		//removing the perk should reduce the damage by 20%
-		perkManager.removePerk("perks5", loadout);//TESTEVENT
+		perkManager.removePerk("PERKS5", loadout);//TESTEVENT
 		assertEquals(33.6, calculator.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -65,10 +56,10 @@ public class CalculationServicesTest
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
-		weaponManager.modifyWeapon("modRe2", ModType.RECEIVER, loadout);//CALIBRATE
-		perkManager.addPerk("perks5", loadout);//TESTEVENT
-		consumableManager.addConsumable("consu16", loadout);
+		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
+		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
+		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
 		//level 1 tenderizer should add 5% extra damage on top of the existing damage

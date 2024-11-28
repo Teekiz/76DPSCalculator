@@ -1,29 +1,20 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-public class ModifierExpressionServicesTest
+public class ModifierExpressionServicesTest extends BaseTestClass
 {
-	@Autowired
-	UserLoadoutTracker userLoadoutTracker;
-	@Autowired
-	LoadoutManager loadoutManager;
 	@Autowired
 	WeaponManager weaponManager;
 	@Autowired
@@ -38,10 +29,10 @@ public class ModifierExpressionServicesTest
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("weapo2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
 		playerManager.getPlayer(loadout).setCurrentHP(125.0);
 
-		mutationManager.addMutation("mutat1", loadout);//ADRENALREACTION
+		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
 
 			//hp is set to 125, so it sound return 0.19 additional damage
 			//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 30.5

@@ -4,28 +4,19 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
-import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-public class PerkManagerTest
+public class PerkManagerTest extends BaseTestClass
 {
-	@Autowired
-	UserLoadoutTracker userLoadoutTracker;
-	@Autowired
-	LoadoutManager loadoutManager;
 	@Autowired
 	PerkManager perkManager;
 	@Autowired

@@ -22,5 +22,5 @@
     "rangedPenalty" : -50,
     "reloadTime" : 1.97,
     "attackDelay" : 0.23,
-    "receiver" : "modRe1"
+    "receiver" : "MODRECEIVERS1"
 }

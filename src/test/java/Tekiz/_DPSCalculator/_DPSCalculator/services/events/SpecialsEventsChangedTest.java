@@ -3,28 +3,19 @@ package Tekiz._DPSCalculator._DPSCalculator.services.events;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.SpecialDTO;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-public class SpecialsEventsChangedTest
+public class SpecialsEventsChangedTest extends BaseTestClass
 {
-	@Autowired
-	UserLoadoutTracker userLoadoutTracker;
-	@Autowired
-	LoadoutManager loadoutManager;
 	@Autowired
 	PerkManager perkManager;
 	@Autowired

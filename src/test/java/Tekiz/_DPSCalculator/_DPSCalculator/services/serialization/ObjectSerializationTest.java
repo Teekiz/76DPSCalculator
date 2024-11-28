@@ -12,24 +12,20 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
+import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-public class ObjectSerializationTest
+public class ObjectSerializationTest extends BaseTestClass
 {
 	@Autowired
 	DataLoaderService dataLoaderService;
@@ -48,7 +44,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeConsumable() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeConsumable in ObjectSerializationTest.", System.lineSeparator());
-		Consumable consumable = dataLoaderService.loadData("consu7", Consumable.class, null);
+		Consumable consumable = dataLoaderService.loadData("CONSUMABLES7", Consumable.class, null);
 		assertNotNull(consumable);
 		log.debug("Consumable object deserialized: {}.", consumable);
 
@@ -65,7 +61,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializePerk() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializePerk in ObjectSerializationTest.", System.lineSeparator());
-		Perk perk = dataLoaderService.loadData("perks1", Perk.class, null);
+		Perk perk = dataLoaderService.loadData("PERKS1", Perk.class, null);
 		assertNotNull(perk);
 		log.debug("Perk object deserialized: {}.", perk);
 
@@ -82,7 +78,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeMutation() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeMutation in ObjectSerializationTest.", System.lineSeparator());
-		Mutation mutation = dataLoaderService.loadData("mutat1", Mutation.class, null);
+		Mutation mutation = dataLoaderService.loadData("MUTATIONS1", Mutation.class, null);
 		assertNotNull(mutation);
 		log.debug("Mutation object deserialized: {}.", mutation);
 
@@ -115,7 +111,7 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeWeapon() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
-		Weapon weapon = dataLoaderService.loadData("weapo2", Weapon.class, weaponFactory);
+		Weapon weapon = dataLoaderService.loadData("WEAPONS2", Weapon.class, weaponFactory);
 		assertNotNull(weapon);
 		log.debug("Weapon object deserialized: {}.", weapon);
 
@@ -149,8 +145,8 @@ public class ObjectSerializationTest
 	public void serializeAndDeserializeArmour() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeArmour in ObjectSerializationTest.", System.lineSeparator());
-		Armour armour = dataLoaderService.loadData("armou1", Armour.class, null);
-		Material material = dataLoaderService.loadData("modAr1", Material.class, null);
+		Armour armour = dataLoaderService.loadData("ARMOUR1", Armour.class, null);
+		Material material = dataLoaderService.loadData("MODARMOURMATERIALS1", Material.class, null);
 		armour.setMod(material);
 		assertNotNull(armour);
 		log.debug("Armour object deserialized: {}.", armour);
@@ -189,8 +185,8 @@ public class ObjectSerializationTest
 		assertNotNull(loadout);
 		log.debug("Loadout object deserialized: {}.", loadout);
 
-		perkManager.addPerk("perks1", loadout);
-		consumableManager.addConsumable("consu6", loadout);
+		perkManager.addPerk("PERKS1", loadout);
+		consumableManager.addConsumable("CONSUMABLES6", loadout);//TESTCONDITION
 
 		String jsonLoadout = objectMapper.writeValueAsString(loadout);
 		assertNotNull(jsonLoadout);
