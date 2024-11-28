@@ -43,7 +43,12 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 				String receiverIdentifier = receiverNode.asText();
 				log.debug("Deserializing receiver: '{}'", receiverIdentifier);
 				DataLoaderService loaderService = (DataLoaderService) context.findInjectableValue(DataLoaderService.class.getName(), null, null);
-				return loaderService.loadData(receiverIdentifier, Receiver.class, null);
+				Receiver receiver = loaderService.loadData(receiverIdentifier, Receiver.class, null);
+				//if the identifier is the name, not an ID, then try to load it using the file name
+				if (receiver == null) {
+					receiver = loaderService.loadDataByName(receiverIdentifier, Receiver.class, null);
+				}
+				return receiver;
 			}
 			else if (receiverNode.isObject())
 			{
