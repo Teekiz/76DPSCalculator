@@ -5,7 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
@@ -29,10 +29,10 @@ public class WeaponController
 	private final LoadoutManager loadoutManager;
 	private final WeaponManager weaponManager;
 	private final WeaponMapper weaponMapper;
-	private final ObjectLoaderStrategy weaponLoaderService;
+	private final DataLoaderService weaponLoaderService;
 	private final WeaponFactory weaponFactory;
 	@Autowired
-	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, ObjectLoaderStrategy weaponLoaderService, WeaponFactory weaponFactory)
+	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, DataLoaderService weaponLoaderService, WeaponFactory weaponFactory)
 	{
 		this.weaponFactory = weaponFactory;
 		log.info("Weapon controller created.");
@@ -63,12 +63,12 @@ public class WeaponController
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
-		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.getAllData("Weapon", Weapon.class, weaponFactory)));
+		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.loadAllData("Weapon", Weapon.class, weaponFactory)));
 	}
 	@GetMapping("/getWeaponDetails")
 	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponID) throws IOException
 	{
-		Weapon weapon = weaponLoaderService.getData(weaponID, Weapon.class, weaponFactory);
+		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
 		if (weapon == null)
 		{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
