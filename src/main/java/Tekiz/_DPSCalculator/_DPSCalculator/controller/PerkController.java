@@ -3,14 +3,13 @@ package Tekiz._DPSCalculator._DPSCalculator.controller;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PerkMapper;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,9 @@ public class PerkController
 	private final LoadoutManager loadoutManager;
 	private final PerkManager perkManager;
 	private final PerkMapper perkMapper;
-	private final ObjectLoaderStrategy perkLoaderService;
+	private final DataLoaderService perkLoaderService;
 	@Autowired
-	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper, ObjectLoaderStrategy perkLoaderService)
+	public PerkController(LoadoutManager loadoutManager, PerkManager perkManager, PerkMapper perkMapper, DataLoaderService perkLoaderService)
 	{
 		log.info("Perk controller created.");
 		this.loadoutManager = loadoutManager;
@@ -72,7 +71,7 @@ public class PerkController
 	@GetMapping("/getAvailablePerks")
 	public ResponseEntity<List<PerkDTO>> getAvailablePerks() throws IOException
 	{
-		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.getAllData("perks", Perk.class, null)));
+		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.loadAllData("perks", Perk.class, null)));
 	}
 
 	@PostMapping("/changePerkRank")
