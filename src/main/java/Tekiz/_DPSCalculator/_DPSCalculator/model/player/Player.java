@@ -52,6 +52,7 @@ public class Player implements Serializable
 	public void setMaxHP(int bonusEndurance, double bonusHP)
 	{
 		maxHP = 245 + 5 * (specials.getEndurance() + bonusEndurance) + bonusHP;
+		setCurrentHP(currentHP);
 	}
 
 	/** Sets the current health points a player has. This cannot be higher than the maximum HP. */
