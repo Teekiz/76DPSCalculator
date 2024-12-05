@@ -71,7 +71,7 @@ public class PerkController
 	@GetMapping("/getAvailablePerks")
 	public ResponseEntity<List<PerkDTO>> getAvailablePerks() throws IOException
 	{
-		return ResponseEntity.ok(perkMapper.convertAllPerksToDTO(perkLoaderService.loadAllData("perks", Perk.class, null)));
+		return ResponseEntity.ok(perkMapper.convertAllToDTO(perkLoaderService.loadAllData("perks", Perk.class, null)));
 	}
 
 	@PostMapping("/changePerkRank")

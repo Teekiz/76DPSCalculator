@@ -199,7 +199,7 @@ public class PerkControllerTest
 
 		given(perkLoaderService.loadAllData(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
 			ArgumentMatchers.any())).willReturn(Collections.singletonList(availablePerks));
-		given(perkMapper.convertAllPerksToDTO(anyList())).willReturn(availablePerkDTOS);
+		given(perkMapper.convertAllToDTO(anyList())).willReturn(availablePerkDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get("/api/getAvailablePerks")
@@ -217,7 +217,7 @@ public class PerkControllerTest
 		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
 
 		verify(perkLoaderService, times(1)).loadAllData(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any());
-		verify(perkMapper, times(1)).convertAllPerksToDTO(anyList());
+		verify(perkMapper, times(1)).convertAllToDTO(anyList());
 	}
 
 	//changePerkRank
