@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.PlayerDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
@@ -17,4 +18,5 @@ public class LoadoutDTO
 	private WeaponDetailsDTO weapon;
 	private List<PerkDTO> perks;
 	private PlayerDTO player;
+	private List<ConsumableDTO> consumables;
 }
