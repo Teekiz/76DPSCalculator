@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.mutations.MutationDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.PlayerDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
@@ -22,14 +23,16 @@ public class LoadoutMapper
 	private final WeaponMapper weaponMapper;
 	private final PlayerMapper playerMapper;
 	private final ConsumableMapper consumableMapper;
+	private final MutationMapper mutationMapper;
 
 	@Autowired
-	public LoadoutMapper(PerkMapper perkMapper, WeaponMapper weaponMapper, PlayerMapper playerMapper, ConsumableMapper consumableMapper)
+	public LoadoutMapper(PerkMapper perkMapper, WeaponMapper weaponMapper, PlayerMapper playerMapper, ConsumableMapper consumableMapper, MutationMapper mutationMapper)
 	{
 		this.perkMapper = perkMapper;
 		this.weaponMapper = weaponMapper;
 		this.playerMapper = playerMapper;
 		this.consumableMapper = consumableMapper;
+		this.mutationMapper = mutationMapper;
 	}
 
 	/**
@@ -43,8 +46,9 @@ public class LoadoutMapper
 		List<PerkDTO> perkDTOs = perkMapper.convertAllToDTO(loadout.getPerks());
 		PlayerDTO playerDTO = playerMapper.convertPlayerToPlayerDTO(loadout.getPlayer());
 		List<ConsumableDTO> consumableDTOS = consumableMapper.convertAllToDTO(loadout.getConsumables());
+		List<MutationDTO> mutationDTOS = mutationMapper.convertAllToDTO(loadout.getMutations());
 
-		return new LoadoutDTO(loadout.getLoadoutID(), weaponDTO, perkDTOs, playerDTO, consumableDTOS);
+		return new LoadoutDTO(loadout.getLoadoutID(), weaponDTO, perkDTOs, playerDTO, consumableDTOS, mutationDTOS);
 	}
 
 	/**

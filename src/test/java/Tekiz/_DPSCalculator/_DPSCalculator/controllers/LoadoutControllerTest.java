@@ -54,7 +54,7 @@ public class LoadoutControllerTest
 	public void retrieveLoadoutTest() throws Exception
 	{
 		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(), new Player(), null, new HashSet<>());
-		LoadoutDTO mockDTO = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO());
+		LoadoutDTO mockDTO = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(mockLoadout);
 		given(loadoutMapper.convertLoadoutToLoadoutDTO(mockLoadout)).willReturn(mockDTO);
@@ -66,7 +66,7 @@ public class LoadoutControllerTest
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
-		String expectedJson = "{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null}}";
+		String expectedJson = "{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}";
 		assertThat(response.getContentAsString()).contains(expectedJson);
 
 		verify(loadoutManager, times(1)).getLoadout(1);
@@ -82,8 +82,8 @@ public class LoadoutControllerTest
 		loadoutHashSet.add(mockLoadoutOne);
 		loadoutHashSet.add(mockLoadoutTwo);
 
-		LoadoutDTO mockDTOOne = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO());
-		LoadoutDTO mockDTOTwo = new LoadoutDTO(2, null, new ArrayList<>(), new PlayerDTO());
+		LoadoutDTO mockDTOOne = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
+		LoadoutDTO mockDTOTwo = new LoadoutDTO(2, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
 		List<LoadoutDTO> mockLoadoutList= new ArrayList<>();
 		mockLoadoutList.add(mockDTOOne);
 		mockLoadoutList.add(mockDTOTwo);
@@ -97,8 +97,8 @@ public class LoadoutControllerTest
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
-		String expectedJson = "[{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null}}," +
-			"{\"loadoutID\":2,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null}}]";
+		String expectedJson = "[{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}," +
+			"{\"loadoutID\":2,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}]";
 		assertThat(response.getContentAsString()).isEqualToIgnoringWhitespace(expectedJson);
 
 		//verifying that the dependencies were used

@@ -44,21 +44,21 @@ public class MutationManager
 	{
 		Mutation mutation = dataLoaderService.loadData(mutationID, Mutation.class, null);
 		loadout.getMutations().add(mutation);
-		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been added.");
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.id() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 	@SaveLoadout
-	public void removeMutation(String mutationName, Loadout loadout) throws IOException
+	public void removeMutation(String mutationID, Loadout loadout) throws IOException
 	{
 		Mutation mutation = loadout.getMutations()
 			.stream()
-			.filter(object -> object.name().equalsIgnoreCase(mutationName))
+			.filter(object -> object.id().equalsIgnoreCase(mutationID))
 			.findFirst()
 			.orElse(null);
 		if (mutation != null)
 		{
 			loadout.getMutations().remove(mutation);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.name() + " has been removed.");
+			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.id() + " has been removed.");
 			applicationEventPublisher.publishEvent(modifierChangedEvent);
 		}
 	}
