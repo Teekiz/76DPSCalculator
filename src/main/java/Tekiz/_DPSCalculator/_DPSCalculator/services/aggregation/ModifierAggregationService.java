@@ -100,11 +100,13 @@ public class ModifierAggregationService
 	{
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
 		List<Number> effects = new ArrayList<>();
+		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);
+
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet())
 		{
 			if (modifier.getValue())
 			{
-				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier.getKey());
+				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier.getKey(), boosts);
 				if (effectsMap != null)
 				{
 					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {

@@ -25,7 +25,10 @@ public enum ModifierTypes
 	SPECIAL_INTELLIGENCE(Integer.class),
 	SPECIAL_AGILITY(Integer.class),
 	SPECIAL_LUCK(Integer.class),
+	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),
+	//This is used if an effect affects other modifiers (therefore requiring priority)
+	PRIORITY_AFFECTS_MODIFIERS(ModifierBoost.class),
 	ERROR_TYPE(String.class);
 
 	private final Class<?> valueType;
