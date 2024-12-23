@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.MutationController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.MutationController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.MutationDTO;
@@ -55,6 +55,8 @@ public class MutationControllerTest
 	@MockBean
 	DataLoaderService mutationLoaderService;
 
+	String urlString = "/api/loadouts";
+
 	@Test
 	public void getMutations_WithMutationsInList() throws Exception
 	{
@@ -77,7 +79,7 @@ public class MutationControllerTest
 		given(mutationMapper.convertAllToDTO(loadout.getMutations())).willReturn(mutationDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getMutations")
+				MockMvcRequestBuilders.get(urlString + "/getMutations")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -106,7 +108,7 @@ public class MutationControllerTest
 		given(mutationMapper.convertAllToDTO(loadout.getMutations())).willReturn(new ArrayList<>());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getMutations")
+				MockMvcRequestBuilders.get(urlString + "/getMutations")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -131,7 +133,7 @@ public class MutationControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/addMutation")
+				MockMvcRequestBuilders.post(urlString + "/addMutation")
 					.param("loadoutID", "1")
 					.param("mutationID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -154,7 +156,7 @@ public class MutationControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/removeMutation")
+				MockMvcRequestBuilders.post(urlString + "/removeMutation")
 					.param("loadoutID", "1")
 					.param("mutationID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -190,7 +192,7 @@ public class MutationControllerTest
 		given(mutationMapper.convertAllToDTO(anyList())).willReturn(availableMutationsDTOs);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getAvailableMutations")
+				MockMvcRequestBuilders.get(urlString + "/getAvailableMutations")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();

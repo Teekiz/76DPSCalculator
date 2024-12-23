@@ -1,32 +1,24 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.WeaponController;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.WeaponController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.PlayerDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.patterns.AnyAnnotationTypePattern;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -56,21 +48,18 @@ public class WeaponControllerTest
 {
 	@Autowired
 	MockMvc mockMvc;
-
 	@MockBean
 	WeaponManager weaponManager;
-
 	@MockBean
 	WeaponMapper weaponMapper;
-
 	@MockBean
 	LoadoutManager loadoutManager;
-
 	@MockBean
 	DataLoaderService weaponLoaderService;
-
 	@MockBean
 	WeaponFactory weaponFactory;
+
+	String urlString = "/api/loadouts";
 
 	@Test
 	public void getWeapon_WithValidID() throws Exception
@@ -96,7 +85,7 @@ public class WeaponControllerTest
 		given(weaponMapper.convertToRangedOrMeleeDTO(weapon)).willReturn(weaponDetailsDTO);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getWeapon")
+				MockMvcRequestBuilders.get(urlString + "/getWeapon")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -125,7 +114,7 @@ public class WeaponControllerTest
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getWeapon")
+				MockMvcRequestBuilders.get(urlString + "/getWeapon")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isNotFound())
@@ -146,7 +135,7 @@ public class WeaponControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/setWeapon")
+				MockMvcRequestBuilders.post(urlString + "/setWeapon")
 					.param("loadoutID", "1")
 					.param("weaponID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -181,7 +170,7 @@ public class WeaponControllerTest
 		given(weaponMapper.convertToDetailsDTO(weapon)).willReturn(weaponDetailsDTO);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getWeaponDetails")
+				MockMvcRequestBuilders.get(urlString + "/getWeaponDetails")
 					.param("weaponID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -208,7 +197,7 @@ public class WeaponControllerTest
 		log.debug("{}Running test - getWeaponDetails_WithInvalidWeaponID in WeaponControllerTest.", System.lineSeparator());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getWeaponDetails")
+				MockMvcRequestBuilders.get(urlString + "/getWeaponDetails")
 					.param("weaponID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isNotFound())
@@ -251,7 +240,7 @@ public class WeaponControllerTest
 		given(weaponMapper.convertAllToNameDTO(anyList())).willReturn(availableWeaponsDTOs);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getAvailableWeapons")
+				MockMvcRequestBuilders.get(urlString + "/getAvailableWeapons")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();

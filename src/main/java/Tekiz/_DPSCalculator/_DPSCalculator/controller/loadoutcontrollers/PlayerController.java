@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/loadouts")
 public class PlayerController
 {
 	private final LoadoutManager loadoutManager;

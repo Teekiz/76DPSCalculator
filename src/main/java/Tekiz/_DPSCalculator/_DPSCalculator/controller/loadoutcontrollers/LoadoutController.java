@@ -1,8 +1,7 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.LoadoutMapper;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/loadouts")
 public class LoadoutController
 {
 	private final LoadoutManager loadoutManager;

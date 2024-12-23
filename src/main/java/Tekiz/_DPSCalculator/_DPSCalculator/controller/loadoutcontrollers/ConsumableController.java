@@ -1,10 +1,8 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
-import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/loadouts")
 public class ConsumableController
 {
 	private final LoadoutManager loadoutManager;

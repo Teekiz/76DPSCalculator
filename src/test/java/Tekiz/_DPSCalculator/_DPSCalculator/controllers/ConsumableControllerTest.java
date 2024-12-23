@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.ConsumableController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.ConsumableController;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType;
@@ -12,7 +12,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.ConsumableMapper;
-import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,6 +58,8 @@ public class ConsumableControllerTest
 	@MockBean
 	DataLoaderService consumableLoaderService;
 
+	String urlString = "/api/loadouts";
+
 	@Test
 	public void getConsumables_WithConsumablesInList() throws Exception
 	{
@@ -81,7 +82,7 @@ public class ConsumableControllerTest
 		given(consumableMapper.convertAllToDTO(loadout.getConsumables())).willReturn(consumableDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getConsumables")
+				MockMvcRequestBuilders.get(urlString + "/getConsumables")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -111,7 +112,7 @@ public class ConsumableControllerTest
 		given(consumableMapper.convertAllToDTO(loadout.getConsumables())).willReturn(new ArrayList<>());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getConsumables")
+				MockMvcRequestBuilders.get(urlString + "/getConsumables")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -136,7 +137,7 @@ public class ConsumableControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/addConsumable")
+				MockMvcRequestBuilders.post(urlString + "/addConsumable")
 					.param("loadoutID", "1")
 					.param("consumableID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -159,7 +160,7 @@ public class ConsumableControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/removeConsumable")
+				MockMvcRequestBuilders.post(urlString + "/removeConsumable")
 					.param("loadoutID", "1")
 					.param("consumableID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -200,7 +201,7 @@ public class ConsumableControllerTest
 		given(consumableMapper.convertAllToDTO(anyList())).willReturn(availableConsumablesDTOs);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getAvailableConsumables")
+				MockMvcRequestBuilders.get(urlString + "/getAvailableConsumables")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();

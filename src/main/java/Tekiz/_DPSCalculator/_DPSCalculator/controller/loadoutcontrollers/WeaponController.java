@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/loadouts")
 public class WeaponController
 {
 	private final LoadoutManager loadoutManager;

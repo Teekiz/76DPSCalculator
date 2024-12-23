@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.PerkController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.PerkController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -49,18 +49,16 @@ public class PerkControllerTest
 {
 	@Autowired
 	MockMvc mockMvc;
-
 	@MockBean
 	LoadoutManager loadoutManager;
-
 	@MockBean
 	PerkManager perkManager;
-
 	@MockBean
 	PerkMapper perkMapper;
-
 	@MockBean
 	DataLoaderService perkLoaderService;
+
+	String urlString = "/api/loadouts";
 
 	@Test
 	public void getPerks_WithPerksInList() throws Exception
@@ -83,7 +81,7 @@ public class PerkControllerTest
 		given(perkMapper.convertAllToDTO(loadout.getPerks())).willReturn(perkDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getPerks")
+				MockMvcRequestBuilders.get(urlString + "/getPerks")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -111,7 +109,7 @@ public class PerkControllerTest
 		given(perkMapper.convertAllToDTO(loadout.getPerks())).willReturn(new ArrayList<>());
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getPerks")
+				MockMvcRequestBuilders.get(urlString + "/getPerks")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -136,7 +134,7 @@ public class PerkControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/addPerk")
+				MockMvcRequestBuilders.post(urlString + "/addPerk")
 					.param("loadoutID", "1")
 					.param("perkID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -159,7 +157,7 @@ public class PerkControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/removePerk")
+				MockMvcRequestBuilders.post(urlString + "/removePerk")
 					.param("loadoutID", "1")
 					.param("perkID", "1")
 					.accept(MediaType.APPLICATION_JSON))
@@ -202,7 +200,7 @@ public class PerkControllerTest
 		given(perkMapper.convertAllToDTO(anyList())).willReturn(availablePerkDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getAvailablePerks")
+				MockMvcRequestBuilders.get(urlString + "/getAvailablePerks")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
@@ -232,7 +230,7 @@ public class PerkControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/changePerkRank")
+				MockMvcRequestBuilders.post(urlString + "/changePerkRank")
 					.param("loadoutID", "1")
 					.param("perkID", "1")
 					.param("perkRank", "2")

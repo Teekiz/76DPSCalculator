@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.LoadoutController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.LoadoutController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
@@ -50,6 +50,8 @@ public class LoadoutControllerTest
 	@MockBean
 	LoadoutManager loadoutManager;
 
+	String urlString = "/api/loadouts";
+
 	@Test
 	public void retrieveLoadoutTest() throws Exception
 	{
@@ -60,7 +62,7 @@ public class LoadoutControllerTest
 		given(loadoutMapper.convertLoadoutToLoadoutDTO(mockLoadout)).willReturn(mockDTO);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/getLoadout")
+				MockMvcRequestBuilders.get(urlString + "/getLoadout")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -92,7 +94,7 @@ public class LoadoutControllerTest
 		given(loadoutMapper.covertAllLoadoutsToDTOs(loadoutHashSet)).willReturn(mockLoadoutList);
 
 		MockHttpServletResponse response = mockMvc.perform(
-			MockMvcRequestBuilders.get("/api/getLoadouts")
+			MockMvcRequestBuilders.get(urlString + "/getLoadouts")
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();

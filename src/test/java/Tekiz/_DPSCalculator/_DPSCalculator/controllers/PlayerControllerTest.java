@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.PlayerController;
-import Tekiz._DPSCalculator._DPSCalculator.controller.WeaponController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.PlayerController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
@@ -14,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -41,15 +38,14 @@ public class PlayerControllerTest
 {
 	@Autowired
 	MockMvc mockMvc;
-
 	@MockBean
 	LoadoutManager loadoutManager;
-
 	@MockBean
 	PlayerManager playerManager;
-
 	@MockBean
 	PlayerMapper playerMapper;
+
+	String urlString = "/api/loadouts";
 
 	@Test
 	public void changeSpecial_WithValidLoadout() throws Exception
@@ -62,7 +58,7 @@ public class PlayerControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/changeSpecial")
+				MockMvcRequestBuilders.post(urlString + "/changeSpecial")
 					.param("loadoutID", "1")
 					.param("special", "STRENGTH")
 					.param("value", "1")
@@ -84,7 +80,7 @@ public class PlayerControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(null);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/changeSpecial")
+				MockMvcRequestBuilders.post(urlString + "/changeSpecial")
 					.param("loadoutID", "1")
 					.param("special", "STRENGTH")
 					.param("value", "1")
@@ -111,7 +107,7 @@ public class PlayerControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/changeSpecials")
+				MockMvcRequestBuilders.post(urlString + "/changeSpecials")
 					.param("loadoutID", "1")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(specialDTOJson)
@@ -136,7 +132,7 @@ public class PlayerControllerTest
 		given(loadoutManager.getLoadout(1)).willReturn(null);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/changeSpecials")
+				MockMvcRequestBuilders.post(urlString + "/changeSpecials")
 					.param("loadoutID", "1")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(specialDTOJson)

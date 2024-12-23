@@ -39,7 +39,7 @@ public class ModifierBoostService
 	}
 
 	/**
-	 * A method that used to store boosts. Used by {@link ModifierExpressionService} if
+	 * A method that used to add boosts. Used by {@link ModifierExpressionService} if
 	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED". The expression can call this method to store boosts for later application.
 	 * @param modifierSource The type of modifier that the boost will be applied to. For example, {@link ModifierSource}.MUTATION_POSITIVE will apply
 	 *                          the {@code valueChange} to all positive mutations.
