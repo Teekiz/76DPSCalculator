@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controllers;
+package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.WeaponController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;

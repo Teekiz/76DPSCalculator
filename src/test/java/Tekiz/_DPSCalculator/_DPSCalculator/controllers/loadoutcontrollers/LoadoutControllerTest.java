@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controllers;
+package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.LoadoutController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
