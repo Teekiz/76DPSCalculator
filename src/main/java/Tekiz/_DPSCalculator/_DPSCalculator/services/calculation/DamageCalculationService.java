@@ -1,8 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +15,20 @@ public class DamageCalculationService
 	private final BaseDamageService baseDamageService;
 	private final BonusDamageService bonusDamageService;
 	private final DamageMultiplierService damageMultiplierService;
-	private final ModifierBoostService boostService;
-
 
 	/**
 	 * The constructor for {@link DamageCalculationService}.
 	 * @param baseDamageService A service that calculates the base damage from a loadout.
 	 * @param bonusDamageService A service that calculates the bonus (additive) damage from a loadout.
 	 * @param damageMultiplierService A service that calculates the multiplicative damage from a loadout.
-	 * @param boostService A service that is used to store and apply boosts to {@link Modifier}'s values.
 	 */
 	@Autowired
 	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
-									DamageMultiplierService damageMultiplierService, ModifierBoostService boostService)
+									DamageMultiplierService damageMultiplierService)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
 		this.damageMultiplierService = damageMultiplierService;
-		this.boostService = boostService;
 	}
 
 	/*
@@ -65,7 +59,6 @@ public class DamageCalculationService
 
 		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
 
-		boostService.clearBoosts();
 		return round(totalDamage);
 	}
 

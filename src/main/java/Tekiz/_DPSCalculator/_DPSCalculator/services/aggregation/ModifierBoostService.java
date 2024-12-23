@@ -1,17 +1,18 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierBoost;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,47 +26,42 @@ public class ModifierBoostService
 		Condition service adds to this service, each boost applied is checked against this list
 		if a boost source matches, then apply the boost - make sure to clear the boosts after each calculation.
 	 */
-
 	/**
-	 * A {@link HashMap} that stores boosts that {@link Modifier}'s with a matching {@link ModifierSource} by the value of {@link Number}.
-	 */
-	private final HashMap<ModifierSource, Number> modifierBoosts;
-
-	/** The constructor for a {@link ModifierBoostService} object. */
-	@Autowired
-	public ModifierBoostService()
-	{
-		this.modifierBoosts = new HashMap<>();
-	}
-
-	/**
-	 * A method that used to add boosts. Used by {@link ModifierExpressionService} if
-	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED". The expression can call this method to store boosts for later application.
-	 * @param modifierSource The type of modifier that the boost will be applied to. For example, {@link ModifierSource}.MUTATION_POSITIVE will apply
+	 * A method that used to identify boosts. Used by {@link ModifierExpressionService} if
+	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED".
+	 * @param modifiers The {@link HashMap} of {@link Modifier}'s and their {@link Boolean} values. This list will only provide boosts for {@code true} values. For example, {@link ModifierSource}.MUTATION_POSITIVE will apply
 	 *                          the {@code valueChange} to all positive mutations.
-	 * @param valueChange The value that will be applied to the modifier. For example, a value of 1.25 will add an extra 25% bonus to the existing {@link Modifier}'s effect.
+	 * @return A {@link HashMap} of {@link ModifierSource} and {@link Number} containing the boost types and the boosted values.
 	 */
-	public void addBoost(ModifierSource modifierSource, Number valueChange)
+	public HashMap<ModifierSource, Number> getModifierBoosts(HashMap<Modifier, Boolean> modifiers)
 	{
-		modifierBoosts.put(modifierSource, valueChange);
-	}
+		HashMap<ModifierSource, Number> modifierBoosts = new HashMap<>();
 
-	/**
-	 * A method that is called to clear boosts stored in {@code modifierBoosts}. To be used after all calculation completions.
-	 */
-	//this should be called everytime a calculation has been performed so that leftover boosts are not retained
-	public void clearBoosts()
-	{
-		modifierBoosts.clear();
+		List<Modifier> appliedBoosts = modifiers.entrySet()
+			.stream().filter(Map.Entry::getValue)
+			.map(Map.Entry::getKey)
+			.toList();
+
+		for (Modifier modifier : appliedBoosts)
+		{
+			if (modifier.effects() != null
+				&& modifier.effects().containsKey(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS)
+				&& modifier.effects().get(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS).getValue() instanceof ModifierBoost boostedValue) {
+				modifierBoosts.put(boostedValue.getAffectedSourceType(), boostedValue.getValueChange());
+			}
+		}
+
+		return modifierBoosts;
 	}
 
 	/**
 	 * A method that checks the {@code modifier}'s {@link ModifierSource} against {@code modifierBoosts}. If there is a matching key,
 	 * the value will be applied to each effect.
 	 * @param modifier The {@link Modifier} that the boosts will be applied to.
+	 * @param modifierBoosts A {@link HashMap} containing all applicable boosts.
 	 * @return A new {@link HashMap} with all boosts applied (if applicable).
 	 */
-	public Map<ModifierTypes, ModifierValue<Number>> checkBoost(Modifier modifier)
+	public Map<ModifierTypes, ModifierValue<Number>> checkBoost(Modifier modifier,  HashMap<ModifierSource, Number> modifierBoosts)
 	{
 		if (modifier.effects() == null){
 			return null;

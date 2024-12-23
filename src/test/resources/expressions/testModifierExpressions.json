@@ -16,7 +16,7 @@
     },
     "STRANGEINNUMBERS" :
     {
-        "expressionString" : "@modifierBoostService.addBoost(#ModifierSource.MUTATION_POSITIVE, 1.25)"
+        "expressionString" : "#MapUtil.createBoostEntry(#ModifierSource.MUTATION_POSITIVE, 1.25)"
     }
 }
 
