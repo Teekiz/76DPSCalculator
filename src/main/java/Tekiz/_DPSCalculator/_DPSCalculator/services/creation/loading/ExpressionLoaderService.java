@@ -34,8 +34,14 @@ public class ExpressionLoaderService
 
 	public HashMap<String, Expression> getContextInformation() throws IOException
 	{
-		JsonNode rootNode = objectMapper.readTree(modifierContextFile);
 		HashMap<String, Expression> contextHashmap = new HashMap<>();
+
+		if (modifierContextFile == null || !modifierContextFile.exists()) {
+			log.error("Cannot find modifier expressions files!");
+			return contextHashmap;
+		}
+
+		JsonNode rootNode = objectMapper.readTree(modifierContextFile);
 		Iterator<String> fieldNames = rootNode.fieldNames();
 		while (fieldNames.hasNext())
 		{

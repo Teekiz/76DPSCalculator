@@ -15,8 +15,6 @@ public class ScriptLoaderService
 	private final GroovyScriptService scriptService;
 	private final File modifierMethodScriptFile;
 
-	//todo - handle null pointer exceptions for missing data
-
 	@Autowired
 	public ScriptLoaderService(GroovyScriptService scriptService, FileConfig fileConfig)
 	{
@@ -26,6 +24,11 @@ public class ScriptLoaderService
 
 	public Script loadMethodScript()
 	{
+		if (modifierMethodScriptFile == null || !modifierMethodScriptFile.exists()){
+			log.error("Cannot find script files!");
+			return null;
+		}
+
 		try {
 			return scriptService.parseFile(modifierMethodScriptFile);
 		}

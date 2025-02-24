@@ -6,6 +6,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.player.SpecialDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PlayerMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
+@Tag(name = "Loadout Player API", description = "A group of APIs for players")
 public class PlayerController
 {
 	private final LoadoutManager loadoutManager;
@@ -34,6 +37,7 @@ public class PlayerController
 		this.playerMapper = playerMapper;
 	}
 
+	@Operation(summary = "Changes a single special attribute.", description = "Changes a single special attribute to the provided value in a loadout with the matching loadout ID.")
 	@PostMapping("/changeSpecial")
 	public ResponseEntity<String> changeSpecial(@RequestParam int loadoutID, String special, int value) throws IOException
 	{
@@ -45,6 +49,7 @@ public class PlayerController
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find loadout of ID " + loadoutID);
 	}
 
+	@Operation(summary = "Changes all special attributes.", description = "Changes all special attributes in a loadout with the matching loadout ID.")
 	@PostMapping("/changeSpecials")
 	public ResponseEntity<String> changeSpecials(@RequestParam int loadoutID, @RequestBody SpecialDTO specials) throws IOException
 	{

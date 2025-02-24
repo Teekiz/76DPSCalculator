@@ -13,9 +13,9 @@ public class SecurityConfig
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			//controls CSRF protection
-			.csrf(AbstractHttpConfigurer::disable // Disable CSRF if you don’t need it; keep it enabled for stateful applications
+			.csrf(AbstractHttpConfigurer::disable
 			)
-			// Configure authorization rules
+			// configure authorization rules
 			.authorizeHttpRequests(authorize -> authorize
 				.anyRequest().permitAll()
 			)

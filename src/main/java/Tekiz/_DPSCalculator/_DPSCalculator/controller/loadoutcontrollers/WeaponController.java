@@ -9,6 +9,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
+@Tag(name = "Loadout Weapon API", description = "A group of APIs for weapons")
 public class WeaponController
 {
 	private final LoadoutManager loadoutManager;
@@ -42,6 +45,7 @@ public class WeaponController
 		this.weaponLoaderService = weaponLoaderService;
 	}
 
+	@Operation(summary = "Get the weapon in the loadout.", description = "Retrieves the weapon in the loadout matching the ID.")
 	@GetMapping("/getWeapon")
 	public ResponseEntity<WeaponDetailsDTO> getWeapon(@RequestParam int loadoutID) throws IOException
 	{
@@ -53,6 +57,7 @@ public class WeaponController
 		}
 		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
+	@Operation(summary = "Set the weapon in the loadout.", description = "Set the weapon based on the weapon ID in the loadout matching the ID.")
 	@PostMapping("/setWeapon")
 	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException
 	{
@@ -60,11 +65,13 @@ public class WeaponController
 		weaponManager.setWeapon(weaponID, loadout);
 		return ResponseEntity.ok("Weapon has been updated.");
 	}
+	@Operation(summary = "Gets all available weapons names", description = "Retrieves a list of all weapon names that are available.")
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
 		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.loadAllData("Weapon", Weapon.class, weaponFactory)));
 	}
+	@Operation(summary = "Get all the details of a weapon", description = "Retrieves the weapon details of a weapon matching the weapon ID.")
 	@GetMapping("/getWeaponDetails")
 	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponID) throws IOException
 	{

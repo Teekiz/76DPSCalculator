@@ -4,6 +4,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.LoadoutMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
+@Tag(name = "Loadout API", description = "A group of APIs for loadouts")
 public class LoadoutController
 {
 	private final LoadoutManager loadoutManager;
@@ -30,6 +33,7 @@ public class LoadoutController
 		this.loadoutMapper = loadoutMapper;
 	}
 
+	@Operation(summary = "Gets a loadout", description = "Retrieves a loadout based on the loadoutID")
 	@GetMapping("/getLoadout")
 	public ResponseEntity<LoadoutDTO> getLoadout(@RequestParam int loadoutID) throws IOException
 	{
@@ -43,6 +47,7 @@ public class LoadoutController
 		return ResponseEntity.ok(loadoutMapper.convertLoadoutToLoadoutDTO(loadout));
 	}
 
+	@Operation(summary = "Gets all loadouts.", description = "Retrieves all loadout based on the session ID")
 	@GetMapping("/getLoadouts")
 	public ResponseEntity<List<LoadoutDTO>> getLoadouts() throws IOException
 	{

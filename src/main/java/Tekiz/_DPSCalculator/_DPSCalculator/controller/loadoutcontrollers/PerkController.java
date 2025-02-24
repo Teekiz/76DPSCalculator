@@ -7,6 +7,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PerkMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
+@Tag(name = "Loadout Perk API", description = "A group of APIs for perks")
 public class PerkController
 {
 	private final LoadoutManager loadoutManager;
@@ -39,6 +42,7 @@ public class PerkController
 		this.perkLoaderService = perkLoaderService;
 	}
 
+	@Operation(summary = "Get perks in loadout.", description = "Retrieves all perks within a loadout provided by the loadoutID")
 	@GetMapping("/getPerks")
 	public ResponseEntity<List<PerkDTO>> getPerks(@RequestParam int loadoutID) throws IOException
 	{
@@ -51,6 +55,7 @@ public class PerkController
 	}
 
 	//todo - handle exceptions and if perk cannot be found
+	@Operation(summary = "Add a perk to a loadout.", description = "Adds a perk to the provided loadoutID using the perk ID")
 	@PostMapping("/addPerk")
 	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
 	{
@@ -60,6 +65,7 @@ public class PerkController
 		return ResponseEntity.ok(perkID + " has been added to your loadout.");
 	}
 
+	@Operation(summary = "Removes a perk from a loadout.", description = "Removes a perk from the provided loadoutID using the perk ID")
 	@PostMapping("/removePerk")
 	public ResponseEntity<String> removePerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
 	{
@@ -68,12 +74,14 @@ public class PerkController
 		return ResponseEntity.ok(perkID + " has been removed from your loadout.");
 	}
 
+	@Operation(summary = "Gets all available perks.", description = "Retrieves a list of all available perks.")
 	@GetMapping("/getAvailablePerks")
 	public ResponseEntity<List<PerkDTO>> getAvailablePerks() throws IOException
 	{
 		return ResponseEntity.ok(perkMapper.convertAllToDTO(perkLoaderService.loadAllData("perks", Perk.class, null)));
 	}
 
+	@Operation(summary = "Changes a perk cards rank", description = "Modifies a perk card based on the perk id to the new perk rank in the loadout provided by the loadout id.")
 	@PostMapping("/changePerkRank")
 	public ResponseEntity<String> changePerkRank(@RequestParam int loadoutID, @RequestParam String perkID, @RequestParam int perkRank) throws IOException
 	{

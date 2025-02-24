@@ -42,7 +42,7 @@ public class UtilConfig
 	private String storagePathProperties;
 
 	@Bean
-	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties ,
+	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties,
 		storagePathProperties, false);}
 
 	@Bean

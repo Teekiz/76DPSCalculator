@@ -7,6 +7,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.MutationMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
+@Tag(name = "Loadout Mutation API", description = "A group of APIs for mutations")
 public class MutationController
 {
 	private final LoadoutManager loadoutManager;
@@ -40,6 +43,7 @@ public class MutationController
 		this.loadoutManager = loadoutManager;
 	}
 
+	@Operation(summary = "Get mutation in loadout.", description = "Retrieves all mutations within a loadout provided by the loadoutID")
 	@GetMapping("/getMutations")
 	public ResponseEntity<List<MutationDTO>> getMutations(@RequestParam int loadoutID) throws IOException
 	{
@@ -51,6 +55,7 @@ public class MutationController
 		return ResponseEntity.ok(mutationMapper.convertAllToDTO(loadout.getMutations()));
 	}
 
+	@Operation(summary = "Add a mutation to a loadout.", description = "Adds a mutation to the provided loadoutID using the consumable ID")
 	@PostMapping("/addMutation")
 	public ResponseEntity<String> addMutation(@RequestParam int loadoutID, @RequestParam String mutationID) throws IOException
 	{
@@ -60,6 +65,7 @@ public class MutationController
 		return ResponseEntity.ok(mutationID + " has been added to your loadout.");
 	}
 
+	@Operation(summary = "Removes a mutation from a loadout.", description = "Removes a mutation from the provided loadoutID using the mutation ID")
 	@PostMapping("/removeMutation")
 	public ResponseEntity<String> removeMutation(@RequestParam int loadoutID, @RequestParam String mutationID) throws IOException
 	{
@@ -68,6 +74,7 @@ public class MutationController
 		return ResponseEntity.ok(mutationID + " has been removed from your loadout.");
 	}
 
+	@Operation(summary = "Gets all available mutations.", description = "Retrieves a list of all available mutations.")
 	@GetMapping("/getAvailableMutations")
 	public ResponseEntity<List<MutationDTO>> getAvailableMutations() throws IOException
 	{

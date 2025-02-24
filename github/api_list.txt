@@ -1,0 +1,1043 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Loadout Consumable API",
+      "description": "A group of APIs for consumables"
+    },
+    {
+      "name": "Loadout Perk API",
+      "description": "A group of APIs for perks"
+    },
+    {
+      "name": "Loadout Weapon API",
+      "description": "A group of APIs for weapons"
+    },
+    {
+      "name": "Loadout API",
+      "description": "A group of APIs for loadouts"
+    },
+    {
+      "name": "Loadout Player API",
+      "description": "A group of APIs for players"
+    },
+    {
+      "name": "Loadout Mutation API",
+      "description": "A group of APIs for mutations"
+    }
+  ],
+  "paths": {
+    "/api/loadouts/setWeapon": {
+      "post": {
+        "tags": [
+          "Loadout Weapon API"
+        ],
+        "summary": "Set the weapon in the loadout.",
+        "description": "Set the weapon based on the weapon ID in the loadout matching the ID.",
+        "operationId": "setWeapon",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weaponID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/removePerk": {
+      "post": {
+        "tags": [
+          "Loadout Perk API"
+        ],
+        "summary": "Removes a perk from a loadout.",
+        "description": "Removes a perk from the provided loadoutID using the perk ID",
+        "operationId": "removePerk",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perkID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/removeMutation": {
+      "post": {
+        "tags": [
+          "Loadout Mutation API"
+        ],
+        "summary": "Removes a mutation from a loadout.",
+        "description": "Removes a mutation from the provided loadoutID using the mutation ID",
+        "operationId": "removeMutation",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "mutationID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/removeConsumable": {
+      "post": {
+        "tags": [
+          "Loadout Consumable API"
+        ],
+        "summary": "Removes a consumable from a loadout.",
+        "description": "Removes a consumable from the provided loadoutID using the consumable ID",
+        "operationId": "removeConsumable",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "consumableID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/changeSpecials": {
+      "post": {
+        "tags": [
+          "Loadout Player API"
+        ],
+        "summary": "Changes all special attributes.",
+        "description": "Changes all special attributes in a loadout with the matching loadout ID.",
+        "operationId": "changeSpecials",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/changeSpecial": {
+      "post": {
+        "tags": [
+          "Loadout Player API"
+        ],
+        "summary": "Changes a single special attribute.",
+        "description": "Changes a single special attribute to the provided value in a loadout with the matching loadout ID.",
+        "operationId": "changeSpecial",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "special",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/changePerkRank": {
+      "post": {
+        "tags": [
+          "Loadout Perk API"
+        ],
+        "summary": "Changes a perk cards rank",
+        "description": "Modifies a perk card based on the perk id to the new perk rank in the loadout provided by the loadout id.",
+        "operationId": "changePerkRank",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perkID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "perkRank",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/addPerk": {
+      "post": {
+        "tags": [
+          "Loadout Perk API"
+        ],
+        "summary": "Add a perk to a loadout.",
+        "description": "Adds a perk to the provided loadoutID using the perk ID",
+        "operationId": "addPerk",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perkID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/addMutation": {
+      "post": {
+        "tags": [
+          "Loadout Mutation API"
+        ],
+        "summary": "Add a mutation to a loadout.",
+        "description": "Adds a mutation to the provided loadoutID using the consumable ID",
+        "operationId": "addMutation",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "mutationID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/addConsumable": {
+      "post": {
+        "tags": [
+          "Loadout Consumable API"
+        ],
+        "summary": "Add a consumable to a loadout.",
+        "description": "Adds a consumable to the provided loadoutID using the consumable ID",
+        "operationId": "addConsumable",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "consumableID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/services/getLoadoutDPS": {
+      "get": {
+        "tags": [
+          "damage-calculation-controller"
+        ],
+        "operationId": "getLoadoutDPS",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/services/getAllLoadoutsDPS": {
+      "get": {
+        "tags": [
+          "damage-calculation-controller"
+        ],
+        "operationId": "getAllLoadoutsDPS",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getWeapon": {
+      "get": {
+        "tags": [
+          "Loadout Weapon API"
+        ],
+        "summary": "Get the weapon in the loadout.",
+        "description": "Retrieves the weapon in the loadout matching the ID.",
+        "operationId": "getWeapon",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeaponDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getWeaponDetails": {
+      "get": {
+        "tags": [
+          "Loadout Weapon API"
+        ],
+        "summary": "Get all the details of a weapon",
+        "description": "Retrieves the weapon details of a weapon matching the weapon ID.",
+        "operationId": "getWeaponDetails",
+        "parameters": [
+          {
+            "name": "weaponID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeaponDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getPerks": {
+      "get": {
+        "tags": [
+          "Loadout Perk API"
+        ],
+        "summary": "Get perks in loadout.",
+        "description": "Retrieves all perks within a loadout provided by the loadoutID",
+        "operationId": "getPerks",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PerkDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getMutations": {
+      "get": {
+        "tags": [
+          "Loadout Mutation API"
+        ],
+        "summary": "Get mutation in loadout.",
+        "description": "Retrieves all mutations within a loadout provided by the loadoutID",
+        "operationId": "getMutations",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MutationDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getLoadouts": {
+      "get": {
+        "tags": [
+          "Loadout API"
+        ],
+        "summary": "Gets all loadouts.",
+        "description": "Retrieves all loadout based on the session ID",
+        "operationId": "getLoadouts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LoadoutDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getLoadout": {
+      "get": {
+        "tags": [
+          "Loadout API"
+        ],
+        "summary": "Gets a loadout",
+        "description": "Retrieves a loadout based on the loadoutID",
+        "operationId": "getLoadout",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadoutDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getConsumables": {
+      "get": {
+        "tags": [
+          "Loadout Consumable API"
+        ],
+        "summary": "Get consumables in loadout.",
+        "description": "Retrieves all consumables within a loadout provided by the loadoutID",
+        "operationId": "getConsumables",
+        "parameters": [
+          {
+            "name": "loadoutID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsumableDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getAvailableWeapons": {
+      "get": {
+        "tags": [
+          "Loadout Weapon API"
+        ],
+        "summary": "Gets all available weapons names",
+        "description": "Retrieves a list of all weapon names that are available.",
+        "operationId": "getAvailableWeapons",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeaponNameDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getAvailablePerks": {
+      "get": {
+        "tags": [
+          "Loadout Perk API"
+        ],
+        "summary": "Gets all available perks.",
+        "description": "Retrieves a list of all available perks.",
+        "operationId": "getAvailablePerks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PerkDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getAvailableMutations": {
+      "get": {
+        "tags": [
+          "Loadout Mutation API"
+        ],
+        "summary": "Gets all available mutations.",
+        "description": "Retrieves a list of all available mutations.",
+        "operationId": "getAvailableMutations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MutationDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loadouts/getAvailableConsumables": {
+      "get": {
+        "tags": [
+          "Loadout Consumable API"
+        ],
+        "summary": "Gets all available consumables.",
+        "description": "Retrieves a list of all available consumables.",
+        "operationId": "getAvailableConsumables",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsumableDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SpecialDTO": {
+        "type": "object",
+        "properties": {
+          "strength": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "perception": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endurance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "charisma": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "intelligence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "agility": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "luck": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "WeaponDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "weaponID": {
+            "type": "string"
+          },
+          "weaponName": {
+            "type": "string"
+          },
+          "weaponType": {
+            "type": "string"
+          },
+          "damageType": {
+            "type": "string"
+          },
+          "weaponDamageByLevel": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "apCost": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PerkDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "special": {
+            "type": "string"
+          },
+          "currentRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "baseCost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "MutationDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsumableDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "consumableType": {
+            "type": "string"
+          },
+          "addictionType": {
+            "type": "string"
+          }
+        }
+      },
+      "LoadoutDTO": {
+        "type": "object",
+        "properties": {
+          "loadoutID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weapon": {
+            "$ref": "#/components/schemas/WeaponDetailsDTO"
+          },
+          "perks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PerkDTO"
+            }
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerDTO"
+          },
+          "consumables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsumableDTO"
+            }
+          },
+          "mutations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MutationDTO"
+            }
+          }
+        }
+      },
+      "PlayerDTO": {
+        "type": "object",
+        "properties": {
+          "maxHP": {
+            "type": "number",
+            "format": "double"
+          },
+          "currentHP": {
+            "type": "number",
+            "format": "double"
+          },
+          "specials": {
+            "$ref": "#/components/schemas/SpecialDTO"
+          }
+        }
+      },
+      "WeaponNameDTO": {
+        "type": "object",
+        "properties": {
+          "weaponID": {
+            "type": "string"
+          },
+          "weaponName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

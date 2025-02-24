@@ -6,8 +6,7 @@ plugins {
 }
 
 group = 'Tekiz.76DPSCalculator'
-version = '0.0.1-SNAPSHOT'
-
+version = '0.0.1'
 
 
 java {
@@ -42,8 +41,9 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.4.12'
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.3.4'
     implementation files('C:/Program Files (x86)/Groovy/lib/groovy-5.0.0-alpha-9.jar')
-
     implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names', version: '2.18.0'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'
