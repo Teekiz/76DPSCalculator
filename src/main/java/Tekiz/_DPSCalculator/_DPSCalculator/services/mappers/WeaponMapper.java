@@ -49,8 +49,8 @@ public class WeaponMapper
 	{
 		if (weapon==null){return null;}
 		return WeaponDetailsDTO.builder()
-			.weaponID(weapon.getId())
-			.weaponName(weapon.getName())
+			.id(weapon.getId())
+			.name(weapon.getName())
 			.weaponType(weapon.getWeaponType().toString())
 			.damageType(weapon.getDamageType().toString())
 			.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
@@ -67,8 +67,8 @@ public class WeaponMapper
 	{
 		if (weapon instanceof RangedWeapon) {
 			return RangedWeaponDTO.builder()
-				.weaponID(weapon.getId())
-				.weaponName(weapon.getName())
+				.id(weapon.getId())
+				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
 				.damageType(weapon.getDamageType().toString())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
@@ -80,8 +80,8 @@ public class WeaponMapper
 				.build();
 		} else if (weapon instanceof MeleeWeapon) {
 			return MeleeWeaponDTO.builder()
-				.weaponID(weapon.getId())
-				.weaponName(weapon.getName())
+				.id(weapon.getId())
+				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
 				.damageType(weapon.getDamageType().toString())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())

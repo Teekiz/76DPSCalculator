@@ -11,6 +11,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -58,8 +59,8 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 			JavaType consumableHashMapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, Consumable.class, Boolean.class);
 			HashMap<Consumable, Boolean> consumables = objectMapper.treeToValue(loadoutNode.get("consumables"), consumableHashMapType);
 
-			Set<Armour> armour = objectMapper.treeToValue(loadoutNode.get("armour"), Set.class);
-			Set<Mutation> mutations = objectMapper.treeToValue(loadoutNode.get("mutations"), Set.class);
+			Set<Armour> armour = objectMapper.convertValue(loadoutNode.get("armour"), new TypeReference<Set<Armour>>() {});
+			Set<Mutation> mutations = objectMapper.convertValue(loadoutNode.get("mutations"), new TypeReference<Set<Mutation>>() {});
 
 			Loadout loadout = loadoutFactory.createNewLoadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
 

@@ -34,6 +34,7 @@ public class MutationMapper
 	public List<MutationDTO> convertAllToDTO(Set<Mutation> mutations)
 	{
 		return mutations.stream()
+			.filter(mutation -> mutation instanceof Mutation)  // Ensure each object is a Mutation
 			.map(this::convertToDTO)
 			.collect(Collectors.toList());
 	}

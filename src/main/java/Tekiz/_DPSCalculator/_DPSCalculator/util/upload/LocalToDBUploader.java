@@ -68,7 +68,6 @@ public class LocalToDBUploader
 			consumableRepository.saveAll(dataLoaderService.loadAllData("consumables", Consumable.class, null));
 			perkRepository.saveAll(dataLoaderService.loadAllData("perks", Perk.class, null));
 			mutationRepository.saveAll( dataLoaderService.loadAllData("mutations", Mutation.class, null));
-
 			weaponRepository.saveAll(dataLoaderService.loadAllData("weapons", Weapon.class, weaponFactory));
 
 		} catch (Exception e)

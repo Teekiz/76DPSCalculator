@@ -38,11 +38,12 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 
 		try
 		{
+			DataLoaderService loaderService = (DataLoaderService) context.findInjectableValue(DataLoaderService.class.getName(), null, null);
+
 			if (receiverNode.isTextual())
 			{
 				String receiverIdentifier = receiverNode.asText();
 				log.debug("Deserializing receiver: '{}'", receiverIdentifier);
-				DataLoaderService loaderService = (DataLoaderService) context.findInjectableValue(DataLoaderService.class.getName(), null, null);
 				Receiver receiver = loaderService.loadData(receiverIdentifier, Receiver.class, null);
 				//if the identifier is the name, not an ID, then try to load it using the file name
 				if (receiver == null) {
@@ -52,8 +53,15 @@ public class ReceiverDeserializer extends JsonDeserializer<Receiver>
 			}
 			else if (receiverNode.isObject())
 			{
-				log.debug("Deserializing receiver and creating object: '{}'", receiverNode.get("name").asText());
-				return jsonParser.getCodec().treeToValue(receiverNode, Receiver.class);
+				//needs to be retrieved from a database
+				if (!receiverNode.get("collectionName").isNull()){
+					String id = receiverNode.get("id").asText();
+					return loaderService.loadData(id, Receiver.class, null);
+				} else {
+					log.debug("Deserializing receiver and creating object: '{}'", receiverNode.get("name").asText());
+					return jsonParser.getCodec().treeToValue(receiverNode, Receiver.class);
+				}
+
 			}
 			else
 			{

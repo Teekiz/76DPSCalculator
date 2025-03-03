@@ -23,7 +23,7 @@ public class ArmourModLoaderServiceTest extends BaseTestClass
 		String materialMod = "BOILEDLEATHERCHEST";
 		Material material = dataLoaderService.loadDataByName(materialMod, Material.class, null);
 		assertNotNull(material);
-		assertEquals("Boiled leather", material.getModName());
+		assertEquals("Boiled leather", material.getName());
 
 		String armourPiece = "WOODCHEST";
 		Armour armour = dataLoaderService.loadDataByName(armourPiece, Armour.class, null);

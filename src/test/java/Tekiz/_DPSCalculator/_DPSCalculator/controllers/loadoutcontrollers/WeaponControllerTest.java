@@ -73,8 +73,8 @@ public class WeaponControllerTest
 			.build();
 
 		WeaponDetailsDTO weaponDetailsDTO = WeaponDetailsDTO.builder()
-			.weaponID("WEAPONTEST1")
-			.weaponName("TEST1")
+			.id("WEAPONTEST1")
+			.name("TEST1")
 			.weaponType("PISTOL")
 			.build();
 
@@ -92,8 +92,8 @@ public class WeaponControllerTest
 			.andReturn().getResponse();
 
 		String expectedJson = "{"
-			+ "\"weaponID\":\"WEAPONTEST1\","
-			+ "\"weaponName\":\"TEST1\","
+			+ "\"id\":\"WEAPONTEST1\","
+			+ "\"name\":\"TEST1\","
 			+ "\"weaponType\":\"PISTOL\","
 			+ "\"damageType\":null,"
 			+ "\"weaponDamageByLevel\":null,"
@@ -160,8 +160,8 @@ public class WeaponControllerTest
 			.build();
 
 		WeaponDetailsDTO weaponDetailsDTO = WeaponDetailsDTO.builder()
-			.weaponID("WEAPONTEST1")
-			.weaponName("TEST1")
+			.id("WEAPONTEST1")
+			.name("TEST1")
 			.weaponType("PISTOL")
 			.build();
 
@@ -177,8 +177,8 @@ public class WeaponControllerTest
 			.andReturn().getResponse();
 
 		String expectedJson = "{"
-			+ "\"weaponID\":\"WEAPONTEST1\","
-			+ "\"weaponName\":\"TEST1\","
+			+ "\"id\":\"WEAPONTEST1\","
+			+ "\"name\":\"TEST1\","
 			+ "\"weaponType\":\"PISTOL\","
 			+ "\"damageType\":null,"
 			+ "\"weaponDamageByLevel\":null,"
@@ -246,10 +246,10 @@ public class WeaponControllerTest
 			.andReturn().getResponse();
 
 		String expectedJson = "["
-			+ "{\"weaponID\":\"TESTWEAPON1\","
-			+ "\"weaponName\":\"TESTWEAPONONE\"},"
-			+ "{\"weaponID\":\"TESTWEAPON2\","
-			+ "\"weaponName\":\"TESTWEAPONOTWO\"}]";
+			+ "{\"id\":\"TESTWEAPON1\","
+			+ "\"name\":\"TESTWEAPONONE\"},"
+			+ "{\"id\":\"TESTWEAPON2\","
+			+ "\"name\":\"TESTWEAPONOTWO\"}]";
 
 		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
 

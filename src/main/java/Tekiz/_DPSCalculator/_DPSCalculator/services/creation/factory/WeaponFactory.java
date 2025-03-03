@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class WeaponFactory implements Factory<Weapon>
 	//todo - could introduce null object pattern. Create a weapon which has no stats.
 	//todo - consider switching around, so that the factory calls the loader
 	private final ObjectMapper objectMapper;
+	private final DataLoaderService dataLoaderService;
 
 	/**
 	 * The constructor for a {@link WeaponFactory} object.
@@ -30,9 +32,10 @@ public class WeaponFactory implements Factory<Weapon>
 	 */
 	@Lazy
 	@Autowired
-	public WeaponFactory(ObjectMapper objectMapper)
+	public WeaponFactory(ObjectMapper objectMapper, DataLoaderService dataLoaderService)
 	{
 		this.objectMapper = objectMapper;
+		this.dataLoaderService = dataLoaderService;
 	}
 
 	@Override
@@ -101,6 +104,8 @@ public class WeaponFactory implements Factory<Weapon>
 		{
 			return null;
 		}
+
+		document.remove("_class");
 
 		JsonNode jsonNode = objectMapper.valueToTree(document);
 		return createFromJsonNode(jsonNode);

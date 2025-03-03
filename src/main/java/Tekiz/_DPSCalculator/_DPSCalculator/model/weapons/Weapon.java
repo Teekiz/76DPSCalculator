@@ -6,7 +6,6 @@ import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @SuperBuilder(toBuilder = true)
 @Document(collection = "weapon")
 @RepositoryObject(repository = WeaponRepository.class)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount

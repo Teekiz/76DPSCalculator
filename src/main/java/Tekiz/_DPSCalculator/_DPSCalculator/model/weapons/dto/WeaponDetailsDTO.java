@@ -13,8 +13,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class WeaponDetailsDTO
 {
-	private String weaponID;
-	private String weaponName;
+	private String id;
+	private String name;
 	private String weaponType;
 	private String damageType;
 	private HashMap<Integer, Double> weaponDamageByLevel;
