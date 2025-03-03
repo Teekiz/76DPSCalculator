@@ -4,11 +4,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter.*;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersAdapter.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
+import org.springframework.data.convert.ValueConverter;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -28,6 +30,10 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
 public record MutationEffects(@JsonProperty("modifierSource") ModifierSource modifierSource,
-								 @JsonProperty("conditionString") Expression condition,
-								 @JsonProperty("effects") @JsonDeserialize(using = ModifiersDeserializer.class)
-							  	 HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier {}
+							  @ValueConverter(value = ExpressionConverter.class)
+							  @JsonProperty("conditionString") Expression condition,
+							  @JsonProperty("effects")
+							  @JsonSerialize(using = ModifiersSerializer.class)
+							  @JsonDeserialize(using = ModifiersDeserializer.class)
+							  @ValueConverter(value = ModifiersConverter.class)
+							  HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier {}

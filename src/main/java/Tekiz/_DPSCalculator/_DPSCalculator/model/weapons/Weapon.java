@@ -2,30 +2,39 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
-import com.fasterxml.jackson.annotation.JacksonInject;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
 import lombok.Getter;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Represents a generic weapon that the user can add to their loadout.
  */
 @Getter
 @SuperBuilder(toBuilder = true)
+@Document(collection = "weapon")
+@RepositoryObject(repository = WeaponRepository.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Weapon implements Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
 	/** The id of the weapon. Used if mapped to a database. */
-	@JsonProperty("id")
-	protected final String weaponID;
+	@Id
+	@JsonProperty("id") @JsonAlias("_id")
+	protected final String id;
 
 	/** The name of the weapon. The user will be able to see the given value. */
-	@JsonProperty("weaponName")
-	protected final String weaponName;
+	@JsonProperty("name")
+	protected final String name;
 
 	/** The type of weapon. This is used for various {@link Modifier} conditions. */
 	@JsonProperty("weaponType")

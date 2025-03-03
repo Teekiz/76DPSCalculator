@@ -11,6 +11,7 @@ import lombok.Value;
 import lombok.experimental.NonFinal;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * Represents a generic ranged weapon that the user can add to their loadout.
@@ -51,6 +52,7 @@ public class RangedWeapon extends Weapon
 
 	/** The receiver the weapon uses. */
 	@NonFinal
+	@DBRef
 	@JsonDeserialize(using = ReceiverDeserializer.class)
 	@JsonProperty("receiver")
 	Receiver receiver;

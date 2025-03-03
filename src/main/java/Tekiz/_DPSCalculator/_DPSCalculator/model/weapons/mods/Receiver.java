@@ -2,8 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.ReceiverRepository;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Represents a receiver modification for a ranged weapon.
@@ -18,7 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param ammoOverrideType			Used if the receiver changes the ammunition the weapon uses.
  */
 //todo - change receivertype and ammo override type
-public record Receiver(@JsonProperty("id") String id,
+@Document(collection = "receiver")
+@RepositoryObject(repository = ReceiverRepository.class)
+public record Receiver(@Id
+					   @JsonProperty("id") @JsonAlias("_id") String id,
 					   @JsonProperty("name") String name,
 					   @JsonProperty("receiverType") ReceiverType receiverType,
 					   @JsonProperty("damageChange") double damageChange,

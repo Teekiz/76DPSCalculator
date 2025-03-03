@@ -22,8 +22,8 @@ public class WeaponModelTest extends BaseTestClass
 		damageMap.put(15, 40.0);
 
 		Weapon weapon = RangedWeapon.builder()
-			.weaponID("TEST")
-			.weaponName("TEST")
+			.id("TEST")
+			.name("TEST")
 			.weaponType(WeaponType.PISTOL)
 			.weaponDamageByLevel(damageMap)
 			.build();

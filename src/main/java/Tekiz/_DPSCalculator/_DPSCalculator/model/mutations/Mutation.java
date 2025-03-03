@@ -2,10 +2,15 @@ package Tekiz._DPSCalculator._DPSCalculator.model.mutations;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.MutationRepository;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Represents a mutation that a player character might have.
@@ -16,18 +21,22 @@ import java.util.Objects;
  * @param positiveEffects Stores the positive effects a mutation has.
  * @param negativeEffects Stores the negative effects a mutation has.
  */
-public record Mutation(@JsonProperty("id") String id,
+@Document(collection = "mutation")
+@RepositoryObject(repository = MutationRepository.class)
+public record Mutation(@Id
+					   @JsonProperty("id") @JsonAlias("_id") String id,
 					   @JsonProperty("name") String name,
 					   @JsonProperty("description") String description,
-					   @JsonProperty("positiveEffects") MutationEffects positiveEffects,
-					   @JsonProperty("negativeEffects") MutationEffects negativeEffects) implements Keyable
+					   @JsonProperty("positiveEffects")
+					   MutationEffects positiveEffects,
+					   @JsonProperty("negativeEffects")
+					   MutationEffects negativeEffects) implements Keyable
 {
 	/**
 	 * A method that aggregates and returns all positive and negative {@link Mutation} {@link Modifier}s.
 	 *
 	 * @return A {@link HashMap} of {@link Modifier}s and condition values.
 	 */
-	//todo - something is causing this to break when the name is changed (getMutationModifiers)
 	@JsonIgnore
 	public HashMap<Modifier, Boolean> aggregateMutationEffects()
 	{

@@ -6,13 +6,20 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.ConsumableRepository;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter.*;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersAdapter.*;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.convert.ValueConverter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -36,14 +43,21 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  *                       If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Consumable(@JsonProperty("id") String id,
-							@JsonProperty("name") String name,
-							@JsonProperty("consumableType") ConsumableType consumableType,
-							@JsonProperty("addictionType") AddictionType addictionType,
-							@JsonProperty("modifierSource") ModifierSource modifierSource,
-							@JsonProperty("conditionString") Expression condition,
-							@JsonProperty("effects") @JsonDeserialize(using = ModifiersDeserializer.class)
-						 	HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier, Keyable
+@Document(collection = "consumable")
+@RepositoryObject(repository = ConsumableRepository.class)
+public record Consumable(@Id
+						 @JsonProperty("id") @JsonAlias("_id") String id,
+						 @JsonProperty("name") String name,
+						 @JsonProperty("consumableType") ConsumableType consumableType,
+						 @JsonProperty("addictionType") AddictionType addictionType,
+						 @JsonProperty("modifierSource") ModifierSource modifierSource,
+						 @ValueConverter(value = ExpressionConverter.class)
+						 @JsonProperty("conditionString") Expression condition,
+						 @JsonProperty("effects")
+						 @JsonSerialize(contentUsing = ModifiersSerializer.class)
+						 @JsonDeserialize(using = ModifiersDeserializer.class)
+						 @ValueConverter(value = ModifiersConverter.class)
+						 HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier, Keyable
 {
 	@Override
 	public boolean equals(Object object)

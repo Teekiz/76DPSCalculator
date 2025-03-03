@@ -46,7 +46,7 @@ public class TestRedisSerialization extends BaseTestClass
 		assertNotNull(newLoadout);
 
 		assertNotNull(newLoadout.getWeapon());
-		assertEquals("Test 10mm pistol", newLoadout.getWeapon().getWeaponName());
+		assertEquals("Test 10mm pistol", newLoadout.getWeapon().getName());
 
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

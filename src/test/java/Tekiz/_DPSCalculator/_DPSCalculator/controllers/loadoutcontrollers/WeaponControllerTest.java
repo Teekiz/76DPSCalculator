@@ -66,8 +66,8 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - getWeapon_WithValidID in WeaponControllerTest.", System.lineSeparator());
 		Weapon weapon = RangedWeapon.builder()
-			.weaponID("TESTWEAPON1")
-			.weaponName("TESTWEAPON")
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
 			.weaponType(WeaponType.PISTOL)
 			.fireRate(10)
 			.build();
@@ -153,8 +153,8 @@ public class WeaponControllerTest
 		log.debug("{}Running test - getWeaponDetails_WithValidWeaponID in WeaponControllerTest.", System.lineSeparator());
 
 		Weapon weapon = RangedWeapon.builder()
-			.weaponID("TESTWEAPON1")
-			.weaponName("TESTWEAPON")
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
 			.weaponType(WeaponType.PISTOL)
 			.fireRate(10)
 			.build();
@@ -212,15 +212,15 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - getAvailableWeapons in WeaponControllerTest.", System.lineSeparator());
 		Weapon weaponOne = RangedWeapon.builder()
-			.weaponID("TESTWEAPON1")
-			.weaponName("TESTWEAPONONE")
+			.id("TESTWEAPON1")
+			.name("TESTWEAPONONE")
 			.weaponType(WeaponType.PISTOL)
 			.fireRate(20)
 			.build();
 
 		Weapon weaponTwo = RangedWeapon.builder()
-			.weaponID("TESTWEAPON2")
-			.weaponName("TESTWEAPONTWO")
+			.id("TESTWEAPON2")
+			.name("TESTWEAPONTWO")
 			.weaponType(WeaponType.RIFLE)
 			.fireRate(10)
 			.build();

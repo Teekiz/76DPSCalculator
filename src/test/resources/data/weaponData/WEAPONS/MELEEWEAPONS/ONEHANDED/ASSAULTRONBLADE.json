@@ -1,5 +1,5 @@
 {
-    "weaponName" : "Assaultron blade",
+    "name" : "Assaultron blade",
     "weaponType" : "ONEHANDED",
     "damageType" : "PHYSICAL",
     "weaponDamageByLevel" :

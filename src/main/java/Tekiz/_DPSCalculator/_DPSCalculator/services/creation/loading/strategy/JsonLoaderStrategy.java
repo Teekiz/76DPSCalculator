@@ -25,7 +25,7 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 	//need to be able to assign ID
 	//todo - currently it won't use the ids assignable from the jsonIDMapper - need to fix this
 	@Override
-	public <T, A> T getData(String id, Class<T> classType, Factory<T, A> factory) throws IOException, ClassCastException
+	public <T> T getData(String id, Class<T> classType, Factory<T> factory) throws IOException, ClassCastException
 	{
 		File jsonFile = jsonIDMapper.getFileFromID(id);
 		if (jsonFile == null) return null;
@@ -33,14 +33,14 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 	}
 
 	@Override
-	public <T, A> List<T> getAllData(String prefix, Class<T> classType, Factory<T, A> factory) throws IOException, ClassCastException
+	public <T> List<T> getAllData(String prefix, Class<T> classType, Factory<T> factory) throws IOException, ClassCastException
 	{
 		List<T> resultList = new ArrayList<>();
 		for (Map.Entry<String, File> entry : jsonIDMapper.getFilesFromPrefix(prefix).entrySet()){
 			JsonNode jsonNode = objectMapper.readTree(entry.getValue());
 			((ObjectNode) jsonNode).put("id", entry.getKey());
 			if (factory != null){
-				resultList.add(factory.createObject((A) jsonNode));
+				resultList.add(factory.createObject(jsonNode));
 			} else {
 				resultList.add(objectMapper.treeToValue(jsonNode, classType));
 			}
@@ -49,19 +49,19 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 	}
 
 	@Override
-	public <T, A> T getDataByName(String objectName, Class<T> classType, Factory<T, A> factory) throws IOException
+	public <T> T getDataByName(String objectName, Class<T> classType, Factory<T> factory) throws IOException
 	{
 		Map.Entry<String, File> entry = jsonIDMapper.getFileByName(objectName);
 		if (entry.getValue() == null) return null;
 		return loadObject(entry.getValue(), entry.getKey(), classType, factory);
 	}
 
-	private <T, A> T loadObject(File jsonFile, String id, Class<T> classType, Factory<T, A> factory) throws IOException
+	private <T> T loadObject(File jsonFile, String id, Class<T> classType, Factory<T> factory) throws IOException
 	{
 		JsonNode rootNode = objectMapper.readTree(jsonFile);
 		((ObjectNode) rootNode).put("id", id);
 		if (factory != null){
-			return factory.createObject((A) rootNode);
+			return factory.createObject(rootNode);
 		} else {
 			return objectMapper.treeToValue(rootNode, classType);
 		}

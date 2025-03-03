@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class WeaponFactory implements Factory<Weapon, JsonNode>
+public class WeaponFactory implements Factory<Weapon>
 {
 
 	//todo - could introduce null object pattern. Create a weapon which has no stats.
@@ -34,6 +35,21 @@ public class WeaponFactory implements Factory<Weapon, JsonNode>
 		this.objectMapper = objectMapper;
 	}
 
+	@Override
+	public Weapon createObject(Object weaponObject)
+	{
+		//if more loading methods are required, these can be added.
+		if (weaponObject instanceof JsonNode) {
+			return createFromJsonNode((JsonNode) weaponObject);
+		}
+		else if (weaponObject instanceof Document){
+			return createFromDocument((Document) weaponObject);
+		} else {
+			log.error("Unrecognised object type. Cannot create object.");
+			return null;
+		}
+	}
+
 	/**
 	 * Creates a {@link Weapon} object based on the provided JSON node.
 	 * Depending on the {@code weaponType} field, the method returns a {@link RangedWeapon}
@@ -42,8 +58,7 @@ public class WeaponFactory implements Factory<Weapon, JsonNode>
 	 * @param weaponNode The JSON node containing the weaponNode data.
 	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weaponNode type is not recognized.
 	 */
-	@Override
-	public Weapon createObject(JsonNode weaponNode)
+	private Weapon createFromJsonNode(JsonNode weaponNode)
 	{
 		try
 		{
@@ -73,5 +88,21 @@ public class WeaponFactory implements Factory<Weapon, JsonNode>
 			log.error("Failed to create weaponNode. {}", e.getMessage(), e);
 			return null;
 		}
+	}
+
+	/**
+	 * A method to convert a {@link Document} to a JSON node before passing it to {@code createFromJsonNode}.
+	 * @param document The document to be converted.
+	 * @return A {@link Weapon} object, which could be either a {@link RangedWeapon} or {@link MeleeWeapon}, or {@code null} if the weaponNode type is not recognized.
+	 */
+	private Weapon createFromDocument(Document document)
+	{
+		if (document == null)
+		{
+			return null;
+		}
+
+		JsonNode jsonNode = objectMapper.valueToTree(document);
+		return createFromJsonNode(jsonNode);
 	}
 }

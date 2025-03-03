@@ -5,14 +5,21 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent.*;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.PerkRepository;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter.*;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModifiersAdapter.*;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.convert.ValueConverter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.expression.Expression;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierBoostService;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
@@ -38,15 +45,22 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * 	 						If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
  * 	 						{@link ModifierExpressionService} to determine the appropriate value.
  */
-public record Perk(@JsonProperty("id") String id,
-					  @JsonProperty("name") String name,
-					  @JsonProperty("special") Specials special,
-					  @JsonProperty("rank") PerkRank perkRank,
-					  @JsonProperty("description") String description,
-					  @JsonProperty("modifierSource") ModifierSource modifierSource,
-					  @JsonProperty("conditionString") Expression condition,
-					  @JsonProperty("effects") @JsonDeserialize(contentUsing = ModifiersDeserializer.class)
-				      HashMap<Integer, HashMap<ModifierTypes,  ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
+@Document(collection = "perk")
+@RepositoryObject(repository = PerkRepository.class)
+public record Perk(@Id
+				   @JsonProperty("id") @JsonAlias("_id") String id,
+				   @JsonProperty("name") String name,
+				   @JsonProperty("special") Specials special,
+				   @JsonProperty("rank") PerkRank perkRank,
+				   @JsonProperty("description") String description,
+				   @JsonProperty("modifierSource") ModifierSource modifierSource,
+				   @ValueConverter(value = ExpressionConverter.class)
+				   @JsonProperty("conditionString") Expression condition,
+				   @JsonProperty("effects")
+				   @JsonSerialize(contentUsing = ModifiersSerializer.class)
+				   @JsonDeserialize(contentUsing = ModifiersDeserializer.class)
+				   @ValueConverter(value = PerkModifiersConverter.class)
+				   HashMap<Integer, HashMap<ModifierTypes, ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
 {
 	/**
 	 * Retrieves the effects associated with the current rank of the perk.
@@ -77,7 +91,7 @@ public record Perk(@JsonProperty("id") String id,
 			return false;
 		}
 		Perk perk = (Perk) object;
-		return id == perk.id && Objects.equals(name, perk.name);
+		return Objects.equals(id, perk.id) && Objects.equals(name, perk.name);
 	}
 
 	@Override

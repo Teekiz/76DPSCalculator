@@ -6,6 +6,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourRepository;
+import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,19 +17,24 @@ import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /** Represents an armour piece that may be added to a user's loadout. */
 @Value
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
+@Document(collection = "armour")
+@RepositoryObject(repository = ArmourRepository.class)
 public class Armour implements Serializable
 {
 	/** The id of the armour */
-	@JsonProperty("id")
-	String armourID;
+	@Id
+	@JsonProperty("id") @JsonAlias("_id")
+	String id;
 
 	/** The name of the armour. The user will be able to see the given value. */
-	@JsonProperty("armourName")
-	String armourName;
+	@JsonProperty("name")
+	String name;
 
 	/** The level of the armour that the user will need to meet before it can be worn. The resistances provided by the armour are affected by its level. */
 	@NonFinal

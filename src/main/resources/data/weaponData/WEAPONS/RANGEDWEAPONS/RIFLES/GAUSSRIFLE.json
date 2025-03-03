@@ -1,5 +1,5 @@
 {
-    "weaponName" : "Gauss rifle",
+    "name" : "Gauss rifle",
     "weaponType" : "RIFLE",
     "damageType" : "ENERGY",
     "weaponDamageByLevel" :

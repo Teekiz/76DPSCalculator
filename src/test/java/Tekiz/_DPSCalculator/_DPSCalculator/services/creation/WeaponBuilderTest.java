@@ -23,7 +23,7 @@ public class WeaponBuilderTest extends BaseTestClass
 		weaponDamageMap.put(45, 28.0);
 
 		RangedWeapon pistol = RangedWeapon.builder()
-			.weaponName("10mm Pistol")
+			.name("10mm Pistol")
 			.weaponType(WeaponType.PISTOL)
 			.damageType(DamageType.BALLISTIC)
 			.weaponDamageByLevel(weaponDamageMap)
@@ -32,7 +32,7 @@ public class WeaponBuilderTest extends BaseTestClass
 			.criticalBonus(100)
 			.build();
 		assertNotNull(pistol);
-		assertEquals("10mm Pistol", pistol.getWeaponName());
+		assertEquals("10mm Pistol", pistol.getName());
 		assertEquals(21, pistol.getWeaponDamageByLevel().get(25));
 		assertEquals(20, pistol.getApCost());
 	}
@@ -45,7 +45,7 @@ public class WeaponBuilderTest extends BaseTestClass
 		weaponDamageMap.put(35, 33.0);
 		weaponDamageMap.put(45, 40.0);
 		MeleeWeapon blade = MeleeWeapon.builder()
-			.weaponName("Assaultron blade")
+			.name("Assaultron blade")
 			.weaponType(WeaponType.ONEHANDED)
 			.damageType(DamageType.PHYSICAL)
 			.weaponDamageByLevel(weaponDamageMap)
@@ -55,7 +55,7 @@ public class WeaponBuilderTest extends BaseTestClass
 			.build();
 
 		assertNotNull(blade);
-		assertEquals("Assaultron blade", blade.getWeaponName());
+		assertEquals("Assaultron blade", blade.getName());
 		assertEquals(33, blade.getWeaponDamageByLevel().get(35));
 		assertEquals(35, blade.getApCost());
 	}

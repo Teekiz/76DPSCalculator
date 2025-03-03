@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.controller.servicecontrollers;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
+import Tekiz._DPSCalculator._DPSCalculator.util.upload.LocalToDBUploader;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class DamageCalculationController
 {
 	private final LoadoutManager loadoutManager;
 	private final DamageCalculationService damageCalculationService;
+
 
 	@Autowired
 	public DamageCalculationController(LoadoutManager loadoutManager, DamageCalculationService damageCalculationService)

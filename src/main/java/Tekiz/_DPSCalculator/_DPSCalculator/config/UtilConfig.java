@@ -8,7 +8,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFact
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionComponent;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.LoadoutDeserializer;
 import com.fasterxml.jackson.databind.InjectableValues;
@@ -16,8 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import groovy.lang.GroovyShell;
+import lombok.extern.slf4j.Slf4j;
 import org.jsonidmapper.JsonIDMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -25,6 +27,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+@Slf4j
 @Configuration
 public class UtilConfig
 {
@@ -42,7 +45,9 @@ public class UtilConfig
 	private String storagePathProperties;
 
 	@Bean
-	public JsonIDMapper jsonIDMapper() {return new JsonIDMapper(filePathProperties,
+	@ConditionalOnProperty(name = "object.loader.strategy", havingValue = "json")
+	public JsonIDMapper jsonIDMapper() {
+		return new JsonIDMapper(filePathProperties,
 		storagePathProperties, false);}
 
 	@Bean
@@ -60,8 +65,8 @@ public class UtilConfig
 
 		HashMapKeyComponent.HashMapKeySerializer hashMapKeySerializer = new HashMapKeyComponent.HashMapKeySerializer();
 		HashMapKeyComponent.HashMapKeyDeserializer hashMapKeyDeserializer = new HashMapKeyComponent.HashMapKeyDeserializer();
-		ExpressionComponent.ExpressionSerializer expressionSerializer = new ExpressionComponent.ExpressionSerializer();
-		ExpressionComponent.ExpressionDeserializer expressionDeserializer = new ExpressionComponent.ExpressionDeserializer();
+		ExpressionAdapter.ExpressionSerializer expressionSerializer = new ExpressionAdapter.ExpressionSerializer();
+		ExpressionAdapter.ExpressionDeserializer expressionDeserializer = new ExpressionAdapter.ExpressionDeserializer();
 		LoadoutDeserializer loadoutDeserializer = new LoadoutDeserializer();
 
 		SimpleModule module = new SimpleModule();

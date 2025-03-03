@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ObjectLoaderStrategy {
-	 <T, A> T getData(String id, Class<T> classType, Factory<T, A> factory) throws IOException;
-	<T, A> T getDataByName(String objectName, Class<T> classType, Factory<T, A> factory) throws IOException;
-	 <T, A> List<T> getAllData(String type, Class<T> classType, Factory<T, A> factory) throws IOException;
+	 <T> T getData(String id, Class<T> classType, Factory<T> factory) throws IOException;
+	<T> T getDataByName(String objectName, Class<T> classType, Factory<T> factory) throws IOException;
+	 <T> List<T> getAllData(String type, Class<T> classType, Factory<T> factory) throws IOException;
 }
