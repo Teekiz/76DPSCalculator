@@ -34,7 +34,8 @@ spring.session.store.type=redis
 spring.data.redis.host=redis
 spring.data.redis.port=6379
 ```
-#### 2.1. MongoDB
+Choose either of the following storage types:
+#### 2.1 MongoDB
 If you wish to store the required files using `MongoDB` ensure that these additional properties are configured correctly:
 ```
 object.loader.strategy=mongo
@@ -47,7 +48,7 @@ If you've changed the MongoDB settings, make sure they match the URI string and 
 MONGO_INITDB_ROOT_USERNAME: root
 MONGO_INITDB_ROOT_PASSWORD: example
 ```
-#### 2.2. Local JSON Storage
+#### 2.2 Local JSON Storage
 If you wish to store required files `locally` ensure that these additional properties are configured correctly:
 ```
 object.loader.strategy=json
