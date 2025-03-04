@@ -26,23 +26,26 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      postgres:
+      mongo:
         condition: service_started
     volumes:
       - ./src/main/resources/:/app/config/
     networks:
       - dpsnet
 
-  postgres:
-    image: postgres:latest
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
     environment:
-      POSTGRES_DB: 76DPSCalculatorDB
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: testpw
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: 76dpscalculatordb
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ./github/mongo_database/76dpscalculatordb:/dump
+      - mongo-data:/data/db
     networks:
       - dpsnet
 
@@ -52,4 +55,4 @@ networks:
 
 volumes:
   redis_data:
-  postgres-data:
+  mongo-data:

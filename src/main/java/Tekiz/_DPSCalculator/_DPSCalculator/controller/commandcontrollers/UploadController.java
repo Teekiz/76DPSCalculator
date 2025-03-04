@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller.commandcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.util.upload.LocalToDBUploader;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class UploadController
 	}
 
 	@GetMapping("/upload")
+	@Operation(summary = "Upload local documents to the database.", description = "Takes all locally stored files and uploads them to the provided database.")
 	public ResponseEntity<String> uploadLocalToDB() throws IOException
 	{
 		localToDBUploader.save();
