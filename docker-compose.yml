@@ -46,6 +46,7 @@ services:
     volumes:
       - ./github/mongo_database/76dpscalculatordb:/dump
       - mongo-data:/data/db
+      - ./github/mongo_database/restore.sh:/docker-entrypoint-initdb.d/restore.sh
     networks:
       - dpsnet
 
