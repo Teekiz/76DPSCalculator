@@ -34,6 +34,9 @@ public class Player implements Serializable
 	@Setter
 	@JsonProperty("isSneaking")
 	private boolean isSneaking = false;
+	@Setter
+	@JsonProperty("isUsingVATS")
+	private boolean isUsingVats = false;
 
 	/**
 	 * The constructor for a {@link Player} object.
