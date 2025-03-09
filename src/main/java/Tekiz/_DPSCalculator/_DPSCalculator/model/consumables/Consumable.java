@@ -54,7 +54,7 @@ public record Consumable(@Id
 						 @ValueConverter(value = ExpressionConverter.class)
 						 @JsonProperty("conditionString") Expression condition,
 						 @JsonProperty("effects")
-						 @JsonSerialize(contentUsing = ModifiersSerializer.class)
+						 @JsonSerialize(using = ModifiersSerializer.class)
 						 @JsonDeserialize(using = ModifiersDeserializer.class)
 						 @ValueConverter(value = ModifiersConverter.class)
 						 HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier, Keyable
