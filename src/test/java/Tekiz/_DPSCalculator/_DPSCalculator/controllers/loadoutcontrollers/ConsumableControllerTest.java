@@ -75,7 +75,7 @@ public class ConsumableControllerTest
 		consumableDTOS.add(consumableDTO);
 
 		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+			new Player(), null, new HashSet<>(), null);
 		loadout.getConsumables().put(consumable, true);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
@@ -106,7 +106,7 @@ public class ConsumableControllerTest
 		log.debug("{}Running test - getConsumables_WithEmptyConsumablesList in ConsumableControllerTest.", System.lineSeparator());
 
 		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 		given(consumableMapper.convertAllToDTO(loadout.getConsumables())).willReturn(new ArrayList<>());
@@ -132,7 +132,7 @@ public class ConsumableControllerTest
 		log.debug("{}Running test - addConsumable in ConsumableControllerTest.", System.lineSeparator());
 
 		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
@@ -155,7 +155,7 @@ public class ConsumableControllerTest
 		log.debug("{}Running test - removeConsumable in ConsumableControllerTest.", System.lineSeparator());
 
 		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 

@@ -33,8 +33,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,8 +73,9 @@ public class MutationControllerTest
 		List<MutationDTO> mutationDTOS = new ArrayList<>();
 		mutationDTOS.add(mutationDTO);
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
+
 		loadout.getMutations().add(mutation);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
@@ -101,8 +104,8 @@ public class MutationControllerTest
 	{
 		log.debug("{}Running test - getMutations_WithEmptyMutationsList in MutationControllerTest.", System.lineSeparator());
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 		given(mutationMapper.convertAllToDTO(loadout.getMutations())).willReturn(new ArrayList<>());
@@ -127,10 +130,10 @@ public class MutationControllerTest
 	{
 		log.debug("{}Running test - addMutation in MutationControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/addMutation")
@@ -142,7 +145,7 @@ public class MutationControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(mutationManager, times(1)).addMutation("1", mockLoadout);
+		verify(mutationManager, times(1)).addMutation("1", loadout);
 	}
 
 	@Test
@@ -150,10 +153,11 @@ public class MutationControllerTest
 	{
 		log.debug("{}Running test - removeMutation in MutationControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/removeMutation")
@@ -165,7 +169,7 @@ public class MutationControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(mutationManager, times(1)).removeMutation("1", mockLoadout);
+		verify(mutationManager, times(1)).removeMutation("1", loadout);
 	}
 
 	@Test

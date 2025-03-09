@@ -25,8 +25,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,8 +54,8 @@ public class PlayerControllerTest
 	{
 		log.debug("{}Running test - changeSpecial_WithValidLoadout in PlayerControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout mockLoadout = mock(Loadout.class);
+		when(mockLoadout.getLoadoutID()).thenReturn(1);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 
@@ -101,8 +103,8 @@ public class PlayerControllerTest
 		ObjectMapper objectMapper = new ObjectMapper();
 		String specialDTOJson = objectMapper.writeValueAsString(specialDTO);
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout mockLoadout = mock(Loadout.class);
+		when(mockLoadout.getLoadoutID()).thenReturn(1);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
 

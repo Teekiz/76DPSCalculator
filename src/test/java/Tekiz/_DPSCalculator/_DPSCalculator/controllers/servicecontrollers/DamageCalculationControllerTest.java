@@ -29,8 +29,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -51,8 +53,8 @@ public class DamageCalculationControllerTest
 	@Test
 	public void calculateLoadout_WithValidLoadout() throws Exception
 	{
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(),
-			new HashSet<>(), new Player(), null, new HashSet<>());
+		Loadout mockLoadout = mock(Loadout.class);
+		when(mockLoadout.getLoadoutID()).thenReturn(1);
 
 		Double damageValue = 2.0;
 
@@ -76,12 +78,12 @@ public class DamageCalculationControllerTest
 	@Test
 	public void calculateAllLoadouts() throws Exception
 	{
-		Loadout mockLoadoutOne = new Loadout(1, null, new HashMap<>(), new HashMap<>(),
-			new HashSet<>(), new Player(), null, new HashSet<>());
+		Loadout mockLoadoutOne  = mock(Loadout.class);
+		when(mockLoadoutOne.getLoadoutID()).thenReturn(1);
 		Double damageValueOne = 2.0;
 
-		Loadout mockLoadoutTwo = new Loadout(2, null, new HashMap<>(), new HashMap<>(),
-			new HashSet<>(), new Player(), null, new HashSet<>());
+		Loadout mockLoadoutTwo = mock(Loadout.class);
+		when(mockLoadoutTwo.getLoadoutID()).thenReturn(2);
 		Double damageValueTwo = 34.2;
 
 		Set<Loadout> mockLoadouts = new HashSet<>();
@@ -98,8 +100,11 @@ public class DamageCalculationControllerTest
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
-		String expectedJson = "[2.0,34.2]";
-		assertThat(response.getContentAsString()).contains(expectedJson);
+		String expectedJsonOne = "34.2";
+		String expectedJsonTwo = "2.0";
+
+		assertThat(response.getContentAsString()).contains(expectedJsonOne);
+		assertThat(response.getContentAsString()).contains(expectedJsonTwo);
 
 		verify(loadoutManager, times(1)).getLoadouts();
 		verify(damageCalculationService, times(2)).calculateOutgoingDamage(any());

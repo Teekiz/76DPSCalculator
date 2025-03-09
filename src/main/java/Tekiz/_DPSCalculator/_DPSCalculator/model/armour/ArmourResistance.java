@@ -19,4 +19,8 @@ public class ArmourResistance implements Serializable
 	int radiationResistance;
 	@JsonProperty("cryoResistance")
 	int cryoResistance;
+	@JsonProperty("fireResistance")
+	int fireResistance;
+	@JsonProperty("poisonResistance")
+	int poisonResistance;
 }

@@ -35,8 +35,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -78,8 +80,8 @@ public class WeaponControllerTest
 			.weaponType("PISTOL")
 			.build();
 
-		Loadout loadout = new Loadout(1, weapon, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getWeapon()).thenReturn(weapon);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 		given(weaponMapper.convertToRangedOrMeleeDTO(weapon)).willReturn(weaponDetailsDTO);
@@ -109,8 +111,9 @@ public class WeaponControllerTest
 	@Test
 	public void getWeapon_WithNullWeapon() throws Exception
 	{
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
+
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -129,10 +132,10 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - setWeapon_WithValidWeaponID in WeaponControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/setWeapon")
@@ -144,7 +147,7 @@ public class WeaponControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(weaponManager, times(1)).setWeapon("1", mockLoadout);
+		verify(weaponManager, times(1)).setWeapon("1", loadout);
 	}
 
 	@Test
@@ -226,7 +229,7 @@ public class WeaponControllerTest
 			.build();
 
 		WeaponNameDTO weaponDetailsDTOOne = new WeaponNameDTO("TESTWEAPON1", "TESTWEAPONONE");
-		WeaponNameDTO weaponDetailsDTOTwo = new WeaponNameDTO("TESTWEAPON2", "TESTWEAPONOTWO");
+		WeaponNameDTO weaponDetailsDTOTwo = new WeaponNameDTO("TESTWEAPON2", "TESTWEAPONTWO");
 
 		List<Weapon> availableWeapons = new ArrayList<>();
 		availableWeapons.add(weaponOne);
@@ -249,7 +252,7 @@ public class WeaponControllerTest
 			+ "{\"id\":\"TESTWEAPON1\","
 			+ "\"name\":\"TESTWEAPONONE\"},"
 			+ "{\"id\":\"TESTWEAPON2\","
-			+ "\"name\":\"TESTWEAPONOTWO\"}]";
+			+ "\"name\":\"TESTWEAPONTWO\"}]";
 
 		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
 

@@ -32,7 +32,7 @@ public class EnemyLoaderServiceTest extends BaseTestClass
 	@Test
 	void testLoadEnemy_NAME() throws IOException
 	{
-		String enemyName = "Feral ghoul";
+		String enemyName = "FERAL_GHOUL";
 		Enemy enemy = dataLoaderService.loadDataByName(enemyName, Enemy.class, null);
 		assertNotNull(enemy);
 		assertEquals(EnemyType.GHOUL, enemy.getEnemyType());
@@ -43,8 +43,8 @@ public class EnemyLoaderServiceTest extends BaseTestClass
 	{
 		List<Enemy> enemies = dataLoaderService.loadAllData("enemies", Enemy.class, null);
 		assertNotNull(enemies);
-		assertEquals("Feral ghoul", enemies.getFirst().getName());
-		assertEquals(EnemyType.SUPER_MUTANT, enemies.get(1).getEnemyType());
-		assertEquals(1000000000, enemies.get(1).getArmourResistance().getRadiationResistance());
+		assertEquals("Feral ghoul", enemies.get(1).getName());
+		assertEquals(EnemyType.SUPER_MUTANT, enemies.get(0).getEnemyType());
+		assertEquals(1000000000, enemies.get(0).getArmourResistance().getRadiationResistance());
 	}
 }

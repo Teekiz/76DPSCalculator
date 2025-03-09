@@ -14,6 +14,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,8 +28,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -55,8 +59,11 @@ public class LoadoutControllerTest
 	@Test
 	public void retrieveLoadoutTest() throws Exception
 	{
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(), new Player(), null, new HashSet<>());
-		LoadoutDTO mockDTO = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
+		Loadout mockLoadout = Mockito.mock(Loadout.class);
+		when(mockLoadout.getLoadoutID()).thenReturn(1);
+
+		LoadoutDTO mockDTO = mock(LoadoutDTO.class);
+		when(mockDTO.getLoadoutID()).thenReturn(1);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(mockLoadout);
 		given(loadoutMapper.convertLoadoutToLoadoutDTO(mockLoadout)).willReturn(mockDTO);
@@ -68,7 +75,7 @@ public class LoadoutControllerTest
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
-		String expectedJson = "{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}";
+		String expectedJson = "{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":null,\"consumables\":[],\"mutations\":[]}";
 		assertThat(response.getContentAsString()).contains(expectedJson);
 
 		verify(loadoutManager, times(1)).getLoadout(1);
@@ -78,14 +85,20 @@ public class LoadoutControllerTest
 	@Test
 	public void retrieveAllLoadoutsTest() throws Exception
 	{
-		Loadout mockLoadoutOne = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(), new Player(), null, new HashSet<>());
-		Loadout mockLoadoutTwo = new Loadout(2, null, new HashMap<>(), new HashMap<>(), new HashSet<>(), new Player(), null, new HashSet<>());
+		Loadout mockLoadoutOne = mock(Loadout.class);
+		Loadout mockLoadoutTwo = mock(Loadout.class);
+
+
 		HashSet<Loadout> loadoutHashSet = new HashSet<>();
 		loadoutHashSet.add(mockLoadoutOne);
 		loadoutHashSet.add(mockLoadoutTwo);
 
-		LoadoutDTO mockDTOOne = new LoadoutDTO(1, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
-		LoadoutDTO mockDTOTwo = new LoadoutDTO(2, null, new ArrayList<>(), new PlayerDTO(), new ArrayList<>(), new ArrayList<>());
+		LoadoutDTO mockDTOOne = mock(LoadoutDTO.class);
+		LoadoutDTO mockDTOTwo = mock(LoadoutDTO.class);
+
+		when(mockDTOOne.getLoadoutID()).thenReturn(1);
+		when(mockDTOTwo.getLoadoutID()).thenReturn(2);
+
 		List<LoadoutDTO> mockLoadoutList= new ArrayList<>();
 		mockLoadoutList.add(mockDTOOne);
 		mockLoadoutList.add(mockDTOTwo);
@@ -99,8 +112,8 @@ public class LoadoutControllerTest
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
-		String expectedJson = "[{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}," +
-			"{\"loadoutID\":2,\"weapon\":null,\"perks\":[],\"player\":{\"maxHP\":0.0,\"currentHP\":0.0,\"specials\":null},\"consumables\":[],\"mutations\":[]}]";
+		String expectedJson = "[{\"loadoutID\":1,\"weapon\":null,\"perks\":[],\"player\":null,\"consumables\":[],\"mutations\":[]}," +
+			"{\"loadoutID\":2,\"weapon\":null,\"perks\":[],\"player\":null,\"consumables\":[],\"mutations\":[]}]";
 		assertThat(response.getContentAsString()).isEqualToIgnoringWhitespace(expectedJson);
 
 		//verifying that the dependencies were used

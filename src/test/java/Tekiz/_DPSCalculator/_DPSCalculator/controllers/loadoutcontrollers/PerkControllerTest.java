@@ -36,8 +36,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,8 +75,9 @@ public class PerkControllerTest
 		List<PerkDTO> perkDTOS = new ArrayList<>();
 		perkDTOS.add(perkDTO);
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
+
 		loadout.getPerks().put(perk, true);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
@@ -102,8 +105,8 @@ public class PerkControllerTest
 	{
 		log.debug("{}Running test - getPerks_WithEmptyPerksList in PerkControllerTest.", System.lineSeparator());
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
 		given(perkMapper.convertAllToDTO(loadout.getPerks())).willReturn(new ArrayList<>());
@@ -128,10 +131,10 @@ public class PerkControllerTest
 	{
 		log.debug("{}Running test - addPerk in PerkControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/addPerk")
@@ -143,7 +146,7 @@ public class PerkControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(perkManager, times(1)).addPerk("1", mockLoadout);
+		verify(perkManager, times(1)).addPerk("1", loadout);
 	}
 
 	@Test
@@ -151,10 +154,10 @@ public class PerkControllerTest
 	{
 		log.debug("{}Running test - removePerk in PerkControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/removePerk")
@@ -166,7 +169,7 @@ public class PerkControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(perkManager, times(1)).removePerk("1", mockLoadout);
+		verify(perkManager, times(1)).removePerk("1", loadout);
 	}
 
 	//getAvailablePerks
@@ -224,10 +227,10 @@ public class PerkControllerTest
 	{
 		log.debug("{}Running test - changePerkRank in PerkControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
-			new Player(), null, new HashSet<>());
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
 
-		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.post(urlString + "/changePerkRank")
@@ -240,6 +243,6 @@ public class PerkControllerTest
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(perkManager, times(1)).changePerkRank("1",2,  mockLoadout);
+		verify(perkManager, times(1)).changePerkRank("1",2,  loadout);
 	}
 }

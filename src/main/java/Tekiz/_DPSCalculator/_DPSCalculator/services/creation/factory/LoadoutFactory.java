@@ -23,12 +23,12 @@ public class LoadoutFactory
 	{
 		log.debug("Creating new blank loadout.");
 		return new Loadout(loadoutID,null, new HashMap<>(), new HashMap<>(),
-			new HashSet<>(), new Player(), new Environment(), new HashSet<>());
+			new HashSet<>(), new Player(), new Environment(), new HashSet<>(), null);
 	}
 	public Loadout createNewLoadout(int loadoutID, Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
 									Set<Armour> armour, Player player, Environment environment, Set<Mutation> mutations)
 	{
 		log.debug("Retrieved loadout.");
-		return new Loadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);
+		return new Loadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations, null);
 	}
 }

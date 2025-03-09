@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -47,6 +48,11 @@ public class Loadout implements Serializable
 
 	@JsonProperty("mutations")
 	Set<Mutation> mutations;
+
+	@NonFinal
+	@Setter
+	@JsonProperty("enemy")
+	Enemy enemy;
 
 	@Override
 	public boolean equals(Object o) {
