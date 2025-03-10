@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.SpecialBonusCalculationService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SpecialBonusCalculationService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

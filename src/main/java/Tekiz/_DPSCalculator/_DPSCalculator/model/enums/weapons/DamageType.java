@@ -5,5 +5,9 @@ public enum DamageType
 	BALLISTIC,
 	ENERGY,
 	EXPLOSIVE,
+	RADIATION,
+	CRYO,
+	FIRE,
+	POISON,
 	MULTIPLE;
 }
