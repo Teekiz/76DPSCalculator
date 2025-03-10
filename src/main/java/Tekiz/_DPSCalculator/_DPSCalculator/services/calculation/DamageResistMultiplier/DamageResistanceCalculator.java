@@ -25,7 +25,7 @@ public class DamageResistanceCalculator
 		Enemy target = loadout.getEnemy();
 
 		if (weapon == null || target == null){
-			return 0;
+			return damage;
 		}
 
 		int resistance = getArmourResistance(weapon.getDamageType(), target);
