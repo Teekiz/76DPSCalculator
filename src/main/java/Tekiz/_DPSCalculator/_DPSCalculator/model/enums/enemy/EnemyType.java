@@ -30,6 +30,16 @@ public enum EnemyType
 		Limbs.RIGHT_ARM, 1.0,
 		Limbs.LEFT_LEG, 1.0,
 		Limbs.RIGHT_LEG, 1.0
+	)),
+	MR_HANDY(Set.of(EnemyTags.ROBOT), Map.of(
+		Limbs.LEFT_EYE, 1.25,
+		Limbs.MIDDLE_EYE, 1.25,
+		Limbs.RIGHT_EYE, 1.25,
+		Limbs.TORSO, 0.6,
+		Limbs.THRUSTER, 1.0,
+		Limbs.LEFT_LEG, 1.0,
+		Limbs.MIDDLE_LEG, 1.0,
+		Limbs.RIGHT_LEG, 1.0
 	)),;
 
 	private final Set<EnemyTags> tags;

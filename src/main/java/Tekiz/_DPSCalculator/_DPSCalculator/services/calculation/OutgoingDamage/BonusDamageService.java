@@ -1,10 +1,9 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Service;

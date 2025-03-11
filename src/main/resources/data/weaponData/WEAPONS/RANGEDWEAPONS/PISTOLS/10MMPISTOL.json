@@ -1,7 +1,7 @@
  {
     "name" : "10mm pistol",
     "weaponType" : "PISTOL",
-    "damageType" : "BALLISTIC",
+    "damageType" : "PHYSICAL",
     "weaponDamageByLevel" :
     {
         "1" : 15.0,

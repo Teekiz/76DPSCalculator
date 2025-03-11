@@ -1,6 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.BodyPartMultiplier.BodyPartMultiplierCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMultiplier.DamageResistanceCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BaseDamageService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BonusDamageService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.DamageMultiplierService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +20,26 @@ public class DamageCalculationService
 	private final BaseDamageService baseDamageService;
 	private final BonusDamageService bonusDamageService;
 	private final DamageMultiplierService damageMultiplierService;
+	private final DamageResistanceCalculator damageResistanceCalculator;
+	private final BodyPartMultiplierCalculator bodyPartMultiplierCalculator;
 
 	/**
 	 * The constructor for {@link DamageCalculationService}.
 	 * @param baseDamageService A service that calculates the base damage from a loadout.
 	 * @param bonusDamageService A service that calculates the bonus (additive) damage from a loadout.
 	 * @param damageMultiplierService A service that calculates the multiplicative damage from a loadout.
+	 * @param damageResistanceCalculator A service that calculates the damage from a loadout based on the weapons damage type, penetration and enemy resistances.
+	 * @param bodyPartMultiplierCalculator A service that determines the damage bonus based on the targeted enemy limb.
 	 */
 	@Autowired
 	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
-									DamageMultiplierService damageMultiplierService)
+									DamageMultiplierService damageMultiplierService, DamageResistanceCalculator damageResistanceCalculator, BodyPartMultiplierCalculator bodyPartMultiplierCalculator)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
 		this.damageMultiplierService = damageMultiplierService;
+		this.damageResistanceCalculator = damageResistanceCalculator;
+		this.bodyPartMultiplierCalculator = bodyPartMultiplierCalculator;
 	}
 
 	/*
@@ -54,12 +65,18 @@ public class DamageCalculationService
 	 */
 	public double calculateOutgoingDamage(Loadout loadout)
 	{
+		//Outgoing damage
 		double baseDamage = baseDamageService.calculateBaseDamage(loadout);
 		double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
+		double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
 
-		double totalDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
+		//Damage resit multiplier
+		double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, loadout);
 
-		return round(totalDamage);
+		//Body part multiplier
+		double outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout);
+
+		return round(outgoingDamage_wDRMW_wBPM);
 	}
 
 	/**

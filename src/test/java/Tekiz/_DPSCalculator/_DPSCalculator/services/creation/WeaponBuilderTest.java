@@ -25,7 +25,7 @@ public class WeaponBuilderTest extends BaseTestClass
 		RangedWeapon pistol = RangedWeapon.builder()
 			.name("10mm Pistol")
 			.weaponType(WeaponType.PISTOL)
-			.damageType(DamageType.BALLISTIC)
+			.damageType(DamageType.PHYSICAL)
 			.weaponDamageByLevel(weaponDamageMap)
 			.apCost(20)
 			.attackSpeed(0.67)

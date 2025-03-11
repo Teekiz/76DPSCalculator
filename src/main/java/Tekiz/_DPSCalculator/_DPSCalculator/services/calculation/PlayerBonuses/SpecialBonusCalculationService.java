@@ -1,10 +1,9 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
 import java.util.HashMap;
 import java.util.List;

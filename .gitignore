@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 /logs/app.log
+
+/src/main/resources/storagepath.properties
+/src/test/resources/storagepath.properties
