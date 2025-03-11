@@ -30,10 +30,17 @@ public class DamageResistanceCalculator
 
 		int resistance = getArmourResistance(weapon.getDamageType(), target);
 
-		double damageResistMultiplier = Math.max(0.01,
-			Math.min(0.99,
-				((damage * 0.15) /
-				resistance * (1 - getArmourPenetration())) * 0.365
+		//the target is immune to that damage type
+		if (resistance >= 10000)
+		{
+			return 0;
+		}
+
+		double damageResistMultiplier =
+			Math.max(0.01,
+				Math.min(0.99,
+					Math.pow((damage * 0.15) /
+					resistance * (1 - getArmourPenetration()), 0.365)
 		));
 
 		return damage * damageResistMultiplier;

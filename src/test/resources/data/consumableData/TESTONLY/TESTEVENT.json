@@ -3,7 +3,7 @@
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "modifierSource" : "CONSUMABLE_OTHER",
-    "conditionString" : "#weapon.getDamageType() == #DamageType.BALLISTIC",
+    "conditionString" : "#weapon.getDamageType() == #DamageType.PHYSICAL",
     "effects" : {
       "SPECIAL_CHARISMA" : 10
     }

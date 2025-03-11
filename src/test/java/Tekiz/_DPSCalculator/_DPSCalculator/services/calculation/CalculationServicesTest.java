@@ -1,12 +1,21 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.Limbs;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnemyManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +29,8 @@ public class CalculationServicesTest extends BaseTestClass
 	WeaponManager weaponManager;
 	@Autowired
 	PerkManager perkManager;
+	@Autowired
+	EnemyManager enemyManager;
 	@Autowired
 	ConsumableManager consumableManager;
 	@Autowired
@@ -66,6 +77,105 @@ public class CalculationServicesTest extends BaseTestClass
 		//39.2 * (1 + 0.05) = 41.16 (41.2)
 		perkManager.addPerk("perks3", loadout);//TENDERIZER
 		assertEquals(41.2, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	@Test
+	public void testDamageResistance() throws IOException
+	{
+		log.debug("{}Running test - testDamageResistance in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getLoadout(1);
+
+		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
+		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+
+		HashMap<Integer, Double> damageHashMap = new HashMap<>();
+		damageHashMap.put(45, 100.0);
+		RangedWeapon weapon = RangedWeapon.builder().damageType(DamageType.PHYSICAL).weaponDamageByLevel(damageHashMap).build();
+
+		Enemy enemy = new Enemy("1", "NA", false, EnemyType.HUMAN,
+			new ArmourResistance(200, 0,0,0,0,0), Limbs.TORSO);
+
+		loadout.setWeapon(weapon);
+		loadout.setEnemy(enemy);
+
+		//38.85 rounded up -> 38.9
+		assertEquals(38.9, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	@Test
+	public void testDamageResistance_WithPreviousValues() throws IOException
+	{
+		log.debug("{}Running test - testDamageResistance_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getLoadout(1);
+
+		//setting the conditions for the two base weapons
+		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
+
+		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
+		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
+
+		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
+		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
+
+		enemyManager.changeEnemy("ENEMIES3", loadout);
+		loadout.getEnemy().setTargetedLimb(Limbs.THRUSTER);
+
+		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8
+		assertEquals(38.8, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	@Test
+	public void testDamageResistance_ImmuneToDamageType() throws IOException
+	{
+		log.debug("{}Running test - testDamageResistance_ImmuneToDamageType in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getLoadout(1);
+
+		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
+		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+
+		HashMap<Integer, Double> damageHashMap = new HashMap<>();
+		damageHashMap.put(45, 100.0);
+		RangedWeapon weapon = RangedWeapon.builder().damageType(DamageType.RADIATION).weaponDamageByLevel(damageHashMap).build();
+
+		Enemy enemy = new Enemy("1", "NA", false, EnemyType.HUMAN,
+			new ArmourResistance(200, 0,2000000,0,0,0), Limbs.TORSO);
+
+		loadout.setWeapon(weapon);
+		loadout.setEnemy(enemy);
+
+		//immune to radiation damage, should return 0.
+		assertEquals(0, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	@Test
+	public void testBodyPartMultiplier_WithPreviousValues() throws IOException
+	{
+		log.debug("{}Running test - testBodyPartMultiplier_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getLoadout(1);
+
+		//setting the conditions for the two base weapons
+		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
+
+		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
+		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
+
+		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
+		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
+
+		enemyManager.changeEnemy("ENEMIES3", loadout);
+		loadout.getEnemy().setTargetedLimb(Limbs.MIDDLE_EYE);
+
+		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8
+		//eyes provide a 1.25 damage multiplier - 38.8 * 1.25 = 48.5
+		assertEquals(48.5, calculator.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 }
