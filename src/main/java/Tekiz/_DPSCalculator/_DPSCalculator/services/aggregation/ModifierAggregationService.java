@@ -52,6 +52,10 @@ public class ModifierAggregationService
 		modifiers.putAll(loadout.getConsumables());
 		loadout.getMutations().forEach(mutation ->
 			modifiers.putAll(mutation.aggregateMutationEffects()));
+		modifiers.putAll(loadout.getWeapon().getLegendaryEffects()
+			.aggregateLegendaryEffectsModifiers());
+		loadout.getArmour().forEach(armour -> modifiers.putAll(armour.
+			getLegendaryEffects().aggregateLegendaryEffectsModifiers()));
 		applyAdditionalContext(modifiers, loadout);
 
 		return modifiers;

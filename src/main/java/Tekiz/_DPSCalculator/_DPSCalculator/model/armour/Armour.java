@@ -6,6 +6,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourRepository;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -25,7 +27,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 @Document(collection = "armour")
 @RepositoryObject(repository = ArmourRepository.class)
-public class Armour implements Serializable
+public class Armour implements LegendaryEffectObject, Serializable
 {
 	/** The id of the armour */
 	@Id
@@ -57,6 +59,10 @@ public class Armour implements Serializable
 	/** A {@link HashMap} containing the level ({@link Integer}) and resistances ({@link ArmourResistance}) that the armour provides. */
 	@JsonProperty("armourResistance")
 	HashMap<Integer, ArmourResistance> armourResistance;
+
+	/** An object containing legendary effects in a HashMap*/
+	@JsonProperty("legendaryEffects")
+	LegendaryEffectsMap legendaryEffects;
 
 	//mods
 	/** The {@link Material} mod slot of the armour piece. This affects the resistances and effects the armour provides. */
