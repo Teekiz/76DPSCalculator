@@ -4,8 +4,15 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.Limbs;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.Category;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
@@ -14,6 +21,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -101,6 +109,37 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//38.85 rounded up -> 38.9
 		assertEquals(38.9, calculator.calculateOutgoingDamage(loadout));
+		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	@Test
+	public void testDamageResistance_WithPenetrationLegendaryEffect() throws IOException
+	{
+		log.debug("{}Running test - testDamageResistance_WithPenetrationLegendaryEffect in CalculationServicesTest.", System.lineSeparator());
+		Loadout loadout = loadoutManager.getLoadout(1);
+
+		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
+		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+
+		HashMap<ModifierTypes, ModifierValue<?>> map = new HashMap<>();
+		map.put(ModifierTypes.PENETRATION, new ModifierValue<>(ModifierTypes.PENETRATION, 0.36));
+
+		LegendaryEffect legendaryEffect = new LegendaryEffect("1", "testEffect", "", ModifierSource.LEGENDARY_EFFECT,
+			new ArrayList<>(), StarType._1STAR, null, map);
+
+		HashMap<Integer, Double> damageHashMap = new HashMap<>();
+		damageHashMap.put(45, 100.0);
+		RangedWeapon weapon = RangedWeapon.builder().damageType(DamageType.PHYSICAL).weaponDamageByLevel(damageHashMap).legendaryEffects(new LegendaryEffectsMap()).build();
+		weapon.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
+
+		Enemy enemy = new Enemy("1", "NA", false, EnemyType.HUMAN,
+			new ArmourResistance(200, 0,0,0,0,0), Limbs.TORSO);
+
+		loadout.setWeapon(weapon);
+		loadout.setEnemy(enemy);
+
+		//38.85 rounded up -> 38.9 with 36% armour penetration = 45.72 (45.7)
+		assertEquals(45.7, calculator.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 

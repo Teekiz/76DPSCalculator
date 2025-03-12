@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
@@ -53,6 +54,7 @@ public class HashMapKeyComponent
 				}
 				case "Consumable" -> identifier.insert(0, "CONSUMABLE");
 				case "Mutation" -> identifier.insert(0, "MUTATION");
+				case "LegendaryEffect" -> identifier.insert(0, "LEGENDARYEFFECT");
 				default -> identifier.insert(0, "UNKNOWN");
 			}
 			log.debug("Serialised key: {}.", identifier);
@@ -100,6 +102,11 @@ public class HashMapKeyComponent
 				{
 					log.debug("Deserializing Mutation KeyObject: {}.", string);
 					return loaderService.loadData(objectIdentifier, Mutation.class, null);
+				}
+				case "LEGENDARYEFFECT" ->
+				{
+					log.debug("Deserializing Legendary Effect KeyObject: {}.", string);
+					return loaderService.loadData(objectIdentifier, LegendaryEffect.class, null);
 				}
 				case null, default ->
 				{

@@ -1,0 +1,14 @@
+{
+    "name" : "Assassin's",
+    "description" : "+50% Damage to Humans",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "MELEE_WEAPONS",
+        "RANGED_WEAPONS"
+    ],
+    "starType" : "_1STAR",
+    "conditionString" : "#enemy.getEnemyType().getTags().contains(#EnemyTags.HUMAN)",
+    "effects" : {
+        "DAMAGE_ADDITIVE" : 0.5
+    }
+}

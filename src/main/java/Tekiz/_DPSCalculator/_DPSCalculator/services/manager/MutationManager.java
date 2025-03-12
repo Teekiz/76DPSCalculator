@@ -23,20 +23,17 @@ import org.springframework.stereotype.Service;
 public class MutationManager
 {
 	private final DataLoaderService dataLoaderService;
-	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * The constructor for a {@link MutationManager} object.
 	 * @param dataLoaderService A service used to load {@link Mutation} objects.
-	 * @param modifierConditionLogic A service that is used to evaluate a {@link Modifier}'s condition logic.
 	 */
 	@Autowired
-	public MutationManager(DataLoaderService dataLoaderService, ModifierConditionLogic modifierConditionLogic, ApplicationEventPublisher applicationEventPublisher)
+	public MutationManager(DataLoaderService dataLoaderService, ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.dataLoaderService = dataLoaderService;
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.modifierConditionLogic = modifierConditionLogic;
 	}
 
 	@SaveLoadout

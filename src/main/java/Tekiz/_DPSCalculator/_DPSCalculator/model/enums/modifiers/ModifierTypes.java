@@ -7,10 +7,7 @@ public enum ModifierTypes
 {
 	DAMAGE_ADDITIVE(Double.class),
 	DAMAGE_MULTIPLICATIVE(Double.class),
-	PENETRATION_PHYSICAL(Double.class),
-	PENETRATION_ENERGY(Double.class),
-	PENETRATION_RADIATION(Double.class),
-	PENETRATION_POISON(Double.class),
+	PENETRATION(Double.class),
 	ATTACKSPEED(Double.class),
 	RELOADSPEED(Double.class),
 	ACCURACY(Double.class),

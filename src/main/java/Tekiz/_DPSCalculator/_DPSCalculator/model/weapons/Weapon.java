@@ -2,6 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -22,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @SuperBuilder(toBuilder = true)
 @Document(collection = "weapon")
 @RepositoryObject(repository = WeaponRepository.class)
-public abstract class Weapon implements Serializable
+public abstract class Weapon implements LegendaryEffectObject, Serializable
 {
 	//todo - consider changing to add armour penetration and removing projectile amount
 	/** The id of the weapon. Used if mapped to a database. */
@@ -57,6 +59,10 @@ public abstract class Weapon implements Serializable
 	/** The {@link Integer} value of the bonus to critical damage the weapon provides. Primarily used for VATS. */
 	@JsonProperty("criticalBonus")
 	protected final int criticalBonus;
+
+	/** An object containing legendary effects in a HashMap*/
+	@JsonProperty("legendaryEffects")
+	protected final LegendaryEffectsMap legendaryEffects;
 
 	/**
 	 * Retrieves the {@link Double} value of the damage the weapon provides.

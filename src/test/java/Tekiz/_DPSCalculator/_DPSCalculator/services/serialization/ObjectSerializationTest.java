@@ -3,7 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
@@ -122,6 +126,28 @@ public class ObjectSerializationTest extends BaseTestClass
 		JsonNode weaponNode = objectMapper.readTree(jsonWeapon);
 		Weapon newWeapon = weaponFactory.createObject(weaponNode);
 		assertNotNull(newWeapon);
+		log.debug("Weapon object deserialized: {}.", newWeapon);
+	}
+
+	@Test
+	public void serializeAndDeserializeWeapon_WithLegendaryEffect() throws IOException
+	{
+		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
+		Weapon weapon = dataLoaderService.loadData("WEAPONS2", Weapon.class, weaponFactory);
+		LegendaryEffect legendaryEffect = dataLoaderService.loadData("LEGENDARYEFFECT1", LegendaryEffect.class, null);
+		weapon.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
+
+		assertNotNull(weapon);
+		log.debug("Weapon object deserialized: {}.", weapon);
+
+		String jsonWeapon = objectMapper.writeValueAsString(weapon);
+		assertNotNull(jsonWeapon);
+		log.debug("Weapon object serialized: {}.", jsonWeapon);
+
+		JsonNode weaponNode = objectMapper.readTree(jsonWeapon);
+		Weapon newWeapon = weaponFactory.createObject(weaponNode);
+		assertNotNull(newWeapon);
+		assertEquals(1, weapon.getLegendaryEffects().size());
 		log.debug("Weapon object deserialized: {}.", newWeapon);
 	}
 
