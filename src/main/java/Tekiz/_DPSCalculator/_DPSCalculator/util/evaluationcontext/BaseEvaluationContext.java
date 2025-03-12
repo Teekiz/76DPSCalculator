@@ -1,5 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyTags;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
@@ -33,6 +35,8 @@ public class BaseEvaluationContext
 		context.setVariable("ModifierType", ModifierTypes.class);
 		context.setVariable("ModifierSource", ModifierSource.class);
 		context.setVariable("MapUtil", MapUtil.class);
+		context.setVariable("EnemyType", EnemyType.class);
+		context.setVariable("EnemyTags", EnemyTags.class);
 		return context;
 	}
 }

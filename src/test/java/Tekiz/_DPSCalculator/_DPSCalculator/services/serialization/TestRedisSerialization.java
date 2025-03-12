@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.manager.LegendaryEffectManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
@@ -26,6 +27,8 @@ public class TestRedisSerialization extends BaseTestClass
 	ConsumableManager consumableManager;
 	@Autowired
 	MutationManager mutationManager;
+	@Autowired
+	LegendaryEffectManager legendaryEffectManager;
 
 	@Test
 	public void testRedisSerialization() throws IOException
@@ -39,6 +42,7 @@ public class TestRedisSerialization extends BaseTestClass
 		perkManager.addPerk("PERKS1", loadout);//GUNSLINGER
 		perkManager.addPerk("PERKS2", loadout);//STRANGEINNUMBERS
 		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
+		legendaryEffectManager.addLegendaryEffect("LEGENDARYEFFECT1", loadout.getWeapon(), loadout);
 
 		loadout = null;
 
@@ -48,6 +52,7 @@ public class TestRedisSerialization extends BaseTestClass
 		assertNotNull(newLoadout.getWeapon());
 		assertEquals("Test 10mm pistol", newLoadout.getWeapon().getName());
 
+		log.debug("Loadout: {}", loadout);
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 

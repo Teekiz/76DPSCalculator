@@ -52,8 +52,8 @@ public record LegendaryEffect(@Id
 						 @JsonProperty("name") String name,
 						 @JsonProperty("description") String description,
 						 @JsonProperty("modifierSource") ModifierSource modifierSource,
-						 @JsonProperty("Categories") List<Category> categories,
-						 @JsonProperty("StarType") StarType starType,
+						 @JsonProperty("categories") List<Category> categories,
+						 @JsonProperty("starType") StarType starType,
 						 @ValueConverter(value = ExpressionAdapter.ExpressionConverter.class)
 						 @JsonProperty("conditionString") Expression condition,
 						 @JsonProperty("effects")

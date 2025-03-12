@@ -2,9 +2,13 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMul
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
+import java.util.HashMap;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class DamageResistanceCalculator
 {
+	private final ModifierAggregationService modifierAggregationService;
+
+	/**
+	 * The {@link DamageResistanceCalculator} constructor.
+	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
+	 */
+	public DamageResistanceCalculator(ModifierAggregationService modifierAggregationService)
+	{
+		this.modifierAggregationService = modifierAggregationService;
+	}
+
 	/**
 	 * A method to determine the damage reduction based on the target {@link Enemy}'s resistances.
 	 * @param damage The outgoing damage value.
@@ -40,8 +55,8 @@ public class DamageResistanceCalculator
 			Math.max(0.01,
 				Math.min(0.99,
 					Math.pow((damage * 0.15) /
-					resistance * (1 - getArmourPenetration()), 0.365)
-		));
+					(resistance * (1 - getArmourPenetration(loadout))), 0.365))
+		);
 
 		return damage * damageResistMultiplier;
 	}
@@ -62,8 +77,17 @@ public class DamageResistanceCalculator
 		return resistance;
 	}
 
-	private int getArmourPenetration()
+	private double getArmourPenetration(Loadout loadout)
 	{
-		return 0;
+		double armourPenetration = 0;
+		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
+		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.PENETRATION);
+
+		for (Double value : doubleList)
+		{
+			armourPenetration += value;
+		}
+
+		return armourPenetration;
 	}
 }

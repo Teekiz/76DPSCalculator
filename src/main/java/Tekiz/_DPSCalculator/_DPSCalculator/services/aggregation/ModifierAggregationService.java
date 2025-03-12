@@ -2,10 +2,12 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,7 @@ public class ModifierAggregationService
 {
 	private final ModifierExpressionService modifierExpressionService;
 	private final ModifierBoostService modifierBoostService;
+	private final ParsingService parsingService;
 
 	/**
 	 * The constructor for the ModifierAggregationService.
@@ -32,12 +35,14 @@ public class ModifierAggregationService
 	 *       corresponding to the name of the {@link Modifier}.
 	 * @param modifierBoostService A service that {@code filterEffects} uses to apply bonus effects to any values of a given {@link Modifier}'s
 	 * 		{@link ModifierSource}.
+	 * @param parsingService A service responsible for parsing and evaluating SpEL (Spring Expression Language) expressions.
 	 */
 	@Autowired
-	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService)
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService, ParsingService parsingService)
 	{
 		this.modifierExpressionService = modifierExpressionService;
 		this.modifierBoostService = modifierBoostService;
+		this.parsingService = parsingService;
 	}
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
@@ -52,10 +57,13 @@ public class ModifierAggregationService
 		modifiers.putAll(loadout.getConsumables());
 		loadout.getMutations().forEach(mutation ->
 			modifiers.putAll(mutation.aggregateMutationEffects()));
-		modifiers.putAll(loadout.getWeapon().getLegendaryEffects()
-			.aggregateLegendaryEffectsModifiers());
-		loadout.getArmour().forEach(armour -> modifiers.putAll(armour.
-			getLegendaryEffects().aggregateLegendaryEffectsModifiers()));
+		loadout.getArmour().forEach(armour -> modifiers.putAll(parseLegendaryConditions(armour.
+			getLegendaryEffects(), loadout)));
+
+		if (loadout.getWeapon() != null && loadout.getWeapon().getLegendaryEffects() != null){
+			modifiers.putAll(parseLegendaryConditions(loadout.getWeapon().getLegendaryEffects(), loadout));
+		}
+
 		applyAdditionalContext(modifiers, loadout);
 
 		return modifiers;
@@ -67,7 +75,7 @@ public class ModifierAggregationService
 	 * @param modifiers The {@link HashMap} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
-	public void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers, Loadout loadout)
+	private void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers, Loadout loadout)
 	{
 		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
 
@@ -92,6 +100,21 @@ public class ModifierAggregationService
 				}
 			}
 		}
+	}
+
+	/**
+	 * A method used to check conditions before they are applied to the modifier map.
+	 * @param modifiersMap A {@link HashMap} of {@link LegendaryEffect}'s that will have their conditions evaluated.
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
+	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
+	 * 		   whether the {@link Modifier}'s conditions have been me
+	 */
+	//todo - this seems like a short term fix that may require future changes.
+	private HashMap<LegendaryEffect, Boolean> parseLegendaryConditions(HashMap<LegendaryEffect, Boolean> modifiersMap, Loadout loadout)
+	{
+		modifiersMap.entrySet().forEach(entry -> entry.setValue(
+			parsingService.evaluateCondition(null, entry.getKey().condition(), loadout)));
+		return modifiersMap;
 	}
 
 	/**

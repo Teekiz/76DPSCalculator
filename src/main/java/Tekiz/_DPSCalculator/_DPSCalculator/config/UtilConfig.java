@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -73,10 +74,12 @@ public class UtilConfig
 		module.addKeySerializer(Perk.class, hashMapKeySerializer);
 		module.addKeySerializer(Consumable.class, hashMapKeySerializer);
 		module.addKeySerializer(Mutation.class, hashMapKeySerializer);
+		module.addKeySerializer(LegendaryEffect.class, hashMapKeySerializer);
 
 		module.addKeyDeserializer(Perk.class, hashMapKeyDeserializer);
 		module.addKeyDeserializer(Consumable.class, hashMapKeyDeserializer);
 		module.addKeyDeserializer(Mutation.class, hashMapKeyDeserializer);
+		module.addKeyDeserializer(LegendaryEffect.class, hashMapKeyDeserializer);
 
 		module.addSerializer(Expression.class, expressionSerializer);
 		module.addDeserializer(Expression.class, expressionDeserializer);

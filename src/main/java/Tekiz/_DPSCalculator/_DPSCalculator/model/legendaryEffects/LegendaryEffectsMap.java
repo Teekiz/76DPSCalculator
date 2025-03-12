@@ -1,37 +1,31 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * An object representing the legendary effects a piece of equipment has.
  */
-public class LegendaryEffectsMap
+public class LegendaryEffectsMap extends HashMap<LegendaryEffect, Boolean>
 {
 	/**
 	 * A {@link HashMap} for legendary effects. If set to {@code true}, the effect can be changed.
 	 */
-	private final HashMap<LegendaryEffect, Boolean> legendaryEffects;
 
-	public LegendaryEffectsMap()
-	{
-		this.legendaryEffects = new HashMap<>();
+	/*
+	@JsonCreator
+	public LegendaryEffectsMap(@JsonProperty("legendaryEffects") HashMap<LegendaryEffect, Boolean> legendaryEffects) {
+		if (legendaryEffects != null) {
+			this.putAll(legendaryEffects);
+		}
 	}
 
-	public LegendaryEffectsMap(HashMap<LegendaryEffect, Boolean> legendaryEffects)
-	{
-		this.legendaryEffects = legendaryEffects;
-	}
-
-	/**
-	 * A method to return all the legendary effects on an object and convert them into a {@link HashMap} for aggregation.
-	 * @return A {@link List} of {@link LegendaryEffect}'s currently contained on an object.
 	 */
-	public HashMap<LegendaryEffect, Boolean> aggregateLegendaryEffectsModifiers()
-	{
-		HashMap<LegendaryEffect, Boolean> newEffectsMap = new HashMap<>();
-		legendaryEffects.keySet().forEach(e -> newEffectsMap.put(e, true));
-		return newEffectsMap;
+
+	public LegendaryEffectsMap() {
+		super();
 	}
 
 	/**
@@ -41,17 +35,22 @@ public class LegendaryEffectsMap
 	 */
 	public void addLegendaryEffect(LegendaryEffect newEffect)
 	{
-		LegendaryEffect currentEffectInSlot = legendaryEffects.keySet().stream()
+		if (newEffect == null) {
+			return;
+		}
+
+		LegendaryEffect currentEffectInSlot = this.keySet().stream()
+			.filter(Objects::nonNull)
 			.filter(e -> e.starType().equals(newEffect.starType())).findFirst().orElse(null);
 
 		if (currentEffectInSlot == null)
 		{
-			legendaryEffects.put(newEffect, true);
+			this.put(newEffect, true);
 		}
-		else if (Boolean.TRUE.equals(legendaryEffects.get(currentEffectInSlot)))
+		else if (Boolean.TRUE.equals(this.get(currentEffectInSlot)))
 		{
-			legendaryEffects.remove(currentEffectInSlot);
-			legendaryEffects.put(newEffect, true);
+			this.remove(currentEffectInSlot);
+			this.put(newEffect, true);
 		}
 	}
 
@@ -62,12 +61,17 @@ public class LegendaryEffectsMap
 	 */
 	public void removeLegendaryEffect(LegendaryEffect effect)
 	{
-		LegendaryEffect currentEffectInSlot = legendaryEffects.keySet().stream()
+		if (effect == null) {
+			return;
+		}
+
+		LegendaryEffect currentEffectInSlot = this.keySet().stream()
+			.filter(Objects::nonNull)
 			.filter(e -> e.starType().equals(effect.starType())).findFirst().orElse(null);
 
-		if (currentEffectInSlot == null || Boolean.TRUE.equals(legendaryEffects.get(currentEffectInSlot)))
+		if (currentEffectInSlot == null || Boolean.TRUE.equals(this.get(currentEffectInSlot)))
 		{
-			legendaryEffects.remove(effect);
+			this.remove(effect);
 		}
 	}
 }

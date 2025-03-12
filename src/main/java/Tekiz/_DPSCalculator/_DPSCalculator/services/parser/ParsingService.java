@@ -50,11 +50,12 @@ public class ParsingService
 	 * @param rootObject The root object for the evaluation context, or {@code null} if no root is needed.
 	 * @return The configured {@link StandardEvaluationContext} for SpEL evaluations.
 	 */
-	public StandardEvaluationContext getContext(Object rootObject, Loadout loadout)
+	private StandardEvaluationContext getContext(Object rootObject, Loadout loadout)
 	{
 		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
 		context.setVariable("player", loadout.getPlayer());
 		context.setVariable("weapon", loadout.getWeapon());
+		context.setVariable("enemy", loadout.getEnemy());
 
 		if (loadout.getWeapon() == null) {
 			log.warn("Warning: Weapon is null in context");
@@ -108,6 +109,10 @@ public class ParsingService
 	{
 		try
 		{
+			//if the condition has not been initialised, return true.
+			if (condition == null) {
+				return true;
+			}
 			StandardEvaluationContext context = getContext(rootObject, loadout);
 			return condition.getValue(context, Boolean.class);
 		}
