@@ -4,7 +4,7 @@
     "addictionType" : "NONE",
     "modifierSource" : "CONSUMABLE_MEAT",
     "effects" : {
-        "ADDITIONAL_CONTEXT_REQUIRED" : "TESTCONDITION",
+        "ADDITIONAL_CONTEXT_REQUIRED" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.PHYSICAL) ? #MapUtil.createEntry(#ModifierType.SPECIAL_CHARISMA, 5) : #MapUtil.createEntry(#ModifierType.SPECIAL_CHARISMA, 0)",
         "SPECIAL_INTELLIGENCE" : 2,
         "SPECIAL_ENDURANCE" : 3
     }

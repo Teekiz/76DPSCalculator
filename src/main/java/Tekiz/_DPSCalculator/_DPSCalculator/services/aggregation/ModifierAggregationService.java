@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierScriptService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class ModifierAggregationService
 {
 	private final ModifierExpressionService modifierExpressionService;
+	private final ModifierScriptService modifierScriptService;
 	private final ModifierBoostService modifierBoostService;
 	private final ParsingService parsingService;
 
@@ -33,14 +35,16 @@ public class ModifierAggregationService
 	 * The constructor for the ModifierAggregationService.
 	 * @param modifierExpressionService A service that {@code applyAdditionalContext} uses to search for expressions
 	 *       corresponding to the name of the {@link Modifier}.
+	 * @param modifierScriptService A service that runs scripts at runtime.
 	 * @param modifierBoostService A service that {@code filterEffects} uses to apply bonus effects to any values of a given {@link Modifier}'s
 	 * 		{@link ModifierSource}.
 	 * @param parsingService A service responsible for parsing and evaluating SpEL (Spring Expression Language) expressions.
 	 */
 	@Autowired
-	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierBoostService modifierBoostService, ParsingService parsingService)
+	public ModifierAggregationService(ModifierExpressionService modifierExpressionService, ModifierScriptService modifierScriptService, ModifierBoostService modifierBoostService, ParsingService parsingService)
 	{
 		this.modifierExpressionService = modifierExpressionService;
+		this.modifierScriptService = modifierScriptService;
 		this.modifierBoostService = modifierBoostService;
 		this.parsingService = parsingService;
 	}
@@ -71,7 +75,7 @@ public class ModifierAggregationService
 
 	/**
 	 * A method that is used for to identify and apply {@link Modifier}'s
-	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED".
+	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED" or "SCRIPT".
 	 * @param modifiers The {@link HashMap} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
@@ -86,17 +90,26 @@ public class ModifierAggregationService
 				List<ModifierTypes> keysToModify = new ArrayList<>();
 
 				effects.forEach((key, value) -> {
-					if (key == ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED) {
+					if (key == ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED || key == ModifierTypes.SCRIPT) {
 						keysToModify.add(key);
 					}
 				});
 
 				for (ModifierTypes key : keysToModify) {
-					Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
-						modifierExpressionService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
-					if (additionalContextEntry != null) {
-						effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
+					if (key.equals(ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED)){
+						Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+							modifierExpressionService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
+						if (additionalContextEntry != null) {
+							effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
+						}
+					} else if (key.equals(ModifierTypes.SCRIPT)) {
+						Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+							modifierScriptService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
+						if (additionalContextEntry != null) {
+							effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
+						}
 					}
+
 				}
 			}
 		}

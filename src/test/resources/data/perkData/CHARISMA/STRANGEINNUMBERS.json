@@ -13,7 +13,7 @@
     {
         "1" :
         {
-            "ADDITIONAL_CONTEXT_REQUIRED" : "STRANGEINNUMBERS"
+            "ADDITIONAL_CONTEXT_REQUIRED" : "#MapUtil.createBoostEntry(#ModifierSource.MUTATION_POSITIVE, 1.25)"
         }
     }
 }

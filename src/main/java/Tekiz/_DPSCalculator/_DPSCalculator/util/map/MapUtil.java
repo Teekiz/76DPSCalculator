@@ -37,6 +37,4 @@ public class MapUtil
 		return new AbstractMap.SimpleEntry<>(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS,
 			new ModifierValue<>(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS, new ModifierBoost(source, value)));
 	}
-
-
 }

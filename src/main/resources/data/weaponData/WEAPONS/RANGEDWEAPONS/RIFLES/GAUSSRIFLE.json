@@ -18,5 +18,6 @@
     "projectileCount" : 1,
     "rangedPenalty" : -50,
     "reloadTime" : 4.20,
-    "attackDelay" : 0.15
+    "attackDelay" : 0.15,
+    "legendaryEffects" : {}
 }

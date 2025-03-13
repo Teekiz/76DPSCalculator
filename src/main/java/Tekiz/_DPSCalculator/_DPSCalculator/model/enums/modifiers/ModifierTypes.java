@@ -24,6 +24,7 @@ public enum ModifierTypes
 	SPECIAL_LUCK(Integer.class),
 	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),
+	SCRIPT(String.class),
 	//This is used if an effect affects other modifiers (therefore requiring priority)
 	PRIORITY_AFFECTS_MODIFIERS(ModifierBoost.class),
 	ERROR_TYPE(String.class);
