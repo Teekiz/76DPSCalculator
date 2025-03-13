@@ -4,7 +4,7 @@
     "addictionType" : "ALCOHOL",
     "modifierSource" : "CONSUMABLE_ALCOHOL",
     "effects" : {
-        "ADDITIONAL_CONTEXT_REQUIRED" : "BALLISTICBOCK",
+        "ADDITIONAL_CONTEXT_REQUIRED" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.0)",
         "SPECIAL_ENDURANCE" : 3
     }
 }

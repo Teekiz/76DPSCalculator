@@ -4,7 +4,7 @@
     "addictionType" : "FURY",
     "modifierSource" : "CONSUMABLE_CHEMS",
     "effects" : {
-        "ADDITIONAL_CONTEXT_REQUIRED" : "FURY",
+        "ADDITIONAL_CONTEXT_REQUIRED" : "#weapon != null && (#weapon.getWeaponType()?.equals(#WeaponType.ONEHANDED) || #weapon.getWeaponType()?.equals(#WeaponType.TWOHANDED)) ? #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.30) : #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.0)",
         "SPECIAL_PERCEPTION" : -5
     }
 }
