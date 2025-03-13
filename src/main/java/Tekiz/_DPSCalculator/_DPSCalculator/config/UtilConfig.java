@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -46,7 +47,7 @@ public class UtilConfig
 	private String storagePathProperties;
 
 	@Bean
-	@ConditionalOnProperty(name = "object.loader.strategy", havingValue = "json")
+	@Profile({"local-tests", "container-tests", "local"})
 	public JsonIDMapper jsonIDMapper() {
 		return new JsonIDMapper(filePathProperties,
 		storagePathProperties, false);}

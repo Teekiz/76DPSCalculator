@@ -1,0 +1,52 @@
+name: Unit Tests
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: container-tests
+    permissions:
+      security-events: write
+    container: node:20-bookworm-slim
+    services:
+      redis:
+        image: redis
+        env:
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
+        options:
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'temurin'
+
+      - name: Grant execute permissions to Gradle
+        run: chmod +x gradlew
+
+      - name: Copy local configuration files to container
+        run: |
+          mkdir -p /workspace/resources/
+          cp ./src/test/resources/filepaths-container.properties /workspace/resources/
+          cp ./src/test/resources/application-container-tests.properties /workspace/resources/
+          cp -r ./src/test/resources/data/ /workspace/resources/data/
+          cp -r ./src/test/resources/scripts/ /workspace/resources/scripts/
+          cp -r ./src/test/resources/expressions/ /workspace/resources/expressions/
+
+      - name: Install dependencies
+        run: ./gradlew build --no-daemon
+
+      - name: Run tests
+        run: ./gradlew test --info

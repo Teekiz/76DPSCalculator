@@ -51,7 +51,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		//setting the conditions for the two base weapons
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 
 		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
@@ -75,7 +75,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
 		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
@@ -83,7 +83,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//level 1 tenderizer should add 5% extra damage on top of the existing damage
 		//39.2 * (1 + 0.05) = 41.16 (41.2)
-		perkManager.addPerk("perks3", loadout);//TENDERIZER
+		perkManager.addPerk("perks4", loadout);//TENDERIZER
 		assertEquals(41.2, calculator.calculateOutgoingDamage(loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -150,7 +150,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		//setting the conditions for the two base weapons
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 
 		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
@@ -160,7 +160,7 @@ public class CalculationServicesTest extends BaseTestClass
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
-		enemyManager.changeEnemy("ENEMIES3", loadout);
+		enemyManager.changeEnemy("ENEMIES2", loadout);
 		loadout.getEnemy().setTargetedLimb(Limbs.THRUSTER);
 
 		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8
@@ -199,7 +199,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		//setting the conditions for the two base weapons
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 
 		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
@@ -209,7 +209,7 @@ public class CalculationServicesTest extends BaseTestClass
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
 
-		enemyManager.changeEnemy("ENEMIES3", loadout);
+		enemyManager.changeEnemy("ENEMIES2", loadout);
 		loadout.getEnemy().setTargetedLimb(Limbs.MIDDLE_EYE);
 
 		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8

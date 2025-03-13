@@ -1,0 +1,10 @@
+
+{
+    "name" : "Feral ghoul",
+    "isGlowing" : false,
+    "enemyType" : "GHOUL",
+    "armourResistance" :
+    {
+        "damageResistance": 2, "energyResistance": 2, "radiationResistance": 1000, "cryoResistance": 2, "poisonResistance" : 150, "fireResistance" : 2
+    }
+}

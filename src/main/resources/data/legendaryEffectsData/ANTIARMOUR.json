@@ -1,0 +1,13 @@
+{
+    "name" : "Anti-Armor",
+    "description" : "+50% Armor Penetration",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "MELEE_WEAPONS",
+        "RANGED_WEAPONS"
+    ],
+    "starType" : "_1STAR",
+    "effects" : {
+        "PENETRATION" : 0.5
+    }
+}

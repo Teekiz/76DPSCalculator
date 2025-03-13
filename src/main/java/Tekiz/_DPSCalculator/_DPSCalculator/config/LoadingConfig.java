@@ -6,11 +6,11 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.Ob
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsonidmapper.JsonIDMapper;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 
 @Slf4j
 @Configuration
@@ -18,7 +18,7 @@ public class LoadingConfig
 {
 	@Bean
 	@Lazy
-	@ConditionalOnProperty(name = "object.loader.strategy", havingValue = "json")
+	@Profile({"local-tests", "container-tests", "local"})
 	public ObjectLoaderStrategy jsonLoaderStrategy(ObjectMapper objectMapper, JsonIDMapper jsonIDMapper) {
 		log.debug("Using JSON loader strategy.");
 		return new JsonLoaderStrategy(objectMapper, jsonIDMapper);
@@ -26,7 +26,7 @@ public class LoadingConfig
 
 	@Bean
 	@Lazy
-	@ConditionalOnProperty(name = "object.loader.strategy", havingValue = "mongo")
+	@Profile("docker")
 	public ObjectLoaderStrategy dbLoaderStrategy(ApplicationContext applicationContext) {
 		log.debug("Using Mongo loader strategy.");
 		return new MongoDBLoaderStrategy(applicationContext);

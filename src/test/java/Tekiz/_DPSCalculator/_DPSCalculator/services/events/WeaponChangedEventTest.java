@@ -43,7 +43,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 		//condition to use perk does not match
 		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.setWeapon("WEAPONS2", loadout); //10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout); //10MMPISTOL
 		assertNotNull(loadout.getWeapon());
 		assertEquals(loadout.getWeapon().getWeaponType(), WeaponType.PISTOL);
 
@@ -62,7 +62,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 	{
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALLIBRATE
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadout));
 
@@ -115,7 +115,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 		perkManager.addPerk("PERKS6", loadout);//TESTMODIFIER
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage(loadout));
 
 		weaponManager.setWeapon("WEAPONS3", loadout);//GAUSSRIFLE

@@ -29,7 +29,7 @@ public class ModifierExpressionServicesTest extends BaseTestClass
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		playerManager.getPlayer(loadout).setCurrentHP(125.0);
 
 		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION

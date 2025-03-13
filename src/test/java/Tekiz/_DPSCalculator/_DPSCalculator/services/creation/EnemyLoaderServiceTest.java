@@ -43,8 +43,8 @@ public class EnemyLoaderServiceTest extends BaseTestClass
 	{
 		List<Enemy> enemies = dataLoaderService.loadAllData("enemies", Enemy.class, null);
 		assertNotNull(enemies);
-		assertEquals("Mr Gutsy", enemies.get(1).getName());
-		assertEquals(EnemyType.SUPER_MUTANT, enemies.get(0).getEnemyType());
-		assertEquals(1000000000, enemies.get(0).getArmourResistance().getRadiationResistance());
+		assertEquals("Mr Gutsy", enemies.get(0).getName());
+		assertEquals(EnemyType.SUPER_MUTANT, enemies.get(1).getEnemyType());
+		assertEquals(1000000000, enemies.get(1).getArmourResistance().getRadiationResistance());
 	}
 }

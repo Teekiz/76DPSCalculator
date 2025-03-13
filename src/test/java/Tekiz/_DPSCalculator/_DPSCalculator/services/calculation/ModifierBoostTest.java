@@ -39,7 +39,7 @@ public class ModifierBoostTest extends BaseTestClass
 	{
 		log.debug("{}Running test - checkSourceTypes in ModifierBoostTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		consumableManager.addConsumable("CONSUMABLES3", loadout);//FURY
+		consumableManager.addConsumable("CONSUMABLES5", loadout);//FURY
 		Consumable consumable = loadout.getConsumables().keySet().stream()
 			.filter(consumableObject -> consumableObject.name().equalsIgnoreCase("Fury"))//FURY
 			.findFirst()
@@ -63,14 +63,14 @@ public class ModifierBoostTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
 		playerManager.getPlayer(loadout).setCurrentHP(98.0);
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 
 		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
 		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 33.9
 		//28 * (1 + 0.31 - 0.1) = 33.9 (33.88)
 		assertEquals(33.9, damageCalculationService.calculateOutgoingDamage(loadout));
 
-		perkManager.addPerk("PERKS2", loadout);//STRANGEINNUMBERS
+		perkManager.addPerk("PERKS3", loadout);//STRANGEINNUMBERS
 		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
 		//0.31 * 1.25 = 0.3875 (0.39 rounded up)
 		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 36.1

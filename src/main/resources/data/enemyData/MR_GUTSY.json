@@ -1,0 +1,10 @@
+
+{
+    "name" : "Mr Gutsy",
+    "isGlowing" : false,
+    "enemyType" : "MR_HANDY",
+    "armourResistance" :
+    {
+        "damageResistance": 6, "energyResistance": 4, "radiationResistance": 1000000000, "cryoResistance": 6, "poisonResistance" : 1000000000, "fireResistance" : 4
+    }
+}

@@ -20,7 +20,7 @@ public class EnemyManagerTest extends BaseTestClass
 		enemyManager.changeEnemy("ENEMIES1", loadout);
 		assertEquals("Feral ghoul", loadout.getEnemy().getName());
 
-		enemyManager.changeEnemy("ENEMIES2", loadout);
+		enemyManager.changeEnemy("ENEMIES3", loadout);
 		assertEquals("Super mutant", loadout.getEnemy().getName());
 	}
 

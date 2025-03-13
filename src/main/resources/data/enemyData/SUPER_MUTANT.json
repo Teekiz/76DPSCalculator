@@ -1,0 +1,10 @@
+
+{
+    "name" : "Super mutant",
+    "isGlowing" : false,
+    "enemyType" : "SUPER_MUTANT",
+    "armourResistance" :
+    {
+        "damageResistance": 2, "energyResistance": 2, "radiationResistance": 1000000000, "cryoResistance": 2, "poisonResistance" : 35, "fireResistance" : 2
+    }
+}

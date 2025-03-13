@@ -35,12 +35,12 @@ public class TestRedisSerialization extends BaseTestClass
 	{
 		log.debug("{}Running test - testRedisSerialization in TestRedisSerialization.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALLIBRATE
-		consumableManager.addConsumable("CONSUMABLES3", loadout);//FURY
-		consumableManager.addConsumable("CONSUMABLES4", loadout);//BALLISTICBOCK
+		consumableManager.addConsumable("CONSUMABLES5", loadout);//FURY
+		consumableManager.addConsumable("CONSUMABLES2", loadout);//BALLISTICBOCK
 		perkManager.addPerk("PERKS1", loadout);//GUNSLINGER
-		perkManager.addPerk("PERKS2", loadout);//STRANGEINNUMBERS
+		perkManager.addPerk("PERKS3", loadout);//STRANGEINNUMBERS
 		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
 		legendaryEffectManager.addLegendaryEffect("LEGENDARYEFFECT1", loadout.getWeapon(), loadout);
 

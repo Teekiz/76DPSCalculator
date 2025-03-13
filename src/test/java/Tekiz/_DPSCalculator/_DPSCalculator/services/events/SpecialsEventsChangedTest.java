@@ -29,13 +29,13 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 		//setting the value to 4.
 		Loadout loadout = loadoutManager.getLoadout(1);
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 4);
-		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
-		perkManager.changePerkRank("perks2", 3, loadout);//Strange in Numbers
-		perkManager.addPerk("perks3", loadout);//TENDERIZER
+		perkManager.addPerk("perks3", loadout);//STRANGEINNUMBERS
+		perkManager.changePerkRank("perks3", 3, loadout);//Strange in Numbers
+		perkManager.addPerk("perks4", loadout);//TENDERIZER
 
 		//ensuring that each perk has been added and that all four spaces are used.
-		assertEquals(3, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
-		assertEquals(1, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Tenderizer
+		assertEquals(3, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Strange in Numbers
+		assertEquals(1, perkManager.getPerkInLoadout("perks4", loadout).perkRank().getCurrentRank());//Tenderizer
 		assertEquals(2, loadout.getPerks().size());
 
 		//setting the players charisma to 3, therefore, one of the perks should be removed
