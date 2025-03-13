@@ -1,8 +1,13 @@
 package scripts
 
-class methodScript extends Script
+import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout
+import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+
+class testAdrenalReaction extends Script
 {
-    def getAdrenalReactionValue(double hpPercentage) {
+    def run(Loadout loadout) {
+        double hpPercentage = loadout.player.healthPercentage
         hpPercentage = Math.min(hpPercentage, 100.0)
         def adrenalReactionMap = [
                 (0.0) : 0.50,
@@ -22,7 +27,8 @@ class methodScript extends Script
         {
             it.key >= hpPercentage
         }?.value
-        return value.doubleValue()
+
+        return MapUtil.createEntry(ModifierTypes.DAMAGE_ADDITIVE, value.doubleValue())
     }
 
     @Override

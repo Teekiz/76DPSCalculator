@@ -7,7 +7,7 @@
         "conditionString" : "true",
         "effects" : 
         {
-            "ADDITIONAL_CONTEXT_REQUIRED" : "#MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, @modifierMethodService.runMethod('getAdrenalReactionValue', #player.getHealthPercentage()))"
+            "SCRIPT" : "adrenalReaction"
         }
     },
     "negativeEffects" :
