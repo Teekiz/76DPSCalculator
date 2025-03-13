@@ -43,7 +43,6 @@ jobs:
           cp ./src/test/resources/application-container-tests.properties /workspace/resources/
           cp -r ./src/test/resources/data/ /workspace/resources/data/
           cp -r ./src/test/resources/scripts/ /workspace/resources/scripts/
-          cp -r ./src/test/resources/expressions/ /workspace/resources/expressions/
 
       - name: Install dependencies
         run: ./gradlew build --no-daemon
