@@ -10,5 +10,6 @@
     },
     "apCost" : 35,
     "attackSpeed" : 1.14,
-    "criticalBonus" : 100
+    "criticalBonus" : 100,
+    "legendaryEffects" : {}
 }

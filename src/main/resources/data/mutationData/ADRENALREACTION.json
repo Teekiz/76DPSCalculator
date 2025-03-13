@@ -7,7 +7,7 @@
         "conditionString" : "true",
         "effects" : 
         {
-            "ADDITIONAL_CONTEXT_REQUIRED" : "ADRENALREACTION"
+            "SCRIPT" : "adrenalReaction"
         }
     },
     "negativeEffects" :
