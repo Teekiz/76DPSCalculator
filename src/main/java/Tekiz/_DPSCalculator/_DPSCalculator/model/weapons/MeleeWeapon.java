@@ -1,6 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +17,7 @@ import lombok.extern.jackson.Jacksonized;
 public class MeleeWeapon extends Weapon
 {
 	@JsonIgnore
-	public double getBaseDamage(int weaponLevel)
+	public List<WeaponDamage> getBaseDamage(int weaponLevel)
 	{
 		return weaponDamageByLevel.get(weaponLevel);
 	}

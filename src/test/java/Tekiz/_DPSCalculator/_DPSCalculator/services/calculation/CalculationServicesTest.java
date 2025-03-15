@@ -95,7 +95,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
-		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+		//A semi-automatic rifle that deals 100 Physical WeaponDamage against a target with 200 (Physical) WeaponDamage Resist will deal 38 Physical WeaponDamage:
 
 		HashMap<Integer, Double> damageHashMap = new HashMap<>();
 		damageHashMap.put(45, 100.0);
@@ -119,7 +119,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
-		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+		//A semi-automatic rifle that deals 100 Physical WeaponDamage against a target with 200 (Physical) WeaponDamage Resist will deal 38 Physical WeaponDamage:
 
 		HashMap<ModifierTypes, ModifierValue<?>> map = new HashMap<>();
 		map.put(ModifierTypes.PENETRATION, new ModifierValue<>(ModifierTypes.PENETRATION, 0.36));
@@ -175,7 +175,7 @@ public class CalculationServicesTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 
 		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
-		//A semi-automatic rifle that deals 100 Physical Damage against a target with 200 (Physical) Damage Resist will deal 38 Physical Damage:
+		//A semi-automatic rifle that deals 100 Physical WeaponDamage against a target with 200 (Physical) WeaponDamage Resist will deal 38 Physical WeaponDamage:
 
 		HashMap<Integer, Double> damageHashMap = new HashMap<>();
 		damageHashMap.put(45, 100.0);

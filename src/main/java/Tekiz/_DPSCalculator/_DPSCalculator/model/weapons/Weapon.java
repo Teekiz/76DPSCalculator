@@ -1,9 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ChangeType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.ModDamage;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import lombok.Getter;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.experimental.SuperBuilder;
@@ -40,13 +43,9 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonProperty("weaponType")
 	protected final WeaponType weaponType;
 
-	/** The damage type the weapon afflicts. This is used for various {@link Modifier} conditions. */
-	@JsonProperty("damageType")
-	protected final DamageType damageType;
-
 	/** A {@link HashMap} of the weapons level ({@link Integer}) and the base damage it provides ({@link Double}). */
 	@JsonProperty("weaponDamageByLevel")
-	protected final HashMap<Integer, Double> weaponDamageByLevel;
+	protected final HashMap<Integer, List<WeaponDamage>> weaponDamageByLevel;
 
 	/** The {@link Integer} value that it costs to use the weapon. */
 	@JsonProperty("apCost")
@@ -70,5 +69,5 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	 * @return The {@code weaponDamageByLevel} corresponding damage value.
 	 */
 	@JsonIgnore
-	public abstract double getBaseDamage(int weaponLevel);
+	public abstract List<WeaponDamage> getBaseDamage(int weaponLevel);
 }

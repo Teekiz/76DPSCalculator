@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+/**
+ * A service that calculates the damage with the reload time and any DoT remaining.
+ */
 public class ReloadDamageCalculator
 {
-	public double calculateDPSWithReload(double damagePerShot, Loadout loadout)
+	public double calculateDPSWithReload(double damagePerShot, double damageOverTimeDuration, Loadout loadout)
 	{
 		Weapon weapon = loadout.getWeapon();
 
@@ -36,8 +39,21 @@ public class ReloadDamageCalculator
 		//the actual damage per second with the reload time factored in.
 		double damagePerSecond = damagePerCycle / totalCycleTime;
 
-		log.debug("BaseDamage with reload time is {}.", damagePerSecond);
+		double dotDamage = 0;
+		//applying DoT
+		if (damageOverTimeDuration > 0)
+		{
+			//rounds the reload time down so that only each full second is considered
+			double reloadTimeInSeconds = Math.floor(rangedWeapon.getReloadTime());
 
-		return damagePerSecond;
+			//if the reload time is longer than the DoT duration, use the DoT duration
+			double dotDurationRemaining = Math.min(damageOverTimeDuration, reloadTimeInSeconds);
+
+			//Remaining time with DoT added.
+			dotDamage = damagePerShot * dotDurationRemaining;
+		}
+
+		log.debug("WeaponDamage with reload time is {} with added DoT damage: {}.", damagePerSecond, dotDamage);
+		return damagePerSecond + dotDamage;
 	}
 }

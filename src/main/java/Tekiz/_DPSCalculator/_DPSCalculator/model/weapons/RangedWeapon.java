@@ -1,11 +1,15 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ChangeType;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.ModDamage;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -58,7 +62,7 @@ public class RangedWeapon extends Weapon
 	Receiver receiver;
 
 	@JsonIgnore
-	public double getBaseDamage(int weaponLevel)
+	public List<WeaponDamage> getBaseDamage(int weaponLevel)
 	{
 		return weaponDamageByLevel.get(weaponLevel);
 	}

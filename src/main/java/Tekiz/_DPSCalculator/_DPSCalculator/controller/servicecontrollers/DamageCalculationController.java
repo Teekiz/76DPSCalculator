@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/services")
-@Tag(name = "Damage Calculation Service API", description = "A group of APIs for calculating loadout damage.")
+@Tag(name = "WeaponDamage Calculation Service API", description = "A group of APIs for calculating loadout damage.")
 public class DamageCalculationController
 {
 	private final LoadoutManager loadoutManager;

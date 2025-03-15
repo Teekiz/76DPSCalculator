@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,12 +15,15 @@ public class BaseDamageService
 	 * @param loadout The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts base damage.
 	 */
-	public double calculateBaseDamage(Loadout loadout)
+	public double calculateBaseDamage(Loadout loadout, WeaponDamage weaponDamage)
 	{
 		double baseDamage = 0;
-		if (loadout.getWeapon() != null)
+
+		if (weaponDamage.overTime() > 0)
 		{
-			baseDamage += loadout.getWeapon().getBaseDamage(45);
+			baseDamage = weaponDamage.damage() / weaponDamage.overTime();
+		} else {
+			baseDamage = weaponDamage.damage();
 		}
 		//todo - anything that modifies base damage
 

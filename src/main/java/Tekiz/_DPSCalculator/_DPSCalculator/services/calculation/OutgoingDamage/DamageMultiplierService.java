@@ -40,7 +40,7 @@ public class DamageMultiplierService
 
 		for (Double bonus : doubleList)
 		{
-			outgoingDamage = outgoingDamage * (bonus += 1);
+			outgoingDamage = outgoingDamage * (bonus + 1);
 		}
 
 		return outgoingDamage;

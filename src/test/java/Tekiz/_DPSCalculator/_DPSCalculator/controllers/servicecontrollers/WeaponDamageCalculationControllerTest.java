@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(DamageCalculationController.class)
-public class DamageCalculationControllerTest
+public class WeaponDamageCalculationControllerTest
 {
 	@Autowired
 	MockMvc mockMvc;
