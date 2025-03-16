@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 
+
 /**
  * Captures the damage that a weapon or effect applies.
  * @param damageType The type of damage provided.

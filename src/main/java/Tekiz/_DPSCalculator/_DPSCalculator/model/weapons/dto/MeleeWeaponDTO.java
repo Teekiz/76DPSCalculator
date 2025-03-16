@@ -13,4 +13,5 @@ import lombok.experimental.SuperBuilder;
 public class MeleeWeaponDTO extends WeaponDetailsDTO
 {
 	private final String dataType = "MELEE";
+	private String attackSpeed;
 }

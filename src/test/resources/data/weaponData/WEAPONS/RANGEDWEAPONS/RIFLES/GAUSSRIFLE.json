@@ -1,23 +1,22 @@
 {
     "name" : "Test gauss rifle",
     "weaponType" : "RIFLE",
-    "damageType" : "ENERGY",
     "weaponDamageByLevel" :
     {
-        "35" : 125.0,
-        "45" : 140.0
+      "35" : [
+        {"damageType" : "ENERGY", "damage" :  125.0, "overTime" :  0}
+      ],
+      "45" : [
+        {"damageType" : "ENERGY", "damage" :  140.0, "overTime" :  0}
+      ]
     },
     "apCost" : 30,
-    "attackSpeed" : 0.83,
     "criticalBonus" : 100,
-    "ammo" : "2MMEC",
     "magazineSize" : 5,
     "fireRate" : 67,
     "range" : 204,
     "accuracy" : 60,
-    "projectileCount" : 1,
     "rangedPenalty" : -50,
     "reloadTime" : 4.20,
-    "attackDelay" : 0.15,
     "legendaryEffects" : {}
 }

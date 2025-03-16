@@ -1,6 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import java.util.HashMap;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +18,7 @@ public class WeaponDetailsDTO
 	private String id;
 	private String name;
 	private String weaponType;
-	private String damageType;
-	private HashMap<Integer, Double> weaponDamageByLevel;
+	private HashMap<Integer, List<WeaponDamage>> weaponDamageByLevel;
 	private int apCost;
+	private int criticalBonus;
 }

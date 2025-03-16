@@ -1,17 +1,17 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ChangeType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.ModDamage;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
@@ -51,10 +51,6 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonProperty("apCost")
 	protected final int apCost;
 
-	/** The {@link Double} value of the speed the weapon fires/attacks at. Different weapons will have varying rate of fires. */
-	@JsonProperty("attackSpeed")
-	protected final double attackSpeed;
-
 	/** The {@link Integer} value of the bonus to critical damage the weapon provides. Primarily used for VATS. */
 	@JsonProperty("criticalBonus")
 	protected final int criticalBonus;
@@ -70,4 +66,23 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	 */
 	@JsonIgnore
 	public abstract List<WeaponDamage> getBaseDamage(int weaponLevel);
+
+	/**
+	 * A method to check if a weapons damage contains a certain damage type.
+	 * @param damageType The type of damage to check for.
+	 * @param exclusiveToWeaponType If {@code true}, then this will only return true if the damage type matches and no other damage types exist.
+	 * @return {@code true} if weapon uses a matching damage type.
+	 */
+	@JsonIgnore
+	public boolean containsDamageType(DamageType damageType, boolean exclusiveToWeaponType)
+	{
+		List<WeaponDamage> damageTypeList = weaponDamageByLevel.values().stream().findFirst().orElse(new ArrayList<>());
+		for (WeaponDamage weaponDamage : damageTypeList){
+			if (weaponDamage.damageType().equals(damageType)){
+				return !exclusiveToWeaponType || damageTypeList.size() == 1;
+			}
+		}
+
+		return false;
+	}
 }

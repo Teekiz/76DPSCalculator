@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.BodyPartMultiplier.BodyPartMultiplierCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamagePerSecond.ReloadDamageCalculator;
@@ -66,21 +67,28 @@ public class DamageCalculationService
 
 	/**
 	 * A method that calculates the total damage output of the current loadout.
-	 * @param loadout  The loadout that will be used to calculate from.
+	 *
+	 * @param loadout         The loadout that will be used to calculate from.
+	 * @param useStaticDamage
 	 * @return A {@link Double} value of the loadout's damage output.
 	 */
-	public double calculateOutgoingDamage(Loadout loadout)
+	public double calculateOutgoingDamage(Loadout loadout, boolean useStaticDamage)
 	{
 		double totalDamage = 0;
 
+		Weapon weapon = loadout.getWeapon();
+		if (weapon == null){
+			return totalDamage;
+		}
+
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
-		for (WeaponDamage damage : loadout.getWeapon().getBaseDamage(45)){
+		for (WeaponDamage damage :weapon.getBaseDamage(45)){
 			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
 			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
 			double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
 
 			//WeaponDamage resit multiplier
-			double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, loadout);
+			double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, damage.damageType(), loadout);
 
 			double outgoingDamage_wDRMW_wBPM = outgoingDamageWithDamageResistMult;
 			//skip if the damage is DoT
@@ -89,9 +97,12 @@ public class DamageCalculationService
 			}
 
 			double damagePerSecond = outgoingDamage_wDRMW_wBPM;
-			if (loadout.getWeapon() instanceof RangedWeapon){
-				damagePerSecond = reloadDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout);
+			if (!useStaticDamage){
+				if (weapon instanceof RangedWeapon){
+					damagePerSecond = reloadDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout);
+				}
 			}
+
 
 			totalDamage += damagePerSecond;
 		}

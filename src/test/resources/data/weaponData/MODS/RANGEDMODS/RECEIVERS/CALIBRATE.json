@@ -2,7 +2,6 @@
     "name": "TestCalibrated",
     "receiverType": "SEMIAUTOMATIC",
     "damageChange": 0.0,
-    "modifierType": "DAMAGE_ADDITIVE",
     "damageCriticalMultiplier": 100,
     "fireRateChange": 0,
     "accuracyChange": 1,

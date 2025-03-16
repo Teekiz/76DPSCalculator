@@ -1,8 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ChangeType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.ModDamage;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
@@ -25,34 +23,24 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Jacksonized @SuperBuilder(toBuilder = true)
 public class RangedWeapon extends Weapon
 {
-	/** The ammo the gun uses. */
-	@JsonProperty("ammo")
-	String ammo;
 	/** The amount of times a weapon can shoot before requiring a reload. */
 	@JsonProperty("magazineSize")
 	int magazineSize;
 	/** The speed that the weapon attacks at when the trigger is held. */
 	@JsonProperty("fireRate")
 	int fireRate;
-	/** The range the weapon can operate at without loosing damage. */
+	/** The range the weapon can operate at without losing damage. */
 	@JsonProperty("range")
 	int range;
-	/** How accurate the weapon will be. */
-	@JsonProperty("accuracy")
-	int accuracy;
-
-	/** How many projectiles are fired per shot. */
-	@JsonProperty("projectileCount")
-	int projectileCount;
 	/** How much damage is lost if the weapon is fired at a target outside optimal range. */
 	@JsonProperty("rangedPenalty")
 	int rangedPenalty;
 	/** How long it takes to before the weapon can be fired again after running out of ammunition. */
 	@JsonProperty("reloadTime")
 	double reloadTime;
-	/** The time it takes before another shot can be fired. */
-	@JsonProperty("attackDelay")
-	double attackDelay;
+	/** How accurate the weapon will be. */
+	@JsonProperty("accuracy")
+	int accuracy;
 
 	/** The receiver the weapon uses. */
 	@NonFinal

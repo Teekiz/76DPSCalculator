@@ -2,16 +2,9 @@ package Tekiz._DPSCalculator._DPSCalculator.controllers.servicecontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.servicecontrollers.DamageCalculationController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.PlayerDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.mappers.LoadoutMapper;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -28,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -59,7 +53,7 @@ public class WeaponDamageCalculationControllerTest
 		Double damageValue = 2.0;
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(mockLoadout);
-		given(damageCalculationService.calculateOutgoingDamage(ArgumentMatchers.any())).willReturn(damageValue);
+		given(damageCalculationService.calculateOutgoingDamage(any(), anyBoolean())).willReturn(damageValue);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get(urlString + "/getLoadoutDPS")
@@ -72,7 +66,7 @@ public class WeaponDamageCalculationControllerTest
 		assertThat(response.getContentAsString()).contains(expectedJson);
 
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(damageCalculationService, times(1)).calculateOutgoingDamage(mockLoadout);
+		verify(damageCalculationService, times(1)).calculateOutgoingDamage(mockLoadout, true);
 	}
 
 	@Test
@@ -91,8 +85,8 @@ public class WeaponDamageCalculationControllerTest
 		mockLoadouts.add(mockLoadoutTwo);
 
 		given(loadoutManager.getLoadouts()).willReturn(mockLoadouts);
-		given(damageCalculationService.calculateOutgoingDamage(mockLoadoutOne)).willReturn(damageValueOne);
-		given(damageCalculationService.calculateOutgoingDamage(mockLoadoutTwo)).willReturn(damageValueTwo);
+		given(damageCalculationService.calculateOutgoingDamage(mockLoadoutOne, true)).willReturn(damageValueOne);
+		given(damageCalculationService.calculateOutgoingDamage(mockLoadoutTwo, true)).willReturn(damageValueTwo);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get(urlString + "/getAllLoadoutsDPS")
@@ -107,7 +101,7 @@ public class WeaponDamageCalculationControllerTest
 		assertThat(response.getContentAsString()).contains(expectedJsonTwo);
 
 		verify(loadoutManager, times(1)).getLoadouts();
-		verify(damageCalculationService, times(2)).calculateOutgoingDamage(any());
+		verify(damageCalculationService, times(2)).calculateOutgoingDamage(any(), anyBoolean());
 	}
 
 	@Test
@@ -125,6 +119,6 @@ public class WeaponDamageCalculationControllerTest
 		assertThat(response.getContentAsString()).contains(expectedJson);
 
 		verify(loadoutManager, times(1)).getLoadouts();
-		verify(damageCalculationService, times(0)).calculateOutgoingDamage(any());
+		verify(damageCalculationService, times(0)).calculateOutgoingDamage(any(), anyBoolean());
 	}
 }

@@ -2,7 +2,6 @@
     "name": "Default",
     "receiverType": "AUTOMATIC",
     "damageChange": 0.0,
-    "modifierType": "DAMAGE_ADDITIVE",
     "damageCriticalMultiplier": 0,
     "fireRateChange": 0,
     "accuracyChange": 0,

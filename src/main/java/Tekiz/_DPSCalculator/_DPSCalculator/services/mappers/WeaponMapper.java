@@ -52,7 +52,6 @@ public class WeaponMapper
 			.id(weapon.getId())
 			.name(weapon.getName())
 			.weaponType(weapon.getWeaponType().toString())
-			.damageType(weapon.getDamageType().toString())
 			.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 			.apCost(weapon.getApCost())
 			.build();
@@ -70,7 +69,6 @@ public class WeaponMapper
 				.id(weapon.getId())
 				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
-				.damageType(weapon.getDamageType().toString())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
 				.magazineSize(((RangedWeapon) weapon).getMagazineSize())
@@ -83,9 +81,9 @@ public class WeaponMapper
 				.id(weapon.getId())
 				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
-				.damageType(weapon.getDamageType().toString())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
+				.attackSpeed(((MeleeWeapon) weapon).getAttackSpeed().toString())
 				.build();
 		} else {
 			return convertToDetailsDTO(weapon);

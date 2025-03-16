@@ -34,7 +34,7 @@ public class DamageResistanceCalculator
 	 * @param loadout The loadout that will be used to calculate from.
 	 * @return The outgoing damage value multiplied with the damage resistance multiplier.
 	 */
-	public double calculateDamageResistance(double damage, Loadout loadout)
+	public double calculateDamageResistance(double damage, DamageType damageType, Loadout loadout)
 	{
 		Weapon weapon = loadout.getWeapon();
 		Enemy target = loadout.getEnemy();
@@ -43,7 +43,7 @@ public class DamageResistanceCalculator
 			return damage;
 		}
 
-		int resistance = getArmourResistance(weapon.getDamageType(), target);
+		int resistance = getArmourResistance(damageType, target);
 
 		//the target is immune to that damage type
 		if (resistance >= 10000)

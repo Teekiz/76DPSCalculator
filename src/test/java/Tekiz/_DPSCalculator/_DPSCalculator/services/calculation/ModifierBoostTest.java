@@ -68,14 +68,14 @@ public class ModifierBoostTest extends BaseTestClass
 		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
 		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 33.9
 		//28 * (1 + 0.31 - 0.1) = 33.9 (33.88)
-		assertEquals(33.9, damageCalculationService.calculateOutgoingDamage(loadout));
+		assertEquals(33.9, damageCalculationService.calculateOutgoingDamage(loadout, true));
 
 		perkManager.addPerk("PERKS3", loadout);//STRANGEINNUMBERS
 		//hp is set to 98.0 (49.0%) max health is 200 (250 - 50), so it sound return 0.31 additional damage
 		//0.31 * 1.25 = 0.3875 (0.39 rounded up)
 		//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 36.1
 		//28 * (1 + 0.39 - 0.1) = 36.1 (36.12)
-		assertEquals(36.1, damageCalculationService.calculateOutgoingDamage(loadout));
+		assertEquals(36.1, damageCalculationService.calculateOutgoingDamage(loadout, true));
 
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

@@ -38,13 +38,13 @@ public class ModifierExpressionServicesTest extends BaseTestClass
 			//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 30.5
 			//28 * (1 + 0.19 - 0.1) = 30.5 (30.52)
 
-		assertEquals(30.5, calculator.calculateOutgoingDamage(loadout));
+		assertEquals(30.5, calculator.calculateOutgoingDamage(loadout, true));
 
 			//(33 / 200) * 100 = 16.5% hp left. This results in a damage boost of 0.50.
 			//28 * (1 + 0.5 - 0.1) = 39.2
 
 		playerManager.getPlayer(loadout).setCurrentHP(33.0);
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout));
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout,true));
 
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

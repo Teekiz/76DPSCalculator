@@ -2,7 +2,6 @@
     "name": "TestAutomatic",
     "receiverType": "AUTOMATIC",
     "damageChange": -0.1,
-    "modifierType": "DAMAGE_ADDITIVE",
     "damageCriticalMultiplier": 0,
     "fireRateChange": 32,
     "accuracyChange": 0,
