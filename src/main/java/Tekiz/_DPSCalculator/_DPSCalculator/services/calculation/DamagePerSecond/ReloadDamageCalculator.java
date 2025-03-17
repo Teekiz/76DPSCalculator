@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamagePerSecond;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 public class ReloadDamageCalculator
 {
-	public double calculateDPSWithReload(double damagePerShot, double damageOverTimeDuration, Loadout loadout)
+	public double calculateDPSWithReload(double damagePerShot, double damageOverTimeDuration, Loadout loadout, DPSDetails dpsDetails)
 	{
 		Weapon weapon = loadout.getWeapon();
 
@@ -30,6 +31,11 @@ public class ReloadDamageCalculator
 		//the time to use up all ammo in magazine/clip
 		double timeToEmptyMagazine = (double) rangedWeapon.getMagazineSize() / shotsPerSecond;
 
+		//to avoid not a number exception (this is theory should never happen, but just in case)
+		if (Double.isNaN(timeToEmptyMagazine)){
+			timeToEmptyMagazine = 0;
+		}
+
 		//the time it takes to use up ammo and then reload.
 		double totalCycleTime = timeToEmptyMagazine + rangedWeapon.getReloadTime();
 
@@ -38,6 +44,11 @@ public class ReloadDamageCalculator
 
 		//the actual damage per second with the reload time factored in.
 		double damagePerSecond = damagePerCycle / totalCycleTime;
+
+		//to avoid not a number exception (this is theory should never happen, but just in case)
+		if (Double.isNaN(damagePerSecond)){
+			damagePerSecond = 0;
+		}
 
 		double dotDamage = 0;
 		//applying DoT
@@ -52,6 +63,9 @@ public class ReloadDamageCalculator
 			//Remaining time with DoT added.
 			dotDamage = damagePerShot * dotDurationRemaining;
 		}
+
+		dpsDetails.setShotsPerSecond(shotsPerSecond);
+		dpsDetails.setTimeToEmptyMagazine(timeToEmptyMagazine);
 
 		log.debug("WeaponDamage with reload time is {} with added DoT damage: {}.", damagePerSecond, dotDamage);
 		return damagePerSecond + dotDamage;

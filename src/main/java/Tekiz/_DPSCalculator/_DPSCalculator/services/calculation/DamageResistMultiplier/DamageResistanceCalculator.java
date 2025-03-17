@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMultiplier;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
@@ -32,9 +33,10 @@ public class DamageResistanceCalculator
 	 * A method to determine the damage reduction based on the target {@link Enemy}'s resistances.
 	 * @param damage The outgoing damage value.
 	 * @param loadout The loadout that will be used to calculate from.
+	 * @param dpsDetails An object containing all the results of the damage calculation.
 	 * @return The outgoing damage value multiplied with the damage resistance multiplier.
 	 */
-	public double calculateDamageResistance(double damage, DamageType damageType, Loadout loadout)
+	public double calculateDamageResistance(double damage, DamageType damageType, Loadout loadout, DPSDetails dpsDetails)
 	{
 		Weapon weapon = loadout.getWeapon();
 		Enemy target = loadout.getEnemy();
@@ -55,8 +57,10 @@ public class DamageResistanceCalculator
 			Math.max(0.01,
 				Math.min(0.99,
 					Math.pow((damage * 0.15) /
-					(resistance * (1 - getArmourPenetration(loadout))), 0.365))
+					(resistance * (1 - getArmourPenetration(loadout, dpsDetails))), 0.365))
 		);
+
+		dpsDetails.setDamageResistMultiplier(damageResistMultiplier);
 
 		return damage * damageResistMultiplier;
 	}
@@ -77,11 +81,11 @@ public class DamageResistanceCalculator
 		return resistance;
 	}
 
-	private double getArmourPenetration(Loadout loadout)
+	private double getArmourPenetration(Loadout loadout, DPSDetails dpsDetails)
 	{
 		double armourPenetration = 0;
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.PENETRATION);
+		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.PENETRATION, dpsDetails);
 
 		for (Double value : doubleList)
 		{

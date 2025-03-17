@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
@@ -12,12 +13,14 @@ import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.B
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.DamageMultiplierService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * A calculation service to find out the damage output of a loadout.
  */
+@Slf4j
 @Service
 public class DamageCalculationService
 {
@@ -68,47 +71,48 @@ public class DamageCalculationService
 	/**
 	 * A method that calculates the total damage output of the current loadout.
 	 *
-	 * @param loadout         The loadout that will be used to calculate from.
-	 * @param useStaticDamage
-	 * @return A {@link Double} value of the loadout's damage output.
+	 * @param loadout The loadout that will be used to calculate from.
+	 * @return A {@link DPSDetails} containing all details relating to the damage per second.
 	 */
-	public double calculateOutgoingDamage(Loadout loadout, boolean useStaticDamage)
+	public DPSDetails calculateOutgoingDamage(Loadout loadout)
 	{
-		double totalDamage = 0;
+		DPSDetails dpsDetails = new DPSDetails(loadout.getLoadoutID());
 
 		Weapon weapon = loadout.getWeapon();
 		if (weapon == null){
-			return totalDamage;
+			return dpsDetails;
 		}
+
+		dpsDetails.setWeaponName(weapon.getName());
 
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
 		for (WeaponDamage damage :weapon.getBaseDamage(45)){
 			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
-			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout);
-			double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout);
+			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
+			double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout, dpsDetails);
 
 			//WeaponDamage resit multiplier
-			double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, damage.damageType(), loadout);
+			double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, damage.damageType(), loadout, dpsDetails);
 
 			double outgoingDamage_wDRMW_wBPM = outgoingDamageWithDamageResistMult;
 			//skip if the damage is DoT
 			if (damage.overTime() == 0) {
-				outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout);
+				outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout, dpsDetails);
 			}
 
-			double damagePerSecond = outgoingDamage_wDRMW_wBPM;
-			if (!useStaticDamage){
-				if (weapon instanceof RangedWeapon){
-					damagePerSecond = reloadDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout);
-				}
+			//damage per shot
+			double damagePerShot = outgoingDamage_wDRMW_wBPM;
+			dpsDetails.getDamagePerShot().put(damage.damageType(), round(damagePerShot));
+
+			if (weapon instanceof RangedWeapon){
+				damagePerShot = reloadDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout, dpsDetails);
 			}
 
-
-			totalDamage += damagePerSecond;
+			//damage per second
+			dpsDetails.getDamagePerSecond().put(damage.damageType(), round(damagePerShot));
 		}
 
-		//Outgoing damage
-		return round(totalDamage);
+		return dpsDetails;
 	}
 
 	/**
@@ -118,7 +122,12 @@ public class DamageCalculationService
 	 */
 	public double round(double value)
 	{
-		BigDecimal bigDecimal = BigDecimal.valueOf(value);
-		return bigDecimal.setScale(1, RoundingMode.HALF_UP).doubleValue();
+		//try {
+			BigDecimal bigDecimal = BigDecimal.valueOf(value);
+			return bigDecimal.setScale(1, RoundingMode.HALF_UP).doubleValue();
+//		} catch (Exception e){
+//			log.error("Error rounding value {}.",value, e);
+//			return value;
+//		}
 	}
 }

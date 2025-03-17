@@ -36,7 +36,7 @@ public class MinorStatCalculationService
 		double bonusHealth = 0.0;
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 
-		List<Double> hpBoostList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.HEALTH);
+		List<Double> hpBoostList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.HEALTH, null);
 
 		for (Double bonus : hpBoostList)
 		{

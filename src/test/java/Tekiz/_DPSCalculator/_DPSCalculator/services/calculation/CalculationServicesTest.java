@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.Limbs;
@@ -59,11 +60,11 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		//removing the perk should reduce the damage by 20%
 		perkManager.removePerk("PERKS5", loadout);//TESTEVENT
-		assertEquals(33.6, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(33.6, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -79,12 +80,12 @@ public class CalculationServicesTest extends BaseTestClass
 		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
 		perkManager.addPerk("PERKS5", loadout);//TESTEVENT
 		consumableManager.addConsumable("CONSUMABLES8", loadout);//TESTEVENTTWO
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		//level 1 tenderizer should add 5% extra damage on top of the existing damage
 		//39.2 * (1 + 0.05) = 41.16 (41.2)
 		perkManager.addPerk("perks4", loadout);//TENDERIZER
-		assertEquals(41.2, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(41.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -111,7 +112,7 @@ public class CalculationServicesTest extends BaseTestClass
 		loadout.setEnemy(enemy);
 
 		//38.85 rounded up -> 38.9
-		assertEquals(38.9, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(38.9, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -145,7 +146,8 @@ public class CalculationServicesTest extends BaseTestClass
 		loadout.setEnemy(enemy);
 
 		//38.85 rounded up -> 38.9 with 36% armour penetration = 45.72 (45.7)
-		assertEquals(45.7, calculator.calculateOutgoingDamage(loadout, true));
+		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
+		assertEquals(45.7, dpsDetails.getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -164,13 +166,13 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		enemyManager.changeEnemy("ENEMIES2", loadout);
 		loadout.getEnemy().setTargetedLimb(Limbs.THRUSTER);
 
 		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8
-		assertEquals(38.8, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(38.8, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -197,7 +199,7 @@ public class CalculationServicesTest extends BaseTestClass
 		loadout.setEnemy(enemy);
 
 		//immune to radiation damage, should return 0.
-		assertEquals(0, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(0, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
@@ -216,14 +218,14 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		enemyManager.changeEnemy("ENEMIES2", loadout);
 		loadout.getEnemy().setTargetedLimb(Limbs.MIDDLE_EYE);
 
 		//39 with a physical resistance of 6 - 0.992 (lowest value is 0.99), therefore 39.2 * 0.99 = 38.8
 		//eyes provide a 1.25 damage multiplier - 38.8 * 1.25 = 48.5
-		assertEquals(48.5, calculator.calculateOutgoingDamage(loadout, true));
+		assertEquals(48.5, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 }

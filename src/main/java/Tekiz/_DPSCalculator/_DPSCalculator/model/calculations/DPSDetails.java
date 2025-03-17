@@ -16,14 +16,25 @@ public class DPSDetails
 	final int loadoutID;
 	String weaponName;
 	final List<ModifierDetails> modifiersUsed = new ArrayList<>();
+
 	double shotsPerSecond;
 	double timeToEmptyMagazine;
+
 	//damage before factoring in reload time or swing speed.
 	final HashMap<DamageType, Double> damagePerShot = new HashMap<>();
 	//damage after factoring in reload time or swing speed.
 	final HashMap<DamageType, Double> damagePerSecond = new HashMap<>();
-	//the total damage added up
-	double totalDamagePerSecond;
-	//the total damage per shot added up
-	double totalDamagePerShot;
+
+	double bodyPartMultiplier;
+	double damageResistMultiplier;
+
+	public double getTotalDamagePerShot()
+	{
+		return damagePerShot.values().stream().mapToDouble(Double::doubleValue).sum();
+	}
+
+	public double getTotalDamagePerSecond()
+	{
+		return damagePerSecond.values().stream().mapToDouble(Double::doubleValue).sum();
+	}
 }
