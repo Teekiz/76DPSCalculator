@@ -38,13 +38,13 @@ public class SpecialBonusCalculationService
 		List<Integer> specialList;
 		switch (special)
 		{
-			case STRENGTH -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_STRENGTH);
-			case PERCEPTION -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_PERCEPTION);
-			case ENDURANCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_ENDURANCE);
-			case CHARISMA -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_CHARISMA);
-			case INTELLIGENCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_INTELLIGENCE);
-			case AGILITY -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_AGILITY);
-			case LUCK -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_LUCK);
+			case STRENGTH -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_STRENGTH, null);
+			case PERCEPTION -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_PERCEPTION, null);
+			case ENDURANCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_ENDURANCE, null);
+			case CHARISMA -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_CHARISMA, null);
+			case INTELLIGENCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_INTELLIGENCE, null);
+			case AGILITY -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_AGILITY, null);
+			case LUCK -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_LUCK, null);
 			default -> {return 0;}
 		}
 

@@ -3,6 +3,8 @@ name: Unit Tests
 on:
   pull_request:
   push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -46,7 +48,7 @@ jobs:
           cp -r ./src/test/resources/scripts/ /workspace/resources/scripts/
 
       - name: Install dependencies
-        run: ./gradlew build --no-daemon
+        run: ./gradlew dependencies --refresh-dependencies
 
       - name: Run tests
         run: ./gradlew test --info

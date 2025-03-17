@@ -1,7 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -13,17 +11,6 @@ public class LegendaryEffectsMap extends HashMap<LegendaryEffect, Boolean>
 	/**
 	 * A {@link HashMap} for legendary effects. If set to {@code true}, the effect can be changed.
 	 */
-
-	/*
-	@JsonCreator
-	public LegendaryEffectsMap(@JsonProperty("legendaryEffects") HashMap<LegendaryEffect, Boolean> legendaryEffects) {
-		if (legendaryEffects != null) {
-			this.putAll(legendaryEffects);
-		}
-	}
-
-	 */
-
 	public LegendaryEffectsMap() {
 		super();
 	}

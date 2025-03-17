@@ -1,7 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.ModifierDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
@@ -9,6 +12,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierScriptService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,7 +140,7 @@ public class ModifierAggregationService
 	 * @param modifierTypes The {@link ModifierTypes} that be retrieved.
 	 * @return A {@link List} of {@link Number} that have been filtered from {@code modifiers}.
 	 */
-	public List<Number> filterEffects(HashMap<Modifier, Boolean> modifiers, ModifierTypes modifierTypes)
+	public List<Number> filterEffects(HashMap<Modifier, Boolean> modifiers, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
 		List<Number> effects = new ArrayList<>();
@@ -151,6 +155,11 @@ public class ModifierAggregationService
 				{
 					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
 						effects.add(value.getValue());
+
+						if (dpsDetails != null){
+							dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.getKey().name(), key, value));
+						}
+
 						return value;
 					});
 				}

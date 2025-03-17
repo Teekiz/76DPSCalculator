@@ -97,7 +97,6 @@ public class WeaponControllerTest
 			+ "\"id\":\"WEAPONTEST1\","
 			+ "\"name\":\"TEST1\","
 			+ "\"weaponType\":\"PISTOL\","
-			+ "\"damageType\":null,"
 			+ "\"weaponDamageByLevel\":null,"
 			+ "\"apCost\":0"
 			+ "}";
@@ -183,7 +182,6 @@ public class WeaponControllerTest
 			+ "\"id\":\"WEAPONTEST1\","
 			+ "\"name\":\"TEST1\","
 			+ "\"weaponType\":\"PISTOL\","
-			+ "\"damageType\":null,"
 			+ "\"weaponDamageByLevel\":null,"
 			+ "\"apCost\":0"
 			+ "}";

@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
@@ -27,25 +28,26 @@ public class BonusDamageService
 	}
 	/**
 	 * A method that calculates the bonus (additive) damage from a loadout.
+	 * @param dpsDetails An object containing all the results of the damage calculation.
 	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts bonus damage.
 	 */
-	public double calculateBonusDamage(Loadout loadout)
+	public double calculateBonusDamage(Loadout loadout, DPSDetails dpsDetails)
 	{
 		double bonusDamage = 1.0;
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
 
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_ADDITIVE);
+		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails);
 		for (Double bonus : doubleList)
 		{
 			bonusDamage+=bonus;
 		}
 
-		if (loadout.getWeapon() instanceof RangedWeapon)
+		if (loadout.getWeapon() instanceof RangedWeapon weapon)
 		{
-			if (((RangedWeapon) loadout.getWeapon()).getReceiver() != null)
+			if (weapon.getReceiver() != null)
 			{
-				bonusDamage += ((RangedWeapon) loadout.getWeapon()).getReceiver().damageChange();
+				bonusDamage += weapon.getReceiver().damageChange();
 			}
 		}
 

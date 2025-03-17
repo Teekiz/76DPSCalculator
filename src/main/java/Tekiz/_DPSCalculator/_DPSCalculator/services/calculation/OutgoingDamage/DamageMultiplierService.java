@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
@@ -31,16 +32,17 @@ public class DamageMultiplierService
 	 * A method to calculate the multiplicative damage.
 	 * @param outgoingDamage The damage total from {@link BaseDamageService} and {@link BonusDamageService}.
 	 * @param loadout  The loadout that will be used to calculate from.
+	 * @param dpsDetails An object containing all the results of the damage calculation.
 	 * @return The total value of the {@code outgoingDamage} multiplied by all multiplicative bonuses.
 	 */
-	public Double calculateMultiplicativeDamage(Double outgoingDamage, Loadout loadout)
+	public Double calculateMultiplicativeDamage(Double outgoingDamage, Loadout loadout, DPSDetails dpsDetails)
 	{
 		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_MULTIPLICATIVE);
+		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails);
 
 		for (Double bonus : doubleList)
 		{
-			outgoingDamage = outgoingDamage * (bonus += 1);
+			outgoingDamage = outgoingDamage * (bonus + 1);
 		}
 
 		return outgoingDamage;

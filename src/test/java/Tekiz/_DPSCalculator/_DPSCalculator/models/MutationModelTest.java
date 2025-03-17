@@ -35,8 +35,8 @@ public class MutationModelTest extends BaseTestClass
 		HashMap<ModifierTypes, ModifierValue<?>> negativeEffects = new HashMap<>();
 		negativeEffects.put(ModifierTypes.HEALTH, new ModifierValue<>(ModifierTypes.HEALTH, -2.0));
 
-		MutationEffects mutationEffectsPositive = new MutationEffects(ModifierSource.MUTATION_POSITIVE, expression, positiveEffects);
-		MutationEffects mutationEffectsNegative = new MutationEffects(ModifierSource.MUTATION_NEGATIVE, expression, negativeEffects);
+		MutationEffects mutationEffectsPositive = new MutationEffects("", ModifierSource.MUTATION_POSITIVE, expression, positiveEffects);
+		MutationEffects mutationEffectsNegative = new MutationEffects("", ModifierSource.MUTATION_NEGATIVE, expression, negativeEffects);
 		Mutation mutation = new Mutation("1", "TEST", "", mutationEffectsPositive, mutationEffectsNegative);
 
 		List<Modifier> values = new ArrayList<>(mutation.aggregateMutationEffects().keySet().stream().toList());

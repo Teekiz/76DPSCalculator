@@ -22,6 +22,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 public interface Modifier extends Serializable
 {
 	/**
+	 * The name of the modifier or the parent objects name (if applicable).
+	 * @return The {@link String} name of modifier.
+	 */
+	String name();
+	/**
 	 * Retrieves the source of the modifier, indicating where it originates from (e.g., PERK, CONSUMABLE). This is used by
 	 * {@link ModifierBoostService} to match up the boosts target and
 	 * modifier source. For example, the {@link Perk} "Strange in Numbers" boosts

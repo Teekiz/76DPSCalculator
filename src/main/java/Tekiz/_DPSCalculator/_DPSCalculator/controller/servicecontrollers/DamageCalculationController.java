@@ -1,9 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller.servicecontrollers;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
+import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.util.upload.LocalToDBUploader;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.DPSDetailsMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -21,18 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/services")
-@Tag(name = "Damage Calculation Service API", description = "A group of APIs for calculating loadout damage.")
+@Tag(name = "WeaponDamage Calculation Service API", description = "A group of APIs for calculating loadout damage.")
 public class DamageCalculationController
 {
 	private final LoadoutManager loadoutManager;
 	private final DamageCalculationService damageCalculationService;
+	private final DPSDetailsMapper dpsDetailsMapper;
 
 
 	@Autowired
-	public DamageCalculationController(LoadoutManager loadoutManager, DamageCalculationService damageCalculationService)
+	public DamageCalculationController(LoadoutManager loadoutManager, DamageCalculationService damageCalculationService, DPSDetailsMapper dpsDetailsMapper)
 	{
 		this.loadoutManager = loadoutManager;
 		this.damageCalculationService = damageCalculationService;
+		this.dpsDetailsMapper = dpsDetailsMapper;
 	}
 
 	/**
@@ -43,10 +47,11 @@ public class DamageCalculationController
 	 */
 	@Operation(summary = "Get the DPS from a loadout.", description = "Retrieves the damage per second of the specific loadout.")
 	@GetMapping("/getLoadoutDPS")
-	public ResponseEntity<Double> getLoadoutDPS(@RequestParam int loadoutID) throws IOException
+	public ResponseEntity<DPSDetailsDTO> getLoadoutDPS(@RequestParam int loadoutID) throws IOException
 	{
-		return ResponseEntity.ok(damageCalculationService
-			.calculateOutgoingDamage(loadoutManager.getLoadout(loadoutID)));
+		DPSDetails dpsDetails = damageCalculationService.calculateOutgoingDamage(loadoutManager.getLoadout(loadoutID));
+		DPSDetailsDTO dpsDetailsDTO = dpsDetailsMapper.convertToDTO(dpsDetails);
+		return ResponseEntity.ok(dpsDetailsDTO);
 	}
 
 	/**
@@ -56,16 +61,17 @@ public class DamageCalculationController
 	 */
 	@Operation(summary = "Get the DPS from all loadouts.", description = "Retrieves the damage per second of all loadout tied to a session.")
 	@GetMapping("/getAllLoadoutsDPS")
-	public ResponseEntity<List<Double>> getAllLoadoutsDPS() throws IOException
+	public ResponseEntity<List<DPSDetailsDTO>> getAllLoadoutsDPS() throws IOException
 	{
-		List<Double> damageList = new ArrayList<>();
+		List<DPSDetails> dpsDetailsList = new ArrayList<>();
 		Set<Loadout> loadouts = loadoutManager.getLoadouts();
 
 		for (Loadout loadout : loadouts)
 		{
-			damageList.add(damageCalculationService.calculateOutgoingDamage(loadout));
+
+			dpsDetailsList.add(damageCalculationService.calculateOutgoingDamage(loadout));
 		}
 
-		return ResponseEntity.ok(damageList);
+		return ResponseEntity.ok(dpsDetailsMapper.convertAllToDTO(dpsDetailsList));
 	}
 }
