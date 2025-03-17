@@ -86,7 +86,7 @@ public class DamageCalculationService
 		dpsDetails.setWeaponName(weapon.getName());
 
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
-		for (WeaponDamage damage :weapon.getBaseDamage(45)){
+		for (WeaponDamage damage : weapon.getBaseDamage(45)){
 			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
 			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
 			double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout, dpsDetails);
@@ -122,12 +122,12 @@ public class DamageCalculationService
 	 */
 	public double round(double value)
 	{
-		//try {
+		try {
 			BigDecimal bigDecimal = BigDecimal.valueOf(value);
 			return bigDecimal.setScale(1, RoundingMode.HALF_UP).doubleValue();
-//		} catch (Exception e){
-//			log.error("Error rounding value {}.",value, e);
-//			return value;
-//		}
+		} catch (Exception e){
+			log.error("Error rounding value {}.",value, e);
+			return value;
+		}
 	}
 }

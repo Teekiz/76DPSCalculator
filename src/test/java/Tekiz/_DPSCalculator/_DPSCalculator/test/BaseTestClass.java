@@ -2,6 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.test;
 
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.session.UserLoadoutTracker;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,15 @@ public abstract class BaseTestClass
 	public void cleanUp()
 	{
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
+	}
+
+	public double round(double value)
+	{
+		try {
+			BigDecimal bigDecimal = BigDecimal.valueOf(value);
+			return bigDecimal.setScale(2, RoundingMode.HALF_UP).doubleValue();
+		} catch (Exception e){
+			return value;
+		}
 	}
 }
