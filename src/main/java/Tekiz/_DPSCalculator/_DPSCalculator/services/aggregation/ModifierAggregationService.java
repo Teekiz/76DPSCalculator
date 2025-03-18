@@ -142,6 +142,7 @@ public class ModifierAggregationService
 	 */
 	public List<Number> filterEffects(HashMap<Modifier, Boolean> modifiers, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
+		//todo - change this so that only loadout is needed.
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
 		List<Number> effects = new ArrayList<>();
 		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);
