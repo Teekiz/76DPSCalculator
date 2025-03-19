@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 
@@ -35,13 +36,11 @@ public class BonusDamageService
 	public double calculateBonusDamage(Loadout loadout, DPSDetails dpsDetails)
 	{
 		double bonusDamage = 1.0;
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails);
-		for (Double bonus : doubleList)
-		{
-			bonusDamage+=bonus;
-		}
+		bonusDamage += modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToDouble(Number::doubleValue)
+			.sum();;
 
 		if (loadout.getWeapon() instanceof RangedWeapon weapon)
 		{

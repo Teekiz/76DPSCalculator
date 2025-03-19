@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +34,10 @@ public class MinorStatCalculationService
 	 */
 	public double calculateHealthPointBonuses(Loadout loadout)
 	{
-		double bonusHealth = 0.0;
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-
-		List<Double> hpBoostList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.HEALTH, null);
-
-		for (Double bonus : hpBoostList)
-		{
-			bonusHealth += bonus;
-		}
-		return bonusHealth;
+		return modifierAggregationService.filterEffects(loadout, ModifierTypes.HEALTH, null)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToDouble(Number::doubleValue)
+			.sum();
 	}
 }

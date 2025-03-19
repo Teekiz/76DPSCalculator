@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +38,10 @@ public class DamageMultiplierService
 	 */
 	public Double calculateMultiplicativeDamage(Double outgoingDamage, Loadout loadout, DPSDetails dpsDetails)
 	{
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails);
-
-		for (Double bonus : doubleList)
-		{
-			outgoingDamage = outgoingDamage * (bonus + 1);
-		}
-
-		return outgoingDamage;
+		return modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToDouble(Number::doubleValue)
+			.reduce(outgoingDamage, (damage, bonus) -> damage * (bonus + 1));
 	}
 }
