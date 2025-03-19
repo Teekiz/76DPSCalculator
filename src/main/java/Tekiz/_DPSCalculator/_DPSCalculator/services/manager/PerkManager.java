@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +37,9 @@ public class PerkManager
 	private final DataLoaderService dataLoaderService;
 	private final ModifierConditionLogic modifierConditionLogic;
 	private final ApplicationEventPublisher applicationEventPublisher;
-	private final Boolean ignoreSpecialRestrictions = false;
+
+	@Setter
+	private Boolean ignoreSpecialRestrictions = false;
 
 	/**
 	 * The constructor for a {@link PerkManager} object.
@@ -71,6 +74,12 @@ public class PerkManager
 	{
 		Perk perk = dataLoaderService.loadData(perkID, Perk.class, null);
 		//checks whether to ignore special point enforcement or if the player has the points available.
+
+		if (perk == null){
+			log.error("Perk loading failed for: {}", perkID);
+			return;
+		}
+
 		if (ignoreSpecialRestrictions || hasAvailableSpecialPoints(loadout.getPerks(),
 			perk, loadout.getPlayer().getSpecials()))
 		{

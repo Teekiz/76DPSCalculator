@@ -52,18 +52,17 @@ public class WeaponManager
 	@SaveLoadout
 	public synchronized void setWeapon(String weaponID, Loadout loadout) throws IOException
 	{
-		Weapon newWeapon = dataLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
+		Weapon weapon = dataLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
 
-		if (newWeapon != null)
-		{
-			loadout.setWeapon(newWeapon);
-			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(newWeapon, loadout,"Weapon has been set.");
-			log.debug("WeaponChangedEvent has been created for weapon {}.", newWeapon);
-			applicationEventPublisher.publishEvent(weaponChangedEvent);
+		if (weapon == null){
+			log.error("Weapon loading failed for: {}.", weaponID);
+			return;
 		}
-		else {
-			log.error("Weapon loading failed for: " + weaponID);
-		}
+
+		loadout.setWeapon(weapon);
+		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon, loadout,"Weapon has been set.");
+		log.debug("WeaponChangedEvent has been created for weapon {}.", weapon);
+		applicationEventPublisher.publishEvent(weaponChangedEvent);
 	}
 	/**
 	 * Modifies the current weapon by applying a specified modification (mod),

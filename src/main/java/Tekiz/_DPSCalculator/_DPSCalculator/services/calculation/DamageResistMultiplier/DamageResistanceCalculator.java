@@ -10,6 +10,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -83,15 +84,10 @@ public class DamageResistanceCalculator
 
 	private double getArmourPenetration(Loadout loadout, DPSDetails dpsDetails)
 	{
-		double armourPenetration = 0;
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-		List<Double> doubleList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.PENETRATION, dpsDetails);
-
-		for (Double value : doubleList)
-		{
-			armourPenetration += value;
-		}
-
-		return armourPenetration;
+		return modifierAggregationService.filterEffects(loadout, ModifierTypes.PENETRATION, dpsDetails)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToDouble(Number::doubleValue)
+			.sum();
 	}
 }

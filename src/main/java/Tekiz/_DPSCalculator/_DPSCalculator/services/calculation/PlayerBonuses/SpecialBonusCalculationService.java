@@ -5,8 +5,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,26 +34,24 @@ public class SpecialBonusCalculationService
 	 */
 	public int getSpecialBonus(Specials special, Loadout loadout)
 	{
-		HashMap modifiers = modifierAggregationService.getAllModifiers(loadout);
-		List<Integer> specialList;
+		ModifierTypes modifierType;
 		switch (special)
 		{
-			case STRENGTH -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_STRENGTH, null);
-			case PERCEPTION -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_PERCEPTION, null);
-			case ENDURANCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_ENDURANCE, null);
-			case CHARISMA -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_CHARISMA, null);
-			case INTELLIGENCE -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_INTELLIGENCE, null);
-			case AGILITY -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_AGILITY, null);
-			case LUCK -> specialList = modifierAggregationService.filterEffects(modifiers, ModifierTypes.SPECIAL_LUCK, null);
+			case STRENGTH -> modifierType = ModifierTypes.SPECIAL_STRENGTH;
+			case PERCEPTION -> modifierType = ModifierTypes.SPECIAL_PERCEPTION;
+			case ENDURANCE -> modifierType = ModifierTypes.SPECIAL_ENDURANCE;
+			case CHARISMA -> modifierType = ModifierTypes.SPECIAL_CHARISMA;
+			case INTELLIGENCE -> modifierType = ModifierTypes.SPECIAL_INTELLIGENCE;
+			case AGILITY -> modifierType = ModifierTypes.SPECIAL_AGILITY;
+			case LUCK -> modifierType = ModifierTypes.SPECIAL_LUCK;
 			default -> {return 0;}
 		}
 
-		int specialBonus = 0;
-		for (int bonus : specialList)
-		{
-			specialBonus+=bonus;
-		}
-
-		return Math.min(specialBonus, 100);
+		//return either the result from the aggregation, or 100, whichever is lower.
+		return Math.min(modifierAggregationService.filterEffects(loadout, modifierType, null)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToInt(Number::intValue)
+			.sum(), 100);
 	}
 }

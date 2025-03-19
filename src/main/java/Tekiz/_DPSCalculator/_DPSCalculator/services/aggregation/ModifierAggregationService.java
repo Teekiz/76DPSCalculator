@@ -136,12 +136,15 @@ public class ModifierAggregationService
 
 	/**
 	 * A method that filters out and returns all {@link ModifierTypes} of a given value.
-	 * @param modifiers The {@link HashMap} that the {@link ModifierTypes} will be filtered from.
+	 * @param loadout The {@link Loadout} that the {@link ModifierTypes} will be filtered from.
 	 * @param modifierTypes The {@link ModifierTypes} that be retrieved.
 	 * @return A {@link List} of {@link Number} that have been filtered from {@code modifiers}.
 	 */
-	public List<Number> filterEffects(HashMap<Modifier, Boolean> modifiers, ModifierTypes modifierTypes, DPSDetails dpsDetails)
+	public List<Number> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
+		//gets all the modifiers from the provided loadout.
+		HashMap<Modifier, Boolean> modifiers = getAllModifiers(loadout);
+
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
 		List<Number> effects = new ArrayList<>();
 		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);

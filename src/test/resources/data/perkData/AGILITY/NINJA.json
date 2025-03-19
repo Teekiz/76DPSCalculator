@@ -1,0 +1,28 @@
+{
+    "name" : "Ninja",
+    "special": "AGILITY",
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
+    "description" : "Sneak attacks with melee weapons do an additional 30/60/90% sneak attack damage.",
+    "modifierSource" : "PERK",
+    "conditionString" : "#weapon instanceof T(Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon)",
+    "effects" :
+    {
+      "1" :
+      {
+        "SNEAK_DAMAGE" : 0.3
+      },
+      "2" :
+      {
+        "SNEAK_DAMAGE" : 0.6
+      },
+      "3" :
+      {
+        "SNEAK_DAMAGE" : 0.9
+      }
+    }
+}

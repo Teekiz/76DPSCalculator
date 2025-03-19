@@ -1,10 +1,10 @@
 {
-    "name" : "Test Ballistic Bock",
+    "name" : "Ballistic Bock",
     "consumableType" : "DRINK",
     "addictionType" : "ALCOHOL",
     "modifierSource" : "CONSUMABLE_ALCOHOL",
     "effects" : {
-        "ADDITIONAL_CONTEXT_REQUIRED" : "#weapon != null && #weapon.getDamageType()?.equals(#DamageType.BALLISTIC) ? #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.0)",
+        "ADDITIONAL_CONTEXT_REQUIRED" : "#weapon != null && #weapon instanceof T(Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon) && #weapon.getDamageType()?.equals(#DamageType.PHYSICAL) ? #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.15) : #MapUtil.createEntry(#ModifierType.DAMAGE_ADDITIVE, 0.0)",
         "SPECIAL_ENDURANCE" : 3
     }
 }
