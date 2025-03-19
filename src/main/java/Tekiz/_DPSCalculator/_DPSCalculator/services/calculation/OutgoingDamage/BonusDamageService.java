@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SneakBonusCalculationService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -17,14 +18,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class BonusDamageService
 {
+	private final SneakBonusCalculationService sneakBonusCalculationService;
 	private final ModifierAggregationService modifierAggregationService;
 
 	/**
 	 * The {@link BonusDamageService} constructor.
+	 * @param sneakBonusCalculationService A service to calculate the sneak damage bonus a loadout provides.
 	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
 	 */
-	public BonusDamageService(ModifierAggregationService modifierAggregationService)
+	public BonusDamageService(SneakBonusCalculationService sneakBonusCalculationService, ModifierAggregationService modifierAggregationService)
 	{
+		this.sneakBonusCalculationService = sneakBonusCalculationService;
 		this.modifierAggregationService = modifierAggregationService;
 	}
 	/**
@@ -35,12 +39,15 @@ public class BonusDamageService
 	 */
 	public double calculateBonusDamage(Loadout loadout, DPSDetails dpsDetails)
 	{
-		double bonusDamage = 1.0;
-		bonusDamage += modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
+		double bonusDamage = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
 			.stream()
 			.filter(Objects::nonNull)
 			.mapToDouble(Number::doubleValue)
-			.sum();;
+			.sum() + 1.0;
+
+		if (loadout.getPlayer().isSneaking()){
+			bonusDamage += sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails);
+		}
 
 		if (loadout.getWeapon() instanceof RangedWeapon weapon)
 		{

@@ -12,7 +12,7 @@ public enum ModifierTypes
 	RELOADSPEED(Double.class),
 	ACCURACY(Double.class),
 	RANGE(Double.class),
-	SNEAK(Double.class),
+	SNEAK_DAMAGE(Double.class),
 	CRITICAL(Double.class),
 	HEALTH(Double.class),
 	SPECIAL_STRENGTH(Integer.class),

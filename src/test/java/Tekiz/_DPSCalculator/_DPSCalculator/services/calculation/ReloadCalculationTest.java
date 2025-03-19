@@ -7,9 +7,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamagePerSecond.ReloadDamageCalculator;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.EnemyManager;
-import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
@@ -28,12 +25,6 @@ public class ReloadCalculationTest extends BaseTestClass
 {
 	@Autowired
 	WeaponManager weaponManager;
-	@Autowired
-	PerkManager perkManager;
-	@Autowired
-	EnemyManager enemyManager;
-	@Autowired
-	ConsumableManager consumableManager;
 	@Autowired
 	DamageCalculationService calculator;
 	@Autowired

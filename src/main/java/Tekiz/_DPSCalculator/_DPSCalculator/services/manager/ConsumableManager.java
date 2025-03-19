@@ -47,6 +47,12 @@ public class ConsumableManager
 	public void addConsumable(String consumableID, Loadout loadout) throws IOException
 	{
 		Consumable consumable = dataLoaderService.loadData(consumableID, Consumable.class, null);
+
+		if (consumable == null){
+			log.error("Consumable loading failed for: {}", consumableID);
+			return;
+		}
+
 		log.debug("Adding {} to loadout {}.", consumable.name(), loadout.getLoadoutID());
 		loadout.getConsumables().put(consumable, modifierConditionLogic.evaluateCondition(consumable, loadout));
 

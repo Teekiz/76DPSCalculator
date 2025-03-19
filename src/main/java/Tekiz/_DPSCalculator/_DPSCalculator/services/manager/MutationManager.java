@@ -11,6 +11,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic
 import java.io.IOException;
 import java.util.Optional;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 /**
  * A service used to manage {@link Mutation} objects.
  */
+@Slf4j
 @Service
 @Getter
 public class MutationManager
@@ -40,6 +42,12 @@ public class MutationManager
 	public void addMutation(String mutationID, Loadout loadout) throws IOException
 	{
 		Mutation mutation = dataLoaderService.loadData(mutationID, Mutation.class, null);
+
+		if (mutation == null){
+			log.error("Mutation loading failed for: {}", mutationID);
+			return;
+		}
+
 		loadout.getMutations().add(mutation);
 		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(mutation, loadout,mutation.id() + " has been added.");
 		applicationEventPublisher.publishEvent(modifierChangedEvent);
