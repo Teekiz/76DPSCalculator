@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;

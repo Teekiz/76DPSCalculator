@@ -5,9 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SneakBonusCalculationService;
-import java.util.HashMap;
-import java.util.List;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.SneakBonusCalculationService;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 

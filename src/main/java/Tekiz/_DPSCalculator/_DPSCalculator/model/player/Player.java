@@ -23,6 +23,8 @@ public class Player implements Serializable
 	private double maxHP;
 	@JsonProperty("currentHP")
 	private double currentHP;
+	@JsonProperty("maxAP")
+	private double maxAP;
 
 	@Setter
 	@JsonProperty("level")
@@ -47,6 +49,7 @@ public class Player implements Serializable
 		this.level = 1;
 		this.specials = new Special(1, 1, 1, 1, 1, 1, 1);
 
+		setMaxAP(0);
 		setMaxHP(0,0);
 		setCurrentHP(maxHP);
 	}
@@ -72,5 +75,14 @@ public class Player implements Serializable
 	public double getHealthPercentage()
 	{
 		return (currentHP / maxHP) * 100;
+	}
+
+	/**
+	 * Sets the maximum AP a player has.
+	 * @param agilityBonus Bonuses from modifiers that increase agility.
+	 */
+	public void setMaxAP(int agilityBonus)
+	{
+		maxAP = (10 * (specials.getAgility() + agilityBonus));
 	}
 }

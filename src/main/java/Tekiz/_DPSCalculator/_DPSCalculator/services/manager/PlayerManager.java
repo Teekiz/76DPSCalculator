@@ -81,7 +81,10 @@ public class PlayerManager
 	{
 		Loadout loadout = event.getLoadout();
 		int enduranceBonus = specialBonusCalculationService.getSpecialBonus(Specials.ENDURANCE, loadout);
+		int agilityBonus = specialBonusCalculationService.getSpecialBonus(Specials.AGILITY, loadout);
 		double healthBonus = minorStatCalculationService.calculateHealthPointBonuses(loadout);
+
 		loadout.getPlayer().setMaxHP(enduranceBonus, healthBonus);
+		loadout.getPlayer().setMaxAP(agilityBonus);
 	}
 }
