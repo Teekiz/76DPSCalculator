@@ -48,7 +48,8 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializePerk() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializePerk in ObjectSerializationTest.", System.lineSeparator());
-		Perk perk = dataLoaderService.loadData("PERKS1", Perk.class, null);
+		String id = jsonIDMapper.getIDFromFileName("GUNSLINGER");
+		Perk perk = dataLoaderService.loadData(id, Perk.class, null);
 		assertNotNull(perk);
 		log.debug("Perk object deserialized: {}.", perk);
 
@@ -65,7 +66,8 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializeConsumable() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeConsumable in ObjectSerializationTest.", System.lineSeparator());
-		Consumable consumable = dataLoaderService.loadData("CONSUMABLES7", Consumable.class, null);
+		String id = jsonIDMapper.getIDFromFileName("TESTEVENTCONSUMABLE");
+		Consumable consumable = dataLoaderService.loadData(id, Consumable.class, null);
 		assertNotNull(consumable);
 		log.debug("Consumable object deserialized: {}.", consumable);
 
@@ -82,7 +84,8 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializeMutation() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeMutation in ObjectSerializationTest.", System.lineSeparator());
-		Mutation mutation = dataLoaderService.loadData("MUTATIONS1", Mutation.class, null);
+		String id = jsonIDMapper.getIDFromFileName("ADRENALREACTION");
+		Mutation mutation = dataLoaderService.loadData(id, Mutation.class, null);
 		assertNotNull(mutation);
 		log.debug("Mutation object deserialized: {}.", mutation);
 
@@ -115,7 +118,8 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializeWeapon() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
-		Weapon weapon = dataLoaderService.loadData("WEAPONS2", Weapon.class, weaponFactory);
+		String id = jsonIDMapper.getIDFromFileName("ASSAULTRONBLADE");
+		Weapon weapon = dataLoaderService.loadData(id, Weapon.class, weaponFactory);
 		assertNotNull(weapon);
 		log.debug("Weapon object deserialized: {}.", weapon);
 
@@ -133,8 +137,11 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializeWeapon_WithLegendaryEffect() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeWeapon in ObjectSerializationTest.", System.lineSeparator());
-		Weapon weapon = dataLoaderService.loadData("WEAPONS2", Weapon.class, weaponFactory);
-		LegendaryEffect legendaryEffect = dataLoaderService.loadData("LEGENDARYEFFECT1", LegendaryEffect.class, null);
+		String id = jsonIDMapper.getIDFromFileName("ANTIARMOUR");
+		String weaponID = jsonIDMapper.getIDFromFileName("ASSAULTRONBLADE");
+
+		Weapon weapon = dataLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
+		LegendaryEffect legendaryEffect = dataLoaderService.loadData(id, LegendaryEffect.class, null);
 		weapon.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
 
 		assertNotNull(weapon);
@@ -171,8 +178,12 @@ public class ObjectSerializationTest extends BaseTestClass
 	public void serializeAndDeserializeArmour() throws IOException
 	{
 		log.debug("{}Running test - serializeAndDeserializeArmour in ObjectSerializationTest.", System.lineSeparator());
-		Armour armour = dataLoaderService.loadData("ARMOUR1", Armour.class, null);
-		Material material = dataLoaderService.loadData("MODARMOURMATERIALS1", Material.class, null);
+
+		String id = jsonIDMapper.getIDFromFileName("WOODCHEST");
+		String modID = jsonIDMapper.getIDFromFileName("BOILEDLEATHERCHEST");
+
+		Armour armour = dataLoaderService.loadData(id, Armour.class, null);
+		Material material = dataLoaderService.loadData(modID, Material.class, null);
 		armour.setMod(material);
 		assertNotNull(armour);
 		log.debug("Armour object deserialized: {}.", armour);
@@ -211,8 +222,11 @@ public class ObjectSerializationTest extends BaseTestClass
 		assertNotNull(loadout);
 		log.debug("Loadout object deserialized: {}.", loadout);
 
-		perkManager.addPerk("PERKS1", loadout);
-		consumableManager.addConsumable("CONSUMABLES6", loadout);//TESTCONDITION
+		String perkID = jsonIDMapper.getIDFromFileName("GUNSLINGER");
+		String consumableID = jsonIDMapper.getIDFromFileName("TESTCONDITION");
+
+		perkManager.addPerk(perkID, loadout);
+		consumableManager.addConsumable(consumableID, loadout);//TESTCONDITION
 
 		String jsonLoadout = objectMapper.writeValueAsString(loadout);
 		assertNotNull(jsonLoadout);

@@ -9,6 +9,7 @@
 2. [Installation & Setup](#installation--setup)
 3. [Usage](#usage)
 4. [Additional Resources](#additional-resources)
+5. [Calculation Formulas](#calculation-formulas)
 
 ## Prerequisites
 
@@ -115,3 +116,12 @@ curl -X GET "http://localhost:8080/api/services/getAllLoadoutsDPS"
 ## Additional Resources
 - <b>Full API List</b>: See [API List](github/api_list.txt) <br>
 - <b>Web-based GUI</b>: Available [here](https://github.com/Teekiz/76DPSCalculatorUI).
+## Calculation Formulas
+Ranged Damage Per Second ([usage](https://github.com/Teekiz/76DPSCalculator/blob/master/src/main/java/Tekiz/_DPSCalculator/_DPSCalculator/services/calculation/DamagePerSecond/ReloadDamageCalculator.java)):
+```
+shotsPerSecond = fireRate / 10
+timeToEmptyMagazine = magazineSize / shotsPerSecond
+cycleTime = timetoEmptyMagazine + reloadTime
+damagePerCycle = damagePerShot * magazineSize
+damagePerSecond = (damagePerCycle + dotDamageDuringReload) / totalCycleTime
+```

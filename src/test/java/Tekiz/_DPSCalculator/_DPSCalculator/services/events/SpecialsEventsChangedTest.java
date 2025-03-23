@@ -8,6 +8,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,18 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 	@Autowired
 	PlayerManager playerManager;
 
+	//TEST OBJECT IDS
+	String STRANGEINNUMBERS;
+	String TENDERIZER;
+	String HEAVYGUNNER;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		STRANGEINNUMBERS = jsonIDMapper.getIDFromFileName("STRANGEINNUMBERS");
+		TENDERIZER = jsonIDMapper.getIDFromFileName("TENDERIZER");
+		HEAVYGUNNER = jsonIDMapper.getIDFromFileName("HEAVYGUNNER");
+	}
 
 	@Test
 	public void testSingleSpecial() throws IOException
@@ -29,13 +42,13 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 		//setting the value to 4.
 		Loadout loadout = loadoutManager.getLoadout(1);
 		playerManager.setSpecial(loadout, Specials.CHARISMA, 4);
-		perkManager.addPerk("perks3", loadout);//STRANGEINNUMBERS
-		perkManager.changePerkRank("perks3", 3, loadout);//Strange in Numbers
-		perkManager.addPerk("perks4", loadout);//TENDERIZER
+		perkManager.addPerk(STRANGEINNUMBERS, loadout);//STRANGEINNUMBERS
+		perkManager.changePerkRank(STRANGEINNUMBERS, 3, loadout);//Strange in Numbers
+		perkManager.addPerk(TENDERIZER, loadout);//TENDERIZER
 
 		//ensuring that each perk has been added and that all four spaces are used.
-		assertEquals(3, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Strange in Numbers
-		assertEquals(1, perkManager.getPerkInLoadout("perks4", loadout).perkRank().getCurrentRank());//Tenderizer
+		assertEquals(3, perkManager.getPerkInLoadout(STRANGEINNUMBERS, loadout).perkRank().getCurrentRank());//Strange in Numbers
+		assertEquals(1, perkManager.getPerkInLoadout(TENDERIZER, loadout).perkRank().getCurrentRank());//Tenderizer
 		assertEquals(2, loadout.getPerks().size());
 
 		//setting the players charisma to 3, therefore, one of the perks should be removed
@@ -54,16 +67,16 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 		SpecialDTO specialDTO = new SpecialDTO(3,2,1,4,4,1,1);
 		playerManager.setSpecialsFromDTO(loadout, specialDTO);
 
-		perkManager.addPerk("perks2", loadout);//STRANGEINNUMBERS
-		perkManager.changePerkRank("perks2", 3, loadout);//Strange in Numbers
-		perkManager.addPerk("perks3", loadout);//TENDERIZER
-		perkManager.addPerk("perks4", loadout);//HEAVYGUNNER
-		perkManager.changePerkRank("perks4", 3, loadout);//Test Heavy Gunner
+		perkManager.addPerk(STRANGEINNUMBERS, loadout);//STRANGEINNUMBERS
+		perkManager.changePerkRank(STRANGEINNUMBERS, 3, loadout);//Strange in Numbers
+		perkManager.addPerk(TENDERIZER, loadout);//TENDERIZER
+		perkManager.addPerk(HEAVYGUNNER, loadout);//HEAVYGUNNER
+		perkManager.changePerkRank(HEAVYGUNNER, 3, loadout);//Test Heavy Gunner
 
 		//ensuring that each perk has been added and that all four spaces are used.
-		assertEquals(3, perkManager.getPerkInLoadout("perks2", loadout).perkRank().getCurrentRank());//Strange in Numbers
-		assertEquals(1, perkManager.getPerkInLoadout("perks3", loadout).perkRank().getCurrentRank());//Tenderizer
-		assertEquals(3, perkManager.getPerkInLoadout("perks4", loadout).perkRank().getCurrentRank());//Test Heavy Gunner
+		assertEquals(3, perkManager.getPerkInLoadout(STRANGEINNUMBERS, loadout).perkRank().getCurrentRank());//Strange in Numbers
+		assertEquals(1, perkManager.getPerkInLoadout(TENDERIZER, loadout).perkRank().getCurrentRank());//Tenderizer
+		assertEquals(3, perkManager.getPerkInLoadout(HEAVYGUNNER, loadout).perkRank().getCurrentRank());//Test Heavy Gunner
 		assertEquals(3, loadout.getPerks().size());
 
 		//setting the players charisma to 3, therefore, one of the perks should be removed

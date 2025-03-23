@@ -7,6 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,15 +25,26 @@ public class ModifierExpressionServicesTest extends BaseTestClass
 	@Autowired
 	DamageCalculationService calculator;
 
+	//TEST OBJECT IDS
+	String _10MMPISTOL;
+	String ADRENALREACTION;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		_10MMPISTOL = jsonIDMapper.getIDFromFileName("10MMPISTOL");
+		ADRENALREACTION = jsonIDMapper.getIDFromFileName("ADRENALREACTION");
+	}
+
 	@Test
 	public void testMutationEffect() throws IOException
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
+		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
 		playerManager.getPlayer(loadout).setCurrentHP(125.0);
 
-		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
+		mutationManager.addMutation(ADRENALREACTION, loadout);//ADRENALREACTION
 
 			//hp is set to 125, so it sound return 0.19 additional damage
 			//level 45 pistol damage is 28, with an automatic receiver reducing the damage down to 30.5
