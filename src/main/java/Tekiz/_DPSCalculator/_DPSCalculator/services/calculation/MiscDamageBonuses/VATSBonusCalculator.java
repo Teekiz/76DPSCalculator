@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /** A service to calculate the vats critical damage bonus a loadout provides. */
 @Slf4j
 @Service
-public class VATSCriticalBonusCalculator
+public class VATSBonusCalculator
 {
 	private final ModifierAggregationService modifierAggregationService;
 
@@ -21,11 +21,13 @@ public class VATSCriticalBonusCalculator
 	 * The {@link SneakBonusCalculationService} constructor.
 	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
 	 */
-	public VATSCriticalBonusCalculator(ModifierAggregationService modifierAggregationService)
+	public VATSBonusCalculator(ModifierAggregationService modifierAggregationService)
 	{
 		this.modifierAggregationService = modifierAggregationService;
 	}
-
+	public double getVATSDamageBonus(Loadout loadout, double baseDamage, DPSDetails dpsDetails){
+		return 0;
+	}
 	/**
 	 * A method to determine the critical damage a loadout does.
 	 * @param loadout  The loadout that will be used to calculate from.

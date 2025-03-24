@@ -6,7 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamagePerSecond.ReloadDamageCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.ReloadDamageCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;

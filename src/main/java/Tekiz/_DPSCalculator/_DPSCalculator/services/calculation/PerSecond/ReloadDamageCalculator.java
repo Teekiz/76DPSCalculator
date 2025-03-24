@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamagePerSecond;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;

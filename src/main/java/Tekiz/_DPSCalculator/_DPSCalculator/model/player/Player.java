@@ -49,7 +49,7 @@ public class Player implements Serializable
 		this.level = 1;
 		this.specials = new Special(1, 1, 1, 1, 1, 1, 1);
 
-		setMaxAP(0);
+		setMaxAP(0, 0);
 		setMaxHP(0,0);
 		setCurrentHP(maxHP);
 	}
@@ -79,10 +79,10 @@ public class Player implements Serializable
 
 	/**
 	 * Sets the maximum AP a player has.
-	 * @param agilityBonus Bonuses from modifiers that increase agility.
+	 * @param bonusAgility Bonuses from modifiers that increase agility.
 	 */
-	public void setMaxAP(int agilityBonus)
+	public void setMaxAP(int bonusAgility, int bonusAP)
 	{
-		maxAP = (10 * (specials.getAgility() + agilityBonus));
+		maxAP = (10 * (specials.getAgility() + bonusAgility)) + bonusAP;
 	}
 }
