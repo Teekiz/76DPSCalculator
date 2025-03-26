@@ -14,6 +14,7 @@ public enum ModifierTypes
 	RANGE(Double.class),
 	SNEAK_DAMAGE(Double.class),
 	CRITICAL(Double.class),
+	CRITICAL_CONSUMPTION(Double.class),
 	HEALTH(Double.class),
 	SPECIAL_STRENGTH(Integer.class),
 	SPECIAL_PERCEPTION(Integer.class),

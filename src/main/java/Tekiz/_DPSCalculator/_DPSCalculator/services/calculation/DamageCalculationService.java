@@ -6,7 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.BodyPartMultiplier.BodyPartMultiplierCalculator;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.ReloadDamageCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.RangedDamageCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMultiplier.DamageResistanceCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BaseDamageService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BonusDamageService;
@@ -29,7 +29,7 @@ public class DamageCalculationService
 	private final DamageMultiplierService damageMultiplierService;
 	private final DamageResistanceCalculator damageResistanceCalculator;
 	private final BodyPartMultiplierCalculator bodyPartMultiplierCalculator;
-	private final ReloadDamageCalculator reloadDamageCalculator;
+	private final RangedDamageCalculator rangedDamageCalculator;
 
 	/**
 	 * The constructor for {@link DamageCalculationService}.
@@ -38,18 +38,18 @@ public class DamageCalculationService
 	 * @param damageMultiplierService A service that calculates the multiplicative damage from a loadout.
 	 * @param damageResistanceCalculator A service that calculates the damage from a loadout based on the weapons damage type, penetration and enemy resistances.
 	 * @param bodyPartMultiplierCalculator A service that determines the damage bonus based on the targeted enemy limb.
-	 * @param reloadDamageCalculator A service that calculates the damage with the reload time and any DoT remaining.
+	 * @param rangedDamageCalculator A service that calculates the damage with the reload time and any DoT remaining.
 	 */
 	@Autowired
 	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
-									DamageMultiplierService damageMultiplierService, DamageResistanceCalculator damageResistanceCalculator, BodyPartMultiplierCalculator bodyPartMultiplierCalculator, ReloadDamageCalculator reloadDamageCalculator)
+									DamageMultiplierService damageMultiplierService, DamageResistanceCalculator damageResistanceCalculator, BodyPartMultiplierCalculator bodyPartMultiplierCalculator, RangedDamageCalculator rangedDamageCalculator)
 	{
 		this.baseDamageService = baseDamageService;
 		this.bonusDamageService = bonusDamageService;
 		this.damageMultiplierService = damageMultiplierService;
 		this.damageResistanceCalculator = damageResistanceCalculator;
 		this.bodyPartMultiplierCalculator = bodyPartMultiplierCalculator;
-		this.reloadDamageCalculator = reloadDamageCalculator;
+		this.rangedDamageCalculator = rangedDamageCalculator;
 	}
 
 	/*
@@ -105,7 +105,7 @@ public class DamageCalculationService
 			dpsDetails.getDamagePerShot().put(damage.damageType(), round(damagePerShot));
 
 			if (weapon instanceof RangedWeapon){
-				damagePerShot = reloadDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout, dpsDetails);
+				damagePerShot = rangedDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout, dpsDetails);
 			}
 
 			//damage per second

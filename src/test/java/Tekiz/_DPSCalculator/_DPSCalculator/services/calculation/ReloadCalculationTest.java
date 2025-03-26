@@ -6,7 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.ReloadDamageCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.RangedDamageCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	@Autowired
 	DamageCalculationService calculator;
 	@Autowired
-	ReloadDamageCalculator reloadDamageCalculator;
+	RangedDamageCalculator rangedDamageCalculator;
 
 	@Test
 	public void reloadCalculationTest_WithStandardReload() throws IOException
@@ -53,7 +53,7 @@ public class ReloadCalculationTest extends BaseTestClass
 		 */
 
 		DPSDetails dpsDetails = new DPSDetails(1);
-		double dps = reloadDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
+		double dps = rangedDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
 
 		assertEquals(70.58, super.round(dps));
 		assertEquals(4.3, dpsDetails.getShotsPerSecond());
@@ -112,7 +112,7 @@ public class ReloadCalculationTest extends BaseTestClass
 				//in actual tests, this value would have been divided before reaching this service
 				damageValue = 3;
 			}
-			double dps = reloadDamageCalculator.calculateDPSWithReload(damageValue, damage.overTime(), loadout, dpsDetails);
+			double dps = rangedDamageCalculator.calculateDPSWithReload(damageValue, damage.overTime(), loadout, dpsDetails);
 			dpsDetails.getDamagePerSecond().put(damage.damageType(), dps);
 		}
 
@@ -160,7 +160,7 @@ public class ReloadCalculationTest extends BaseTestClass
 		 */
 
 		DPSDetails dpsDetails = new DPSDetails(1);
-		double dps = reloadDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
+		double dps = rangedDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
 
 		assertEquals(120.4, super.round(dps));
 		assertEquals(4.3, dpsDetails.getShotsPerSecond());
@@ -202,7 +202,7 @@ public class ReloadCalculationTest extends BaseTestClass
 		 */
 
 		DPSDetails dpsDetails = new DPSDetails(1);
-		double dps = reloadDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
+		double dps = rangedDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
 
 		assertEquals(0, super.round(dps));
 		assertEquals(0, dpsDetails.getShotsPerSecond());
@@ -226,7 +226,7 @@ public class ReloadCalculationTest extends BaseTestClass
 		loadout.setWeapon(meleeWeapon);
 
 		DPSDetails dpsDetails = new DPSDetails(1);
-		double dps = reloadDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
+		double dps = rangedDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
 
 		assertEquals(0, super.round(dps));
 		assertEquals(0, dpsDetails.getShotsPerSecond());

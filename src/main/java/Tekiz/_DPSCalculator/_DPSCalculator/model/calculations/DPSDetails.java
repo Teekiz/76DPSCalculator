@@ -28,6 +28,12 @@ public class DPSDetails
 	double bodyPartMultiplier;
 	double damageResistMultiplier;
 
+	//VATS
+	double damagePerActionPoint;
+	double timeToConsumeActionPoints;
+	double shotsRequiredToFillCriticalMeter;
+	double criticalDamagePerShot;
+
 	public double getTotalDamagePerShot()
 	{
 		return damagePerShot.values().stream().mapToDouble(Double::doubleValue).sum();

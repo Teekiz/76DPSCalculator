@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond;
+package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
@@ -28,14 +28,19 @@ public class ActionPointsCalculator
 		this.modifierAggregationService = modifierAggregationService;
 	}
 
-	public double calculateDPSWithActionPoints(double damagePerShot, double damageOverTimeDuration, Loadout loadout, DPSDetails dpsDetails)
+	public double calculateAPDuration(double attacksPerSecond, Loadout loadout, DPSDetails dpsDetails)
 	{
-		double maxAP = loadout.getPlayer().getMaxAP();
-		double apPerShot = calculateActionsPointsPerAttack(loadout, dpsDetails);
-		return 0;
+		//this is to account for entering VATs
+		double maxAP = loadout.getPlayer().getMaxAP() - 5;
+		double apPerShot = calculateActionsPointsCostPerAttack(loadout, dpsDetails);
+
+		double secondsToConsumeBar = maxAP / (apPerShot * attacksPerSecond);
+
+		dpsDetails.setTimeToConsumeActionPoints(secondsToConsumeBar);
+		return secondsToConsumeBar;
 	}
 
-	public double calculateActionsPointsPerAttack(Loadout loadout, DPSDetails dpsDetails){
+	private double calculateActionsPointsCostPerAttack(Loadout loadout, DPSDetails dpsDetails){
 		Weapon weapon = loadout.getWeapon();
 		double baseAPPerAttack = weapon.getApCost();
 

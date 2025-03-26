@@ -5,15 +5,19 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** A service that calculates the damage with the reload time and any DoT remaining. */
 
 @Slf4j
 @Service
-public class ReloadDamageCalculator
+public class RangedDamageCalculator
 {
+	@Autowired
+	private ActionPointsCalculator actionPointsCalculator;
 	/**
 	 * A method used to calculate the damage per second with reload time factored in.
 	 * @param damagePerShot The damage applied for each calculation.
@@ -31,7 +35,24 @@ public class ReloadDamageCalculator
 			return 0;
 		}
 
+		double totalCycleTime = calculateCycleTime(loadout, dpsDetails, damageOverTimeDuration > 0);
+
 		RangedWeapon rangedWeapon = (RangedWeapon) weapon;
+
+		//the maximum amount of damage before a reload.
+		double damagePerCycle = damagePerShot * rangedWeapon.getMagazineSize();
+
+		//the actual damage per second with the reload time factored in.
+		double damagePerSecond = isValueInfiniteOrNaN((damagePerCycle + getDotDamageDuringReload(damagePerShot, damageOverTimeDuration, rangedWeapon)) / totalCycleTime);
+
+		log.debug("WeaponDamage with reload time is {}", damagePerSecond);
+		return damagePerSecond;
+	}
+
+	private double calculateCycleTime(Loadout loadout, DPSDetails dpsDetails, boolean isDamageOverTime)
+	{
+		RangedWeapon rangedWeapon = (RangedWeapon) loadout.getWeapon();
+
 		//the fire rate is the maximum amount of shots in a 10-second window (not factoring reload speed), so dividing by 10 will get the amount of shots per second.
 		double shotsPerSecond = isValueInfiniteOrNaN((double) rangedWeapon.getFireRate() / 10);
 
@@ -41,17 +62,30 @@ public class ReloadDamageCalculator
 		//the time it takes to use up ammo and then reload - if the value is greater than zero to avoid cases where fire rate is 0
 		double totalCycleTime = timeToEmptyMagazine > 0.0 ? timeToEmptyMagazine + rangedWeapon.getReloadTime() : 0;
 
-		//the maximum amount of damage before a reload.
-		double damagePerCycle = damagePerShot * rangedWeapon.getMagazineSize();
+		//if the action points last longer than the reload, the total cycle time is changed to factor in AP usage.
+		if (loadout.getPlayer().isUsingVats() && !isDamageOverTime)
+		{
+			double timeToConsume = actionPointsCalculator.calculateAPDuration(shotsPerSecond, loadout, dpsDetails);
 
-		//the actual damage per second with the reload time factored in.
-		double damagePerSecond = isValueInfiniteOrNaN((damagePerCycle + getDotDamageDuringReload(damagePerShot, damageOverTimeDuration, rangedWeapon)) / totalCycleTime);
+			if (timeToConsume < timeToEmptyMagazine) {
+				// ap runs out first → VATS ends when ap is depleted
+				totalCycleTime = timeToConsume;
+			} else {
+				// magazine empties first → Continue until ap is gone, factoring reloads if needed
+				totalCycleTime = timeToEmptyMagazine;
+
+				// if ap lasts longer than one magazine, add reload times
+				double remainingAPTime = timeToConsume - timeToEmptyMagazine;
+				int extraMagazines = (int) (remainingAPTime / (timeToEmptyMagazine + rangedWeapon.getReloadTime()));
+
+				totalCycleTime += extraMagazines * (timeToEmptyMagazine + rangedWeapon.getReloadTime());
+			}
+		}
 
 		dpsDetails.setShotsPerSecond(shotsPerSecond);
 		dpsDetails.setTimeToEmptyMagazine(timeToEmptyMagazine);
 
-		log.debug("WeaponDamage with reload time is {}", damagePerSecond);
-		return damagePerSecond;
+		return totalCycleTime;
 	}
 
 	/**
