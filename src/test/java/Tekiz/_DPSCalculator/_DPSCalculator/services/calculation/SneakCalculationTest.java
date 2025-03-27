@@ -32,18 +32,33 @@ public class SneakCalculationTest extends BaseTestClass
 	@Autowired
 	SneakBonusCalculationService sneakBonusCalculationService;
 
+	//TEST OBJECT IDS
+	String _10MMPISTOL;
+	String COVERT_OPERATIVE;
+	String ASSAULTRONBLADE;
+	String NINJA;
+	String BALLISTICBOCK;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		_10MMPISTOL = jsonIDMapper.getIDFromFileName("10MMPISTOL");
+		COVERT_OPERATIVE = jsonIDMapper.getIDFromFileName("COVERT_OPERATIVE");
+		ASSAULTRONBLADE = jsonIDMapper.getIDFromFileName("ASSAULTRONBLADE");
+		NINJA = jsonIDMapper.getIDFromFileName("NINJA");
+		BALLISTICBOCK = jsonIDMapper.getIDFromFileName("BALLISTICBOCK");
+	}
+
 	@BeforeEach
 	public void setUp()
 	{
 		perkManager.setIgnoreSpecialRestrictions(true);
-		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
 	@AfterEach
 	public void cleanUp()
 	{
 		perkManager.setIgnoreSpecialRestrictions(false);
-		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
 
 	@Test
@@ -52,9 +67,9 @@ public class SneakCalculationTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
 
-		weaponManager.setWeapon("WEAPONS1", loadout);
-		perkManager.addPerk("PERKS7", loadout);
-		perkManager.changePerkRank("PERKS7", 2, loadout);
+		weaponManager.setWeapon(_10MMPISTOL, loadout);
+		perkManager.addPerk(COVERT_OPERATIVE, loadout);
+		perkManager.changePerkRank(COVERT_OPERATIVE, 2, loadout);
 
 		//this should result in a sneak bonus of 1.3x (base 1 + 30% from perk)
 		assertEquals(1.3 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
@@ -66,9 +81,9 @@ public class SneakCalculationTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
 
-		weaponManager.setWeapon("WEAPONS2", loadout);
-		perkManager.addPerk("PERKS10", loadout);
-		perkManager.changePerkRank("PERKS10", 3, loadout);
+		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);
+		perkManager.addPerk(NINJA, loadout);
+		perkManager.changePerkRank(NINJA, 3, loadout);
 
 		//this should result in a sneak bonus of 1.9x (base 1 + 90% from perk)
 		assertEquals(1.9 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
@@ -80,16 +95,16 @@ public class SneakCalculationTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
 
-		weaponManager.setWeapon("WEAPONS1", loadout);
-		perkManager.addPerk("PERKS7", loadout);
-		perkManager.changePerkRank("PERKS7", 3, loadout); //0.5
-		perkManager.addPerk("PERKS10", loadout);
-		perkManager.changePerkRank("PERKS10", 2, loadout); //0.6
+		weaponManager.setWeapon(_10MMPISTOL, loadout);
+		perkManager.addPerk(COVERT_OPERATIVE, loadout);
+		perkManager.changePerkRank(COVERT_OPERATIVE, 3, loadout); //0.5
+		perkManager.addPerk(NINJA, loadout);
+		perkManager.changePerkRank(NINJA, 2, loadout); //0.6
 
 		//this should result in a sneak bonus of 1.5x (base 1 + 50% from perk)
 		assertEquals(1.5 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
 
-		weaponManager.setWeapon("WEAPONS2", loadout);
+		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);
 		assertEquals(1.6 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
 	}
 
@@ -99,7 +114,7 @@ public class SneakCalculationTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
 
-		weaponManager.setWeapon("WEAPONS1", loadout);
+		weaponManager.setWeapon(_10MMPISTOL, loadout);
 
 		//this should result in a sneak bonus of 1x
 		assertEquals(1.0 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
@@ -112,11 +127,11 @@ public class SneakCalculationTest extends BaseTestClass
 		DPSDetails dpsDetails = new DPSDetails(1);
 		loadout.getPlayer().setSneaking(true);
 
-		weaponManager.setWeapon("WEAPONS1", loadout);
-		perkManager.addPerk("PERKS7", loadout);
-		perkManager.changePerkRank("PERKS7", 3, loadout); //0.5
+		weaponManager.setWeapon(_10MMPISTOL, loadout);
+		perkManager.addPerk(COVERT_OPERATIVE, loadout);
+		perkManager.changePerkRank(COVERT_OPERATIVE, 3, loadout); //0.5
 
-		consumableManager.addConsumable("CONSUMABLES2", loadout);//BALLISTICBOCK - 0.15
+		consumableManager.addConsumable(BALLISTICBOCK, loadout);//BALLISTICBOCK - 0.15
 
 		//with the additional perks (0.15), and the sneak perk (0.5) with receiver (-0.1), this should result in (1.15 + 1.5 - 0.1 = 2.55 bonus damage)
 		assertEquals(2.55, calculator.calculateBonusDamage(loadout, dpsDetails));

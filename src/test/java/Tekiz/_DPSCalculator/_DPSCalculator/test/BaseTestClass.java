@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.jsonidmapper.JsonIDMapper;
 
 @SpringBootTest
 public abstract class BaseTestClass
@@ -16,6 +17,8 @@ public abstract class BaseTestClass
 	protected LoadoutManager loadoutManager;
 	@Autowired
 	protected UserLoadoutTracker userLoadoutTracker;
+	@Autowired
+	protected JsonIDMapper jsonIDMapper;
 
 	@BeforeEach
 	public void setUp()

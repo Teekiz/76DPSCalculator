@@ -7,11 +7,11 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderS
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EnemyLoaderServiceTest extends BaseTestClass
@@ -19,12 +19,19 @@ public class EnemyLoaderServiceTest extends BaseTestClass
 	@Autowired
 	DataLoaderService dataLoaderService;
 
+	String FERAL_GHOUL;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		FERAL_GHOUL = jsonIDMapper.getIDFromFileName("FERAL_GHOUL");
+	}
+
 	//todo - add this test
 	@Test
 	void testLoadEnemy_ID() throws IOException
 	{
-		String enemyID = "ENEMIES1";
-		Enemy enemy = dataLoaderService.loadData(enemyID, Enemy.class, null);
+		Enemy enemy = dataLoaderService.loadData(FERAL_GHOUL, Enemy.class, null);
 		assertNotNull(enemy);
 		assertEquals(EnemyType.GHOUL, enemy.getEnemyType());
 	}

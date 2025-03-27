@@ -12,6 +12,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,18 +33,44 @@ public class WeaponChangedEventTest extends BaseTestClass
 	@Autowired
 	SpecialBonusCalculationService specialBonusCalculationService;
 
+	//TEST OBJECT IDS
+	String _10MMPISTOL;
+	String CALIBRATE;
+	String TESTEVENT;
+	String TESTEVENTTWO;
+	String TESTEVENTCONSUMABLE;
+	String TESTCONDITION;
+	String AUTOMATIC;
+	String TESTMODIFIER;
+	String ASSAULTRONBLADE;
+	String GAUSSRIFLE;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		_10MMPISTOL = jsonIDMapper.getIDFromFileName("10MMPISTOL");
+		ASSAULTRONBLADE = jsonIDMapper.getIDFromFileName("ASSAULTRONBLADE");
+		GAUSSRIFLE = jsonIDMapper.getIDFromFileName("GAUSSRIFLE");
+		CALIBRATE = jsonIDMapper.getIDFromFileName("CALIBRATE");
+		TESTEVENT = jsonIDMapper.getIDFromFileName("TESTEVENT");
+		TESTEVENTCONSUMABLE = jsonIDMapper.getIDFromFileName("TESTEVENTCONSUMABLE");
+		TESTEVENTTWO = jsonIDMapper.getIDFromFileName("TESTEVENTTWO");
+		TESTCONDITION = jsonIDMapper.getIDFromFileName("TESTCONDITION");
+		AUTOMATIC = jsonIDMapper.getIDFromFileName("AUTOMATIC");
+		TESTMODIFIER = jsonIDMapper.getIDFromFileName("TESTMODIFIER");
+	}
 
 	@Test
 	public void testPerkWCE() throws IOException
 	{
 		log.debug("{}Running test - testPerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		perkManager.addPerk("PERKS5", loadout); //TESTEVENT
+		perkManager.addPerk(TESTEVENT, loadout); //TESTEVENT
 
 		//condition to use perk does not match
 		assertEquals(0.00, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		weaponManager.setWeapon("WEAPONS1", loadout); //10MMPISTOL
+		weaponManager.setWeapon(_10MMPISTOL, loadout); //10MMPISTOL
 		assertNotNull(loadout.getWeapon());
 		assertEquals(loadout.getWeapon().getWeaponType(), WeaponType.PISTOL);
 
@@ -51,7 +78,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		//receiver does not change the damage
-		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -62,14 +89,14 @@ public class WeaponChangedEventTest extends BaseTestClass
 	{
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
-		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALLIBRATE
+		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
+		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		perkManager.addPerk("PERKS5", loadout); //TESTEVENT
+		perkManager.addPerk(TESTEVENT, loadout); //TESTEVENT
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		weaponManager.modifyWeapon("MODRECEIVERS1", ModType.RECEIVER, loadout);//AUTOMATIC
+		weaponManager.modifyWeapon(AUTOMATIC, ModType.RECEIVER, loadout);//AUTOMATIC
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -82,11 +109,11 @@ public class WeaponChangedEventTest extends BaseTestClass
 	{
 		log.debug("{}Running test - testConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		consumableManager.addConsumable("CONSUMABLES7", loadout);//TESTEVENT
+		consumableManager.addConsumable(TESTEVENTCONSUMABLE, loadout);//TESTEVENTCONSUMABLE
 
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);//10MMPISTOL
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -96,11 +123,11 @@ public class WeaponChangedEventTest extends BaseTestClass
 	{
 		log.debug("{}Running test - testRemoveConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
-		consumableManager.addConsumable("CONSUMABLES7", loadout); //TEST EVENT
+		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);//10MMPISTOL
+		consumableManager.addConsumable(TESTEVENTCONSUMABLE, loadout); //TESTEVENTCONSUMABLE
 		assertEquals(10, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 
-		weaponManager.setWeapon("WEAPONS3", loadout);//GAUSSRIFLE
+		weaponManager.setWeapon(GAUSSRIFLE, loadout);//GAUSSRIFLE
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -111,14 +138,14 @@ public class WeaponChangedEventTest extends BaseTestClass
 		log.debug("{}Running test - testAddAndRemovePerkAndConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
-		consumableManager.addConsumable("CONSUMABLES8", loadout); //TESTEVENTTWO
-		perkManager.addPerk("PERKS6", loadout);//TESTMODIFIER
+		consumableManager.addConsumable(TESTEVENTTWO, loadout); //TESTEVENTTWO
+		perkManager.addPerk(TESTMODIFIER, loadout);//TESTMODIFIER
 		assertEquals(0.0, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
+		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
 		assertEquals(36.4, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		weaponManager.setWeapon("WEAPONS3", loadout);//GAUSSRIFLE
+		weaponManager.setWeapon(GAUSSRIFLE, loadout);//GAUSSRIFLE
 		assertEquals(140.0, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -130,11 +157,11 @@ public class WeaponChangedEventTest extends BaseTestClass
 		Loadout loadout = loadoutManager.getLoadout(1);
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE, loadout));
-		consumableManager.addConsumable("CONSUMABLES6", loadout);//TESTCONDITION
+		consumableManager.addConsumable(TESTCONDITION, loadout);//TESTCONDITION
 		assertEquals(0, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		assertEquals(2, specialBonusCalculationService.getSpecialBonus(Specials.INTELLIGENCE, loadout));
 		//this should enable the condition to boost charisma
-		weaponManager.setWeapon("WEAPONS2", loadout);//10MMPISTOL
+		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);//10MMPISTOL
 		assertEquals(5, specialBonusCalculationService.getSpecialBonus(Specials.CHARISMA, loadout));
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

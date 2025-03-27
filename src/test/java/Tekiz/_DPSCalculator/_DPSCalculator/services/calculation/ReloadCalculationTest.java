@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,12 +31,20 @@ public class ReloadCalculationTest extends BaseTestClass
 	@Autowired
 	RangedDamageCalculator rangedDamageCalculator;
 
+	String _10MMPISTOL;
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		_10MMPISTOL = jsonIDMapper.getIDFromFileName("10MMPISTOL");
+	}
+
 	@Test
 	public void reloadCalculationTest_WithStandardReload() throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
-		weaponManager.setWeapon("WEAPONS1", loadout);
+		weaponManager.setWeapon(_10MMPISTOL, loadout);
 
 		/*
 			without additional modifiers

@@ -30,7 +30,7 @@ public class LegendaryEffectsLoaderServiceTest extends BaseTestClass
 	@Test
 	void testLoadLegendaryEffectsByID() throws IOException
 	{
-		String id = "LEGENDARYEFFECT1";
+		String id = jsonIDMapper.getIDFromFileName("ANTIARMOUR");
 		LegendaryEffect legendaryEffect = dataLoaderService.loadData(id, LegendaryEffect.class, null);
 		assertNotNull(legendaryEffect);
 		assertEquals("Anti-Armor", legendaryEffect.name());

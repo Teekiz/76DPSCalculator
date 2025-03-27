@@ -10,6 +10,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,19 +31,42 @@ public class TestRedisSerialization extends BaseTestClass
 	@Autowired
 	LegendaryEffectManager legendaryEffectManager;
 
+	String _10MMPISTOL;
+	String CALIBRATE;
+	String FURY;
+	String BALLISTICBOCK;
+	String GUNSLINGER;
+	String STRANGEINNUMBERS;
+	String ADRENALREACTION;
+	String ANTIARMOUR;
+
+
+	@BeforeEach
+	public void initializeVariables()
+	{
+		_10MMPISTOL = jsonIDMapper.getIDFromFileName("10MMPISTOL");
+		CALIBRATE = jsonIDMapper.getIDFromFileName("CALIBRATE");
+		FURY = jsonIDMapper.getIDFromFileName("FURY");
+		BALLISTICBOCK = jsonIDMapper.getIDFromFileName("BALLISTICBOCK");
+		GUNSLINGER = jsonIDMapper.getIDFromFileName("GUNSLINGER");
+		STRANGEINNUMBERS = jsonIDMapper.getIDFromFileName("STRANGEINNUMBERS");
+		ADRENALREACTION = jsonIDMapper.getIDFromFileName("ADRENALREACTION");
+		ANTIARMOUR = jsonIDMapper.getIDFromFileName("ANTIARMOUR");
+	}
+
 	@Test
 	public void testRedisSerialization() throws IOException
 	{
 		log.debug("{}Running test - testRedisSerialization in TestRedisSerialization.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
-		weaponManager.setWeapon("WEAPONS1", loadout);//10MMPISTOL
-		weaponManager.modifyWeapon("MODRECEIVERS2", ModType.RECEIVER, loadout);//CALLIBRATE
-		consumableManager.addConsumable("CONSUMABLES5", loadout);//FURY
-		consumableManager.addConsumable("CONSUMABLES2", loadout);//BALLISTICBOCK
-		perkManager.addPerk("PERKS1", loadout);//GUNSLINGER
-		perkManager.addPerk("PERKS3", loadout);//STRANGEINNUMBERS
-		mutationManager.addMutation("MUTATIONS1", loadout);//ADRENALREACTION
-		legendaryEffectManager.addLegendaryEffect("LEGENDARYEFFECT1", loadout.getWeapon(), loadout);
+		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
+		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALLIBRATE
+		consumableManager.addConsumable(FURY, loadout);//FURY
+		consumableManager.addConsumable(BALLISTICBOCK, loadout);//BALLISTICBOCK
+		perkManager.addPerk(GUNSLINGER, loadout);//GUNSLINGER
+		perkManager.addPerk(STRANGEINNUMBERS, loadout);//STRANGEINNUMBERS
+		mutationManager.addMutation(ADRENALREACTION, loadout);//ADRENALREACTION
+		legendaryEffectManager.addLegendaryEffect(ANTIARMOUR, loadout.getWeapon(), loadout);//ANTIARMOUR
 
 		loadout = null;
 
