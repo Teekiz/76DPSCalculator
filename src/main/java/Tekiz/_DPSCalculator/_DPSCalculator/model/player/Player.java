@@ -83,6 +83,6 @@ public class Player implements Serializable
 	 */
 	public void setMaxAP(int bonusAgility, int bonusAP)
 	{
-		maxAP = (10 * (specials.getAgility() + bonusAgility)) + bonusAP;
+		maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
 	}
 }

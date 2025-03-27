@@ -10,29 +10,28 @@ import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregat
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor(onConstructor =@__(@Autowired))
 public class ActionPointsCalculator
 {
 	private final ModifierAggregationService modifierAggregationService;
-
-	/**
-	 * The {@link ActionPointsCalculator} constructor.
-	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
-	 */
-	public ActionPointsCalculator(ModifierAggregationService modifierAggregationService)
-	{
-		this.modifierAggregationService = modifierAggregationService;
-	}
 
 	public double calculateAPDuration(double attacksPerSecond, Loadout loadout, DPSDetails dpsDetails)
 	{
 		//this is to account for entering VATs
 		double maxAP = loadout.getPlayer().getMaxAP() - 5;
+
 		double apPerShot = calculateActionsPointsCostPerAttack(loadout, dpsDetails);
+
+		if (maxAP <= 0 || apPerShot <= 0){
+			return 0;
+		}
 
 		double secondsToConsumeBar = maxAP / (apPerShot * attacksPerSecond);
 
@@ -42,6 +41,11 @@ public class ActionPointsCalculator
 
 	private double calculateActionsPointsCostPerAttack(Loadout loadout, DPSDetails dpsDetails){
 		Weapon weapon = loadout.getWeapon();
+
+		if (weapon == null){
+			return 0;
+		}
+
 		double baseAPPerAttack = weapon.getApCost();
 
 		List<Double> apBonuses = new ArrayList<>(modifierAggregationService

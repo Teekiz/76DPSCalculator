@@ -54,7 +54,7 @@ public class RangedDamageCalculator
 		RangedWeapon rangedWeapon = (RangedWeapon) loadout.getWeapon();
 
 		//the fire rate is the maximum amount of shots in a 10-second window (not factoring reload speed), so dividing by 10 will get the amount of shots per second.
-		double shotsPerSecond = isValueInfiniteOrNaN((double) rangedWeapon.getFireRate() / 10);
+		double shotsPerSecond = isValueInfiniteOrNaN(calculateShotsPerSecond(rangedWeapon));
 
 		//the time to use up all ammo in magazine/clip
 		double timeToEmptyMagazine = isValueInfiniteOrNaN((double) rangedWeapon.getMagazineSize() / shotsPerSecond);
@@ -119,5 +119,20 @@ public class RangedDamageCalculator
 			return 0;
 		}
 		return value;
+	}
+
+	/**
+	 * A method to calculate a ranged weapons shots per second based on modifiers.
+	 * @param rangedWeapon The weapon to identify its fire rate.
+	 * @return The shots per second.
+	 */
+	private double calculateShotsPerSecond(RangedWeapon rangedWeapon){
+		double fireRate = rangedWeapon.getFireRate();
+
+		if (rangedWeapon.getReceiver() != null){
+			fireRate += rangedWeapon.getReceiver().fireRateChange();
+		}
+
+		return fireRate / 10;
 	}
 }

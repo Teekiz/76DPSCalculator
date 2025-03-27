@@ -6,6 +6,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.BodyPartMultiplier.BodyPartMultiplierCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.CriticalDamageBonusCalculator;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.SneakBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond.RangedDamageCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMultiplier.DamageResistanceCalculator;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BaseDamageService;
@@ -13,6 +15,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.B
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.DamageMultiplierService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@AllArgsConstructor(onConstructor =@__(@Autowired))
 public class DamageCalculationService
 {
 	private final BaseDamageService baseDamageService;
@@ -30,27 +34,8 @@ public class DamageCalculationService
 	private final DamageResistanceCalculator damageResistanceCalculator;
 	private final BodyPartMultiplierCalculator bodyPartMultiplierCalculator;
 	private final RangedDamageCalculator rangedDamageCalculator;
-
-	/**
-	 * The constructor for {@link DamageCalculationService}.
-	 * @param baseDamageService A service that calculates the base damage from a loadout.
-	 * @param bonusDamageService A service that calculates the bonus (additive) damage from a loadout.
-	 * @param damageMultiplierService A service that calculates the multiplicative damage from a loadout.
-	 * @param damageResistanceCalculator A service that calculates the damage from a loadout based on the weapons damage type, penetration and enemy resistances.
-	 * @param bodyPartMultiplierCalculator A service that determines the damage bonus based on the targeted enemy limb.
-	 * @param rangedDamageCalculator A service that calculates the damage with the reload time and any DoT remaining.
-	 */
-	@Autowired
-	public DamageCalculationService(BaseDamageService baseDamageService, BonusDamageService bonusDamageService,
-									DamageMultiplierService damageMultiplierService, DamageResistanceCalculator damageResistanceCalculator, BodyPartMultiplierCalculator bodyPartMultiplierCalculator, RangedDamageCalculator rangedDamageCalculator)
-	{
-		this.baseDamageService = baseDamageService;
-		this.bonusDamageService = bonusDamageService;
-		this.damageMultiplierService = damageMultiplierService;
-		this.damageResistanceCalculator = damageResistanceCalculator;
-		this.bodyPartMultiplierCalculator = bodyPartMultiplierCalculator;
-		this.rangedDamageCalculator = rangedDamageCalculator;
-	}
+	private final SneakBonusCalculationService sneakBonusCalculationService;
+	private final CriticalDamageBonusCalculator criticalDamageBonusCalculator;
 
 	/*
 		WeaponDamage is calculated by:
@@ -89,23 +74,23 @@ public class DamageCalculationService
 		for (WeaponDamage damage : weapon.getBaseDamage(45)){
 			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
 			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
-			double outgoingDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * bonusDamage, loadout, dpsDetails);
+			double sneakBonusDamage = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails) : 0;
 
-			//WeaponDamage resit multiplier
-			double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(outgoingDamage, damage.damageType(), loadout, dpsDetails);
+			double outgoingDamagePerShot = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * (bonusDamage + sneakBonusDamage), loadout, dpsDetails);
 
-			double outgoingDamage_wDRMW_wBPM = outgoingDamageWithDamageResistMult;
-			//skip if the damage is DoT
-			if (damage.overTime() == 0) {
-				outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout, dpsDetails);
-			}
+			//if the damage comes from a DoT source or the player isn't using VATS, don't apply critical damage
+			boolean shouldApplyCriticalDamage = loadout.getPlayer().isUsingVats() && damage.overTime() == 0;
+			double criticalDamagePerShot = shouldApplyCriticalDamage ? criticalDamageBonusCalculator.getAverageCriticalDamagePerShot(loadout, baseDamage, bonusDamage, dpsDetails) : 0;
 
-			//damage per shot
-			double damagePerShot = outgoingDamage_wDRMW_wBPM;
+			double combinedDamagePerShot = outgoingDamagePerShot + criticalDamagePerShot;
+			log.debug("Outgoing damage: {}. Critical Damage: {}. Combined: {}", outgoingDamagePerShot, criticalDamagePerShot, combinedDamagePerShot);
+
+			//damage per shot - with the damage resistances added
+			double damagePerShot = calculateDamageWithResistances(combinedDamagePerShot, damage, loadout, dpsDetails);
 			dpsDetails.getDamagePerShot().put(damage.damageType(), round(damagePerShot));
 
 			if (weapon instanceof RangedWeapon){
-				damagePerShot = rangedDamageCalculator.calculateDPSWithReload(outgoingDamage_wDRMW_wBPM, damage.overTime(), loadout, dpsDetails);
+				damagePerShot = rangedDamageCalculator.calculateDPSWithReload(damagePerShot, damage.overTime(), loadout, dpsDetails);
 			}
 
 			//damage per second
@@ -113,6 +98,28 @@ public class DamageCalculationService
 		}
 
 		return dpsDetails;
+	}
+
+	/**
+	 * A method that calculates the damage with resistances
+	 * @param calculatedDamage The damage value calculated before resistances are added.
+	 * @param damage The weapons damage object.
+	 * @param loadout The loadout that will be used to calculate from.
+	 * @param dpsDetails An object used to store data about the DPS calculation.
+	 * @return The bonus critical damage.
+	 */
+	private double calculateDamageWithResistances(double calculatedDamage, WeaponDamage damage, Loadout loadout, DPSDetails dpsDetails)
+	{
+		//WeaponDamage resit multiplier
+		double outgoingDamageWithDamageResistMult = damageResistanceCalculator.calculateDamageResistance(calculatedDamage, damage.damageType(), loadout, dpsDetails);
+
+		double outgoingDamage_wDRMW_wBPM = outgoingDamageWithDamageResistMult;
+		//skip if the damage is DoT
+		if (damage.overTime() == 0) {
+			outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout, dpsDetails);
+		}
+
+		return outgoingDamage_wDRMW_wBPM;
 	}
 
 	/**

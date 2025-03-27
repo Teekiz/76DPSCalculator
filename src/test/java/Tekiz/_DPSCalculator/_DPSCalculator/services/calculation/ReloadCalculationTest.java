@@ -50,23 +50,23 @@ public class ReloadCalculationTest extends BaseTestClass
 			without additional modifiers
 			DAMAGE PER SHOT: 28.0
 			MAGAZINE SIZE: 12
-			FIRERATE: 43
+			FIRERATE: 43 + 32
 			RELOADTIME: 1.97
 
-			//SHOTS PER SECOND = 43/10 = 4.3.
-			//TIME TO USE UP MAGAZINE = 12 / 4.3 = 2.79
-			//TOTAL CYCLE = 2.79 + 1.97 = 4.76
+			//SHOTS PER SECOND = (43 + 32) /10 = 7.5.
+			//TIME TO USE UP MAGAZINE = 12 / 7.5 = 1.6
+			//TOTAL CYCLE = 1.6 + 1.97 = 3.57
 			//DAMAGE PER CYCLE = 28.0 * 12 = 336
-			//DAMAGE PER SECOND WITHOUT RELOAD = 120.4
-			//DAMAGE PER SECOND WITH RELOAD = 70.58
+			//DAMAGE PER SECOND WITHOUT RELOAD = 336 / 1.6 = 210
+			//DAMAGE PER SECOND WITH RELOAD = 336 / 3.57 = 94.12
 		 */
 
 		DPSDetails dpsDetails = new DPSDetails(1);
 		double dps = rangedDamageCalculator.calculateDPSWithReload(28, 0, loadout, dpsDetails);
 
-		assertEquals(70.58, super.round(dps));
-		assertEquals(4.3, dpsDetails.getShotsPerSecond());
-		assertEquals(2.79, super.round(dpsDetails.getTimeToEmptyMagazine()));
+		assertEquals(94.12, super.round(dps));
+		assertEquals(7.5, dpsDetails.getShotsPerSecond());
+		assertEquals(1.6, super.round(dpsDetails.getTimeToEmptyMagazine()));
 	}
 
 	@Test
