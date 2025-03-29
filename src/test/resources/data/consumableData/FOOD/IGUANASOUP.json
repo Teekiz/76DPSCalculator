@@ -1,0 +1,9 @@
+{
+    "name" : "Iguana soup",
+    "consumableType" : "FOOD",
+    "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_MEAT",
+    "effects" : {
+        "SPECIAL_LUCK" : 3
+    }
+}

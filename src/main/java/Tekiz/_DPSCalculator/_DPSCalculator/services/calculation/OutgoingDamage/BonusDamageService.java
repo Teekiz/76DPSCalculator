@@ -7,6 +7,8 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.SneakBonusCalculationService;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -14,21 +16,12 @@ import org.springframework.stereotype.Service;
  * A service that calculates the bonus (additive) damage from a loadout.
  */
 @Service
+@AllArgsConstructor(onConstructor =@__(@Autowired))
 public class BonusDamageService
 {
 	private final SneakBonusCalculationService sneakBonusCalculationService;
 	private final ModifierAggregationService modifierAggregationService;
 
-	/**
-	 * The {@link BonusDamageService} constructor.
-	 * @param sneakBonusCalculationService A service to calculate the sneak damage bonus a loadout provides.
-	 * @param modifierAggregationService A service that retrieves and returns all known modifiers.
-	 */
-	public BonusDamageService(SneakBonusCalculationService sneakBonusCalculationService, ModifierAggregationService modifierAggregationService)
-	{
-		this.sneakBonusCalculationService = sneakBonusCalculationService;
-		this.modifierAggregationService = modifierAggregationService;
-	}
 	/**
 	 * A method that calculates the bonus (additive) damage from a loadout.
 	 * @param dpsDetails An object containing all the results of the damage calculation.
@@ -42,10 +35,6 @@ public class BonusDamageService
 			.filter(Objects::nonNull)
 			.mapToDouble(Number::doubleValue)
 			.sum() + 1.0;
-
-		if (loadout.getPlayer().isSneaking()){
-			bonusDamage += sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails);
-		}
 
 		if (loadout.getWeapon() instanceof RangedWeapon weapon)
 		{

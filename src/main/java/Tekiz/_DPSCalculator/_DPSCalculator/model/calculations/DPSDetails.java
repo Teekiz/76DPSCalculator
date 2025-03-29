@@ -29,10 +29,11 @@ public class DPSDetails
 	double damageResistMultiplier;
 
 	//VATS
+	//todo
 	double damagePerActionPoint;
 	double timeToConsumeActionPoints;
 	double shotsRequiredToFillCriticalMeter;
-	double criticalDamagePerShot;
+	final HashMap<DamageType, Double> criticalDamagePerShot  = new HashMap<>();
 
 	public double getTotalDamagePerShot()
 	{

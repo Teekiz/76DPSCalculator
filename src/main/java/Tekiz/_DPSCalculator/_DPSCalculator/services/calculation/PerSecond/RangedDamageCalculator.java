@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor(onConstructor =@__(@Autowired))
 public class RangedDamageCalculator
 {
-	@Autowired
-	private ActionPointsCalculator actionPointsCalculator;
+	private final ActionPointsCalculator actionPointsCalculator;
 	/**
 	 * A method used to calculate the damage per second with reload time factored in.
 	 * @param damagePerShot The damage applied for each calculation.
@@ -59,10 +60,9 @@ public class RangedDamageCalculator
 		//the time to use up all ammo in magazine/clip
 		double timeToEmptyMagazine = isValueInfiniteOrNaN((double) rangedWeapon.getMagazineSize() / shotsPerSecond);
 
-		//the time it takes to use up ammo and then reload - if the value is greater than zero to avoid cases where fire rate is 0
-		double totalCycleTime = timeToEmptyMagazine > 0.0 ? timeToEmptyMagazine + rangedWeapon.getReloadTime() : 0;
-
+		double totalCycleTime = 0;
 		//if the action points last longer than the reload, the total cycle time is changed to factor in AP usage.
+		// DoT damage isn't considered as it doesn't change compared to AP
 		if (loadout.getPlayer().isUsingVats() && !isDamageOverTime)
 		{
 			double timeToConsume = actionPointsCalculator.calculateAPDuration(shotsPerSecond, loadout, dpsDetails);
@@ -71,15 +71,16 @@ public class RangedDamageCalculator
 				// ap runs out first → VATS ends when ap is depleted
 				totalCycleTime = timeToConsume;
 			} else {
-				// magazine empties first → Continue until ap is gone, factoring reloads if needed
-				totalCycleTime = timeToEmptyMagazine;
-
 				// if ap lasts longer than one magazine, add reload times
-				double remainingAPTime = timeToConsume - timeToEmptyMagazine;
-				int extraMagazines = (int) (remainingAPTime / (timeToEmptyMagazine + rangedWeapon.getReloadTime()));
+				int magazinesRequired = (int) Math.floor(timeToConsume / timeToEmptyMagazine);
 
-				totalCycleTime += extraMagazines * (timeToEmptyMagazine + rangedWeapon.getReloadTime());
+				if (magazinesRequired > 0){
+					totalCycleTime += timeToConsume + (rangedWeapon.getReloadTime() * magazinesRequired);
+				}
 			}
+		} else {
+			//the time it takes to use up ammo and then reload - if the value is greater than zero to avoid cases where fire rate is 0
+			totalCycleTime = timeToEmptyMagazine > 0.0 ? timeToEmptyMagazine + rangedWeapon.getReloadTime() : 0;
 		}
 
 		dpsDetails.setShotsPerSecond(shotsPerSecond);

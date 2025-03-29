@@ -1,0 +1,27 @@
+{
+    "name" : "Critical",
+    "special": "LUCK",
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
+    "description" : "Critical Hits now only consume 85/70/55% of your critical meter.",
+    "modifierSource" : "PERK",
+    "effects" :
+    {
+      "1" :
+      {
+        "CRITICAL_CONSUMPTION" : 85
+      },
+      "2" :
+      {
+        "CRITICAL_CONSUMPTION" : 70
+      },
+      "3" :
+      {
+        "CRITICAL_CONSUMPTION" : 55
+      }
+    }
+}

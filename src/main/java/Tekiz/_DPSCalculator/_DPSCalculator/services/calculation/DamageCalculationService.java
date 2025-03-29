@@ -73,21 +73,23 @@ public class DamageCalculationService
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
 		for (WeaponDamage damage : weapon.getBaseDamage(45)){
 			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
-			double bonusDamage = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
-			double sneakBonusDamage = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails) : 0;
 
-			double outgoingDamagePerShot = damageMultiplierService.calculateMultiplicativeDamage(baseDamage * (bonusDamage + sneakBonusDamage), loadout, dpsDetails);
+			double bonusDamageMultiplier = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
+			double sneakBonusMultiplier = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails) : 0;
 
-			//if the damage comes from a DoT source or the player isn't using VATS, don't apply critical damage
-			boolean shouldApplyCriticalDamage = loadout.getPlayer().isUsingVats() && damage.overTime() == 0;
-			double criticalDamagePerShot = shouldApplyCriticalDamage ? criticalDamageBonusCalculator.getAverageCriticalDamagePerShot(loadout, baseDamage, bonusDamage, dpsDetails) : 0;
+			double baseDamageWithoutSneak = baseDamage * (bonusDamageMultiplier);
+			double baseDamageWithBonuses = baseDamage * (bonusDamageMultiplier + sneakBonusMultiplier);
 
-			double combinedDamagePerShot = outgoingDamagePerShot + criticalDamagePerShot;
-			log.debug("Outgoing damage: {}. Critical Damage: {}. Combined: {}", outgoingDamagePerShot, criticalDamagePerShot, combinedDamagePerShot);
+			double multiplicativeDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamageWithBonuses, loadout, dpsDetails);
+
+			double damagePerShotWithCritical = criticalDamageBonusCalculator.addAverageCriticalDamagePerShot(loadout, baseDamage, baseDamageWithoutSneak, multiplicativeDamage, damage, dpsDetails);
+
+			log.debug("Outgoing damage: {}. With critical: {}", multiplicativeDamage, damagePerShotWithCritical);
 
 			//damage per shot - with the damage resistances added
-			double damagePerShot = calculateDamageWithResistances(combinedDamagePerShot, damage, loadout, dpsDetails);
+			double damagePerShot = calculateDamageWithResistances(damagePerShotWithCritical, damage, loadout, dpsDetails);
 			dpsDetails.getDamagePerShot().put(damage.damageType(), round(damagePerShot));
+
 
 			if (weapon instanceof RangedWeapon){
 				damagePerShot = rangedDamageCalculator.calculateDPSWithReload(damagePerShot, damage.overTime(), loadout, dpsDetails);

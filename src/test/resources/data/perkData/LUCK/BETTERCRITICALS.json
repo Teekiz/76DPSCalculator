@@ -1,0 +1,27 @@
+{
+    "name" : "Better criticals",
+    "special": "LUCK",
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
+    "description" : "V.A.T.S. criticals now do +50/75/100% damage.",
+    "modifierSource" : "PERK",
+    "effects" :
+    {
+      "1" :
+      {
+        "CRITICAL" : 0.5
+      },
+      "2" :
+      {
+        "CRITICAL" : 0.75
+      },
+      "3" :
+      {
+        "CRITICAL" : 1.0
+      }
+    }
+}
