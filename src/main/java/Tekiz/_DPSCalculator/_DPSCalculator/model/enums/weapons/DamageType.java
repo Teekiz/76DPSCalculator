@@ -11,5 +11,6 @@ public enum DamageType
 	ACID,
 	BLEED,
 	ELECTRICAL,
-	EXPLOSIVE;//AOE damage
+	EXPLOSIVE,
+	UNKNOWN;//AOE damage
 }

@@ -29,7 +29,7 @@ public record Receiver(@Id
 					   @JsonProperty("name") String name,
 					   @JsonProperty("receiverType") ReceiverType receiverType,
 					   @JsonProperty("damageChange") double damageChange,
-					   @JsonProperty("damageCriticalMultiplier") int damageCriticalMultiplier,
+					   @JsonProperty("damageCriticalMultiplier") double damageCriticalMultiplier,
 					   @JsonProperty("fireRateChange") int fireRateChange,
 					   @JsonProperty("accuracyChange") int accuracyChange,
 					   @JsonProperty("apChange") double apChange,

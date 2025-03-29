@@ -1,9 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BonusDamageService;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SneakBonusCalculationService;
+import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.SneakBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
@@ -28,7 +29,7 @@ public class SneakCalculationTest extends BaseTestClass
 	@Autowired
 	ConsumableManager consumableManager;
 	@Autowired
-	BonusDamageService calculator;
+	DamageCalculationService calculator;
 	@Autowired
 	SneakBonusCalculationService sneakBonusCalculationService;
 
@@ -124,7 +125,6 @@ public class SneakCalculationTest extends BaseTestClass
 	public void testSneakFromBonusCalculator() throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
-		DPSDetails dpsDetails = new DPSDetails(1);
 		loadout.getPlayer().setSneaking(true);
 
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -134,6 +134,8 @@ public class SneakCalculationTest extends BaseTestClass
 		consumableManager.addConsumable(BALLISTICBOCK, loadout);//BALLISTICBOCK - 0.15
 
 		//with the additional perks (0.15), and the sneak perk (0.5) with receiver (-0.1), this should result in (1.15 + 1.5 - 0.1 = 2.55 bonus damage)
-		assertEquals(2.55, calculator.calculateBonusDamage(loadout, dpsDetails));
+		//28.0 * 2.55 = 71.4
+		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
+		assertEquals(71.4, dpsDetails.getDamagePerShot().get(DamageType.PHYSICAL));
 	}
 }

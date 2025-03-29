@@ -28,6 +28,13 @@ public class DPSDetails
 	double bodyPartMultiplier;
 	double damageResistMultiplier;
 
+	//VATS
+	//todo
+	double damagePerActionPoint;
+	double timeToConsumeActionPoints;
+	double shotsRequiredToFillCriticalMeter;
+	final HashMap<DamageType, Double> criticalDamagePerShot  = new HashMap<>();
+
 	public double getTotalDamagePerShot()
 	{
 		return damagePerShot.values().stream().mapToDouble(Double::doubleValue).sum();

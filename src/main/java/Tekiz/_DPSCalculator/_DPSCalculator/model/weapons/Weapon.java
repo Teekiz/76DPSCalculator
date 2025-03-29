@@ -51,9 +51,9 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonProperty("apCost")
 	protected final int apCost;
 
-	/** The {@link Integer} value of the bonus to critical damage the weapon provides. Primarily used for VATS. */
+	/** The {@link Double} value of the bonus to critical damage the weapon provides. Primarily used for VATS. */
 	@JsonProperty("criticalBonus")
-	protected final int criticalBonus;
+	protected final double criticalBonus;
 
 	/** An object containing legendary effects in a HashMap*/
 	@JsonProperty("legendaryEffects")

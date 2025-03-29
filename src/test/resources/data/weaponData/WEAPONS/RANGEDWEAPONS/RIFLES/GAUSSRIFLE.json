@@ -11,7 +11,7 @@
       ]
     },
     "apCost" : 30,
-    "criticalBonus" : 100,
+    "criticalBonus" : 1.0,
     "magazineSize" : 5,
     "fireRate" : 67,
     "range" : 204,

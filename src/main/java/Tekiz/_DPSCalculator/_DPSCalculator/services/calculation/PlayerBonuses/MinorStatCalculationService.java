@@ -40,4 +40,17 @@ public class MinorStatCalculationService
 			.mapToDouble(Number::doubleValue)
 			.sum();
 	}
+
+	/**
+	 * A method that calculates any flat health point bonuses from a loadout.
+	 * @param loadout  The loadout that will be used to calculate from.
+	 * @return A {@link Double} value of the loadouts bonus health.
+	 */
+	public int calculateActionPointBonuses(Loadout loadout){
+		return modifierAggregationService.filterEffects(loadout, ModifierTypes.MAX_AP, null)
+			.stream()
+			.filter(Objects::nonNull)
+			.mapToInt(Number::intValue)
+			.sum();
+	}
 }

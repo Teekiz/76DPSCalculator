@@ -14,6 +14,7 @@ public enum ModifierTypes
 	RANGE(Double.class),
 	SNEAK_DAMAGE(Double.class),
 	CRITICAL(Double.class),
+	CRITICAL_CONSUMPTION(Integer.class),
 	HEALTH(Double.class),
 	SPECIAL_STRENGTH(Integer.class),
 	SPECIAL_PERCEPTION(Integer.class),
@@ -22,6 +23,9 @@ public enum ModifierTypes
 	SPECIAL_INTELLIGENCE(Integer.class),
 	SPECIAL_AGILITY(Integer.class),
 	SPECIAL_LUCK(Integer.class),
+	MAX_AP(Integer.class),
+	AP_REGEN(Integer.class),
+	AP_COST(Double.class),
 	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),
 	SCRIPT(String.class),
