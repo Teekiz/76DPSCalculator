@@ -25,7 +25,7 @@ public class ArmourLoaderServiceTest extends BaseTestClass
 		Armour armour = dataLoaderService.loadDataByName(armourName, Armour.class, null);
 		assertNotNull(armour);
 		assertEquals("Wood chest", armour.getName());
-		assertEquals(37, armour.getArmourResistance().get(35).getDamageResistance());
+		assertEquals(37, armour.getArmourResistance().get(35).damageResistance());
 	}
 
 	@Test

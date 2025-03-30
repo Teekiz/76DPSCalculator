@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.enemy;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.Limbs;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.EnemyRepository;
