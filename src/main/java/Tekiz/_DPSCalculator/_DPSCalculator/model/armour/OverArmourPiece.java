@@ -15,7 +15,7 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode(callSuper = true)
 @Jacksonized
 @SuperBuilder(toBuilder = true)
-public class ArmourPiece extends Armour
+public class OverArmourPiece extends Armour
 {
 	//mods
 	/** The {@link Material} mod slot of the armour piece. This affects the resistances and effects the armour provides. */
