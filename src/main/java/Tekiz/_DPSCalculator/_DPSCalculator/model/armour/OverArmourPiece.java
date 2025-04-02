@@ -35,6 +35,10 @@ public class OverArmourPiece extends Armour
 	@JsonIgnore
 	public void setMod(ArmourMod armourMod)
 	{
+		if (armourMod == null){
+			return;
+		}
+
 		switch (armourMod)
 		{
 			case Material material -> armourMaterial = material;

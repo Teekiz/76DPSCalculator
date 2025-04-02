@@ -88,6 +88,10 @@ public class EquippedArmour
 	 */
 	public Armour getArmourInSlot(ArmourType armourType, ArmourSlot armourSlot)
 	{
+		if (armourType == null || armourSlot == null){
+			return null;
+		}
+
 		switch (armourType) {
 			case UNDER_ARMOUR -> {
 				return equippedUnderArmour;
@@ -97,13 +101,15 @@ public class EquippedArmour
 			}
 			case ARMOUR -> {
 				return equippedOverArmourPieces.stream()
-					.filter(armour -> armour.getArmourSlot().equals(armourSlot))
+					.filter(Objects::nonNull)
+					.filter(armour -> armour.getArmourSlot() != null && armour.getArmourSlot().equals(armourSlot))
 					.findFirst()
 					.orElse(null);
 			}
 			case POWER_ARMOUR -> {
 				return equippedPowerArmourPieces.stream()
-					.filter(armour -> armour.getArmourSlot().equals(armourSlot))
+					.filter(Objects::nonNull)
+					.filter(armour -> armour.getArmourSlot() != null && armour.getArmourSlot().equals(armourSlot))
 					.findFirst()
 					.orElse(null);
 			}
@@ -119,7 +125,7 @@ public class EquippedArmour
 	 * @param armourSet The armour set of the new armour mod.
 	 */
 	private void removeArmourSetEffect(ArmourSet armourSet){
-		boolean inArmourPieces= equippedOverArmourPieces.stream().anyMatch(exiting -> exiting.armourSet.equals(armourSet));
+		boolean inArmourPieces= equippedOverArmourPieces.stream().filter(Objects::nonNull).anyMatch(exiting -> exiting.armourSet != null && exiting.armourSet.equals(armourSet));
 		boolean inPowerArmourPieces= equippedPowerArmourPieces.stream().anyMatch(exiting -> exiting.armourSet.equals(armourSet));
 		boolean inUnderArmour = equippedUnderArmour != null && equippedUnderArmour.armourSet.equals(armourSet);
 
@@ -140,8 +146,8 @@ public class EquippedArmour
 		//If the player is currently in power armour, ignore the under armour and over (regular) amour pieces
 		if (isCurrentlyInPowerArmour){
 			equippedPowerArmourPieces.stream()
-				.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
 				.filter(Objects::nonNull)
+				.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
 				.forEach(resistance -> updateArrayList(resistance, tempValuesArray));
 
 			//if the player does not have a helmet equipped, use the over armour (regular) helmet in its place.
@@ -150,9 +156,9 @@ public class EquippedArmour
 
 			if (!hasPowerArmourHelmetEquipped) {
 				equippedOverArmourPieces.stream()
+					.filter(Objects::nonNull)
 					.filter(piece -> piece.getArmourSlot().equals(ArmourSlot.HELMET))
 					.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
-					.filter(Objects::nonNull)
 					.findFirst()
 					.ifPresent(helmetResistance -> updateArrayList(helmetResistance, tempValuesArray));
 			}
@@ -169,8 +175,8 @@ public class EquippedArmour
 			}
 
 			equippedOverArmourPieces.stream()
-				.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
 				.filter(Objects::nonNull)
+				.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
 				.forEach(resistance -> updateArrayList(resistance, tempValuesArray));
 		}
 

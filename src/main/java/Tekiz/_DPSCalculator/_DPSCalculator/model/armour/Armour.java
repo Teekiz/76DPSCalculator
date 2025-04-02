@@ -72,11 +72,11 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 
 	/**
 	 * A method that sets the armour slot if valid.
-	 * @param armourSlot The slot the armour will take up.
+	 * @param newArmourSlot The slot the armour will take up.
 	 */
-	public void setArmourSlot(ArmourSlot armourSlot){
-		if (armourSlot.getArmourPiece().equals(armourPiece)){
-			setArmourSlot(armourSlot);
+	public void setArmourSlot(ArmourSlot newArmourSlot){
+		if (newArmourSlot.getArmourPiece().equals(armourPiece)){
+			armourSlot = newArmourSlot;
 		}
 	}
 

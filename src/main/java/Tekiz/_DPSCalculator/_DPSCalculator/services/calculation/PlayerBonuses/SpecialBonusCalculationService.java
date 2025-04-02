@@ -46,11 +46,28 @@ public class SpecialBonusCalculationService
 			default -> {return 0;}
 		}
 
-		//return either the result from the aggregation, or 100, whichever is lower.
-		return Math.min(modifierAggregationService.filterEffects(loadout, modifierType, null)
+		return modifierAggregationService.filterEffects(loadout, modifierType, null)
 			.stream()
 			.filter(Objects::nonNull)
 			.mapToInt(Number::intValue)
-			.sum(), 100);
+			.sum();
+	}
+
+	/**
+	 * A method that returns the bonuses for a given specials.
+	 * @param loadout  The loadout that will be used to calculate from.
+	 * @return An array of integers containing the boosted special stats.
+	 */
+	public int[] getAllSpecialBonuses(Loadout loadout)
+	{
+		int strengthBonus = getSpecialBonus(Specials.STRENGTH, loadout);
+		int perceptionBonus = getSpecialBonus(Specials.PERCEPTION, loadout);
+		int enduranceBonus = getSpecialBonus(Specials.ENDURANCE, loadout);
+		int charismaBonus = getSpecialBonus(Specials.CHARISMA, loadout);
+		int intelligenceBonus = getSpecialBonus(Specials.INTELLIGENCE, loadout);
+		int agilityBonus = getSpecialBonus(Specials.AGILITY, loadout);
+		int luckBonus = getSpecialBonus(Specials.LUCK, loadout);
+
+		return new int[]{strengthBonus, perceptionBonus, enduranceBonus, charismaBonus, intelligenceBonus, agilityBonus, luckBonus};
 	}
 }

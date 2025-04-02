@@ -27,15 +27,32 @@ public class Special implements Serializable
 	@JsonProperty("luck")
 	private int luck;
 
+	@JsonProperty("strengthBoost")
+	private int strengthBoost;
+	@JsonProperty("perceptionBoost")
+	private int perceptionBoost;
+	@JsonProperty("enduranceBoost")
+	private int enduranceBoost;
+	@JsonProperty("charismaBoost")
+	private int charismaBoost;
+	@JsonProperty("intelligenceBoost")
+	private int intelligenceBoost;
+	@JsonProperty("agilityBoost")
+	private int agilityBoost;
+	@JsonProperty("luckBoost")
+	private int luckBoost;
+
 	@JsonProperty("minSpecialValue")
 	private final int minSpecialValue = 1;
 	@JsonProperty("maxSpecialValue")
 	private final int maxSpecialValue = 15;
+	@JsonProperty("maxSpecialWithBoostValue")
+	private final int maxSpecialWithBoostValue = 100;
 
 	/**
 	 * A method to modify the players special stats.
 	 * @param special The stat the user wishes to modify. See {@link Specials} for valid values.
-	 * @param value The {@link Integer} value the user wishes to add or subtract to the {@code special}. The target stat cannot be set below 1 or higher than 15.
+	 * @param value The {@link Integer} value the user wishes to set to the {@code special} to. The target stat cannot be set below 1 or higher than 15.
 	 */
 	public void setSpecial(Specials special, int value)
 	{
@@ -50,6 +67,26 @@ public class Special implements Serializable
 			case LUCK -> luck = setSpecialCheck(value);
 		}
 	}
+
+	/**
+	 * A method to modify the boosts the player has currently from various modifiers.
+	 * @param special The stat the user wishes to modify. See {@link Specials} for valid values.
+	 * @param value The {@link Integer} value the user wishes to set the {@code special} to. The target stat cannot be set below 1 or higher than 15.
+	 */
+	public void setSpecialBoost(Specials special, int value)
+	{
+		switch (special)
+		{
+			case STRENGTH -> strengthBoost = value;
+			case PERCEPTION -> perceptionBoost = value;
+			case ENDURANCE -> enduranceBoost = value;
+			case CHARISMA -> charismaBoost = value;
+			case INTELLIGENCE -> intelligenceBoost = value;
+			case AGILITY -> agilityBoost = value;
+			case LUCK -> luckBoost = value;
+		}
+	}
+
 	/**
 	 * A method that the special class uses internally to ensure that a SPECIALs value does not go above 1 or below 15.
 	 * @param value The {@link Integer} value that the user wishes to add or subtract from the @{code current} value.
@@ -83,22 +120,46 @@ public class Special implements Serializable
 	}
 
 	/**
+	 * A method to change all specials boosts.
+	 * @param strength The new {@code strengthBoost} value.
+	 * @param perception The new {@code perceptionBoost} value.
+	 * @param endurance The new {@code enduranceBoost} value.
+	 * @param charisma The new {@code charismaBoost} value.
+	 * @param intelligence The new {@code intelligenceBoost} value.
+	 * @param agility The new {@code agilityBoost} value.
+	 * @param luck The new {@code luckBoost} value.
+	 */
+	public void setAllSpecialsBoosts(int strength, int perception, int endurance, int charisma, int intelligence, int agility, int luck)
+	{
+		//checks each special before applying them
+		this.strengthBoost = strength;
+		this.perceptionBoost = perception;
+		this.enduranceBoost = endurance;
+		this.charismaBoost = charisma;
+		this.intelligenceBoost = intelligence;
+		this.agilityBoost = agility;
+		this.luckBoost = luck;
+	}
+
+	/**
 	 * A method used to get the corresponding special value.
-	 * @param special The special value to retrieve.
+	 *
+	 * @param special      The special value to retrieve.
+	 * @param includeBoost If the boosted value should be included
 	 * @return A {@link Integer} value of the corresponding {@code special} value.
 	 */
-	public int getSpecialValue(Specials special){
-		int value = 1;
+	public int getSpecialValue(Specials special, boolean includeBoost){
+		int value = 0;
 		switch (special)
 		{
-			case STRENGTH -> value = strength;
-			case PERCEPTION -> value = perception;
-			case ENDURANCE -> value = endurance;
-			case CHARISMA -> value = charisma;
-			case INTELLIGENCE -> value = intelligence;
-			case AGILITY -> value = agility;
-			case LUCK -> value = luck;
+			case STRENGTH -> value = includeBoost ? strength + strengthBoost : strength;
+			case PERCEPTION -> value = includeBoost ? perception + perceptionBoost : perception;
+			case ENDURANCE -> value = includeBoost ? endurance + enduranceBoost : endurance;
+			case CHARISMA -> value = includeBoost ? charisma + charismaBoost : charisma;
+			case INTELLIGENCE -> value = includeBoost ? intelligence + intelligenceBoost : intelligence;
+			case AGILITY -> value = includeBoost ? agility + agilityBoost : agility;
+			case LUCK -> value = includeBoost ? luck + luckBoost : luck;
 		}
-		return value;
+		return Math.max(includeBoost ? Math.min(value, maxSpecialWithBoostValue) : Math.min(value, maxSpecialValue), minSpecialValue);
 	}
 }

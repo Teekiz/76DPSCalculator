@@ -1,8 +1,8 @@
 {
-    "name" : "Wood Leg",
+    "name" : "Wood leg",
     "armourLevel" : 1,
     "armourType" : "ARMOUR",
-    "armourPiece" : "ARMS",
+    "armourPiece" : "LEGS",
     "armourSet" : null,
     "armourResistance" :
     {
@@ -12,5 +12,6 @@
         "25": {"damageResistance": 14, "energyResistance": 4},
         "35": {"damageResistance": 18, "energyResistance": 5},
         "45": { "damageResistance": 22, "energyResistance": 6}
-    }
+    },
+    "legendaryEffects" : {}
 }

@@ -7,6 +7,6 @@
     ],
     "starType" : "_1STAR",
     "effects" : {
-        "PENETRATION" : 0.5
+      "SCRIPT" : "unyielding"
     }
 }

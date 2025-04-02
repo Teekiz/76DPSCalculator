@@ -57,8 +57,10 @@ public class PlayerManager
 		Special playerSpecials = loadout.getPlayer().getSpecials();
 		playerSpecials.setSpecial(special, value);
 		SpecialChangedEvent specialChangedEvent = new SpecialChangedEvent(this, special,
-			playerSpecials.getSpecialValue(special), loadout);
+			playerSpecials.getSpecialValue(special, false), loadout);
 		applicationEventPublisher.publishEvent(specialChangedEvent);
+
+		updateStats(loadout);
 	}
 
 	/**
@@ -74,19 +76,30 @@ public class PlayerManager
 			newSpecials.getCharisma(), newSpecials.getIntelligence(), newSpecials.getAgility(), newSpecials.getLuck());
 		SpecialsChangedEvent specialsChangedEvent = new SpecialsChangedEvent(this, loadout);
 		applicationEventPublisher.publishEvent(specialsChangedEvent);
+
+		updateStats(loadout);
 	}
 
 	@EventListener
 	public void onModifierChangedEvent(ModifierChangedEvent event)
 	{
 		Loadout loadout = event.getLoadout();
-		int enduranceBonus = specialBonusCalculationService.getSpecialBonus(Specials.ENDURANCE, loadout);
-		int agilityBonus = specialBonusCalculationService.getSpecialBonus(Specials.AGILITY, loadout);
+		updateStats(loadout);
+	}
+
+	/**
+	 * A method to force the players stats to refresh.
+	 * @param loadout The loadout to update the players stats.
+	 */
+	private void updateStats(Loadout loadout){
+		int[] specialBonuses = specialBonusCalculationService.getAllSpecialBonuses(loadout);
+		loadout.getPlayer().getSpecials().setAllSpecialsBoosts(specialBonuses[0], specialBonuses[1], specialBonuses[2], specialBonuses[3],
+			specialBonuses[4], specialBonuses[5], specialBonuses[6]);
 
 		double healthBonus = minorStatCalculationService.calculateHealthPointBonuses(loadout);
 		int apBonus = minorStatCalculationService.calculateActionPointBonuses(loadout);
 
-		loadout.getPlayer().setMaxHP(enduranceBonus, healthBonus);
-		loadout.getPlayer().setMaxAP(agilityBonus, apBonus);
+		loadout.getPlayer().setMaxHP(healthBonus);
+		loadout.getPlayer().setMaxAP(apBonus);
 	}
 }

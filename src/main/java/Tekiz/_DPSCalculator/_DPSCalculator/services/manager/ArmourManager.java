@@ -43,6 +43,11 @@ public class ArmourManager
 	public synchronized void addArmour(String armourID, ArmourSlot armourSlot, Loadout loadout) throws IOException
 	{
 		Armour armour = dataLoaderService.loadData(armourID, Armour.class, armourFactory);
+
+		if (armour == null){
+			return;
+		}
+
 		armour.setArmourSlot(armourSlot);
 		loadout.getArmour().addArmour(armour);
 
@@ -62,7 +67,7 @@ public class ArmourManager
 	{
 		loadout.getArmour().removeArmour(armourType, armourSlot);
 
-		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(null, loadout,"Armour has been updated.");
+		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(this, loadout,"Armour has been updated.");
 		log.debug("ArmourChangedEvent has been created as armour slot has been removed {}.", armourSlot);
 		applicationEventPublisher.publishEvent(armourChangedEvent);
 	}
@@ -82,9 +87,13 @@ public class ArmourManager
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
 		ArmourMod armourMod = (ArmourMod) dataLoaderService.loadData(modID, modType.getModClass(), null);
 
+		if (armour == null){
+			return;
+		}
+
 		armour.setMod(armourMod);
 
-		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(null, loadout,"Armour has been updated.");
+		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(this, loadout,"Armour has been updated.");
 		log.debug("ArmourChangedEvent has been created. Armour {} has been modified.", armour.getName());
 		applicationEventPublisher.publishEvent(armourChangedEvent);
 	}
@@ -102,10 +111,15 @@ public class ArmourManager
 	{
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
 		LegendaryEffect legendaryEffect = dataLoaderService.loadData(effectID, LegendaryEffect.class, null);
-		armour.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
 
-		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(null, loadout,"Armour has been updated.");
+		if (armour == null || armour.getLegendaryEffects() == null){
+			return;
+		}
+
+		armour.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
+		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(armour, loadout,"Armour has been updated.");
 		log.debug("ArmourChangedEvent has been created. Armour {} has been modified. Added new legendary effect: {}.", armour.getName(), effectID);
 		applicationEventPublisher.publishEvent(armourChangedEvent);
+
 	}
 }

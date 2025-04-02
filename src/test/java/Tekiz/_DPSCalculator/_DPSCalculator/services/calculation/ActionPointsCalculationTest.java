@@ -57,7 +57,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 10
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 10);
 		//this should update the players AP
-		loadout.getPlayer().setMaxAP(0,0);
+		loadout.getPlayer().setMaxAP(0);
 
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//MAX AP = 60 + (10 * Agility) = 160 (without modifiers) - 5 = 155
@@ -108,7 +108,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 10
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 10);
 		//this should update the players AP
-		loadout.getPlayer().setMaxAP(0,0);
+		loadout.getPlayer().setMaxAP(0);
 
 		//AP PER SHOT = 0
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
@@ -134,7 +134,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 1
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 1);
 		//this should update the players AP while setting the AP to 0
-		loadout.getPlayer().setMaxAP(-1,-55);
+		loadout.getPlayer().setMaxAP(-65);
 
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
