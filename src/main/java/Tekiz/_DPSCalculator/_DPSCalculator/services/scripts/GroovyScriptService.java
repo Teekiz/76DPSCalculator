@@ -8,7 +8,9 @@ import groovy.lang.MissingMethodException;
 import groovy.lang.Script;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,41 +43,41 @@ public class GroovyScriptService
 	 * A method that invokes a given method in the {@code script} object.
 	 * @param scriptFile The {@link File}  containing the groovy code.
 	 * @param loadout The arguments to be passed to the method.
-	 * @return The result of the method invocation, or {@code null} if an error occurs.
+	 * @return The result of the method invocation, or an empty map if an error occurs.
 	 */
-	public Map.Entry<ModifierTypes, ModifierValue<?>> runMethod(File scriptFile, Loadout loadout) throws IOException
-	{
+	public Map<ModifierTypes, ModifierValue<?>> runMethod(File scriptFile, Loadout loadout) throws IOException {
 		Script script = parseFile(scriptFile);
-		if (script == null){
+		if (script == null) {
 			log.error("Failed to parse script file: {}", scriptFile.getAbsolutePath());
-			return null;
+			return Collections.emptyMap();
 		}
 
 		try {
 			Object result = script.invokeMethod("run", loadout);
 
 			if (result instanceof Map.Entry<?, ?> entry) {
-				if (entry.getKey() instanceof ModifierTypes && entry.getValue() instanceof ModifierValue<?>) {
-					return (Map.Entry<ModifierTypes, ModifierValue<?>>) entry;
+				if (entry.getKey() instanceof ModifierTypes key && entry.getValue() instanceof ModifierValue<?> value) {
+					return Map.of(key, value);
 				} else {
 					log.error("Script returned invalid types: Key={}, Value={}",
 						entry.getKey().getClass(), entry.getValue().getClass());
-					return null;
 				}
+			} else if (result instanceof Map<?, ?> map) {
+				return map.entrySet().stream()
+					.filter(e -> e.getKey() instanceof ModifierTypes && e.getValue() instanceof ModifierValue<?>)
+					.collect(Collectors.toMap(e -> (ModifierTypes) e.getKey(), e -> (ModifierValue<?>) e.getValue()));
 			} else {
-				log.error("Script did not return a Map.Entry but instead: {}", result.getClass().getName());
-				return null;
+				log.error("Script returned an unsupported type: {}", result.getClass().getName());
 			}
 		} catch (ClassCastException e) {
-			log.error("Type casting error encountered while executing method '{}': {}", "run", e.getMessage());
-			return null;
+			log.error("Type casting error encountered while executing method 'run': {}", e.getMessage());
 		} catch (MissingMethodException e) {
-			log.error("Could not find method: {} with arguments {} using script: {}", "run", loadout, script, e);
-			return null;
+			log.error("Could not find method 'run' with arguments {} using script: {}", loadout, script, e);
 		} catch (Exception e) {
-			log.error("Unexpected error during script execution for method: {} using script: {}", "run", script, e);
-			return null;
+			log.error("Unexpected error during script execution for method 'run' using script: {}", script, e);
 		}
+
+		return Collections.emptyMap();
 	}
 
 	/**

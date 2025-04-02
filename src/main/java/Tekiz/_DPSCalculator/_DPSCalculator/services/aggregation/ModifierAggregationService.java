@@ -105,11 +105,9 @@ public class ModifierAggregationService
 							effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 						}
 					} else if (key.equals(ModifierTypes.SCRIPT)) {
-						Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+						Map<ModifierTypes, ModifierValue<?>> additionalContextEntry =
 							modifierScriptService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
-						if (additionalContextEntry != null) {
-							effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
-						}
+						effects.putAll(additionalContextEntry);
 					}
 
 				}
