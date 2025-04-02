@@ -1,0 +1,12 @@
+{
+    "name" : "Unyielding",
+    "description" : "Gain up to +3 to All S.P.E.C.I.A.L. Stats (except END) when Health is Low",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "ARMOUR"
+    ],
+    "starType" : "_1STAR",
+    "effects" : {
+        "PENETRATION" : 0.5
+    }
+}

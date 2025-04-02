@@ -39,7 +39,7 @@ public class MutationModelTest extends BaseTestClass
 		MutationEffects mutationEffectsNegative = new MutationEffects("", ModifierSource.MUTATION_NEGATIVE, expression, negativeEffects);
 		Mutation mutation = new Mutation("1", "TEST", "", mutationEffectsPositive, mutationEffectsNegative);
 
-		List<Modifier> values = new ArrayList<>(mutation.aggregateMutationEffects().keySet().stream().toList());
+		List<Modifier> values = mutation.aggregateMutationEffects();
 
 		Double positiveEffect = (Double) values.stream()
 			.filter(m -> m.modifierSource().equals(ModifierSource.MUTATION_POSITIVE))

@@ -2,10 +2,16 @@ package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSet;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,21 +32,86 @@ public class EquippedArmour
 	 */
 	public void addArmour(Armour armour)
 	{
-		removeArmourSetEffect(armour.armourSet);
+		removeArmour(armour.armourType, armour.armourSlot);
 
 		switch (armour)
 		{
 			case OverArmourPiece overArmourPiece -> {
-				equippedOverArmourPieces.removeIf(current -> current.armourPiece.equals(armour.armourPiece));
 				equippedOverArmourPieces.add(overArmourPiece);
 			}
 			case PowerArmourPiece powerArmourPiece -> {
-				equippedPowerArmourPieces.removeIf(current -> current.armourPiece.equals(armour.armourPiece));
 				equippedPowerArmourPieces.add(powerArmourPiece);
 			}
 			case UnderArmour underArmour -> equippedUnderArmour = underArmour;
 			default -> {}
 		}
+	}
+
+	/**
+	 * A method used to add or replace equipped armour in that slot.
+	 * @param armourType The type of armour to add or replace.
+	 * @param armourSlot The place where the armour will be placed.
+	 */
+	public void removeArmour(ArmourType armourType, ArmourSlot armourSlot)
+	{
+		Armour currentlyEquippedArmour = null;
+
+		switch (armourType) {
+			case UNDER_ARMOUR -> {
+				currentlyEquippedArmour = equippedUnderArmour;
+				equippedUnderArmour = null;
+			}
+			case BODY_SUIT -> {
+				// todo - add body suit code
+			}
+			case ARMOUR -> {
+				currentlyEquippedArmour = (OverArmourPiece) getArmourInSlot(armourType, armourSlot);
+				equippedOverArmourPieces.remove(currentlyEquippedArmour);
+			}
+			case POWER_ARMOUR -> {
+				currentlyEquippedArmour = (PowerArmourPiece) getArmourInSlot(armourType, armourSlot);
+				equippedPowerArmourPieces.remove(currentlyEquippedArmour);
+			}
+		}
+
+		if (currentlyEquippedArmour != null) {
+			removeArmourSetEffect(currentlyEquippedArmour.armourSet);
+		}
+
+	}
+
+	/**
+	 * Retrieves a piece of armour from the armour slot.
+	 * @param armourType The type of armour to be retrieved.
+	 * @param armourSlot The place where the armour is assigned.
+	 * @return The {@link Armour} or {@code null} if a slot is not found.
+	 */
+	public Armour getArmourInSlot(ArmourType armourType, ArmourSlot armourSlot)
+	{
+		switch (armourType) {
+			case UNDER_ARMOUR -> {
+				return equippedUnderArmour;
+			}
+			case BODY_SUIT -> {
+				// todo - add body suit code
+			}
+			case ARMOUR -> {
+				return equippedOverArmourPieces.stream()
+					.filter(armour -> armour.getArmourSlot().equals(armourSlot))
+					.findFirst()
+					.orElse(null);
+			}
+			case POWER_ARMOUR -> {
+				return equippedPowerArmourPieces.stream()
+					.filter(armour -> armour.getArmourSlot().equals(armourSlot))
+					.findFirst()
+					.orElse(null);
+			}
+			default -> {
+				return null;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -61,6 +132,7 @@ public class EquippedArmour
 	 * A method used to calculate the resistances based on the equipped armour.
 	 * @return The current armour resistances.
 	 */
+	@JsonIgnore
 	public ArmourResistance getCurrentResistanceBonus()
 	{
 		int[] tempValuesArray = new int[6];
@@ -74,11 +146,11 @@ public class EquippedArmour
 
 			//if the player does not have a helmet equipped, use the over armour (regular) helmet in its place.
 			boolean hasPowerArmourHelmetEquipped = equippedPowerArmourPieces.stream()
-				.anyMatch(piece -> piece.getArmourPiece().equals(ArmourPiece.HELMET));
+				.anyMatch(piece -> piece.getArmourSlot().equals(ArmourSlot.HELMET));
 
 			if (!hasPowerArmourHelmetEquipped) {
 				equippedOverArmourPieces.stream()
-					.filter(piece -> piece.getArmourPiece().equals(ArmourPiece.HELMET))
+					.filter(piece -> piece.getArmourSlot().equals(ArmourSlot.HELMET))
 					.map(piece -> piece.getArmourResistance().get(piece.getArmourLevel()))
 					.filter(Objects::nonNull)
 					.findFirst()
@@ -108,11 +180,11 @@ public class EquippedArmour
 
 	/**
 	 * A helper method to update the existing array.
+	 *
 	 * @param armourResistance The armour resistance with the new values to add.
-	 * @param currentArray The array to be updated.
-	 * @return The temporary array with updated values.
+	 * @param currentArray     The array to be updated.
 	 */
-	private int[] updateArrayList(ArmourResistance armourResistance, int[] currentArray)
+	private void updateArrayList(ArmourResistance armourResistance, int[] currentArray)
 	{
 		if (armourResistance != null){
 			currentArray[0] += armourResistance.damageResistance();
@@ -123,6 +195,26 @@ public class EquippedArmour
 			currentArray[5] += armourResistance.poisonResistance();
 		}
 
-		return currentArray;
+	}
+
+	/**
+	 * A method used to aggregate the legendary and modifier effects provided by the equipped armour.
+	 * @return A list of provided effects.
+	 */
+	public List<LegendaryEffect> aggregateArmourEffects()
+	{
+		if (isCurrentlyInPowerArmour){
+			return equippedPowerArmourPieces
+				.stream()
+				.flatMap(powerArmourPiece -> powerArmourPiece.getLegendaryEffects().getAllEffects().stream())
+				.collect(Collectors.toList());
+		} else {
+			List<LegendaryEffect> modifiers = equippedUnderArmour != null ? equippedUnderArmour.getLegendaryEffects().getAllEffects() : new ArrayList<>();
+			equippedOverArmourPieces
+				.stream()
+				.flatMap(overArmourPiece -> overArmourPiece.getLegendaryEffects().getAllEffects().stream())
+				.forEach(modifiers::add);
+			return modifiers;
+		}
 	}
 }

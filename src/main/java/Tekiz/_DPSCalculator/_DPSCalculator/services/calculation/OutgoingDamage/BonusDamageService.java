@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor =@__(@Autowired))
 public class BonusDamageService
 {
-	private final SneakBonusCalculationService sneakBonusCalculationService;
 	private final ModifierAggregationService modifierAggregationService;
 
 	/**

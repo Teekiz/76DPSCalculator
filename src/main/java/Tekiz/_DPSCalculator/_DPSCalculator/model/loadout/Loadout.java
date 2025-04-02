@@ -1,6 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;

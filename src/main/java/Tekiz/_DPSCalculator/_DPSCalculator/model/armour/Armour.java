@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResista
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.NonFinal;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
@@ -37,6 +39,7 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	protected final String name;
 
 	/** The level of the armour that the user will need to meet before it can be worn. The resistances provided by the armour are affected by its level. */
+	@Setter
 	@NonFinal
 	@JsonProperty("armourLevel")
 	protected int armourLevel;
@@ -46,9 +49,14 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	@JsonProperty("armourType")
 	protected final ArmourType armourType;
 
-	/** The slot the armour piece takes. This is dependent on the armour type. */
+	/** The slot where the armour can be applied to.*/
 	@JsonProperty("armourPiece")
 	protected final ArmourPiece armourPiece;
+
+	/** The slot the armour piece takes. This is dependent on the armour slot. */
+	@NonFinal
+	@JsonProperty("armourSlot")
+	protected ArmourSlot armourSlot;
 
 	/** The set the armour is a part of. If a set provides a bonus, this will determine it. */
 	@JsonProperty("armourSet")
@@ -61,6 +69,16 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	/** An object containing legendary effects in a HashMap*/
 	@JsonProperty("legendaryEffects")
 	protected final LegendaryEffectsMap legendaryEffects;
+
+	/**
+	 * A method that sets the armour slot if valid.
+	 * @param armourSlot The slot the armour will take up.
+	 */
+	public void setArmourSlot(ArmourSlot armourSlot){
+		if (armourSlot.getArmourPiece().equals(armourPiece)){
+			setArmourSlot(armourSlot);
+		}
+	}
 
 	@JsonIgnore
 	public abstract void setMod(ArmourMod armourMod);

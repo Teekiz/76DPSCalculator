@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -52,6 +52,7 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 			Weapon weapon = weaponFactory.createObject(loadoutNode.get("weapon"));
 			Player player = objectMapper.treeToValue(loadoutNode.get("player"), Player.class);
 			Environment environment = objectMapper.treeToValue(loadoutNode.get("environment"), Environment.class);
+			EquippedArmour armour = objectMapper.treeToValue(loadoutNode.get("armour"), EquippedArmour.class);
 
 			JavaType perkHashMapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, Perk.class, Boolean.class);
 			HashMap<Perk, Boolean> perks = objectMapper.treeToValue(loadoutNode.get("perks"), perkHashMapType);
@@ -59,7 +60,6 @@ public class LoadoutDeserializer extends JsonDeserializer<Loadout>
 			JavaType consumableHashMapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, Consumable.class, Boolean.class);
 			HashMap<Consumable, Boolean> consumables = objectMapper.treeToValue(loadoutNode.get("consumables"), consumableHashMapType);
 
-			Set<Armour> armour = objectMapper.convertValue(loadoutNode.get("armour"), new TypeReference<Set<Armour>>() {});
 			Set<Mutation> mutations = objectMapper.convertValue(loadoutNode.get("mutations"), new TypeReference<Set<Mutation>>() {});
 
 			Loadout loadout = loadoutFactory.createNewLoadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations);

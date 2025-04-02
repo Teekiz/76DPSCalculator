@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation.factory;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -23,10 +24,10 @@ public class LoadoutFactory
 	{
 		log.debug("Creating new blank loadout.");
 		return new Loadout(loadoutID,null, new HashMap<>(), new HashMap<>(),
-			new HashSet<>(), new Player(), new Environment(), new HashSet<>(), null);
+			new EquippedArmour(), new Player(), new Environment(), new HashSet<>(), null);
 	}
 	public Loadout createNewLoadout(int loadoutID, Weapon weapon, HashMap<Perk, Boolean> perks, HashMap<Consumable, Boolean> consumables,
-									Set<Armour> armour, Player player, Environment environment, Set<Mutation> mutations)
+									EquippedArmour armour, Player player, Environment environment, Set<Mutation> mutations)
 	{
 		log.debug("Retrieved loadout.");
 		return new Loadout(loadoutID, weapon, perks, consumables, armour, player, environment, mutations, null);

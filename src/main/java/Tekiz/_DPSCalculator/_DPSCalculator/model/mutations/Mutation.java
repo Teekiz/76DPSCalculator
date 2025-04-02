@@ -7,7 +7,9 @@ import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -38,18 +40,18 @@ public record Mutation(@Id
 	 * @return A {@link HashMap} of {@link Modifier}s and condition values.
 	 */
 	@JsonIgnore
-	public HashMap<Modifier, Boolean> aggregateMutationEffects()
+	public List<Modifier> aggregateMutationEffects()
 	{
-		HashMap<Modifier, Boolean> mutationMap = new HashMap<>();
+		List<Modifier> mutations = new ArrayList<>();
 		if (negativeEffects != null)
 		{
-			mutationMap.put(negativeEffects, true);
+			mutations.add(negativeEffects);
 		}
 		if (positiveEffects != null)
 		{
-			mutationMap.put(positiveEffects, true);
+			mutations.add(positiveEffects);
 		}
-		return mutationMap;
+		return mutations;
 	}
 
 	@Override

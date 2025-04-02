@@ -3,7 +3,7 @@
     "armourLevel" : 1,
     "armourType" : "ARMOUR",
     "armourPiece" : "TORSO",
-    "armourSet" : "WOOD",
+    "armourSet" : null,
     "armourResistance" :
     {
         "1": { "damageResistance": 7, "energyResistance": 3, "radiationResistance": 0, "cryoResistance": 0 },

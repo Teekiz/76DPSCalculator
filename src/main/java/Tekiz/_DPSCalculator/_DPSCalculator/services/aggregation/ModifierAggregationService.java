@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,21 +56,18 @@ public class ModifierAggregationService
 	/**
 	 * A method that retrieves all {@link Modifier} and places them into a {@link HashMap}.
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
-	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
-	 * whether the {@link Modifier}'s conditions have been met.
+	 * @return A {@link List} of {@link Modifier}s which have had their conditions met.
 	 */
-	public HashMap<Modifier, Boolean> getAllModifiers(Loadout loadout)
+	public List<Modifier> getAllModifiers(Loadout loadout)
 	{
-		HashMap<Modifier, Boolean> modifiers = new HashMap<>();
-		modifiers.putAll(loadout.getPerks());
-		modifiers.putAll(loadout.getConsumables());
-		loadout.getMutations().forEach(mutation ->
-			modifiers.putAll(mutation.aggregateMutationEffects()));
-		loadout.getArmour().forEach(armour -> modifiers.putAll(parseLegendaryConditions(armour.
-			getLegendaryEffects(), loadout)));
+		List<Modifier> modifiers = new ArrayList<>();
+		modifiers.addAll(loadout.getPerks().entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
+		modifiers.addAll(loadout.getConsumables().entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
+		loadout.getMutations().forEach(mutation -> modifiers.addAll(mutation.aggregateMutationEffects()));
 
+		modifiers.addAll(parseLegendaryConditions(loadout.getArmour().aggregateArmourEffects(), loadout));
 		if (loadout.getWeapon() != null && loadout.getWeapon().getLegendaryEffects() != null){
-			modifiers.putAll(parseLegendaryConditions(loadout.getWeapon().getLegendaryEffects(), loadout));
+			modifiers.addAll(parseLegendaryConditions(loadout.getWeapon().getLegendaryEffects().getAllEffects(), loadout));
 		}
 
 		applyAdditionalContext(modifiers, loadout);
@@ -80,14 +78,14 @@ public class ModifierAggregationService
 	/**
 	 * A method that is used for to identify and apply {@link Modifier}'s
 	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED" or "SCRIPT".
-	 * @param modifiers The {@link HashMap} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
+	 * @param modifiers The {@link List} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
-	private void applyAdditionalContext(HashMap<Modifier, Boolean> modifiers, Loadout loadout)
+	private void applyAdditionalContext(List<Modifier> modifiers, Loadout loadout)
 	{
-		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet()) {
+		for (Modifier modifier : modifiers) {
 
-			Map<ModifierTypes, ModifierValue<?>> effects = modifier.getKey().effects();
+			Map<ModifierTypes, ModifierValue<?>> effects = modifier.effects();
 
 			if (effects != null) {
 				// create a temporary list of keys to modify
@@ -121,17 +119,22 @@ public class ModifierAggregationService
 
 	/**
 	 * A method used to check conditions before they are applied to the modifier map.
-	 * @param modifiersMap A {@link HashMap} of {@link LegendaryEffect}'s that will have their conditions evaluated.
+	 * @param legendaryEffects A {@link List} of {@link LegendaryEffect}'s that will have their conditions evaluated.
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
-	 * @return {@link HashMap} with the {@link Modifier} and a {@link Boolean} value based on
-	 * 		   whether the {@link Modifier}'s conditions have been me
+	 * @return {@link List} with {@link Modifier} with modifiers which have had their conditions met.
 	 */
 	//todo - this seems like a short term fix that may require future changes.
-	private HashMap<LegendaryEffect, Boolean> parseLegendaryConditions(HashMap<LegendaryEffect, Boolean> modifiersMap, Loadout loadout)
+	private List<Modifier> parseLegendaryConditions(List<LegendaryEffect> legendaryEffects, Loadout loadout)
 	{
-		modifiersMap.entrySet().forEach(entry -> entry.setValue(
-			parsingService.evaluateCondition(null, entry.getKey().condition(), loadout)));
-		return modifiersMap;
+		List<Modifier> legendaryEffectList = new ArrayList<>();
+
+		for (LegendaryEffect legendaryEffect : legendaryEffects){
+			boolean condition = parsingService.evaluateCondition(null, legendaryEffect.condition(), loadout);
+			if (condition){
+				legendaryEffectList.add(legendaryEffect);
+			}
+		}
+		return legendaryEffectList;
 	}
 
 	/**
@@ -143,29 +146,26 @@ public class ModifierAggregationService
 	public List<Number> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
 		//gets all the modifiers from the provided loadout.
-		HashMap<Modifier, Boolean> modifiers = getAllModifiers(loadout);
+		List<Modifier> modifiers = getAllModifiers(loadout);
 
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
 		List<Number> effects = new ArrayList<>();
 		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);
 
-		for (Map.Entry<Modifier, Boolean> modifier : modifiers.entrySet())
+		for (Modifier modifier : modifiers)
 		{
-			if (modifier.getValue())
+			Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
+			if (effectsMap != null)
 			{
-				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier.getKey(), boosts);
-				if (effectsMap != null)
-				{
-					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
-						effects.add(value.getValue());
+				effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
+					effects.add(value.getValue());
 
-						if (dpsDetails != null){
-							dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.getKey().name(), key, value));
-						}
+					if (dpsDetails != null){
+						dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.name(), key, value));
+					}
 
-						return value;
-					});
-				}
+					return value;
+				});
 			}
 		}
 		return effects;
