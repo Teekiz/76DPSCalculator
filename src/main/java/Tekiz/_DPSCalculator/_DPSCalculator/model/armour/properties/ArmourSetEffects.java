@@ -17,7 +17,7 @@ import org.springframework.expression.Expression;
 
 /** Represents the effects a given armour piece provides. */
 //todo - write set effects for some armour types
-public record ArmourSet(@Id
+public record ArmourSetEffects(@Id
 						@JsonProperty("id") @JsonAlias("_id") String id,
 						@JsonProperty("name") String name,
 						@JsonProperty("modifierSource") ModifierSource modifierSource,

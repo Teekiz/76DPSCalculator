@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSet;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSetEffects;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
@@ -24,7 +24,7 @@ public class EquippedArmour
 	private final Set<PowerArmourPiece> equippedPowerArmourPieces = new HashSet<>();
 	private UnderArmour equippedUnderArmour;
 
-	private final Set<ArmourSet> armourSetBonuses = new HashSet<>();
+	private final Set<ArmourSetEffects> armourSetEffectsBonuses = new HashSet<>();
 
 	/**
 	 * A method used to add or replace equipped armour in that slot.
@@ -122,15 +122,21 @@ public class EquippedArmour
 
 	/**
 	 * A method used to remove an existing set effect if no pieces of armour currently use it.
-	 * @param armourSet The armour set of the new armour mod.
+	 * @param armourSetName The armour set of the new armour mod.
 	 */
-	private void removeArmourSetEffect(ArmourSet armourSet){
-		boolean inArmourPieces= equippedOverArmourPieces.stream().filter(Objects::nonNull).anyMatch(exiting -> exiting.armourSet != null && exiting.armourSet.equals(armourSet));
-		boolean inPowerArmourPieces= equippedPowerArmourPieces.stream().anyMatch(exiting -> exiting.armourSet.equals(armourSet));
-		boolean inUnderArmour = equippedUnderArmour != null && equippedUnderArmour.armourSet.equals(armourSet);
+	private void removeArmourSetEffect(String armourSetName){
+		ArmourSetEffects armourSetEffects = armourSetEffectsBonuses.stream().filter(effect -> effect.name().equalsIgnoreCase(armourSetName)).findFirst().orElse(null);
+
+		if (armourSetEffects == null){
+			return;
+		}
+
+		boolean inArmourPieces= equippedOverArmourPieces.stream().filter(Objects::nonNull).anyMatch(exiting -> exiting.armourSet != null && exiting.armourSet.equals(armourSetName));
+		boolean inPowerArmourPieces= equippedPowerArmourPieces.stream().anyMatch(exiting -> exiting.armourSet.equals(armourSetName));
+		boolean inUnderArmour = equippedUnderArmour != null && equippedUnderArmour.armourSet.equals(armourSetName);
 
 		if (!inArmourPieces && !inPowerArmourPieces && !inUnderArmour){
-			armourSetBonuses.remove(armourSet);
+			armourSetEffectsBonuses.remove(armourSetEffects);
 		}
 	}
 

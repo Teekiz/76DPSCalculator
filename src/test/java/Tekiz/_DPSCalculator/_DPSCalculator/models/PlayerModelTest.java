@@ -29,6 +29,7 @@ public class PlayerModelTest extends BaseTestClass
 		//reducing max health
 		player.getSpecials().setSpecial(Specials.ENDURANCE, 7);
 		player.setMaxHP(0);
+
 		assertEquals(280, player.getMaxHP());
 
 		//trying to set hp above max hp

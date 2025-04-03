@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSet;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
@@ -58,9 +57,9 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	@JsonProperty("armourSlot")
 	protected ArmourSlot armourSlot;
 
-	/** The set the armour is a part of. If a set provides a bonus, this will determine it. */
+	/** The set the armour is a part of. If a set provides a bonus, the set effects matching the armour set name will be used. */
 	@JsonProperty("armourSet")
-	protected final ArmourSet armourSet;
+	protected final String armourSet;
 
 	/** A {@link HashMap} containing the level ({@link Integer}) and resistances ({@link ArmourResistance}) that the armour provides. */
 	@JsonProperty("armourResistance")
