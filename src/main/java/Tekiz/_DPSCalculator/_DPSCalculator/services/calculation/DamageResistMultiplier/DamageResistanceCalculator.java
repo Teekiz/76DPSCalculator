@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMultiplier;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
@@ -8,8 +8,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +69,12 @@ public class DamageResistanceCalculator
 		ArmourResistance armourResistance = enemy.getArmourResistance();
 		int resistance = 0;
 		switch (damageType) {
-			case PHYSICAL -> resistance = armourResistance.getDamageResistance();
-			case ENERGY -> resistance = armourResistance.getEnergyResistance();
-			case CRYO -> resistance = armourResistance.getCryoResistance();
-			case RADIATION -> resistance = armourResistance.getRadiationResistance();
-			case FIRE -> resistance = armourResistance.getFireResistance();
-			case POISON ->  resistance = armourResistance.getPoisonResistance();
+			case PHYSICAL -> resistance = armourResistance.damageResistance();
+			case ENERGY -> resistance = armourResistance.energyResistance();
+			case CRYO -> resistance = armourResistance.cryoResistance();
+			case RADIATION -> resistance = armourResistance.radiationResistance();
+			case FIRE -> resistance = armourResistance.fireResistance();
+			case POISON ->  resistance = armourResistance.poisonResistance();
 		}
 
 		return resistance;

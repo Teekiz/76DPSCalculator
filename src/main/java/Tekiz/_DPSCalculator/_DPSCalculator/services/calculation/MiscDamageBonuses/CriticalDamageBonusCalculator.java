@@ -121,8 +121,7 @@ public class CriticalDamageBonusCalculator
 			.stream().mapToInt(Number::intValue).findFirst().orElse(100);
 
 		double baseRechargeRate = 6.5;
-		//get the players luck stat, capping at 100.
-		int luck = Math.min(specialBonusCalculationService.getSpecialBonus(Specials.LUCK, loadout) + loadout.getPlayer().getSpecials().getLuck(), 100);
+		int luck = loadout.getPlayer().getSpecials().getSpecialValue(Specials.LUCK, true);
 
 		//base rate is 6.5 so removing 1 luck will factor for the base rate
 		double vatsRechargeRatePerShot = (luck - 1) * 1.5 + baseRechargeRate;

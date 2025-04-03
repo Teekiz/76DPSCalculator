@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SpecialBonusCalculationService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,17 +48,17 @@ public class Player implements Serializable
 	public Player()
 	{
 		this.level = 1;
-		this.specials = new Special(1, 1, 1, 1, 1, 1, 1);
+		this.specials = new Special(1, 1, 1, 1, 1, 1, 1,0,0,0,0,0,0,0);
 
-		setMaxAP(0, 0);
-		setMaxHP(0,0);
+		setMaxAP(0);
+		setMaxHP(0);
 		setCurrentHP(maxHP);
 	}
 
 	/** Sets the maximum health points a player can have. This is calculated as 245 + 5 * Endurance. */
-	public void setMaxHP(int bonusEndurance, double bonusHP)
+	public void setMaxHP(double bonusHP)
 	{
-		maxHP = 245 + 5 * (specials.getEndurance() + bonusEndurance) + bonusHP;
+		maxHP = 245 + 5 * (specials.getSpecialValue(Specials.ENDURANCE, true)) + bonusHP;
 		setCurrentHP(currentHP);
 	}
 
@@ -79,10 +80,9 @@ public class Player implements Serializable
 
 	/**
 	 * Sets the maximum AP a player has.
-	 * @param bonusAgility Bonuses from modifiers that increase agility.
 	 */
-	public void setMaxAP(int bonusAgility, int bonusAP)
+	public void setMaxAP(int bonusAP)
 	{
-		maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
+		maxAP = (60 + 10 * specials.getSpecialValue(Specials.AGILITY, true)) + bonusAP;
 	}
 }

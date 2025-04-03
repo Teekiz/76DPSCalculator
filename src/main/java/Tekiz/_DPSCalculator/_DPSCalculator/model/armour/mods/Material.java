@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour.mods;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourResistance;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourMaterialRepository;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import com.fasterxml.jackson.annotation.JsonProperty;

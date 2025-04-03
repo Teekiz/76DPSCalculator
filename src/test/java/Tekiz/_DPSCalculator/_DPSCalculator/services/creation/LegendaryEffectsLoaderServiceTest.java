@@ -42,7 +42,7 @@ public class LegendaryEffectsLoaderServiceTest extends BaseTestClass
 	{
 		List<LegendaryEffect> LegendaryEffects = dataLoaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null);
 		assertNotNull(LegendaryEffects);
-		assertEquals("Assassin's", LegendaryEffects.getFirst().name());
+		assertEquals("Unyielding", LegendaryEffects.get(1).name());
 		assertEquals(StarType._1STAR, LegendaryEffects.get(1).starType());
 	}
 }

@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LegendaryEffectManager;

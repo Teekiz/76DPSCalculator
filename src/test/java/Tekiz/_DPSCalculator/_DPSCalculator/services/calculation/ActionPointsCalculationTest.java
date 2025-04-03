@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
@@ -57,7 +57,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 10
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 10);
 		//this should update the players AP
-		loadout.getPlayer().setMaxAP(0,0);
+		loadout.getPlayer().setMaxAP(0);
 
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//MAX AP = 60 + (10 * Agility) = 160 (without modifiers) - 5 = 155
@@ -108,7 +108,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 10
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 10);
 		//this should update the players AP
-		loadout.getPlayer().setMaxAP(0,0);
+		loadout.getPlayer().setMaxAP(0);
 
 		//AP PER SHOT = 0
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
@@ -134,7 +134,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//setting base to 1
 		loadout.getPlayer().getSpecials().setSpecial(Specials.AGILITY, 1);
 		//this should update the players AP while setting the AP to 0
-		loadout.getPlayer().setMaxAP(-1,-55);
+		loadout.getPlayer().setMaxAP(-65);
 
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;

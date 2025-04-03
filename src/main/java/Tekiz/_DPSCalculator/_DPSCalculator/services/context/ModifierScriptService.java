@@ -49,7 +49,7 @@ public class ModifierScriptService
 	 * @param loadout The loadout to be checked.
 	 * @return The result of the method invocation, or {@code null} if an error occurs.
 	 */
-	public Map.Entry<ModifierTypes, ModifierValue<?>> getAdditionalContext(String scriptName, Loadout loadout)
+	public Map<ModifierTypes, ModifierValue<?>> getAdditionalContext(String scriptName, Loadout loadout)
 	{
 		try
 		{
@@ -64,18 +64,11 @@ public class ModifierScriptService
 			int dotIndex = fileName.lastIndexOf('.');
 			String extension = (dotIndex > 0) ? fileName.substring(dotIndex + 1).toLowerCase() : "";
 
-			switch (extension.toLowerCase()) {
-				case "groovy" -> {
-					return groovyScriptService.runMethod(file, loadout);
-				}
-				case "py" -> {
-					return null;
-				}
-				default ->
-				{
-					return null;
-				}
+			if (extension.equalsIgnoreCase("groovy"))
+			{
+				return groovyScriptService.runMethod(file, loadout);
 			}
+			return null;
 		}
 		catch (Exception e)
 		{

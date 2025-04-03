@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.ConsumableController;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.consumables.AddictionType;
@@ -74,7 +75,7 @@ public class ConsumableControllerTest
 		List<ConsumableDTO> consumableDTOS = new ArrayList<>();
 		consumableDTOS.add(consumableDTO);
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
+		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new EquippedArmour(),
 			new Player(), null, new HashSet<>(), null);
 		loadout.getConsumables().put(consumable, true);
 
@@ -105,7 +106,7 @@ public class ConsumableControllerTest
 	{
 		log.debug("{}Running test - getConsumables_WithEmptyConsumablesList in ConsumableControllerTest.", System.lineSeparator());
 
-		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
+		Loadout loadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new EquippedArmour(),
 			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(ArgumentMatchers.anyInt())).willReturn(loadout);
@@ -131,7 +132,7 @@ public class ConsumableControllerTest
 	{
 		log.debug("{}Running test - addConsumable in ConsumableControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
+		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new EquippedArmour(),
 			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);
@@ -154,7 +155,7 @@ public class ConsumableControllerTest
 	{
 		log.debug("{}Running test - removeConsumable in ConsumableControllerTest.", System.lineSeparator());
 
-		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new HashSet<>(),
+		Loadout mockLoadout = new Loadout(1, null, new HashMap<>(), new HashMap<>(), new EquippedArmour(),
 			new Player(), null, new HashSet<>(), null);
 
 		given(loadoutManager.getLoadout(1)).willReturn(mockLoadout);

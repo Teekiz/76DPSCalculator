@@ -29,20 +29,14 @@ public class ModifierBoostService
 	/**
 	 * A method that used to identify boosts. Used by {@link ModifierExpressionService} if
 	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED".
-	 * @param modifiers The {@link HashMap} of {@link Modifier}'s and their {@link Boolean} values. This list will only provide boosts for {@code true} values. For example, {@link ModifierSource}.MUTATION_POSITIVE will apply
-	 *                          the {@code valueChange} to all positive mutations.
+	 * @param modifiers The {@link List} of {@link Modifier}'s.
 	 * @return A {@link HashMap} of {@link ModifierSource} and {@link Number} containing the boost types and the boosted values.
 	 */
-	public HashMap<ModifierSource, Number> getModifierBoosts(HashMap<Modifier, Boolean> modifiers)
+	public HashMap<ModifierSource, Number> getModifierBoosts(List<Modifier> modifiers)
 	{
 		HashMap<ModifierSource, Number> modifierBoosts = new HashMap<>();
 
-		List<Modifier> appliedBoosts = modifiers.entrySet()
-			.stream().filter(Map.Entry::getValue)
-			.map(Map.Entry::getKey)
-			.toList();
-
-		for (Modifier modifier : appliedBoosts)
+		for (Modifier modifier : modifiers)
 		{
 			if (modifier.effects() != null
 				&& modifier.effects().containsKey(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS)

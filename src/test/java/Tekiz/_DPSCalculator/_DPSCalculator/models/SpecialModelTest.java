@@ -15,7 +15,7 @@ public class SpecialModelTest extends BaseTestClass
 	public void testPlayerSpecials_WithIndividualSpecials()
 	{
 		//max is 15, min is 1
-		Special special = new Special(1,1,1,1,1,1,1);
+		Special special = new Special(1,1,1,1,1,1,1,0,0,0,0,0,0,0);
 
 		//testing setting a special
 		special.setSpecial(Specials.AGILITY, 2);
@@ -44,7 +44,7 @@ public class SpecialModelTest extends BaseTestClass
 	@Test
 	public void testPlayerSpecials_WithAllSpecials()
 	{
-		Special special = new Special(1,1,1,1,1,1,1);
+		Special special = new Special(1,1,1,1,1,1,1, 0,0,0,0,0,0,0);
 		special.setAllSpecials(2,7,4,6,2,3,1);
 
 		assertEquals(3, special.getAgility());
@@ -76,14 +76,14 @@ public class SpecialModelTest extends BaseTestClass
 	@Test
 	public void testPlayerSpecials_GetSpecials()
 	{
-		Special special = new Special(10,2,3,4,8,5,1);
+		Special special = new Special(10,2,3,4,8,5,1, 0,0,0,0,0,0,0);
 
-		assertEquals(10, special.getSpecialValue(Specials.STRENGTH));
-		assertEquals(2, special.getSpecialValue(Specials.PERCEPTION));
-		assertEquals(3, special.getSpecialValue(Specials.ENDURANCE));
-		assertEquals(4, special.getSpecialValue(Specials.CHARISMA));
-		assertEquals(8, special.getSpecialValue(Specials.INTELLIGENCE));
-		assertEquals(5, special.getSpecialValue(Specials.AGILITY));
-		assertEquals(1, special.getSpecialValue(Specials.LUCK));
+		assertEquals(10, special.getSpecialValue(Specials.STRENGTH, false));
+		assertEquals(2, special.getSpecialValue(Specials.PERCEPTION, false));
+		assertEquals(3, special.getSpecialValue(Specials.ENDURANCE, false));
+		assertEquals(4, special.getSpecialValue(Specials.CHARISMA, false));
+		assertEquals(8, special.getSpecialValue(Specials.INTELLIGENCE, false));
+		assertEquals(5, special.getSpecialValue(Specials.AGILITY, false));
+		assertEquals(1, special.getSpecialValue(Specials.LUCK, false));
 	}
 }

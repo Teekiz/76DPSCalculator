@@ -7,7 +7,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.SpecialsChangedEvent;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +152,7 @@ public class PerkManager
 	public boolean hasAvailableSpecialPoints(HashMap<Perk, Boolean> perks, Perk perkToAdd, Special playerStats, int... temporaryRank){
 
 		Specials special = perkToAdd.special();
-		int availablePoints = playerStats.getSpecialValue(special);
+		int availablePoints = playerStats.getSpecialValue(special, false);
 
 		//uses either the perks current rank
 		int requiredPoints = (temporaryRank.length > 0 && temporaryRank[0] > 0) ? perkToAdd.perkRank().getPointsCost(temporaryRank[0]) :
@@ -229,7 +227,7 @@ public class PerkManager
 
 		if (!ignoreSpecialRestrictions){
 			for (Specials special : Specials.values()) {
-				int availablePoints = specials.getSpecialValue(special);
+				int availablePoints = specials.getSpecialValue(special, false);
 				int pointsUsed = getPerkPointsUsed(special, perks);
 				if (availablePoints < pointsUsed) {
 					removeExcessPerksForSpecial(loadout, special, availablePoints);

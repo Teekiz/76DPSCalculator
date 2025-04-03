@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.loadout;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
@@ -38,7 +38,7 @@ public class Loadout implements Serializable
 	HashMap<Consumable, Boolean> consumables;
 
 	@JsonProperty("armour")
-	Set<Armour> armour;
+	EquippedArmour armour;
 
 	@JsonProperty("player")
 	Player player;

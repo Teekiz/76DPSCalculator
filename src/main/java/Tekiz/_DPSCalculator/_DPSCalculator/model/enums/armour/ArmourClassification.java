@@ -1,8 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.enums.armour;
 
-public enum ArmourSet
+public enum ArmourClassification
 {
-	NONE,
-	WOOD,
-	LEATHER;
+	LIGHT,
+	STURDY,
+	HEAVY;
 }

@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,6 +61,14 @@ public class LegendaryEffectsMap extends HashMap<LegendaryEffect, Boolean>
 		{
 			this.remove(effect);
 		}
+	}
+
+	/**
+	 * A method that gets all the effects and coverts them into a {@link List}.
+	 * @return A {@link List} of {@link LegendaryEffect} objects.
+	 */
+	public List<LegendaryEffect> getAllEffects(){
+		return this.keySet().stream().toList();
 	}
 }
 

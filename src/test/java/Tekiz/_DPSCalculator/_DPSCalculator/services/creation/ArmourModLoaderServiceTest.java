@@ -1,8 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
+import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ArmourFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
@@ -16,6 +19,8 @@ public class ArmourModLoaderServiceTest extends BaseTestClass
 {
 	@Autowired
 	DataLoaderService dataLoaderService;
+	@Autowired
+	ArmourFactory armourFactory;
 
 	@Test
 	public void testMaterialLoader() throws IOException
@@ -26,10 +31,13 @@ public class ArmourModLoaderServiceTest extends BaseTestClass
 		assertEquals("Boiled leather", material.getName());
 
 		String armourPiece = "WOODCHEST";
-		Armour armour = dataLoaderService.loadDataByName(armourPiece, Armour.class, null);
+		Armour armour = dataLoaderService.loadDataByName(armourPiece, Armour.class, armourFactory);
 		assertNotNull(armour);
 		armour.setMod(material);
-		assertNotNull(armour.getArmourMaterial());
-		assertEquals(ArmourPiece.TORSO, armour.getArmourMaterial().getArmourPiece());
+		assertEquals(OverArmourPiece.class, armour.getClass());
+
+		OverArmourPiece overArmourPiece = (OverArmourPiece) armour;
+		assertNotNull(overArmourPiece.getArmourMaterial());
+		assertEquals(ArmourPiece.TORSO, overArmourPiece.getArmourMaterial().getArmourPiece());
 	}
 }
