@@ -1,9 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ReceiverDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModificationDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -45,7 +46,7 @@ public class RangedWeapon extends Weapon
 	/** The receiver the weapon uses. */
 	@NonFinal
 	@DBRef
-	@JsonDeserialize(using = ReceiverDeserializer.class)
+	@JsonDeserialize(using = ModificationDeserializer.class)
 	@JsonProperty("receiver")
 	Receiver receiver;
 

@@ -120,7 +120,7 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.modifyArmour(CUSHIONED, ModType.MISCELLANEOUS, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
-		assertEquals("Cushioned", piece.getArmourMisc().getName());
+		assertEquals("Cushioned", piece.getArmourMisc().name());
 	}
 
 	@Test

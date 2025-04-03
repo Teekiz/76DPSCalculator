@@ -1,11 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods;
 
-import java.io.Serializable;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modification;
 /**
  * Represents a generic modification that can be made to a weapon.
  */
-public interface RangedMod extends Serializable
-{
-	String id();
-	String name();
-}
+public interface RangedMod extends Modification
+{}

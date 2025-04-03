@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
@@ -12,6 +13,7 @@ import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.LoadoutDeserializer;
+import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModificationDeserializer;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -20,7 +22,6 @@ import groovy.lang.GroovyShell;
 import lombok.extern.slf4j.Slf4j;
 import org.jsonidmapper.JsonIDMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -70,6 +71,7 @@ public class UtilConfig
 		ExpressionAdapter.ExpressionSerializer expressionSerializer = new ExpressionAdapter.ExpressionSerializer();
 		ExpressionAdapter.ExpressionDeserializer expressionDeserializer = new ExpressionAdapter.ExpressionDeserializer();
 		LoadoutDeserializer loadoutDeserializer = new LoadoutDeserializer();
+		ModificationDeserializer modificationDeserializer = new ModificationDeserializer();
 
 		SimpleModule module = new SimpleModule();
 		module.addKeySerializer(Perk.class, hashMapKeySerializer);
@@ -86,6 +88,7 @@ public class UtilConfig
 		module.addDeserializer(Expression.class, expressionDeserializer);
 
 		module.addDeserializer(Loadout.class, loadoutDeserializer);
+		module.addDeserializer(Modification.class, modificationDeserializer);
 
 		objectMapper.registerModule(module);
 
