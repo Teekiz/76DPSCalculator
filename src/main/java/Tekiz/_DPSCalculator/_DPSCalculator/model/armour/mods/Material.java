@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Material(@Id
 					   @JsonProperty("id") @JsonAlias("_id") String id,
 					   @JsonProperty("name") String name,
+					   @JsonProperty("alias") String alias,
 					   @JsonProperty("armourPiece") ArmourPiece armourPiece,
 					   @JsonProperty("armourResistance") HashMap<Integer, ArmourResistance> materialResistanceBonus,
 					   @JsonProperty("materialEffect") String materialEffect) implements ArmourMod

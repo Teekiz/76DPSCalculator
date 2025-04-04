@@ -1,5 +1,6 @@
 {
     "name": "TestAutomatic",
+    "alias" : "AUTOMATIC",
     "receiverType": "AUTOMATIC",
     "damageChange": -0.1,
     "damageCriticalMultiplier": 0,

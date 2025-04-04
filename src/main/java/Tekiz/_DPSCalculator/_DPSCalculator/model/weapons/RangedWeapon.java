@@ -1,20 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.RangedMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
-import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModificationDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import lombok.experimental.NonFinal;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * Represents a generic ranged weapon that the user can add to their loadout.
@@ -43,12 +39,9 @@ public class RangedWeapon extends Weapon
 	@JsonProperty("accuracy")
 	int accuracy;
 
-	/** The receiver the weapon uses. */
-	@NonFinal
-	@DBRef
-	@JsonDeserialize(using = ModificationDeserializer.class)
+	/** The receiver slot the weapon uses. */
 	@JsonProperty("receiver")
-	Receiver receiver;
+	ModificationSlot<Receiver> receiver;
 
 	@JsonIgnore
 	public List<WeaponDamage> getBaseDamage(int weaponLevel)
@@ -58,14 +51,14 @@ public class RangedWeapon extends Weapon
 
 	/**
 	 * A method that is used to make modifications to the weapon.
-	 * @param rangedMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link RangedMod} object.
+	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link WeaponMod} object.
 	 */
 	@JsonIgnore
-	public void setMod(RangedMod rangedMod)
+	public void setMod(WeaponMod weaponMod)
 	{
-		switch (rangedMod)
+		switch (weaponMod)
 		{
-			case Receiver receiver -> this.receiver = receiver;
+			case Receiver receiver -> this.receiver.changeCurrentModification(receiver);
 			default -> {}
 		}
 	}

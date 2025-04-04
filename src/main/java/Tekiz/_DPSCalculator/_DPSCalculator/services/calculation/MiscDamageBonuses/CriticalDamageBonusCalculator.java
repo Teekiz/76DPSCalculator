@@ -90,7 +90,7 @@ public class CriticalDamageBonusCalculator
 		double baseCriticalDamage = weapon.getCriticalBonus();
 
 		if (weapon instanceof RangedWeapon rangedWeapon && rangedWeapon.getReceiver() != null){
-			baseCriticalDamage += rangedWeapon.getReceiver().damageCriticalMultiplier();
+			baseCriticalDamage += rangedWeapon.getReceiver().getCurrentModification().damageCriticalMultiplier();
 		}
 
 		return baseCriticalDamage;

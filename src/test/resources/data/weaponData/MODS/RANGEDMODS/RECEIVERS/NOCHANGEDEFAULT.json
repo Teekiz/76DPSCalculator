@@ -1,5 +1,6 @@
 {
     "name": "Default",
+    "alias" : "DEFAULT",
     "receiverType": "AUTOMATIC",
     "damageChange": 0.0,
     "damageCriticalMultiplier": 0,

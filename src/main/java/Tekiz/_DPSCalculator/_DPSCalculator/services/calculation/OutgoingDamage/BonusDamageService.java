@@ -39,7 +39,7 @@ public class BonusDamageService
 		{
 			if (weapon.getReceiver() != null)
 			{
-				bonusDamage += weapon.getReceiver().damageChange();
+				bonusDamage += weapon.getReceiver().getCurrentModification().damageChange();
 			}
 		}
 

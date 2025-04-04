@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modification;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;

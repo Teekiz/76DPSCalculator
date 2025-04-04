@@ -73,7 +73,7 @@ public class ActionPointsCalculator
 	{
 		//todo - for all other mod types.
 		if (rangedWeapon.getReceiver() != null){
-			currentBonus.add(rangedWeapon.getReceiver().apChange());
+			currentBonus.add(rangedWeapon.getReceiver().getCurrentModification().apChange());
 		}
 	}
 }

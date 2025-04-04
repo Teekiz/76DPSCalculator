@@ -1,6 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour.mods;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourMiscellaniousRepository;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
@@ -18,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Miscellaneous (@Id
 							 @JsonProperty("id") @JsonAlias("_id") String id,
 							 @JsonProperty("name") String name,
+							 @JsonProperty("alias") String alias,
 							 @JsonProperty("armourPiece") ArmourPiece armourPiece,
 							 @JsonProperty("modEffect") String modEffect) implements ArmourMod
 {}

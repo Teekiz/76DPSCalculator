@@ -9,7 +9,7 @@
     },
     "description" : "Test to check if modifiers events work.",
     "modifierSource" : "PERK",
-    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().receiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getCurrentModification().receiverType() == #ReceiverType.SEMIAUTOMATIC",
     "effects" :
     {
       "1" :

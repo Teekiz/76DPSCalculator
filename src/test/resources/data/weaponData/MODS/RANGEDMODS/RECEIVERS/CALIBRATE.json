@@ -1,5 +1,6 @@
 {
     "name": "TestCalibrated",
+    "alias" : "CALIBRATE",
     "receiverType": "SEMIAUTOMATIC",
     "damageChange": 0.0,
     "damageCriticalMultiplier": 1.0,

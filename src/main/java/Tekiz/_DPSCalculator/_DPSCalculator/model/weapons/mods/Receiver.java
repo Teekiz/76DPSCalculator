@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * Represents a receiver modification for a ranged weapon.
  * @param name 						The name of the receiver.
+ * @param alias						The name used to distinguish the receiver by.
  * @param receiverType				The fire rate of the receiver.
  * @param damageChange				The damage the base weapon will gain or lose.
  * @param damageCriticalMultiplier	The damage multiplier that the receiver adds (base is 0).
@@ -27,6 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Receiver(@Id
 					   @JsonProperty("id") @JsonAlias("_id") String id,
 					   @JsonProperty("name") String name,
+					   @JsonProperty("alias") String alias,
 					   @JsonProperty("receiverType") ReceiverType receiverType,
 					   @JsonProperty("damageChange") double damageChange,
 					   @JsonProperty("damageCriticalMultiplier") double damageCriticalMultiplier,
@@ -34,4 +36,5 @@ public record Receiver(@Id
 					   @JsonProperty("accuracyChange") int accuracyChange,
 					   @JsonProperty("apChange") double apChange,
 					   @JsonProperty("prime") boolean isPrime,
-					   @JsonProperty("ammoOverrideType") String ammoOverrideType) implements RangedMod {}
+					   @JsonProperty("ammoOverrideType") String ammoOverrideType) implements WeaponMod
+{}

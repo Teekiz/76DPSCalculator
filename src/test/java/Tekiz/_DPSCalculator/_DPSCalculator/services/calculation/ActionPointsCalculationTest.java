@@ -61,7 +61,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//MAX AP = 60 + (10 * Agility) = 160 (without modifiers) - 5 = 155
-		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().fireRateChange()) / 10;
+		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().getCurrentModification().fireRateChange()) / 10;
 		//Attacks per second = (43 + 32) / 10 = 7.5
 
 		//AP Duration = Max AP / (AP PER SHOT * Attacks Per Second)
@@ -89,7 +89,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0 (20 AP per shot)
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
 		//MAX AP = 60 + 10 * (Agility + bonuses) + bonusAP = 260 - 5 = 255
-		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().fireRateChange()) / 10;
+		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().getCurrentModification().fireRateChange()) / 10;
 		//Attacks per second = (43) / 10 = 4.3
 
 		//AP Duration = Max AP / (AP PER SHOT * Attacks Per Second)
@@ -139,7 +139,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 		//AP PER SHOT = receiver modifiers base rate of 20 by 0.5 (10 AP per shot)
 		//maxAP = (60 + 10 * (specials.getAgility() + bonusAgility)) + bonusAP;
 		//MAX AP = 60 + 10 * (1 + -1) + -55 = 5 - 5 = 0
-		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().fireRateChange()) / 10;
+		double attacksPerSecond = (double) (rangedWeapon.getFireRate() + rangedWeapon.getReceiver().getCurrentModification().fireRateChange()) / 10;
 		//Attacks per second = (43 + 32) / 10 = 7.5
 
 		//AP Duration = Max AP / (AP PER SHOT * Attacks Per Second)

@@ -131,7 +131,7 @@ public class RangedDamageCalculator
 		double fireRate = rangedWeapon.getFireRate();
 
 		if (rangedWeapon.getReceiver() != null){
-			fireRate += rangedWeapon.getReceiver().fireRateChange();
+			fireRate += rangedWeapon.getReceiver().getCurrentModification().fireRateChange();
 		}
 
 		return fireRate / 10;

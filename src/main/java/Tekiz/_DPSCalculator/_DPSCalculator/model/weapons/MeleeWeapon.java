@@ -2,6 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.AttackSpeed;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.WeaponMod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,4 +29,12 @@ public class MeleeWeapon extends Weapon
 	{
 		return weaponDamageByLevel.get(weaponLevel);
 	}
+
+	/**
+	 * A method that is used to make modifications to the weapon.
+	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link WeaponMod} object.
+	 */
+	@JsonIgnore
+	public void setMod(WeaponMod weaponMod)
+	{}
 }

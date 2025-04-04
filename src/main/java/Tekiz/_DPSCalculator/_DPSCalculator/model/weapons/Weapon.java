@@ -4,7 +4,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -67,6 +69,13 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonIgnore
 	public abstract List<WeaponDamage> getBaseDamage(int weaponLevel);
 
+	/**
+	/**
+	 * A method that is used to make modifications to the weapon.
+	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link WeaponMod} object.
+	 */
+	@JsonIgnore
+	public abstract void setMod(WeaponMod weaponMod);
 	/**
 	 * A method to check if a weapons damage contains a certain damage type.
 	 * @param damageType The type of damage to check for.

@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modification;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.jackson.JsonComponent;
-import org.springframework.expression.Expression;
 
 /**
  * A utility service used to allow a {@link JsonParser} to convert the name of receiver into an {@link Receiver} object.
@@ -32,7 +31,12 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 	public Modification deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException
 	{
 		JsonNode modificationNode = jsonParser.getCodec().readTree(jsonParser);
+
 		Class<?> objectClass = getClassFromString(jsonParser.getParsingContext().getCurrentName());
+		//if the name of the object cannot be determined by the name of the node, try the node higher
+		if (objectClass == null){
+			objectClass = getClassFromString(jsonParser.getParsingContext().getParent().getCurrentName());
+		}
 
 		if (modificationNode == null)
 		{

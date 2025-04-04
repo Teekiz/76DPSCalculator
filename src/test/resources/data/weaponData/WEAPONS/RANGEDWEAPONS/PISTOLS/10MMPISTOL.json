@@ -28,5 +28,9 @@
     "rangedPenalty" : -50,
     "reloadTime" : 1.97,
     "legendaryEffects" : {},
-    "receiver" : "AUTOMATIC"
+    "receiver" : {
+      "defaultModification" : "AUTOMATIC",
+      "canSlotBeChanged" : true,
+      "availableInSlot" : ["AUTOMATIC", "CALIBRATE"]
+    }
 }
