@@ -1,4 +1,7 @@
 {
     "name" : "Cushioned",
-    "armourPiece": "TORSO"
+    "alias" : "CUSHIONED",
+    "armourPiece": "TORSO",
+    "modType": "MISCELLANEOUS",
+    "modifierSource" : "ARMOUR_MODIFICATION"
 }

@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -75,17 +75,16 @@ public class ArmourManager
 	/**
 	 * Modifies the current armour in the slot by applying a specified modification (mod).
 	 * @param modID The name of the mod to apply.
-	 * @param modType The type of mod being applied.
 	 * @param armourType The type of armour being modified.
 	 * @param armourSlot The slot where the armour will be applied to.
 	 * @param loadout The loadout to be modified.
 	 * @throws IOException If the mod cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void modifyArmour(String modID, ModType modType, ArmourType armourType, ArmourSlot armourSlot, Loadout loadout) throws IOException
+	public synchronized void modifyArmour(String modID, ArmourType armourType, ArmourSlot armourSlot, Loadout loadout) throws IOException
 	{
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
-		ArmourMod armourMod = (ArmourMod) dataLoaderService.loadData(modID, modType.getModClass(), null);
+		ArmourMod armourMod = dataLoaderService.loadData(modID, ArmourMod.class, null);
 
 		if (armour == null){
 			return;

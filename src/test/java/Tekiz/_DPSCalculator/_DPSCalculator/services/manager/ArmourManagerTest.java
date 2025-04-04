@@ -6,7 +6,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
@@ -117,17 +116,17 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		armourManager.modifyArmour(CUSHIONED, ModType.MISCELLANEOUS, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
+		armourManager.modifyArmour(CUSHIONED, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
-		assertEquals("Cushioned", piece.getArmourMisc().name());
+		assertEquals("Cushioned", piece.getMiscellaneous().getCurrentModification().name());
 	}
 
 	@Test
 	public void modifyingArmour_WithInValidArmour() throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
-		armourManager.modifyArmour(CUSHIONED, ModType.MISCELLANEOUS, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
+		armourManager.modifyArmour(CUSHIONED, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 	}
 
@@ -138,14 +137,14 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		armourManager.modifyArmour("NOTAREALMOD", ModType.MISCELLANEOUS, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
+		armourManager.modifyArmour("NOTAREALMOD", ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
-		assertNull(piece.getArmourMaterial());
+		assertNull(piece.getMiscellaneous().getCurrentModification());
 
-		armourManager.modifyArmour(CUSHIONED, ModType.MISCELLANEOUS, ArmourType.ARMOUR, ArmourSlot.LEFT_LEG, loadout);
+		armourManager.modifyArmour(CUSHIONED, ArmourType.ARMOUR, ArmourSlot.LEFT_LEG, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
-		assertNull(piece.getArmourMisc());
+		assertNull(piece.getMiscellaneous().getCurrentModification());
 	}
 
 	@Test

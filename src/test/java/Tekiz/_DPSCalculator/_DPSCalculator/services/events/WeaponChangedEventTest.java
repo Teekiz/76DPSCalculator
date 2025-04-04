@@ -79,7 +79,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		//receiver does not change the damage
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}
@@ -91,13 +91,13 @@ public class WeaponChangedEventTest extends BaseTestClass
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 		assertEquals(28.0, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
 		perkManager.addPerk(TESTEVENT, loadout); //TESTEVENT
 		assertEquals(33.6, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 
-		weaponManager.modifyWeapon(AUTOMATIC, ModType.RECEIVER, loadout);//AUTOMATIC
+		weaponManager.modifyWeapon(AUTOMATIC, loadout);//AUTOMATIC
 		assertEquals(25.2, damageCalculationService.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
 		loadoutManager.deleteAllLoadouts(userLoadoutTracker.getSessionID());
 	}

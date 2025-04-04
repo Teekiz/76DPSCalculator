@@ -55,25 +55,11 @@ public class ActionPointsCalculator
 			.map(Number::doubleValue)
 			.toList());
 
-		if (weapon instanceof RangedWeapon rangedWeapon){
-			calculateRangedWeaponActionsPointsPerAttack(rangedWeapon, apBonuses);
-		} else if (weapon instanceof MeleeWeapon meleeWeapon){
-			//todo - melee weapon bonuses
-		}
-
 		//results in a max AP reduction of 90% or the bonuses, which ever is higher
 		double apCostReduction = Math.max(0.10, 1 - apBonuses.stream()
 			.mapToDouble(Double::doubleValue)
 			.sum());
 
 		return baseAPPerAttack * apCostReduction;
-	}
-
-	private void calculateRangedWeaponActionsPointsPerAttack(RangedWeapon rangedWeapon, List<Double> currentBonus)
-	{
-		//todo - for all other mod types.
-		if (rangedWeapon.getReceiver() != null){
-			currentBonus.add(rangedWeapon.getReceiver().getCurrentModification().apChange());
-		}
 	}
 }

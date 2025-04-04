@@ -1,9 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Miscellaneous;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.jackson.JsonComponent;
 
 /**
- * A utility service used to allow a {@link JsonParser} to convert the name of receiver into an {@link Receiver} object.
+ * A utility service used to allow a {@link JsonParser} to convert the name of receiver into an {@link WeaponMod} object.
  */
 @Slf4j
 @JsonComponent
@@ -94,10 +93,9 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 	 */
 	private Class<?> getClassFromString(String className){
 		switch (className){
-			case "receiver" -> 		{return Receiver.class;}
-			case "material" -> 		{return Material.class;}
-			case "miscellaneous" -> {return Miscellaneous.class;}
-			default -> 				{return null;}
+			case "receiver" -> 							{return WeaponMod.class;}
+			case "material", "miscellaneous" -> 		{return ArmourMod.class;}
+			default -> 									{return null;}
 		}
 	}
 }

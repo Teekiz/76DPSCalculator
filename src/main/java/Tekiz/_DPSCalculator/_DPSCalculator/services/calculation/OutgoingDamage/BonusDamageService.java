@@ -29,20 +29,10 @@ public class BonusDamageService
 	 */
 	public double calculateBonusDamage(Loadout loadout, DPSDetails dpsDetails)
 	{
-		double bonusDamage = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
+		return modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
 			.stream()
 			.filter(Objects::nonNull)
 			.mapToDouble(Number::doubleValue)
 			.sum() + 1.0;
-
-		if (loadout.getWeapon() instanceof RangedWeapon weapon)
-		{
-			if (weapon.getReceiver() != null)
-			{
-				bonusDamage += weapon.getReceiver().getCurrentModification().damageChange();
-			}
-		}
-
-		return bonusDamage;
 	}
 }

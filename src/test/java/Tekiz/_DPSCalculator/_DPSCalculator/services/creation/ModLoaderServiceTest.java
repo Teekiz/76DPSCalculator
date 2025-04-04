@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
@@ -20,18 +20,17 @@ public class ModLoaderServiceTest extends BaseTestClass
 	void testLoadReceiver() throws IOException
 	{
 		String receiverName = "AUTOMATIC";
-		Receiver receiver = dataLoaderService.loadDataByName(receiverName, Receiver.class, null);
-		assertNotNull(receiver);
-		assertEquals("TestAutomatic", receiver.name());
+		WeaponMod weaponMod = dataLoaderService.loadDataByName(receiverName, WeaponMod.class, null);
+		assertNotNull(weaponMod);
+		assertEquals("TestAutomatic", weaponMod.name());
 	}
 
 	@Test
 	void testLoadAllReceivers() throws IOException
 	{
-		List<Receiver> receivers = dataLoaderService.loadAllData("modRe", Receiver.class, null);
-		assertNotNull(receivers);
-		assertEquals("TestAutomatic", receivers.get(0).name());
-		assertFalse(receivers.get(0).isPrime());
-		assertEquals("TestCalibrated", receivers.get(2).name());
+		List<WeaponMod> weaponMods = dataLoaderService.loadAllData("weaponMods", WeaponMod.class, null);
+		assertNotNull(weaponMods);
+		assertEquals("Default", weaponMods.get(0).name());
+		assertEquals("TestCalibrated", weaponMods.get(2).name());
 	}
 }

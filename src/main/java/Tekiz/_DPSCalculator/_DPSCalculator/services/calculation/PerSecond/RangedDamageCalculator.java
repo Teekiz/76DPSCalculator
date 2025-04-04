@@ -1,15 +1,20 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static java.util.Arrays.stream;
 
 /** A service that calculates the damage with the reload time and any DoT remaining. */
 
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class RangedDamageCalculator
 {
 	private final ActionPointsCalculator actionPointsCalculator;
+	private final ModifierAggregationService modifierAggregationService;
 	/**
 	 * A method used to calculate the damage per second with reload time factored in.
 	 * @param damagePerShot The damage applied for each calculation.
@@ -55,7 +61,7 @@ public class RangedDamageCalculator
 		RangedWeapon rangedWeapon = (RangedWeapon) loadout.getWeapon();
 
 		//the fire rate is the maximum amount of shots in a 10-second window (not factoring reload speed), so dividing by 10 will get the amount of shots per second.
-		double shotsPerSecond = isValueInfiniteOrNaN(calculateShotsPerSecond(rangedWeapon));
+		double shotsPerSecond = isValueInfiniteOrNaN(calculateShotsPerSecond(loadout, dpsDetails));
 
 		//the time to use up all ammo in magazine/clip
 		double timeToEmptyMagazine = isValueInfiniteOrNaN((double) rangedWeapon.getMagazineSize() / shotsPerSecond);
@@ -124,15 +130,18 @@ public class RangedDamageCalculator
 
 	/**
 	 * A method to calculate a ranged weapons shots per second based on modifiers.
-	 * @param rangedWeapon The weapon to identify its fire rate.
+	 * @param loadout The loadout to identify the attack rate.
 	 * @return The shots per second.
 	 */
-	private double calculateShotsPerSecond(RangedWeapon rangedWeapon){
-		double fireRate = rangedWeapon.getFireRate();
+	private double calculateShotsPerSecond(Loadout loadout, DPSDetails dpsDetails){
+		RangedWeapon weapon = (RangedWeapon) loadout.getWeapon();
+		double fireRate = weapon.getFireRate();
 
-		if (rangedWeapon.getReceiver() != null){
-			fireRate += rangedWeapon.getReceiver().getCurrentModification().fireRateChange();
-		}
+		fireRate = modifierAggregationService.filterEffects(loadout, ModifierTypes.FIRE_RATE, dpsDetails)
+				.stream()
+				.filter(Objects::nonNull)
+				.mapToDouble(Number::doubleValue)
+				.sum() + fireRate;
 
 		return fireRate / 10;
 	}

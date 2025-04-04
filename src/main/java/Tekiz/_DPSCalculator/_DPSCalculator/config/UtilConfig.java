@@ -14,6 +14,7 @@ import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.LoadoutDeserializer;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ModificationDeserializer;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -59,6 +60,7 @@ public class UtilConfig
 									 LoadoutFactory loadoutFactory) {
 		ObjectMapper objectMapper = new  ObjectMapper();
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		InjectableValues.Std injectableValues = new InjectableValues.Std();
 		injectableValues.addValue(DataLoaderService.class, loaderService);

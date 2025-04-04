@@ -1,7 +1,10 @@
 
 {
     "name" : "Boiled leather",
+    "alias" : "BOILEDLEATHERCHEST",
     "armourPiece": "TORSO",
+    "modType": "MATERIAL",
+    "modifierSource" : "ARMOUR_MODIFICATION",
     "armourResistance" :
     {
         "1": { "damageResistance": 1, "energyResistance": 1, "radiationResistance": 0, "cryoResistance": 0 },

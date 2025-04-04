@@ -30,6 +30,7 @@
     "legendaryEffects" : {},
     "receiver" : {
       "defaultModification" : "AUTOMATIC",
+      "acceptedModType" : "RECEIVER",
       "canSlotBeChanged" : true,
       "availableInSlot" : ["AUTOMATIC", "CALIBRATE"]
     }
