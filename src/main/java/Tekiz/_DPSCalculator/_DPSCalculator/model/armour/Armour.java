@@ -1,10 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourRepository;
@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.NonFinal;
@@ -81,4 +82,7 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 
 	@JsonIgnore
 	public abstract void setMod(ArmourMod armourMod);
+
+	@JsonIgnore
+	public abstract List<Modifier> getAllModificationEffects();
 }

@@ -1,12 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.WeaponMod;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.SuperBuilder;
@@ -41,7 +45,7 @@ public class RangedWeapon extends Weapon
 
 	/** The receiver slot the weapon uses. */
 	@JsonProperty("receiver")
-	ModificationSlot<Receiver> receiver;
+	ModificationSlot<WeaponMod> receiver;
 
 	@JsonIgnore
 	public List<WeaponDamage> getBaseDamage(int weaponLevel)
@@ -51,27 +55,39 @@ public class RangedWeapon extends Weapon
 
 	/**
 	 * A method that is used to make modifications to the weapon.
-	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link WeaponMod} object.
+	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
 	 */
 	@JsonIgnore
 	public void setMod(WeaponMod weaponMod)
 	{
-		switch (weaponMod)
+		if (weaponMod == null){
+			return;
+		}
+
+		ModificationSlot<WeaponMod> slot = null;
+
+		switch (weaponMod.modType())
 		{
-			case Receiver receiver -> this.receiver.changeCurrentModification(receiver);
+			case  RECEIVER -> slot = receiver;
 			default -> {}
+		}
+
+		if (slot != null){
+			slot.changeCurrentModification(weaponMod);
 		}
 	}
 
-	//mods - pistols use grips, while rifles use stocks
-	//receive, barrel, stock, magazine, sights, muzzle, grip
-	//effects
+	@Override
+	public List<Modifier> getAllModificationEffects()
+	{
+		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
+		List<Optional<ModificationSlot<?>>> modifications = List.of(Optional.ofNullable(receiver));
+		modifiers.addAll(modifications.stream()
+			.flatMap(Optional::stream)
+			.map(ModificationSlot::getCurrentModification)
+			.filter(Objects::nonNull)
+			.toList());
 
-	//Capacitor
-	//Receiver
-	//Dish
-	//Barrel
-	//Grip
-	//Sights
-	//Muzzle
+		return modifiers;
+	}
 }

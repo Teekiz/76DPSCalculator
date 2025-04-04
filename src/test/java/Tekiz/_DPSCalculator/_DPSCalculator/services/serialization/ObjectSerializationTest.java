@@ -2,10 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -187,8 +185,8 @@ public class ObjectSerializationTest extends BaseTestClass
 		String modID = jsonIDMapper.getIDFromFileName("BOILEDLEATHERCHEST");
 
 		Armour armour = dataLoaderService.loadData(id, Armour.class, armourFactory);
-		Material material = dataLoaderService.loadData(modID, Material.class, null);
-		armour.setMod(material);
+		ArmourMod armourMod = dataLoaderService.loadData(modID, ArmourMod.class, null);
+		armour.setMod(armourMod);
 		assertNotNull(armour);
 		log.debug("Armour object deserialized: {}.", armour);
 

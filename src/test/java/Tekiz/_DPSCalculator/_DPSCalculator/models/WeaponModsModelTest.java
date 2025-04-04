@@ -1,14 +1,14 @@
 package Tekiz._DPSCalculator._DPSCalculator.models;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,10 +45,10 @@ public class WeaponModsModelTest extends BaseTestClass
 	{
 		//DEFAULT IS AUTOMATIC
 		RangedWeapon rangedWeapon = (RangedWeapon) dataLoaderService.loadData(_10MMPISTOL, Weapon.class, weaponFactory);
-		Receiver receiver = dataLoaderService.loadData(CALIBRATE, Receiver.class, null);
+		WeaponMod weaponMod = dataLoaderService.loadData(CALIBRATE, WeaponMod.class, null);
 
 		assertEquals("TestAutomatic", rangedWeapon.getReceiver().getCurrentModification().name());
-		rangedWeapon.setMod(receiver);
+		rangedWeapon.setMod(weaponMod);
 		assertEquals("TestCalibrated", rangedWeapon.getReceiver().getCurrentModification().name());
 	}
 
@@ -57,10 +57,10 @@ public class WeaponModsModelTest extends BaseTestClass
 	{
 		//DEFAULT IS AUTOMATIC
 		RangedWeapon rangedWeapon = (RangedWeapon) dataLoaderService.loadData(_10MMPISTOL, Weapon.class, weaponFactory);
-		Receiver receiver = dataLoaderService.loadData(NOCHANGEDEFAULT, Receiver.class, null);
+		WeaponMod weaponMod = dataLoaderService.loadData(NOCHANGEDEFAULT, WeaponMod.class, null);
 
 		assertEquals("TestAutomatic", rangedWeapon.getReceiver().getCurrentModification().name());
-		rangedWeapon.setMod(receiver);
+		rangedWeapon.setMod(weaponMod);
 		assertEquals("TestAutomatic", rangedWeapon.getReceiver().getCurrentModification().name());
 	}
 
@@ -68,12 +68,12 @@ public class WeaponModsModelTest extends BaseTestClass
 	public void testChangingModification_modCannotBeChanged() throws IOException
 	{
 		//DEFAULT IS AUTOMATIC
-		Receiver defaultReceiver = dataLoaderService.loadData(AUTOMATIC, Receiver.class, null);
-		RangedWeapon rangedWeapon = RangedWeapon.builder().receiver(new ModificationSlot<>(defaultReceiver, false, Set.of("AUTOMATIC", "CALIBRATE"))).build();
-		Receiver receiver = dataLoaderService.loadData(CALIBRATE, Receiver.class, null);
+		WeaponMod defaultWeaponMod = dataLoaderService.loadData(AUTOMATIC, WeaponMod.class, null);
+		RangedWeapon rangedWeapon = RangedWeapon.builder().receiver(new ModificationSlot<>(defaultWeaponMod, ModType.RECEIVER, false, Set.of("AUTOMATIC", "CALIBRATE"))).build();
+		WeaponMod weaponMod = dataLoaderService.loadData(CALIBRATE, WeaponMod.class, null);
 
 		assertEquals("TestAutomatic", rangedWeapon.getReceiver().getCurrentModification().name());
-		rangedWeapon.setMod(receiver);
+		rangedWeapon.setMod(weaponMod);
 		assertEquals("TestAutomatic", rangedWeapon.getReceiver().getCurrentModification().name());
 	}
 }

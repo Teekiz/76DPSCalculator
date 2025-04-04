@@ -4,14 +4,14 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResista
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSetEffects;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -213,19 +213,27 @@ public class EquippedArmour
 	 * A method used to aggregate the legendary and modifier effects provided by the equipped armour.
 	 * @return A list of provided effects.
 	 */
-	public List<LegendaryEffect> aggregateArmourEffects()
+	public List<Modifier> aggregateArmourEffects()
 	{
 		if (isCurrentlyInPowerArmour){
 			return equippedPowerArmourPieces
 				.stream()
-				.flatMap(powerArmourPiece -> powerArmourPiece.getLegendaryEffects().getAllEffects().stream())
+				.flatMap(powerArmourPiece -> Stream.concat(
+					powerArmourPiece.getLegendaryEffects().getAllEffects().stream(),
+					powerArmourPiece.getAllModificationEffects().stream()))
 				.collect(Collectors.toList());
 		} else {
-			List<LegendaryEffect> modifiers = equippedUnderArmour != null ? equippedUnderArmour.getLegendaryEffects().getAllEffects() : new ArrayList<>();
-			equippedOverArmourPieces
+			List<Modifier> modifiers = equippedOverArmourPieces
 				.stream()
-				.flatMap(overArmourPiece -> overArmourPiece.getLegendaryEffects().getAllEffects().stream())
-				.forEach(modifiers::add);
+				.flatMap(overArmourPiece -> Stream.concat(
+					overArmourPiece.getLegendaryEffects().getAllEffects().stream(),
+					overArmourPiece.getAllModificationEffects().stream()))
+				.collect(Collectors.toList());
+
+			if (equippedUnderArmour != null){
+				modifiers.addAll(equippedUnderArmour.getAllModificationEffects());
+				modifiers.addAll(equippedUnderArmour.getLegendaryEffects().getAllEffects());
+			}
 			return modifiers;
 		}
 	}

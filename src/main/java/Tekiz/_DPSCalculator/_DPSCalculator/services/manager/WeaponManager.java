@@ -4,8 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.mods.Receiver;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
@@ -68,26 +67,22 @@ public class WeaponManager
 	 * such as changing the receiver of a ranged weapon. After modification, a {@link WeaponChangedEvent} is published.
 	 *
 	 * @param modID The name of the mod to apply.
-	 * @param modType The type of mod being applied (e.g., receiver).
 	 * @throws IOException If the mod cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void modifyWeapon(String modID, ModType modType, Loadout loadout) throws IOException
+	public synchronized void modifyWeapon(String modID, Loadout loadout) throws IOException
 	{
 		Weapon weapon = loadout.getWeapon();
-		if (weapon instanceof RangedWeapon)
-		{
-			switch (modType)
-			{
-				case RECEIVER -> {
-					((RangedWeapon) weapon).setMod(dataLoaderService.loadData(modID, Receiver.class, null));
-				}
-			}
+		WeaponMod weaponMod = dataLoaderService.loadData(modID, WeaponMod.class, null);
+
+		if (weaponMod == null){
+			return;
 		}
+
+		weapon.setMod(weaponMod);
+
 		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon,  loadout, "Weapon has been modified.");
 		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", weapon);
 		applicationEventPublisher.publishEvent(weaponChangedEvent);
-		//todo - create
-		//else if (weapon instanceof MeleeWeapon)
 	}
 }

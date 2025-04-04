@@ -26,6 +26,16 @@ public enum ModifierTypes
 	MAX_AP(Integer.class),
 	AP_REGEN(Integer.class),
 	AP_COST(Double.class),
+
+	//MODIFICATIONS
+	FIRE_RATE(Integer.class),
+	ACCURACY_ADDITIVE(Integer.class),
+	ACCURACY_HIPFIRE(Double.class),
+	ACCURACY_SIGHTED(Double.class),
+	AIM_SPEED(Double.class),
+	RECOIL(Double.class),
+	SCORCHED_DAMAGE(Double.class),
+
 	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),
 	SCRIPT(String.class),

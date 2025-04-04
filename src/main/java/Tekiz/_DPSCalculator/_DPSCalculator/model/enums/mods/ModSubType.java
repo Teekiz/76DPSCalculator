@@ -3,13 +3,9 @@ package Tekiz._DPSCalculator._DPSCalculator.model.enums.mods;
 import lombok.Getter;
 
 @Getter
-public enum ModType
+public enum ModSubType
 {
-	//RANGED WEAPONS
-	RECEIVER,
-
-	//ARMOUR
-	MATERIAL,
-	MISCELLANEOUS;
-
+	NOT_APPLICABLE,
+	AUTOMATIC,
+	SEMIAUTOMATIC,
 }

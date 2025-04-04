@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.binding;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.ReceiverType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -22,7 +22,7 @@ public class BaseBinding
 		Binding binding = new Binding();
 		binding.setVariable("WeaponType", WeaponType.class);
 		binding.setVariable("DamageType", DamageType.class);
-		binding.setVariable("ReceiverType", ReceiverType.class);
+		binding.setVariable("ModSubType", ModSubType.class);
 		binding.setVariable("Special", Specials.class);
 		binding.setVariable("ModifierType", ModifierTypes.class);
 		return binding;

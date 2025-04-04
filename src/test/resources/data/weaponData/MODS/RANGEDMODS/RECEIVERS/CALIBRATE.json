@@ -1,12 +1,12 @@
 {
     "name": "TestCalibrated",
     "alias" : "CALIBRATE",
-    "receiverType": "SEMIAUTOMATIC",
-    "damageChange": 0.0,
-    "damageCriticalMultiplier": 1.0,
-    "fireRateChange": 0,
-    "accuracyChange": 1,
-    "apChange": 0,
-    "prime": false,
-    "ammoOverrideType": null
+    "modType": "RECEIVER",
+    "modSubType" : "SEMIAUTOMATIC",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "CRITICAL" : 1.0,
+      "ACCURACY_ADDITIVE" : 1,
+      "ACCURACY_HIPFIRE": 0.1
+    }
 }

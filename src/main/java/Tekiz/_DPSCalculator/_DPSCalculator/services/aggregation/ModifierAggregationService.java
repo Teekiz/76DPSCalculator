@@ -15,6 +15,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -65,13 +66,35 @@ public class ModifierAggregationService
 		modifiers.addAll(loadout.getConsumables().entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
 		loadout.getMutations().forEach(mutation -> modifiers.addAll(mutation.aggregateMutationEffects()));
 
-		modifiers.addAll(parseLegendaryConditions(loadout.getArmour().aggregateArmourEffects(), loadout));
-		if (loadout.getWeapon() != null && loadout.getWeapon().getLegendaryEffects() != null){
-			modifiers.addAll(parseLegendaryConditions(loadout.getWeapon().getLegendaryEffects().getAllEffects(), loadout));
+		//adds all the mod and legendary effects into the modifiers list.
+		if (loadout.getWeapon() != null){
+			modifiers.addAll(parseLegendaryConditions(loadout.getWeapon().getAllModificationEffects(), loadout));
 		}
+		modifiers.addAll(parseLegendaryConditions(loadout.getArmour().aggregateArmourEffects(), loadout));
 
 		applyAdditionalContext(modifiers, loadout);
 
+		return modifiers;
+	}
+
+	/**
+	 * A method used to check conditions of legendary effects before they are applied to the modifier map.
+	 * @param modifiers A {@link List} of {@link LegendaryEffect}'s that will have their conditions evaluated.
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
+	 * @return {@link List} with {@link Modifier} with modifiers which have had their conditions met.
+	 */
+	private List<Modifier> parseLegendaryConditions(List<Modifier> modifiers, Loadout loadout)
+	{
+		Iterator<Modifier> iterator = modifiers.iterator();
+		while (iterator.hasNext()) {
+			Modifier modifier = iterator.next();
+			if (modifier instanceof LegendaryEffect legendaryEffect) {
+				boolean condition = parsingService.evaluateCondition(null, legendaryEffect.condition(), loadout);
+				if (!condition) {
+					iterator.remove();
+				}
+			}
+		}
 		return modifiers;
 	}
 
@@ -113,26 +136,6 @@ public class ModifierAggregationService
 				}
 			}
 		}
-	}
-
-	/**
-	 * A method used to check conditions before they are applied to the modifier map.
-	 * @param legendaryEffects A {@link List} of {@link LegendaryEffect}'s that will have their conditions evaluated.
-	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
-	 * @return {@link List} with {@link Modifier} with modifiers which have had their conditions met.
-	 */
-	//todo - this seems like a short term fix that may require future changes.
-	private List<Modifier> parseLegendaryConditions(List<LegendaryEffect> legendaryEffects, Loadout loadout)
-	{
-		List<Modifier> legendaryEffectList = new ArrayList<>();
-
-		for (LegendaryEffect legendaryEffect : legendaryEffects){
-			boolean condition = parsingService.evaluateCondition(null, legendaryEffect.condition(), loadout);
-			if (condition){
-				legendaryEffectList.add(legendaryEffect);
-			}
-		}
-		return legendaryEffectList;
 	}
 
 	/**
