@@ -27,7 +27,7 @@ import org.springframework.expression.Expression;
  * Represents a receiver modification for a ranged weapon.
  * @param name 						The name of the receiver.
  * @param alias						The name used to distinguish the receiver by.
- * @param modType				    The type of mod slot this mod uses (effects mods that can be replaced by this type).
+ * @param modType				    The type of mod slot this mod uses (affects mods that can be replaced by this type).
  * @param modSubType 				Any distinguishing mod types (does not affect mod replacement).
  * @param modifierSource            The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}
  *			                        to apply a modification to the receiver effects if a corresponding effect is available.

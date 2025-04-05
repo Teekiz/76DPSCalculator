@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
@@ -30,6 +31,7 @@ public class BaseEvaluationContext
 		StandardEvaluationContext context = new StandardEvaluationContext(rootObject);
 		context.setVariable("WeaponType", WeaponType.class);
 		context.setVariable("DamageType", DamageType.class);
+		context.setVariable("ModType", ModType.class);
 		context.setVariable("ModSubType", ModSubType.class);
 		context.setVariable("Special", Specials.class);
 		context.setVariable("ModifierType", ModifierTypes.class);

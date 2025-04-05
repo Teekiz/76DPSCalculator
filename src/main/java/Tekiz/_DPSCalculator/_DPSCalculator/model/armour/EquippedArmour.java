@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -218,16 +217,14 @@ public class EquippedArmour
 		if (isCurrentlyInPowerArmour){
 			return equippedPowerArmourPieces
 				.stream()
-				.flatMap(powerArmourPiece -> Stream.concat(
-					powerArmourPiece.getLegendaryEffects().getAllEffects().stream(),
-					powerArmourPiece.getAllModificationEffects().stream()))
+				.flatMap(powerArmourPiece ->
+					powerArmourPiece.getAllModificationEffects().stream())
 				.collect(Collectors.toList());
 		} else {
 			List<Modifier> modifiers = equippedOverArmourPieces
 				.stream()
-				.flatMap(overArmourPiece -> Stream.concat(
-					overArmourPiece.getLegendaryEffects().getAllEffects().stream(),
-					overArmourPiece.getAllModificationEffects().stream()))
+				.flatMap(overArmourPiece ->
+					overArmourPiece.getAllModificationEffects().stream())
 				.collect(Collectors.toList());
 
 			if (equippedUnderArmour != null){

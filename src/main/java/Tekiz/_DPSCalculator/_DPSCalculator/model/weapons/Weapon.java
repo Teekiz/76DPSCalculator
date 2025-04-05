@@ -1,12 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.WeaponRepository;
@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.experimental.SuperBuilder;
@@ -62,6 +63,10 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonProperty("legendaryEffects")
 	protected final LegendaryEffectsMap legendaryEffects;
 
+	/** An object to simplify modification lookups. */
+	@JsonProperty("modifications")
+	protected HashMap<ModType, ModificationSlot<WeaponMod>> modifications;
+
 	/**
 	 * Retrieves the {@link Double} value of the damage the weapon provides.
 	 * @param weaponLevel The level used to retrieve the provided damage value by corresponding {@code weaponDamageByLevel} key.
@@ -70,13 +75,6 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	@JsonIgnore
 	public abstract List<WeaponDamage> getBaseDamage(int weaponLevel);
 
-	/**
-	/**
-	 * A method that is used to make modifications to the weapon.
-	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
-	 */
-	@JsonIgnore
-	public abstract void setMod(WeaponMod weaponMod);
 	/**
 	 * A method to check if a weapons damage contains a certain damage type.
 	 * @param damageType The type of damage to check for.
@@ -96,6 +94,39 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 		return false;
 	}
 
+	/**
+	 * A method that is used to make modifications to the weapon.
+	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
+	 */
 	@JsonIgnore
-	public abstract List<Modifier> getAllModificationEffects();
+	public void setMod(WeaponMod weaponMod)
+	{
+		if (weaponMod == null){
+			return;
+		}
+
+		ModificationSlot<WeaponMod> slot = modifications.get(weaponMod.modType());
+		if (slot != null){
+			slot.changeCurrentModification(weaponMod);
+		}
+	}
+
+	/**
+	 * A method that gets the effects from the modifications and legendary effects.
+	 * @return A {@link List} of {@link Modifier}'s and {@link LegendaryEffect}'s.
+	 */
+	@JsonIgnore
+	public List<Modifier> getAllModificationEffects()
+	{
+		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
+
+		if (modifications != null){
+			modifiers.addAll(modifications.values().stream()
+				.map(ModificationSlot::getCurrentModification)
+				.filter(Objects::nonNull)
+				.toList());
+		}
+
+		return modifiers;
+	}
 }

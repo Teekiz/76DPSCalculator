@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ArmourFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
@@ -36,7 +37,7 @@ public class ArmourModLoaderServiceTest extends BaseTestClass
 		assertEquals(OverArmourPiece.class, armour.getClass());
 
 		OverArmourPiece overArmourPiece = (OverArmourPiece) armour;
-		assertNotNull(overArmourPiece.getMaterial().getCurrentModification());
-		assertEquals(ArmourPiece.TORSO, overArmourPiece.getMaterial().getCurrentModification().armourPiece());
+		assertNotNull(overArmourPiece.getModifications().get(ModType.MATERIAL).getCurrentModification());
+		assertEquals(ArmourPiece.TORSO, overArmourPiece.getModifications().get(ModType.MATERIAL).getCurrentModification().armourPiece());
 	}
 }

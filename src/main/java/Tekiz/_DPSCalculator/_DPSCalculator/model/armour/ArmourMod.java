@@ -30,7 +30,7 @@ import org.springframework.expression.Expression;
 @Document(collection = "armour_modification")
 @RepositoryObject(repository = ArmourModRepository.class)
 public record ArmourMod(@Id
-					   @JsonProperty("id") @JsonAlias("_id") String id,
+					   	@JsonProperty("id") @JsonAlias("_id") String id,
 						@JsonProperty("name") String name,
 						@JsonProperty("alias") String alias,
 						@JsonProperty("modType") ModType modType,

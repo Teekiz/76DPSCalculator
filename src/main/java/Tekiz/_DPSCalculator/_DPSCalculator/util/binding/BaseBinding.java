@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.util.binding;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
@@ -22,6 +23,7 @@ public class BaseBinding
 		Binding binding = new Binding();
 		binding.setVariable("WeaponType", WeaponType.class);
 		binding.setVariable("DamageType", DamageType.class);
+		binding.setVariable("ModType", ModType.class);
 		binding.setVariable("ModSubType", ModSubType.class);
 		binding.setVariable("Special", Specials.class);
 		binding.setVariable("ModifierType", ModifierTypes.class);

@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,9 +44,6 @@ public class RangedWeapon extends Weapon
 	@JsonProperty("accuracy")
 	int accuracy;
 
-	/** The receiver slot the weapon uses. */
-	@JsonProperty("receiver")
-	ModificationSlot<WeaponMod> receiver;
 
 	@JsonIgnore
 	public List<WeaponDamage> getBaseDamage(int weaponLevel)
@@ -53,41 +51,4 @@ public class RangedWeapon extends Weapon
 		return weaponDamageByLevel.get(weaponLevel);
 	}
 
-	/**
-	 * A method that is used to make modifications to the weapon.
-	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
-	 */
-	@JsonIgnore
-	public void setMod(WeaponMod weaponMod)
-	{
-		if (weaponMod == null){
-			return;
-		}
-
-		ModificationSlot<WeaponMod> slot = null;
-
-		switch (weaponMod.modType())
-		{
-			case  RECEIVER -> slot = receiver;
-			default -> {}
-		}
-
-		if (slot != null){
-			slot.changeCurrentModification(weaponMod);
-		}
-	}
-
-	@Override
-	public List<Modifier> getAllModificationEffects()
-	{
-		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
-		List<Optional<ModificationSlot<?>>> modifications = List.of(Optional.ofNullable(receiver));
-		modifiers.addAll(modifications.stream()
-			.flatMap(Optional::stream)
-			.map(ModificationSlot::getCurrentModification)
-			.filter(Objects::nonNull)
-			.toList());
-
-		return modifiers;
-	}
 }

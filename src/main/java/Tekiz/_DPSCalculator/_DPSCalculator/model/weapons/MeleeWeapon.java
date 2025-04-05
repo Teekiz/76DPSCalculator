@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.AttackSpeed;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,19 +33,5 @@ public class MeleeWeapon extends Weapon
 	public List<WeaponDamage> getBaseDamage(int weaponLevel)
 	{
 		return weaponDamageByLevel.get(weaponLevel);
-	}
-
-	/**
-	 * A method that is used to make modifications to the weapon.
-	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
-	 */
-	@JsonIgnore
-	public void setMod(WeaponMod weaponMod)
-	{}
-
-	@Override
-	public List<Modifier> getAllModificationEffects()
-	{
-		return new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
 	}
 }

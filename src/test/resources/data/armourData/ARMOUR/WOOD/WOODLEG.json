@@ -15,14 +15,16 @@
       "45": { "damageResistance": 22, "energyResistance": 6}
     },
     "legendaryEffects" : {},
-    "material" : {
-     "acceptedModType" : "MATERIAL",
-      "canSlotBeChanged" : true,
-      "availableInSlot" : ["BOILEDLEATHERCHEST"]
-    },
-    "miscellaneous" : {
-      "acceptedModType" : "MISCELLANEOUS",
-      "canSlotBeChanged" : true,
-      "availableInSlot" : ["CUSHIONED"]
+    "modifications" : {
+      "MATERIAL" : {
+        "acceptedModType" : "MATERIAL",
+        "canSlotBeChanged" : true,
+        "availableInSlot" : ["BOILEDLEATHERCHEST"]
+      },
+      "MISCELLANEOUS" : {
+        "acceptedModType" : "MISCELLANEOUS",
+        "canSlotBeChanged" : true,
+        "availableInSlot" : ["CUSHIONED"]
+      }
     }
 }

@@ -119,7 +119,7 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.modifyArmour(CUSHIONED, ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
-		assertEquals("Cushioned", piece.getMiscellaneous().getCurrentModification().name());
+		assertEquals("Cushioned", piece.getModifications().get(ModType.MISCELLANEOUS).getCurrentModification().name());
 	}
 
 	@Test
@@ -140,11 +140,11 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.modifyArmour("NOTAREALMOD", ArmourType.ARMOUR, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
-		assertNull(piece.getMiscellaneous().getCurrentModification());
+		assertNull(piece.getModifications().get(ModType.MISCELLANEOUS).getCurrentModification());
 
 		armourManager.modifyArmour(CUSHIONED, ArmourType.ARMOUR, ArmourSlot.LEFT_LEG, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
-		assertNull(piece.getMiscellaneous().getCurrentModification());
+		assertNull(piece.getModifications().get(ModType.MISCELLANEOUS).getCurrentModification());
 	}
 
 	@Test

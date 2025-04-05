@@ -6,10 +6,15 @@ import lombok.Getter;
 public enum ModType
 {
 	//RANGED WEAPONS
-	RECEIVER,
+	RECEIVER("Receiver"),
 
 	//ARMOUR
-	MATERIAL,
-	MISCELLANEOUS;
+	MATERIAL("Material"),
+	MISCELLANEOUS("Miscellaneous");
+
+	final String name;
+	ModType(String name){
+		this.name = name;
+	}
 
 }

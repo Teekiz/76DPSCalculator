@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,17 +32,15 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 	{
 		JsonNode modificationNode = jsonParser.getCodec().readTree(jsonParser);
 
-		Class<?> objectClass = getClassFromString(jsonParser.getParsingContext().getCurrentName());
-		//if the name of the object cannot be determined by the name of the node, try the node higher
-		if (objectClass == null){
-			objectClass = getClassFromString(jsonParser.getParsingContext().getParent().getCurrentName());
-		}
-
 		if (modificationNode == null)
 		{
 			log.error("Cannot deserialize modification: node is null.");
 			return null;
-		} else if (objectClass == null){
+		}
+
+		Class<?> objectClass = getClassFromString(getTypeNode(jsonParser));
+
+		if (objectClass == null){
 			log.error("Cannot deserialize modification: class cannot be determined.");
 			return null;
 		}
@@ -92,10 +91,27 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 	 * @return The {@link Class} that matches {@code className}. Otherwise, returns null.
 	 */
 	private Class<?> getClassFromString(String className){
-		switch (className){
-			case "receiver" -> 							{return WeaponMod.class;}
-			case "material", "miscellaneous" -> 		{return ArmourMod.class;}
+
+		log.debug("Object class name: {}", className);
+		switch (className.toUpperCase()){
+			case "RECEIVER" -> 							{return WeaponMod.class;}
+			case "MATERIAL", "MISCELLANEOUS" -> 		{return ArmourMod.class;}
 			default -> 									{return null;}
 		}
+	}
+
+	/**
+	 * A method to determine the modification type.
+	 * @param jsonParser The {@link JsonParser} providing the JSON input as a string.
+	 * @return The type of object or an empty string if it cannot be found.
+	 */
+	private String getTypeNode(JsonParser jsonParser){
+
+		JsonStreamContext parentContext = jsonParser.getParsingContext().getParent();
+		if (parentContext == null){
+			return "";
+		}
+
+		return parentContext.getCurrentName();
 	}
 }
