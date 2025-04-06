@@ -73,7 +73,10 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	 * @return The {@code weaponDamageByLevel} corresponding damage value.
 	 */
 	@JsonIgnore
-	public abstract List<WeaponDamage> getBaseDamage(int weaponLevel);
+	public List<WeaponDamage> getBaseDamage(int weaponLevel)
+	{
+		return weaponDamageByLevel.get(weaponLevel);
+	}
 
 	/**
 	 * A method to check if a weapons damage contains a certain damage type.

@@ -1,17 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
-import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.SuperBuilder;
@@ -34,21 +26,23 @@ public class RangedWeapon extends Weapon
 	/** The range the weapon can operate at without losing damage. */
 	@JsonProperty("range")
 	int range;
-	/** How much damage is lost if the weapon is fired at a target outside optimal range. */
+	/** How much damage is lost if the weapon is fired at a target outside optimal range.*/
 	@JsonProperty("rangedPenalty")
 	int rangedPenalty;
-	/** How long it takes to before the weapon can be fired again after running out of ammunition. */
+	/** How long it takes to before the weapon can be fired again after running out of ammunition. If the weapon reloads using a magazine, use this. */
 	@JsonProperty("reloadTime")
 	double reloadTime;
+	/** If the weapon is reloaded using a single ammo (i.e. Assaultron Head), this will capture how long between each charge it will take.*/
+	@JsonProperty("reloadTimePerAmmo")
+	double reloadTimePerAmmo;
 	/** How accurate the weapon will be. */
 	@JsonProperty("accuracy")
 	int accuracy;
 
-
-	@JsonIgnore
-	public List<WeaponDamage> getBaseDamage(int weaponLevel)
-	{
-		return weaponDamageByLevel.get(weaponLevel);
-	}
-
+	/** How long it will take for the weapon to be fully charged. Drawn weapons can also use this. */
+	@JsonProperty("chargeTime")
+	int chargeTime;
+	/** How much damage the weapon loses before being full charged. */
+	@JsonProperty("chargePenalty")
+	int chargePenalty;
 }
