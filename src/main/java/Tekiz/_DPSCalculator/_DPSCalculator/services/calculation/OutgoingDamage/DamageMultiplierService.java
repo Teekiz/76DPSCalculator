@@ -40,7 +40,8 @@ public class DamageMultiplierService
 	{
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.reduce(outgoingDamage, (damage, bonus) -> damage * (bonus + 1));
 	}

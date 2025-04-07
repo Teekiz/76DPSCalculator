@@ -31,8 +31,9 @@ public class BonusDamageService
 	{
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_ADDITIVE, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
-			.sum() + 1.0;
+			.sum() + 1.00;
 	}
 }

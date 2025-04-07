@@ -138,10 +138,11 @@ public class RangedDamageCalculator
 		double fireRate = weapon.getFireRate();
 
 		fireRate = modifierAggregationService.filterEffects(loadout, ModifierTypes.FIRE_RATE, dpsDetails)
-				.stream()
-				.filter(Objects::nonNull)
-				.mapToDouble(Number::doubleValue)
-				.sum() + fireRate;
+			.stream()
+			.filter(value -> value instanceof Integer)
+			.map(value -> (Integer) value)
+			.mapToDouble(Number::intValue)
+			.sum()+ fireRate;
 
 		return fireRate / 10;
 	}

@@ -64,7 +64,8 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			else if (modificationNode.isObject())
 			{
 				//needs to be retrieved from a database
-				if (!modificationNode.get("collectionName").isNull()){
+				JsonNode collection = modificationNode.get("collectionName");
+				if (collection != null && !collection.isNull()){
 					String id = modificationNode.get("id").asText();
 					return (Modification) loaderService.loadData(id, objectClass, null);
 				} else {

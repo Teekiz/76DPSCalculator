@@ -36,7 +36,8 @@ public class MinorStatCalculationService
 	{
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.HEALTH, null)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.sum();
 	}
@@ -49,7 +50,8 @@ public class MinorStatCalculationService
 	public int calculateActionPointBonuses(Loadout loadout){
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.MAX_AP, null)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Integer)
+			.map(value -> (Integer) value)
 			.mapToInt(Number::intValue)
 			.sum();
 	}

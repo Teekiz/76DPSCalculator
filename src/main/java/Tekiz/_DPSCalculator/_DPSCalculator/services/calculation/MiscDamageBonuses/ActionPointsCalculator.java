@@ -3,13 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonus
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +48,8 @@ public class ActionPointsCalculator
 		List<Double> apBonuses = new ArrayList<>(modifierAggregationService
 			.filterEffects(loadout, ModifierTypes.AP_COST, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
-			.map(Number::doubleValue)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.toList());
 
 		//results in a max AP reduction of 90% or the bonuses, which ever is higher

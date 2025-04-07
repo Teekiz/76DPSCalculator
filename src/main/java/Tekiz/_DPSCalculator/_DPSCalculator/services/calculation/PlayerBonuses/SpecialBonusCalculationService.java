@@ -48,7 +48,8 @@ public class SpecialBonusCalculationService
 
 		return modifierAggregationService.filterEffects(loadout, modifierType, null)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Integer)
+			.map(value -> (Integer) value)
 			.mapToInt(Number::intValue)
 			.sum();
 	}

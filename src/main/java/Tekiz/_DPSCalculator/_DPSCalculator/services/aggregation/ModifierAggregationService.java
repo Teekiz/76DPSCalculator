@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,32 +143,38 @@ public class ModifierAggregationService
 	 * A method that filters out and returns all {@link ModifierTypes} of a given value.
 	 * @param loadout The {@link Loadout} that the {@link ModifierTypes} will be filtered from.
 	 * @param modifierTypes The {@link ModifierTypes} that be retrieved.
-	 * @return A {@link List} of {@link Number} that have been filtered from {@code modifiers}.
+	 * @return A {@link List} of {@link Number} or {@link Objects} that have been filtered from {@code modifiers}.
 	 */
-	public List<Number> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
+	@SuppressWarnings("unchecked")
+	public<T> List<T> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
 		//gets all the modifiers from the provided loadout.
 		List<Modifier> modifiers = getAllModifiers(loadout);
 
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
-		List<Number> effects = new ArrayList<>();
+		List<T> effects = new ArrayList<>();
 		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);
 
 		for (Modifier modifier : modifiers)
 		{
-			Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
-			if (effectsMap != null)
-			{
-				effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
-					effects.add(value.getValue());
+			if (Number.class.isAssignableFrom(modifierTypes.getValueType())){
+				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
 
-					if (dpsDetails != null){
-						dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.name(), key, value));
-					}
+				if (effectsMap != null)
+				{
+					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
+						effects.add((T) value.getValue());
 
-					return value;
-				});
+						if (dpsDetails != null){
+							dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.name(), key, value));
+						}
+
+						return value;
+					});
+				}
 			}
+
+
 		}
 		return effects;
 	}
