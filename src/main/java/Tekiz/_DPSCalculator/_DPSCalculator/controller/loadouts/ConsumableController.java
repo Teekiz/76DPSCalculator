@@ -1,7 +1,8 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
@@ -49,16 +50,12 @@ public class ConsumableController
 	public ResponseEntity<List<ConsumableDTO>> getConsumables(@RequestParam int loadoutID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		if (loadout.getPerks() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.EMPTY_LIST);
-		}
 		return ResponseEntity.ok(consumableMapper.convertAllToDTO(loadout.getConsumables()));
 	}
 
 	@Operation(summary = "Add a consumable to a loadout.", description = "Adds a consumable to the provided loadoutID using the consumable ID")
 	@PostMapping("/addConsumable")
-	public ResponseEntity<String> addConsumable(@RequestParam int loadoutID, @RequestParam String consumableID) throws IOException
+	public ResponseEntity<String> addConsumable(@RequestParam int loadoutID, @RequestParam String consumableID) throws IOException, ResourceNotFoundException
 	{
 		log.debug("Add consumable called for consumable: {}.", consumableID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);

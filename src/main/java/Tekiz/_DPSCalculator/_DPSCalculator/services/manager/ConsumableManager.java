@@ -2,15 +2,14 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +43,13 @@ public class ConsumableManager
 		this.modifierConditionLogic = modifierConditionLogic;
 	}
 	@SaveLoadout
-	public void addConsumable(String consumableID, Loadout loadout) throws IOException
+	public void addConsumable(String consumableID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Consumable consumable = dataLoaderService.loadData(consumableID, Consumable.class, null);
 
 		if (consumable == null){
 			log.error("Consumable loading failed for: {}", consumableID);
-			return;
+			throw new ResourceNotFoundException("Consumable not found. ID: " + consumableID  + ".");
 		}
 
 		log.debug("Adding {} to loadout {}.", consumable.name(), loadout.getLoadoutID());

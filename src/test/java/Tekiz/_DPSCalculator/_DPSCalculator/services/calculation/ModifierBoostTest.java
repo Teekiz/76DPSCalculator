@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
@@ -51,7 +52,7 @@ public class ModifierBoostTest extends BaseTestClass
 	}
 
 	@Test
-	public void checkSourceTypes() throws IOException
+	public void checkSourceTypes() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - checkSourceTypes in ModifierBoostTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -73,7 +74,7 @@ public class ModifierBoostTest extends BaseTestClass
 	}
 
 	@Test
-	public void testModifierBoostMutations() throws IOException
+	public void testModifierBoostMutations() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testModifierBoostMutations in ModifierBoostTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);

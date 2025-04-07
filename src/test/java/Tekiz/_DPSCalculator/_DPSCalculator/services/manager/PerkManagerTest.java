@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
@@ -38,7 +39,7 @@ public class PerkManagerTest extends BaseTestClass
 	}
 
 	@Test
-	void testCanPerkBeAddedDirectly() throws IOException
+	void testCanPerkBeAddedDirectly() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testCanPerkBeAddedDirectly in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -71,7 +72,7 @@ public class PerkManagerTest extends BaseTestClass
 	}
 
 	@Test
-	void testCanPerkBeAdded() throws IOException {
+	void testCanPerkBeAdded() throws IOException, ResourceNotFoundException {
 		log.debug("{}Running test - testCanPerkBeAdded in PerkManagerTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
 		perkManager.addPerk(TENDERIZER, loadout);//TENDERIZER

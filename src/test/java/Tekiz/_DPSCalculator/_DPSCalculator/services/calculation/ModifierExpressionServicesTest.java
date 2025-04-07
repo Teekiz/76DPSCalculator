@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PlayerManager;
@@ -37,7 +38,7 @@ public class ModifierExpressionServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testMutationEffect() throws IOException
+	public void testMutationEffect() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testMutationEffect in ModifierExpressionServiceTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);

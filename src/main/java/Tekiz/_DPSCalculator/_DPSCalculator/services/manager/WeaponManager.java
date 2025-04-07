@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
@@ -46,15 +46,16 @@ public class WeaponManager
 	 *
 	 * @param weaponID The name of the weapon to load.
 	 * @throws IOException If the weapon cannot be loaded.
+	 * @throws ResourceNotFoundException If the weapon cannot be found.
 	 */
 	@SaveLoadout
-	public synchronized void setWeapon(String weaponID, Loadout loadout) throws IOException
+	public synchronized void setWeapon(String weaponID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Weapon weapon = dataLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
 
 		if (weapon == null){
 			log.error("Weapon loading failed for: {}.", weaponID);
-			return;
+			throw new ResourceNotFoundException("Weapon not found while setting weapon. Weapon ID: " + weaponID  + ".");
 		}
 
 		loadout.setWeapon(weapon);
@@ -68,15 +69,21 @@ public class WeaponManager
 	 *
 	 * @param modID The name of the mod to apply.
 	 * @throws IOException If the mod cannot be loaded.
+	 * @throws ResourceNotFoundException If the weapon is not set or the mod cannot be found.
 	 */
 	@SaveLoadout
-	public synchronized void modifyWeapon(String modID, Loadout loadout) throws IOException
+	public synchronized void modifyWeapon(String modID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Weapon weapon = loadout.getWeapon();
 		WeaponMod weaponMod = dataLoaderService.loadData(modID, WeaponMod.class, null);
 
-		if (weaponMod == null){
-			return;
+		if (weapon == null || weaponMod == null){
+			if (weapon == null){
+				log.error("Weapon not found during modification.");
+			} else {
+				log.error("Weapon mod loading failed for: {}.", modID);
+			}
+			throw new ResourceNotFoundException("Weapon or mod not found during weapon modification. Modification ID: " + modID + ".");
 		}
 
 		weapon.setMod(weaponMod);

@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.ConsumableController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.ConsumableController;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.ConsumableDTO;

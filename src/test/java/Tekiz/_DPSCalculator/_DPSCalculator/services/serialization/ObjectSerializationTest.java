@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
 import Tekiz._DPSCalculator._DPSCalculator.model.environment.Environment;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
@@ -217,7 +218,7 @@ public class ObjectSerializationTest extends BaseTestClass
 	}
 
 	@Test
-	public void serializeAndDeserializeLoadoutWithHashMaps() throws IOException
+	public void serializeAndDeserializeLoadoutWithHashMaps() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - serializeAndDeserializeLoadoutWithHashMaps in ObjectSerializationTest.", System.lineSeparator());
 		Loadout loadout = loadoutFactory.createNewLoadout(1);

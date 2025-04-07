@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
@@ -40,7 +41,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void reloadCalculationTest_WithStandardReload() throws IOException
+	public void reloadCalculationTest_WithStandardReload() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
@@ -70,7 +71,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void reloadCalculationTest_WithDoTDamage() throws IOException
+	public void reloadCalculationTest_WithDoTDamage() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
@@ -135,7 +136,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void reloadCalculationTest_WithReloadAsZero() throws IOException
+	public void reloadCalculationTest_WithReloadAsZero() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
@@ -177,7 +178,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void reloadCalculationTest_WithFireRateAsZero() throws IOException
+	public void reloadCalculationTest_WithFireRateAsZero() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
@@ -219,7 +220,7 @@ public class ReloadCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void reloadCalculationTest_WithMeleeWeapon() throws IOException
+	public void reloadCalculationTest_WithMeleeWeapon() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.
@@ -244,7 +245,7 @@ public class ReloadCalculationTest extends BaseTestClass
 
 	//using the calculator
 	@Test
-	public void reloadCalculationTest_WithCalculator() throws IOException
+	public void reloadCalculationTest_WithCalculator() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		//setting weapon type to 10MM Pistol.

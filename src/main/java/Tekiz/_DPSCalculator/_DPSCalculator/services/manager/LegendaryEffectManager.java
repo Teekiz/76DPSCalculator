@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -27,13 +28,19 @@ public class LegendaryEffectManager
 	}
 
 	@SaveLoadout
-	public void addLegendaryEffect(String legendaryEffectID, LegendaryEffectObject legendaryEffectObject, Loadout loadout) throws IOException
+	public void addLegendaryEffect(String legendaryEffectID, LegendaryEffectObject legendaryEffectObject, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		LegendaryEffect legendaryEffect = dataLoaderService.loadData(legendaryEffectID, LegendaryEffect.class, null);
 
-		if (legendaryEffect == null || legendaryEffectObject == null)
-		{
-			return;
+		if (legendaryEffect == null || legendaryEffectObject == null||legendaryEffectObject.getLegendaryEffects() == null){
+			if (legendaryEffect == null){
+				log.error("Legendary effect loading failed for: {}", legendaryEffectID);
+			} else if (legendaryEffectObject == null) {
+				log.error("Object to add legendary effect not found.");
+			} else {
+				log.error("Object does not have legendary effect slot.");
+			}
+			throw new ResourceNotFoundException("Cannot add effect to object. Effect ID: " + legendaryEffectID + ".");
 		}
 
 		legendaryEffectObject.getLegendaryEffects().addLegendaryEffect(legendaryEffect);

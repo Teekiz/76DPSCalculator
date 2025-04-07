@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
@@ -39,17 +39,12 @@ public class LoadoutController
 	{
 		log.debug("/getLoadout has been called.");
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		if (loadout == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
-
 		return ResponseEntity.ok(loadoutMapper.convertLoadoutToLoadoutDTO(loadout));
 	}
 
 	@Operation(summary = "Gets all loadouts.", description = "Retrieves all loadout based on the session ID")
 	@GetMapping("/getLoadouts")
-	public ResponseEntity<List<LoadoutDTO>> getLoadouts() throws IOException
+	public ResponseEntity<List<LoadoutDTO>> getLoadouts()
 	{
 		log.debug("/getLoadouts called.");
 		return ResponseEntity.ok(loadoutMapper.covertAllLoadoutsToDTOs(loadoutManager.getLoadouts()));

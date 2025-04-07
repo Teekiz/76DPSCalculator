@@ -1,15 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
-import Tekiz._DPSCalculator._DPSCalculator.services.logic.ModifierConditionLogic;
 import java.io.IOException;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +36,13 @@ public class MutationManager
 	}
 
 	@SaveLoadout
-	public void addMutation(String mutationID, Loadout loadout) throws IOException
+	public void addMutation(String mutationID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Mutation mutation = dataLoaderService.loadData(mutationID, Mutation.class, null);
 
 		if (mutation == null){
 			log.error("Mutation loading failed for: {}", mutationID);
-			return;
+			throw new ResourceNotFoundException("Mutation not found. ID: " + mutationID  + ".");
 		}
 
 		loadout.getMutations().add(mutation);

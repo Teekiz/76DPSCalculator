@@ -1,5 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
@@ -47,17 +48,13 @@ public class PerkController
 	public ResponseEntity<List<PerkDTO>> getPerks(@RequestParam int loadoutID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		if (loadout.getPerks() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.EMPTY_LIST);
-		}
 		return ResponseEntity.ok(perkMapper.convertAllToDTO(loadout.getPerks()));
 	}
 
 	//todo - handle exceptions and if perk cannot be found
 	@Operation(summary = "Add a perk to a loadout.", description = "Adds a perk to the provided loadoutID using the perk ID")
 	@PostMapping("/addPerk")
-	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
+	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException, ResourceNotFoundException
 	{
 		log.debug("Add perk called for perk: {}.", perkID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);

@@ -2,8 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage.BonusDamageService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.SneakBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
@@ -63,7 +63,7 @@ public class SneakCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSneak_WithRangedWeapon_WithRangedPerks() throws IOException
+	public void testSneak_WithRangedWeapon_WithRangedPerks() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
@@ -77,7 +77,7 @@ public class SneakCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSneak_WithMeleeWeapon_WithMeleePerks() throws IOException
+	public void testSneak_WithMeleeWeapon_WithMeleePerks() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
@@ -91,7 +91,7 @@ public class SneakCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSneak_WithBothPerks() throws IOException
+	public void testSneak_WithBothPerks() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
@@ -110,7 +110,7 @@ public class SneakCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSneak_WithNoPerks() throws IOException
+	public void testSneak_WithNoPerks() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		DPSDetails dpsDetails = new DPSDetails(1);
@@ -122,7 +122,7 @@ public class SneakCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSneakFromBonusCalculator() throws IOException
+	public void testSneakFromBonusCalculator() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		loadout.getPlayer().setSneaking(true);

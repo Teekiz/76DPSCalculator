@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.CriticalDamageBonusCalculator;
@@ -57,7 +58,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testCriticalDamage_WithRangedWeapon_NoModifiers() throws IOException
+	public void testCriticalDamage_WithRangedWeapon_NoModifiers() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -81,7 +82,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testCriticalDamage_WitMeleeWeapon_NoModifiers() throws IOException
+	public void testCriticalDamage_WitMeleeWeapon_NoModifiers() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);
@@ -105,7 +106,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testCriticalDamage_WitNullWeapon_NoModifiers() throws IOException
+	public void testCriticalDamage_WitNullWeapon_NoModifiers() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		loadout.getPlayer().getSpecials().setSpecial(Specials.LUCK, 10);
@@ -118,7 +119,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testCriticalDamage_WithRangedWeapon_WithModifiers() throws IOException
+	public void testCriticalDamage_WithRangedWeapon_WithModifiers() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -146,7 +147,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testCriticalDamage_WithRangedWeapon_WithModifiedLuck() throws IOException
+	public void testCriticalDamage_WithRangedWeapon_WithModifiedLuck() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);

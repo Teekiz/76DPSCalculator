@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import java.io.IOException;
@@ -22,12 +23,13 @@ public class EnemyManager
 	}
 
 	@SaveLoadout
-	public void changeEnemy(String enemyID, Loadout loadout) throws IOException
+	public void changeEnemy(String enemyID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Enemy enemy = dataLoaderService.loadData(enemyID, Enemy.class, null);
 
 		if (enemy == null) {
-			return;
+			log.error("Enemy loading failed for: {}", enemyID);
+			throw new ResourceNotFoundException("Enemy not found. ID: " + enemyID  + ".");
 		}
 
 		log.debug("Changing enemy to {} in loadout {}.", enemy.getName(), loadout.getLoadoutID());

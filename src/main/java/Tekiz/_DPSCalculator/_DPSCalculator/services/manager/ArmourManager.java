@@ -5,7 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ArmourFactory;
@@ -40,12 +40,13 @@ public class ArmourManager
 	 * @throws IOException If the armour cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void addArmour(String armourID, ArmourSlot armourSlot, Loadout loadout) throws IOException
+	public synchronized void addArmour(String armourID, ArmourSlot armourSlot, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Armour armour = dataLoaderService.loadData(armourID, Armour.class, armourFactory);
 
 		if (armour == null){
-			return;
+			log.error("Armour loading failed for: {}", armourID);
+			throw new ResourceNotFoundException("Armour not found while adding armour. Armour ID: " + armourID  + ".");
 		}
 
 		armour.setArmourSlot(armourSlot);
@@ -81,13 +82,18 @@ public class ArmourManager
 	 * @throws IOException If the mod cannot be loaded.
 	 */
 	@SaveLoadout
-	public synchronized void modifyArmour(String modID, ArmourType armourType, ArmourSlot armourSlot, Loadout loadout) throws IOException
+	public synchronized void modifyArmour(String modID, ArmourType armourType, ArmourSlot armourSlot, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
 		ArmourMod armourMod = dataLoaderService.loadData(modID, ArmourMod.class, null);
 
-		if (armour == null){
-			return;
+		if (armour == null || armourMod == null){
+			if (armour == null){
+				log.error("Armour not found during modification.");
+			} else {
+				log.error("Armour mod loading failed for: {}.", modID);
+			}
+			throw new ResourceNotFoundException("Armour or mod not found during armour modification. Modification ID: " + modID + ". Armour piece: " + armourType + " for " + armourSlot + ".");
 		}
 
 		armour.setMod(armourMod);
@@ -95,30 +101,5 @@ public class ArmourManager
 		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(this, loadout,"Armour has been updated.");
 		log.debug("ArmourChangedEvent has been created. Armour {} has been modified.", armour.getName());
 		applicationEventPublisher.publishEvent(armourChangedEvent);
-	}
-
-	/**
-	 * Modifies the current armour in the slot by applying a specified modification (mod).
-	 * @param effectID The ID of the legendary effect to be applied.
-	 * @param armourType The type of armour being modified.
-	 * @param armourSlot The slot where the armour will be applied to.
-	 * @param loadout The loadout to be modified.
-	 * @throws IOException If the mod cannot be loaded.
-	 */
-	@SaveLoadout
-	public synchronized void changeArmourLegendary(String effectID, ArmourType armourType, ArmourSlot armourSlot, Loadout loadout) throws IOException
-	{
-		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
-		LegendaryEffect legendaryEffect = dataLoaderService.loadData(effectID, LegendaryEffect.class, null);
-
-		if (armour == null || armour.getLegendaryEffects() == null){
-			return;
-		}
-
-		armour.getLegendaryEffects().addLegendaryEffect(legendaryEffect);
-		ArmourChangedEvent armourChangedEvent = new ArmourChangedEvent(armour, loadout,"Armour has been updated.");
-		log.debug("ArmourChangedEvent has been created. Armour {} has been modified. Added new legendary effect: {}.", armour.getName(), effectID);
-		applicationEventPublisher.publishEvent(armourChangedEvent);
-
 	}
 }

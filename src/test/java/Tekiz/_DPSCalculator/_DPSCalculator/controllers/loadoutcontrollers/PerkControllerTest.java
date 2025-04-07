@@ -1,13 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.PerkController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.PerkController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkRank;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
@@ -15,7 +14,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.mappers.PerkMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 public class LegendaryEffectsManagerTest extends BaseTestClass
@@ -37,7 +36,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon() throws IOException
+	public void addingLegendaryEffect_ToWeapon() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -48,7 +47,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon_WithImmutableSlot() throws IOException
+	public void addingLegendaryEffect_ToWeapon_WithImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -66,7 +65,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithImmutableSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -84,7 +83,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon() throws IOException
+	public void removingLegendaryEffect_FromWeapon() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -100,7 +99,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon_WithNullSlot() throws IOException
+	public void addingLegendaryEffect_ToWeapon_WithNullSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -118,7 +117,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon_WithNullSlot_ImmutableSlot() throws IOException
+	public void addingLegendaryEffect_ToWeapon_WithNullSlot_ImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -136,7 +135,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_ObjectDoNotMatch() throws IOException
+	public void removingLegendaryEffect_FromWeapon_ObjectDoNotMatch() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -154,7 +153,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithNullSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithNullSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -171,7 +170,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithNullSlot_ImmutableSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithNullSlot_ImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 

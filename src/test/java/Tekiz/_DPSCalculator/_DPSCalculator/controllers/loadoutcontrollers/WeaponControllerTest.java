@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.WeaponController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.WeaponController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
@@ -15,8 +15,6 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -35,6 +33,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -119,7 +118,7 @@ public class WeaponControllerTest
 				MockMvcRequestBuilders.get(urlString + "/getWeapon")
 					.param("loadoutID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isNotFound())
+			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
 		assertThat(response.getContentAsString().isEmpty());
@@ -143,6 +142,30 @@ public class WeaponControllerTest
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().string("Weapon has been updated."))
+			.andReturn().getResponse();
+
+		verify(loadoutManager, times(1)).getLoadout(1);
+		verify(weaponManager, times(1)).setWeapon("1", loadout);
+	}
+
+	@Test
+	public void setWeapon_WithInvalidWeaponID() throws Exception
+	{
+		log.debug("{}Running test - setWeapon_WithInvalidWeaponID in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
+
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		doThrow(new ResourceNotFoundException("Weapon not found while setting weapon. Weapon ID: 1.")).when(weaponManager).setWeapon("1", loadout);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.post(urlString + "/setWeapon")
+					.param("loadoutID", "1")
+					.param("weaponID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNotFound())
+			.andExpect(content().string("Weapon not found while setting weapon. Weapon ID: 1."))
 			.andReturn().getResponse();
 
 		verify(loadoutManager, times(1)).getLoadout(1);
@@ -201,7 +224,7 @@ public class WeaponControllerTest
 				MockMvcRequestBuilders.get(urlString + "/getWeaponDetails")
 					.param("weaponID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isNotFound())
+			.andExpect(status().isOk())
 			.andReturn().getResponse();
 
 		assertThat(response.getContentAsString().isEmpty());

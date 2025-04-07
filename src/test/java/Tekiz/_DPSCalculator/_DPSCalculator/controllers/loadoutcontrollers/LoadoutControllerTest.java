@@ -1,20 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.LoadoutController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.LoadoutController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.LoadoutDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.PlayerDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.LoadoutMapper;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

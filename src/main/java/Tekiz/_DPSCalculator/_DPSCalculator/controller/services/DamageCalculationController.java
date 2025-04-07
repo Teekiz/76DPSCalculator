@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.servicecontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.services;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetailsDTO;

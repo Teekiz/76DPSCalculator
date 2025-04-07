@@ -1,10 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.events;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SpecialBonusCalculationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
@@ -62,7 +61,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 	}
 
 	@Test
-	public void testPerkWCE() throws IOException
+	public void testPerkWCE() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testPerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -86,7 +85,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 
 
 	@Test
-	public void testRemovePerkWCE() throws IOException
+	public void testRemovePerkWCE() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testRemovePerkWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -106,7 +105,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 
 
 	@Test
-	public void testConsumableWCE() throws IOException
+	public void testConsumableWCE() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -120,7 +119,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 	}
 
 	@Test
-	public void testRemoveConsumableWCE() throws IOException
+	public void testRemoveConsumableWCE() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testRemoveConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -134,7 +133,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 	}
 
 	@Test
-	public void testAddAndRemovePerkAndConsumableWCE() throws IOException
+	public void testAddAndRemovePerkAndConsumableWCE() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testAddAndRemovePerkAndConsumableWCE in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -152,7 +151,7 @@ public class WeaponChangedEventTest extends BaseTestClass
 	}
 
 	@Test
-	public void testConsumableWithAdditionalContext() throws IOException
+	public void testConsumableWithAdditionalContext() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testConsumableWithAdditionalContext in WeaponChangedEventTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);

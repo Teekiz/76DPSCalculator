@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.servicecontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.servicecontrollers.DamageCalculationController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.services.DamageCalculationController;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;

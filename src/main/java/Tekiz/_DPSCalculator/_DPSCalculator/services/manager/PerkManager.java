@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
 import Tekiz._DPSCalculator._DPSCalculator.aspect.SaveLoadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -68,14 +69,14 @@ public class PerkManager
 
 	//when a perk is added - it is automatically added to the effects.
 	@SaveLoadout
-	public void addPerk(String perkID, Loadout loadout) throws IOException
+	public void addPerk(String perkID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Perk perk = dataLoaderService.loadData(perkID, Perk.class, null);
 		//checks whether to ignore special point enforcement or if the player has the points available.
 
 		if (perk == null){
 			log.error("Perk loading failed for: {}", perkID);
-			return;
+			throw new ResourceNotFoundException("Perk not found. ID: " + perkID  + ".");
 		}
 
 		if (ignoreSpecialRestrictions || hasAvailableSpecialPoints(loadout.getPerks(),
@@ -93,7 +94,7 @@ public class PerkManager
 
 	//todo - consider changing from different perkNames (as the list doesn't match)
 	@SaveLoadout
-	public void removePerk(String perkID, Loadout loadout) throws IOException
+	public void removePerk(String perkID, Loadout loadout)
 	{
 		Perk perk = getPerkInLoadout(perkID, loadout);
 		if (perk != null)
@@ -109,9 +110,8 @@ public class PerkManager
 	 * @param loadout The loadout to remove the perks from.
 	 * @param special The special that the perks will be used from.
 	 * @param availablePoints The amount of points available to be used.
-	 * @throws IOException
 	 */
-	private void removeExcessPerksForSpecial(Loadout loadout, Specials special, int availablePoints) throws IOException
+	private void removeExcessPerksForSpecial(Loadout loadout, Specials special, int availablePoints)
 	{
 		List<Perk> perksUsed = loadout.getPerks().keySet().stream()
 			.filter(perk -> perk.special().equals(special))
@@ -202,7 +202,7 @@ public class PerkManager
 	 * @param event An event that is called when a change has been made to a {@link Loadout}'s player special stat.
 	 */
 	@EventListener
-	public void onSpecialChangedEvent(SpecialChangedEvent event) throws IOException
+	public void onSpecialChangedEvent(SpecialChangedEvent event)
 	{
 		int availablePoints = event.getAvailablePoints();
 		int pointsUsed = getPerkPointsUsed(event.getSpecial(), event.getLoadout().getPerks());
@@ -219,7 +219,7 @@ public class PerkManager
 	 * @param event An event that is called when a change has been made to a {@link Loadout}'s player special stat.
 	 */
 	@EventListener
-	public void onSpecialsChangedEvent(SpecialsChangedEvent event) throws IOException
+	public void onSpecialsChangedEvent(SpecialsChangedEvent event)
 	{
 		Loadout loadout = event.getLoadout();
 		Special specials = loadout.getPlayer().getSpecials();

@@ -12,6 +12,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -84,7 +85,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testWithBaseDamage() throws IOException
+	public void testWithBaseDamage() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testWithBaseDamage in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -107,7 +108,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testMultiplicativeDamage() throws IOException
+	public void testMultiplicativeDamage() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testMultiplicativeDamage in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -128,7 +129,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testDamageResistance() throws IOException
+	public void testDamageResistance() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testDamageResistance in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -156,7 +157,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testDamageResistance_WithPenetrationLegendaryEffect() throws IOException
+	public void testDamageResistance_WithPenetrationLegendaryEffect() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testDamageResistance_WithPenetrationLegendaryEffect in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -191,7 +192,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testDamageResistance_WithPreviousValues() throws IOException
+	public void testDamageResistance_WithPreviousValues() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testDamageResistance_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -216,7 +217,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testDamageResistance_ImmuneToDamageType() throws IOException
+	public void testDamageResistance_ImmuneToDamageType() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testDamageResistance_ImmuneToDamageType in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -243,7 +244,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testBodyPartMultiplier_WithPreviousValues() throws IOException
+	public void testBodyPartMultiplier_WithPreviousValues() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testBodyPartMultiplier_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -269,7 +270,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testVATSDamage_withDoTDamage_withSneakDamage() throws IOException
+	public void testVATSDamage_withDoTDamage_withSneakDamage() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testBodyPartMultiplier_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -335,7 +336,7 @@ public class CalculationServicesTest extends BaseTestClass
 	}
 
 	@Test
-	public void testVATSDamage_withMultipleReloads() throws IOException
+	public void testVATSDamage_withMultipleReloads() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testBodyPartMultiplier_WithPreviousValues in CalculationServicesTest.", System.lineSeparator());
 		Loadout loadout = loadoutManager.getLoadout(1);

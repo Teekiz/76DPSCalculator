@@ -1,5 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
@@ -51,15 +52,11 @@ public class WeaponController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		log.debug("Received request for /getWeapon for loadout ID {}. Found {}.", loadoutID, loadout.getWeapon());
-		if (loadout.getWeapon() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
 		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 	@Operation(summary = "Set the weapon in the loadout.", description = "Set the weapon based on the weapon ID in the loadout matching the ID.")
 	@PostMapping("/setWeapon")
-	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException
+	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		weaponManager.setWeapon(weaponID, loadout);
@@ -76,10 +73,6 @@ public class WeaponController
 	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponID) throws IOException
 	{
 		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
-		if (weapon == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
 		WeaponDetailsDTO weaponDetails = weaponMapper.convertToDetailsDTO(weapon);
 		log.debug("Request for weapon: {}. Returning: {}.", weaponID, weaponDetails);
 		return ResponseEntity.ok(weaponDetails);
