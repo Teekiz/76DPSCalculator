@@ -2,9 +2,9 @@ package Tekiz._DPSCalculator._DPSCalculator.services.creation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.Material;
+import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ArmourFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
@@ -26,18 +26,18 @@ public class ArmourModLoaderServiceTest extends BaseTestClass
 	public void testMaterialLoader() throws IOException
 	{
 		String materialMod = "BOILEDLEATHERCHEST";
-		Material material = dataLoaderService.loadDataByName(materialMod, Material.class, null);
-		assertNotNull(material);
-		assertEquals("Boiled leather", material.getName());
+		ArmourMod armourMod = dataLoaderService.loadDataByName(materialMod, ArmourMod.class, null);
+		assertNotNull(armourMod);
+		assertEquals("Boiled leather", armourMod.name());
 
 		String armourPiece = "WOODCHEST";
 		Armour armour = dataLoaderService.loadDataByName(armourPiece, Armour.class, armourFactory);
 		assertNotNull(armour);
-		armour.setMod(material);
+		armour.setMod(armourMod);
 		assertEquals(OverArmourPiece.class, armour.getClass());
 
 		OverArmourPiece overArmourPiece = (OverArmourPiece) armour;
-		assertNotNull(overArmourPiece.getArmourMaterial());
-		assertEquals(ArmourPiece.TORSO, overArmourPiece.getArmourMaterial().getArmourPiece());
+		assertNotNull(overArmourPiece.getModifications().get(ModType.MATERIAL).getCurrentModification());
+		assertEquals(ArmourPiece.TORSO, overArmourPiece.getModifications().get(ModType.MATERIAL).getCurrentModification().armourPiece());
 	}
 }

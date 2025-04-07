@@ -64,7 +64,8 @@ public class CriticalDamageBonusCalculator
 	private double getVATSCriticalBonus(Loadout loadout, double baseDamage, DPSDetails dpsDetails){
 		double criticalDamageBonus = modifierAggregationService.filterEffects(loadout, ModifierTypes.CRITICAL, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.sum();
 
@@ -87,13 +88,7 @@ public class CriticalDamageBonusCalculator
 			return 0;
 		}
 
-		double baseCriticalDamage = weapon.getCriticalBonus();
-
-		if (weapon instanceof RangedWeapon rangedWeapon && rangedWeapon.getReceiver() != null){
-			baseCriticalDamage += rangedWeapon.getReceiver().damageCriticalMultiplier();
-		}
-
-		return baseCriticalDamage;
+		return weapon.getCriticalBonus();
 	}
 
 	/*
@@ -117,8 +112,13 @@ public class CriticalDamageBonusCalculator
 	private int getShotsRequiredToRechargeCriticalMeter(Loadout loadout, DPSDetails dpsDetails)
 	{
 		//todo - implement % change to refresh recharge rate
-		double vatsCriticalConsumptionRatePerShot = modifierAggregationService.filterEffects(loadout, ModifierTypes.CRITICAL_CONSUMPTION, dpsDetails)
-			.stream().mapToInt(Number::intValue).findFirst().orElse(100);
+		double vatsCriticalConsumptionRatePerShot = modifierAggregationService
+			.filterEffects(loadout, ModifierTypes.CRITICAL_CONSUMPTION, dpsDetails)
+			.stream()
+			.filter(value -> value instanceof Integer)
+			.map(value -> (Integer) value)
+			.findFirst()
+			.orElse(100);
 
 		double baseRechargeRate = 6.5;
 		int luck = loadout.getPlayer().getSpecials().getSpecialValue(Specials.LUCK, true);

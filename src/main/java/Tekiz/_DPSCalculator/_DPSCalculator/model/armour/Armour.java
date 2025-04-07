@@ -1,19 +1,25 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.mods.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourRepository;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.NonFinal;
@@ -69,6 +75,10 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	@JsonProperty("legendaryEffects")
 	protected final LegendaryEffectsMap legendaryEffects;
 
+	/** An object to simplify modification lookups. */
+	@JsonProperty("modifications")
+	protected HashMap<ModType, ModificationSlot<ArmourMod>> modifications;
+
 	/**
 	 * A method that sets the armour slot if valid.
 	 * @param newArmourSlot The slot the armour will take up.
@@ -79,6 +89,39 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 		}
 	}
 
+	/**
+	 * A method that is used to make modifications to the armour.
+	 * @param armourMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
+	 */
 	@JsonIgnore
-	public abstract void setMod(ArmourMod armourMod);
+	public void setMod(ArmourMod armourMod)
+	{
+		if (armourMod == null){
+			return;
+		}
+
+		ModificationSlot<ArmourMod> slot = modifications.get(armourMod.modType());
+		if (slot != null){
+			slot.changeCurrentModification(armourMod);
+		}
+	}
+
+	/**
+	 * A method that gets the effects from the modifications and legendary effects.
+	 * @return A {@link List} of {@link Modifier}'s and {@link LegendaryEffect}'s.
+	 */
+	@JsonIgnore
+	public List<Modifier> getAllModificationEffects()
+	{
+		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
+
+		if (modifications != null){
+			modifiers.addAll(modifications.values().stream()
+				.map(ModificationSlot::getCurrentModification)
+				.filter(Objects::nonNull)
+				.toList());
+		}
+
+		return modifiers;
+	}
 }

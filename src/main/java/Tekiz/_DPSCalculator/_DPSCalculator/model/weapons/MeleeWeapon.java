@@ -21,10 +21,4 @@ public class MeleeWeapon extends Weapon
 	/** The speed that the weapon attacks at when the trigger is held. */
 	@JsonProperty("attackSpeed")
 	AttackSpeed attackSpeed;
-
-	@JsonIgnore
-	public List<WeaponDamage> getBaseDamage(int weaponLevel)
-	{
-		return weaponDamageByLevel.get(weaponLevel);
-	}
 }

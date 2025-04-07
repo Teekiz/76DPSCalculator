@@ -1,11 +1,8 @@
 {
     "name": "Default",
-    "receiverType": "AUTOMATIC",
-    "damageChange": 0.0,
-    "damageCriticalMultiplier": 0,
-    "fireRateChange": 0,
-    "accuracyChange": 0,
-    "apChange": 0,
-    "prime": false,
-    "ammoOverrideType": null
+    "alias" : "DEFAULT",
+    "modType": "RECEIVER",
+    "modSubType" : "AUTOMATIC",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {}
 }

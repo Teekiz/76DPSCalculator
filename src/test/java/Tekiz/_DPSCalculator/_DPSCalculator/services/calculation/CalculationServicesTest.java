@@ -91,7 +91,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//setting the conditions for the two base weapons
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 
 		perkManager.addPerk(TESTEVENT, loadout);//TESTEVENT
 		consumableManager.addConsumable(TESTEVENTTWO, loadout);//TESTEVENTTWO
@@ -115,7 +115,7 @@ public class CalculationServicesTest extends BaseTestClass
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 		perkManager.addPerk(TESTEVENT, loadout);//TESTEVENT
 		consumableManager.addConsumable(TESTEVENTTWO, loadout);//TESTEVENTTWO
 		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
@@ -198,7 +198,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//setting the conditions for the two base weapons
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 
 		perkManager.addPerk(TESTEVENT, loadout);//TESTEVENT
 		consumableManager.addConsumable(TESTEVENTTWO, loadout);//TESTEVENTTWO
@@ -250,7 +250,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//setting the conditions for the two base weapons
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 
 		perkManager.addPerk(TESTEVENT, loadout);//TESTEVENT
 		consumableManager.addConsumable(TESTEVENTTWO, loadout);//TESTEVENTTWO
@@ -276,7 +276,7 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//setting the conditions for the two base weapons
 		weaponManager.setWeapon(_10MMPISTOL, loadout);//10MMPISTOL
-		weaponManager.modifyWeapon(CALIBRATE, ModType.RECEIVER, loadout);//CALIBRATE
+		weaponManager.modifyWeapon(CALIBRATE, loadout);//CALIBRATE
 		loadout.getWeapon().getWeaponDamageByLevel().get(45).add(new WeaponDamage(DamageType.BLEED, 60, 3.0));
 
 		playerManager.setSpecial(loadout, Specials.AGILITY, 5);

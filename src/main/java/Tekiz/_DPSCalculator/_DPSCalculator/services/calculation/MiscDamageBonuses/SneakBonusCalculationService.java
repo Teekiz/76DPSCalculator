@@ -30,7 +30,8 @@ public class SneakBonusCalculationService
 	public double getSneakDamageBonus(Loadout loadout, DPSDetails dpsDetails){
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.SNEAK_DAMAGE, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.sum() + 1.00;
 	}

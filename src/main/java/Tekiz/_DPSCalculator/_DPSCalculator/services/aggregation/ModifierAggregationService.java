@@ -15,8 +15,10 @@ import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,13 +67,35 @@ public class ModifierAggregationService
 		modifiers.addAll(loadout.getConsumables().entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
 		loadout.getMutations().forEach(mutation -> modifiers.addAll(mutation.aggregateMutationEffects()));
 
-		modifiers.addAll(parseLegendaryConditions(loadout.getArmour().aggregateArmourEffects(), loadout));
-		if (loadout.getWeapon() != null && loadout.getWeapon().getLegendaryEffects() != null){
-			modifiers.addAll(parseLegendaryConditions(loadout.getWeapon().getLegendaryEffects().getAllEffects(), loadout));
+		//adds all the mod and legendary effects into the modifiers list.
+		if (loadout.getWeapon() != null){
+			modifiers.addAll(parseLegendaryConditions(loadout.getWeapon().getAllModificationEffects(), loadout));
 		}
+		modifiers.addAll(parseLegendaryConditions(loadout.getArmour().aggregateArmourEffects(), loadout));
 
 		applyAdditionalContext(modifiers, loadout);
 
+		return modifiers;
+	}
+
+	/**
+	 * A method used to check conditions of legendary effects before they are applied to the modifier map.
+	 * @param modifiers A {@link List} of {@link LegendaryEffect}'s that will have their conditions evaluated.
+	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
+	 * @return {@link List} with {@link Modifier} with modifiers which have had their conditions met.
+	 */
+	private List<Modifier> parseLegendaryConditions(List<Modifier> modifiers, Loadout loadout)
+	{
+		Iterator<Modifier> iterator = modifiers.iterator();
+		while (iterator.hasNext()) {
+			Modifier modifier = iterator.next();
+			if (modifier instanceof LegendaryEffect legendaryEffect) {
+				boolean condition = parsingService.evaluateCondition(null, legendaryEffect.condition(), loadout);
+				if (!condition) {
+					iterator.remove();
+				}
+			}
+		}
 		return modifiers;
 	}
 
@@ -116,55 +140,41 @@ public class ModifierAggregationService
 	}
 
 	/**
-	 * A method used to check conditions before they are applied to the modifier map.
-	 * @param legendaryEffects A {@link List} of {@link LegendaryEffect}'s that will have their conditions evaluated.
-	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
-	 * @return {@link List} with {@link Modifier} with modifiers which have had their conditions met.
-	 */
-	//todo - this seems like a short term fix that may require future changes.
-	private List<Modifier> parseLegendaryConditions(List<LegendaryEffect> legendaryEffects, Loadout loadout)
-	{
-		List<Modifier> legendaryEffectList = new ArrayList<>();
-
-		for (LegendaryEffect legendaryEffect : legendaryEffects){
-			boolean condition = parsingService.evaluateCondition(null, legendaryEffect.condition(), loadout);
-			if (condition){
-				legendaryEffectList.add(legendaryEffect);
-			}
-		}
-		return legendaryEffectList;
-	}
-
-	/**
 	 * A method that filters out and returns all {@link ModifierTypes} of a given value.
 	 * @param loadout The {@link Loadout} that the {@link ModifierTypes} will be filtered from.
 	 * @param modifierTypes The {@link ModifierTypes} that be retrieved.
-	 * @return A {@link List} of {@link Number} that have been filtered from {@code modifiers}.
+	 * @return A {@link List} of {@link Number} or {@link Objects} that have been filtered from {@code modifiers}.
 	 */
-	public List<Number> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
+	@SuppressWarnings("unchecked")
+	public<T> List<T> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
 	{
 		//gets all the modifiers from the provided loadout.
 		List<Modifier> modifiers = getAllModifiers(loadout);
 
 		//filters through all modifiers for specific bonus type. Does not add the bonus if the condition has not been met.
-		List<Number> effects = new ArrayList<>();
+		List<T> effects = new ArrayList<>();
 		HashMap<ModifierSource, Number> boosts = modifierBoostService.getModifierBoosts(modifiers);
 
 		for (Modifier modifier : modifiers)
 		{
-			Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
-			if (effectsMap != null)
-			{
-				effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
-					effects.add(value.getValue());
+			if (Number.class.isAssignableFrom(modifierTypes.getValueType())){
+				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
 
-					if (dpsDetails != null){
-						dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.name(), key, value));
-					}
+				if (effectsMap != null)
+				{
+					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
+						effects.add((T) value.getValue());
 
-					return value;
-				});
+						if (dpsDetails != null){
+							dpsDetails.getModifiersUsed().add(new ModifierDetails(modifier.name(), key, value));
+						}
+
+						return value;
+					});
+				}
 			}
+
+
 		}
 		return effects;
 	}

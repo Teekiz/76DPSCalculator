@@ -84,7 +84,8 @@ public class DamageResistanceCalculator
 	{
 		return modifierAggregationService.filterEffects(loadout, ModifierTypes.PENETRATION, dpsDetails)
 			.stream()
-			.filter(Objects::nonNull)
+			.filter(value -> value instanceof Double)
+			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.sum();
 	}
