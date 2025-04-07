@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.statusEffects.StatusEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import lombok.Getter;
 
@@ -46,6 +47,8 @@ public enum ModifierTypes
 	CHANGES_WEAPON_DAMAGE(WeaponDamage.class),
 	//This is used when an existing damage type is used, but it is added.
 	ADDS_WEAPON_DAMAGE(WeaponDamage.class),
+	//This is used when more details around the status effect applied are required.
+	APPLIES_STATUS_EFFECT(StatusEffect.class),
 	ERROR_TYPE(String.class);
 
 	private final Class<?> valueType;
