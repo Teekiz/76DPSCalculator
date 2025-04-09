@@ -2,6 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.WeaponController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
@@ -12,11 +14,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.ModifierMapper;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
@@ -62,8 +67,10 @@ public class WeaponControllerTest
 	MockMvc mockMvc;
 	@MockBean
 	WeaponManager weaponManager;
-	@MockBean
+	@SpyBean
 	WeaponMapper weaponMapper;
+	@SpyBean
+	ModifierMapper modifierMapper;
 	@MockBean
 	LoadoutManager loadoutManager;
 	@MockBean
@@ -511,5 +518,146 @@ public class WeaponControllerTest
 
 		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
 		assertNull(weapon.getModifications().get(ModType.RECEIVER).getCurrentModification());
+	}
+
+	@Test
+	public void getAvailableWeaponMods() throws Exception
+	{
+		log.debug("{}Running test - getAvailableWeaponMods  in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		Weapon weapon = mock(Weapon.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		given(loadout.getWeapon()).willReturn(weapon);
+
+		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
+		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("1").name("TEST1").build());
+		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("2").name("TEST2").build());
+		given(weaponMapper.convertToWeaponModNameDTO(any(List.class))).willReturn(weaponModNameDTOS);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
+					.param("loadoutID", "1")
+					.param("modType", "RECEIVER")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		String expectedJson = "[{\"id\" : \"1\", \"name\" : \"TEST1\"}," +
+			"{\"id\" : \"2\", \"name\" : \"TEST2\"}]";
+		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
+
+		verify(weaponManager, times(1)).getAvailableWeaponMods(any(Weapon.class), any(ModType.class));
+	}
+
+	@Test
+	public void getAvailableWeaponMods_withUnspecifiedType() throws Exception
+	{
+		log.debug("{}Running test - getAvailableWeaponMods_withUnspecifiedType  in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		Weapon weapon = mock(Weapon.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		given(loadout.getWeapon()).willReturn(weapon);
+
+		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
+		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("1").name("TEST1").build());
+		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("2").name("TEST2").build());
+		when(weaponMapper.convertToWeaponModNameDTO(any(List.class))).thenReturn(weaponModNameDTOS);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
+					.param("loadoutID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		String expectedJson = "[{\"id\" : \"1\", \"name\" : \"TEST1\"}," +
+			"{\"id\" : \"2\", \"name\" : \"TEST2\"}]";
+		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
+		verify(weaponManager, times(1)).getAvailableWeaponMods(weapon, null);
+	}
+
+	@Test
+	public void getAvailableWeaponMods_WithEmptyList() throws Exception
+	{
+		log.debug("{}Running test - getAvailableWeaponMods_WithEmptyList  in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		Weapon weapon = mock(Weapon.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		given(loadout.getWeapon()).willReturn(weapon);
+
+		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
+		given(weaponMapper.convertToWeaponModNameDTO(any(List.class))).willReturn(weaponModNameDTOS);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
+					.param("loadoutID", "1")
+					.param("modType", "RECEIVER")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		assertThat(response.getContentAsString().isEmpty());
+		verify(weaponManager, times(1)).getAvailableWeaponMods(any(Weapon.class), any(ModType.class));
+	}
+
+	@Test
+	public void getWeaponModDetails() throws Exception
+	{
+		log.debug("{}Running test - getWeaponModDetails in WeaponControllerTest.", System.lineSeparator());
+
+		HashMap<ModifierTypes, ModifierValue<?>> modifiers = new HashMap<>();
+		modifiers.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 0.2));
+		modifiers.put(ModifierTypes.CRITICAL_CONSUMPTION, new ModifierValue<>(ModifierTypes.CRITICAL_CONSUMPTION, 55));
+
+		WeaponMod weaponMod = new WeaponMod("1", "Test", "Test", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, modifiers);
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/getWeaponModDetails")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		String expectedJson = """
+			{
+			  "id": "1",
+			  "name": "Test",
+			  "modType": "RECEIVER",
+			  "modificationEffects": [
+			    {
+			      "type": "DAMAGE_ADDITIVE",
+			      "value": 0.2,
+			      "userDescription": "Bonus damage: +20%."
+			    },
+			    {
+			      "type": "CRITICAL_CONSUMPTION",
+			      "value": 55,
+			      "userDescription": "Critical consumption: -55%."
+			    }
+			  ]
+			}""";
+
+		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
+	}
+
+	@Test
+	public void getWeaponModDetails_InvalidModID() throws Exception
+	{
+		log.debug("{}Running test - getWeaponModDetails in WeaponControllerTest.", System.lineSeparator());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(null);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/getWeaponModDetails")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		assertThat(response.getContentAsString().isEmpty());
 	}
 }

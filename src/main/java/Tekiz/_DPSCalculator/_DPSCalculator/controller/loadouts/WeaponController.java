@@ -1,8 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
@@ -76,6 +80,21 @@ public class WeaponController
 		WeaponDetailsDTO weaponDetails = weaponMapper.convertToDetailsDTO(weapon);
 		log.debug("Request for weapon: {}. Returning: {}.", weaponID, weaponDetails);
 		return ResponseEntity.ok(weaponDetails);
+	}
+	@Operation(summary = "Gets all available weapon mods.", description = "Retrieves a list of all weapon mod names that are available.")
+	@GetMapping("/getAvailableWeaponMods")
+	public ResponseEntity<List<WeaponModNameDTO>> getAvailableWeaponMods(@RequestParam int loadoutID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
+	{
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		List<WeaponMod> weaponMods = weaponManager.getAvailableWeaponMods(loadout.getWeapon(), modType);
+		return ResponseEntity.ok(weaponMapper.convertToWeaponModNameDTO(weaponMods));
+	}
+	@Operation(summary = "Gets a weapon mods details.", description = "Retrieves a detailed list of information about a weapon mod.")
+	@GetMapping("/getWeaponModDetails")
+	public ResponseEntity<WeaponModDTO> getWeaponModDetails(@RequestParam String modID) throws IOException, ResourceNotFoundException
+	{
+		WeaponMod weaponMod = weaponLoaderService.loadData(modID, WeaponMod.class, null);
+		return ResponseEntity.ok(weaponMapper.convertToWeaponModDTO(weaponMod));
 	}
 	@Operation(summary = "Modifies the current weapon.", description = "Modifies the current loadouts weapon with the provided modification ID.")
 	@GetMapping("/modifyWeapon")

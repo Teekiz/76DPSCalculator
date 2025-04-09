@@ -1,10 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.AttackSpeed;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.SuperBuilder;
