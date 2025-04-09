@@ -1,11 +1,16 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.WeaponController;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
@@ -15,7 +20,9 @@ import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -31,7 +38,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -279,5 +290,226 @@ public class WeaponControllerTest
 
 		verify(weaponLoaderService, times(1)).loadAllData(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any());
 		verify(weaponMapper, times(1)).convertAllToNameDTO(anyList());
+	}
+
+	@Test
+	public void modifyWeapon_WithValidWeapon_WithValidModID() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_WithValidWeapon_WithValidModID in WeaponControllerTest.", System.lineSeparator());
+
+		HashMap<ModType, ModificationSlot<WeaponMod>> modSlot = new HashMap<>();
+		modSlot.put(ModType.RECEIVER, new ModificationSlot<>(null, ModType.RECEIVER, true, Set.of("TESTRECEIVER")));
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.modifications(modSlot)
+			.fireRate(10)
+			.build();
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		when(loadout.getWeapon()).thenReturn(weapon);
+
+		WeaponMod weaponMod = new WeaponMod("1", "TESTRECIVER", "TESTRECIVER", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, new HashMap<>());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		//this is because it's not technically an error handled by the user
+		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+	}
+
+	@Test
+	public void modifyWeapon_WithNullWeapon_WithValidModID() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_WithNullWeapon_WithValidModID in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+
+		WeaponMod weaponMod = new WeaponMod("1", "TESTRECIVER", "TESTRECIVER", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, new HashMap<>());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		doThrow(new ResourceNotFoundException("Weapon or mod not found during weapon modification. Modification ID: 1.")).when(weaponManager).modifyWeapon("1", loadout);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNotFound())
+			.andReturn().getResponse();
+
+		String expectedResponse = "Weapon or mod not found during weapon modification. Modification ID: 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+	}
+
+	@Test
+	public void modifyWeapon_WithValidWeapon_WithInvalidModID() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_WithValidWeapon_WithInvalidModID in WeaponControllerTest.", System.lineSeparator());
+
+		HashMap<ModType, ModificationSlot<WeaponMod>> modSlot = new HashMap<>();
+		modSlot.put(ModType.RECEIVER, new ModificationSlot<>(null, ModType.RECEIVER, true, Set.of("TESTRECEIVER")));
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.modifications(modSlot)
+			.fireRate(10)
+			.build();
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		when(loadout.getWeapon()).thenReturn(weapon);
+
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(null);
+		doThrow(new ResourceNotFoundException("Weapon or mod not found during weapon modification. Modification ID: 1.")).when(weaponManager).modifyWeapon("1", loadout);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNotFound())
+			.andReturn().getResponse();
+
+		String expectedResponse = "Weapon or mod not found during weapon modification. Modification ID: 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+	}
+
+	@Test
+	public void modifyWeapon_SlotCannotBeChanged() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_SlotCannotBeChanged in WeaponControllerTest.", System.lineSeparator());
+
+		HashMap<ModType, ModificationSlot<WeaponMod>> modSlot = new HashMap<>();
+		modSlot.put(ModType.RECEIVER, new ModificationSlot<>(null, ModType.RECEIVER, false, Set.of("TESTRECEIVER")));
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.modifications(modSlot)
+			.fireRate(10)
+			.build();
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		when(loadout.getWeapon()).thenReturn(weapon);
+
+		WeaponMod weaponMod = new WeaponMod("1", "TESTRECIVER", "TESTRECIVER", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, new HashMap<>());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+
+		//this is because it's not technically an error handled by the user
+		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+		assertNull(weapon.getModifications().get(ModType.RECEIVER).getCurrentModification());
+	}
+
+	@Test
+	public void modifyWeapon_ModSlotIsNull() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_SlotCannotBeChanged in WeaponControllerTest.", System.lineSeparator());
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.modifications(null)
+			.fireRate(10)
+			.build();
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		when(loadout.getWeapon()).thenReturn(weapon);
+
+		WeaponMod weaponMod = new WeaponMod("1", "TESTRECIVER", "TESTRECIVER", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, new HashMap<>());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+
+		//this is because it's not technically an error handled by the user
+		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+		assertNull(weapon.getModifications());
+	}
+
+	@Test
+	public void modifyWeapon_IncompatibleModType() throws Exception
+	{
+		log.debug("{}Running test - modifyWeapon_IncompatibleModType in WeaponControllerTest.", System.lineSeparator());
+
+		HashMap<ModType, ModificationSlot<WeaponMod>> modSlot = new HashMap<>();
+		modSlot.put(ModType.RECEIVER, new ModificationSlot<>(null, ModType.MATERIAL, true, Set.of("TESTRECEIVER")));
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.modifications(modSlot)
+			.fireRate(10)
+			.build();
+
+		Loadout loadout = mock(Loadout.class);
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		when(loadout.getWeapon()).thenReturn(weapon);
+
+		WeaponMod weaponMod = new WeaponMod("1", "TESTRECIVER", "TESTRECIVER", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
+			ModifierSource.WEAPON_MODIFICATION, null, new HashMap<>());
+		given(weaponLoaderService.loadData("1", WeaponMod.class, null)).willReturn(weaponMod);
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.get(urlString + "/modifyWeapon")
+					.param("loadoutID", "1")
+					.param("modID", "1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		//this is because it's not technically an error handled by the user
+		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
+		assertEquals(expectedResponse, response.getContentAsString());
+
+		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
+		assertNull(weapon.getModifications().get(ModType.RECEIVER).getCurrentModification());
 	}
 }

@@ -77,4 +77,13 @@ public class WeaponController
 		log.debug("Request for weapon: {}. Returning: {}.", weaponID, weaponDetails);
 		return ResponseEntity.ok(weaponDetails);
 	}
+	@Operation(summary = "Modifies the current weapon.", description = "Modifies the current loadouts weapon with the provided modification ID.")
+	@GetMapping("/modifyWeapon")
+	public ResponseEntity<String> modifyWeapon(@RequestParam int loadoutID, @RequestParam String modID) throws IOException, ResourceNotFoundException
+	{
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		weaponManager.modifyWeapon(modID, loadout);
+		log.debug("Request to modify weapon in loadout: {}. Modification ID: {}.", loadoutID, modID);
+		return ResponseEntity.ok("Modification " + modID + " has been applied to weapon in loadout " + loadoutID + ".");
+	}
 }
