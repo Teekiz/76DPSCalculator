@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonus
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -37,7 +38,7 @@ public class CriticalDamageBonusCalculator
 	 * @return The non-critical damage adjusted with the critical damage.
 	 */
 	public double addAverageCriticalDamagePerShot(Loadout loadout, double baseDamage, double bonusDamage, double nonCriticalDamage, WeaponDamage weaponDamage, DPSDetails dpsDetails){
-		if (!loadout.getPlayer().isUsingVats() || weaponDamage == null ||weaponDamage.overTime() > 0){
+		if (!loadout.getPlayer().getAttackType().equals(AttackType.VATS) || weaponDamage == null ||weaponDamage.overTime() > 0){
 			dpsDetails.getCriticalDamagePerShot().put(weaponDamage != null ? weaponDamage.damageType() : DamageType.UNKNOWN, 0.0);
 			return nonCriticalDamage;
 		}

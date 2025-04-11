@@ -9,6 +9,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -294,7 +295,7 @@ public class CalculationServicesTest extends BaseTestClass
 		consumableManager.addConsumable(COOKEDSOFTSHELLMEAT, loadout);
 
 		loadout.getPlayer().setSneaking(true);
-		loadout.getPlayer().setUsingVats(true);
+		loadout.getPlayer().setAttackType(AttackType.VATS);
 
 		//weapon damage = physical and bleed
 		//BASE AND ADDITIVE DAMAGE:
@@ -357,7 +358,7 @@ public class CalculationServicesTest extends BaseTestClass
 		perkManager.addPerk(TESTMODIFIER, loadout);
 		consumableManager.addConsumable(COOKEDSOFTSHELLMEAT, loadout);
 
-		loadout.getPlayer().setUsingVats(true);
+		loadout.getPlayer().setAttackType(AttackType.VATS);
 
 		//weapon damage = physical and bleed
 		//BASE AND ADDITIVE DAMAGE:

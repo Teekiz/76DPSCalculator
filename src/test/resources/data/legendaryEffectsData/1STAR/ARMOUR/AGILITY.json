@@ -1,0 +1,13 @@
+{
+    "name" : "Agility",
+    "description" : "+2 Agility",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "ARMOUR",
+        "POWER_ARMOUR"
+    ],
+    "starType" : "_2STAR",
+    "effects" : {
+      "SPECIAL_AGILITY" : 2
+    }
+}

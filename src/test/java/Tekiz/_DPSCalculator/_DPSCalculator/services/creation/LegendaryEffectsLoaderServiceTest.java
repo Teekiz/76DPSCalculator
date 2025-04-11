@@ -42,7 +42,10 @@ public class LegendaryEffectsLoaderServiceTest extends BaseTestClass
 	{
 		List<LegendaryEffect> LegendaryEffects = dataLoaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null);
 		assertNotNull(LegendaryEffects);
-		assertEquals("Unyielding", LegendaryEffects.get(1).name());
-		assertEquals(StarType._1STAR, LegendaryEffects.get(1).starType());
+		LegendaryEffect legendaryEffect = LegendaryEffects.stream().filter(entry -> entry.name().equalsIgnoreCase("Unyielding")).findFirst().orElse(null);
+
+		assertNotNull(legendaryEffect);
+		assertEquals("Unyielding", legendaryEffect.name());
+		assertEquals(StarType._1STAR, legendaryEffect.starType());
 	}
 }

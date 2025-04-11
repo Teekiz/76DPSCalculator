@@ -72,7 +72,7 @@ public class DamageCalculationService
 
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
 		for (WeaponDamage damage : weapon.getBaseDamage(45)){
-			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
+			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage, dpsDetails);
 
 			double bonusDamageMultiplier = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
 			double sneakBonusMultiplier = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails) : 0;

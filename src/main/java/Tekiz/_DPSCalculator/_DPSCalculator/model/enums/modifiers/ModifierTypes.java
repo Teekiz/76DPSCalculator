@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ModifierTypes
 {
+	DAMAGE_BASE(Double.class, "Base damage"),
 	DAMAGE_ADDITIVE(Double.class, "Bonus damage"),
 	DAMAGE_MULTIPLICATIVE(Double.class, "Damage multiplier"),
 	PENETRATION(Double.class, "Armour penetration."),

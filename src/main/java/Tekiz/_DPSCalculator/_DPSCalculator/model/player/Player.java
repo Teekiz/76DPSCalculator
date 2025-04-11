@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.player;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SpecialBonusCalculationService;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -32,14 +33,11 @@ public class Player implements Serializable
 	private int level;
 
 	@Setter
-	@JsonProperty("isAiming")
-	private boolean isAiming = false;
-	@Setter
 	@JsonProperty("isSneaking")
 	private boolean isSneaking = false;
 	@Setter
-	@JsonProperty("isUsingVATS")
-	private boolean isUsingVats = false;
+	@JsonProperty("attackType")
+	private AttackType attackType = AttackType.STANDARD;
 
 	/**
 	 * The constructor for a {@link Player} object.

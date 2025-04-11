@@ -118,7 +118,7 @@ public class SneakCalculationTest extends BaseTestClass
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
 
 		//this should result in a sneak bonus of 1x
-		assertEquals(1.0 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.0, sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
 	}
 
 	@Test

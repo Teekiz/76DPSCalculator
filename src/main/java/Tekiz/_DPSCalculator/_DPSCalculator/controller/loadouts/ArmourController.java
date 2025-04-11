@@ -44,7 +44,7 @@ public class ArmourController
 	@Autowired
 	public ArmourController(LoadoutManager loadoutManager, ArmourManager armourManager, ArmourMapper armourMapper, DataLoaderService armourLoaderService, ArmourFactory armourFactory)
 	{
-		log.info("Weapon controller created.");
+		log.info("Armour controller created.");
 		this.armourFactory = armourFactory;
 		this.loadoutManager = loadoutManager;
 		this.armourManager = armourManager;

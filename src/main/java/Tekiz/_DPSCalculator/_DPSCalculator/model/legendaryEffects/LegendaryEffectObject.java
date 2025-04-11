@@ -5,5 +5,6 @@ package Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects;
  */
 public interface LegendaryEffectObject
 {
+	String getName();
 	LegendaryEffectsMap getLegendaryEffects();
 }

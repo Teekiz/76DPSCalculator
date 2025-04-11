@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -54,7 +55,7 @@ public class CriticalDamageCalculationTest extends BaseTestClass
 		IGUANASOUP = jsonIDMapper.getIDFromFileName("IGUANASOUP");
 
 		loadout = loadoutManager.getLoadout(1);
-		loadout.getPlayer().setUsingVats(true);
+		loadout.getPlayer().setAttackType(AttackType.VATS);
 	}
 
 	@Test
