@@ -10,10 +10,8 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFacto
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.WeaponChangedEvent;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -33,7 +31,6 @@ public class WeaponManager
 	private final DataLoaderService dataLoaderService;
 	private final WeaponFactory weaponFactory;
 	private final ApplicationEventPublisher applicationEventPublisher;
-	//add mod manager
 
 	/**
 	 * The constructor for a {@link WeaponManager} object.
@@ -77,9 +74,10 @@ public class WeaponManager
 	 * @param modID The name of the mod to apply.
 	 * @throws IOException If the mod cannot be loaded.
 	 * @throws ResourceNotFoundException If the weapon is not set or the mod cannot be found.
+	 * @return {@code true} if the mod was applied successfully.
 	 */
 	@SaveLoadout
-	public synchronized void modifyWeapon(String modID, Loadout loadout) throws IOException, ResourceNotFoundException
+	public synchronized boolean modifyWeapon(String modID, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		Weapon weapon = loadout.getWeapon();
 		WeaponMod weaponMod = dataLoaderService.loadData(modID, WeaponMod.class, null);
@@ -93,11 +91,14 @@ public class WeaponManager
 			throw new ResourceNotFoundException("Weapon or mod not found during weapon modification. Modification ID: " + modID + ".");
 		}
 
-		weapon.setMod(weaponMod);
+		if (weapon.setMod(weaponMod)){
+			WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon,  loadout, "Weapon has been modified.");
+			log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", weapon);
+			applicationEventPublisher.publishEvent(weaponChangedEvent);
+			return true;
+		}
 
-		WeaponChangedEvent weaponChangedEvent = new WeaponChangedEvent(weapon,  loadout, "Weapon has been modified.");
-		log.debug("WeaponChangedEvent has been created. Weapon {} has been modified.", weapon);
-		applicationEventPublisher.publishEvent(weaponChangedEvent);
+		return false;
 	}
 
 	/**

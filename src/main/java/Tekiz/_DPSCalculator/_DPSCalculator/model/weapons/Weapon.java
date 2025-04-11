@@ -100,18 +100,20 @@ public abstract class Weapon implements LegendaryEffectObject, Serializable
 	/**
 	 * A method that is used to make modifications to the weapon.
 	 * @param weaponMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
+	 * @return {@code true} if the modification was applied.
 	 */
 	@JsonIgnore
-	public void setMod(WeaponMod weaponMod)
+	public boolean setMod(WeaponMod weaponMod)
 	{
 		if (weaponMod == null){
-			return;
+			return false;
 		}
 
 		ModificationSlot<WeaponMod> slot = modifications.get(weaponMod.modType());
 		if (slot != null){
-			slot.changeCurrentModification(weaponMod);
+			return slot.changeCurrentModification(weaponMod);
 		}
+		return false;
 	}
 
 	/**

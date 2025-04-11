@@ -36,8 +36,6 @@ public record ArmourMod(@Id
 						@JsonProperty("modType") ModType modType,
 						@JsonProperty("modSubType") ModSubType modSubType,
 						@JsonProperty("armourPiece") ArmourPiece armourPiece,
-						@JsonProperty("armourResistance") HashMap<Integer, ArmourResistance> materialResistanceBonus,
-						@JsonProperty("materialEffect") String materialEffect,
 						@JsonProperty("modifierSource") ModifierSource modifierSource,
 						@ValueConverter(value = ExpressionAdapter.ExpressionConverter.class)
 						@JsonProperty("conditionString") Expression condition,

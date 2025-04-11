@@ -83,15 +83,15 @@ public class WeaponController
 	}
 	@Operation(summary = "Gets all available weapon mods.", description = "Retrieves a list of all weapon mod names that are available.")
 	@GetMapping("/getAvailableWeaponMods")
-	public ResponseEntity<List<WeaponModNameDTO>> getAvailableWeaponMods(@RequestParam int loadoutID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
+	public ResponseEntity<List<WeaponModNameDTO>> getAvailableWeaponMods(@RequestParam String weaponID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
 	{
-		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		List<WeaponMod> weaponMods = weaponManager.getAvailableWeaponMods(loadout.getWeapon(), modType);
+		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
+		List<WeaponMod> weaponMods = weaponManager.getAvailableWeaponMods(weapon, modType);
 		return ResponseEntity.ok(weaponMapper.convertToWeaponModNameDTO(weaponMods));
 	}
 	@Operation(summary = "Gets a weapon mods details.", description = "Retrieves a detailed list of information about a weapon mod.")
 	@GetMapping("/getWeaponModDetails")
-	public ResponseEntity<WeaponModDTO> getWeaponModDetails(@RequestParam String modID) throws IOException, ResourceNotFoundException
+	public ResponseEntity<WeaponModDTO> getWeaponModDetails(@RequestParam String modID) throws IOException
 	{
 		WeaponMod weaponMod = weaponLoaderService.loadData(modID, WeaponMod.class, null);
 		return ResponseEntity.ok(weaponMapper.convertToWeaponModDTO(weaponMod));
@@ -101,8 +101,10 @@ public class WeaponController
 	public ResponseEntity<String> modifyWeapon(@RequestParam int loadoutID, @RequestParam String modID) throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		weaponManager.modifyWeapon(modID, loadout);
-		log.debug("Request to modify weapon in loadout: {}. Modification ID: {}.", loadoutID, modID);
-		return ResponseEntity.ok("Modification " + modID + " has been applied to weapon in loadout " + loadoutID + ".");
+		if (weaponManager.modifyWeapon(modID, loadout)){
+			log.debug("Request to modify weapon in loadout: {}. Modification ID: {}.", loadoutID, modID);
+			return ResponseEntity.ok("Modification " + modID + " has been applied to weapon in loadout " + loadoutID + ".");
+		}
+		return ResponseEntity.badRequest().body("Weapon mod could not be applied.");
 	}
 }

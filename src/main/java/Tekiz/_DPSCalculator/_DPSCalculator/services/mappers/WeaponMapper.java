@@ -63,6 +63,7 @@ public class WeaponMapper
 			.weaponType(weapon.getWeaponType().toString())
 			.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 			.apCost(weapon.getApCost())
+			.modifications(weapon.getModifications())
 			.build();
 	}
 
@@ -84,6 +85,7 @@ public class WeaponMapper
 				.fireRate(((RangedWeapon) weapon).getFireRate())
 				.range(((RangedWeapon) weapon).getRange())
 				.accuracy(((RangedWeapon) weapon).getAccuracy())
+				.modifications(weapon.getModifications())
 				.build();
 		} else if (weapon instanceof MeleeWeapon) {
 			return MeleeWeaponDTO.builder()
@@ -93,6 +95,7 @@ public class WeaponMapper
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
 				.attackSpeed(((MeleeWeapon) weapon).getAttackSpeed().toString())
+				.modifications(weapon.getModifications())
 				.build();
 		} else {
 			return convertToDetailsDTO(weapon);

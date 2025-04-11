@@ -328,12 +328,8 @@ public class WeaponControllerTest
 					.param("loadoutID", "1")
 					.param("modID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
+			.andExpect(status().isBadRequest())
 			.andReturn().getResponse();
-
-		//this is because it's not technically an error handled by the user
-		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
-		assertEquals(expectedResponse, response.getContentAsString());
 
 		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
 	}
@@ -430,13 +426,8 @@ public class WeaponControllerTest
 					.param("loadoutID", "1")
 					.param("modID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
+			.andExpect(status().isBadRequest())
 			.andReturn().getResponse();
-
-
-		//this is because it's not technically an error handled by the user
-		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
-		assertEquals(expectedResponse, response.getContentAsString());
 
 		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
 		assertNull(weapon.getModifications().get(ModType.RECEIVER).getCurrentModification());
@@ -468,13 +459,8 @@ public class WeaponControllerTest
 					.param("loadoutID", "1")
 					.param("modID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
+			.andExpect(status().isBadRequest())
 			.andReturn().getResponse();
-
-
-		//this is because it's not technically an error handled by the user
-		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
-		assertEquals(expectedResponse, response.getContentAsString());
 
 		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
 		assertNull(weapon.getModifications());
@@ -509,12 +495,8 @@ public class WeaponControllerTest
 					.param("loadoutID", "1")
 					.param("modID", "1")
 					.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
+			.andExpect(status().isBadRequest())
 			.andReturn().getResponse();
-
-		//this is because it's not technically an error handled by the user
-		String expectedResponse = "Modification 1 has been applied to weapon in loadout 1.";
-		assertEquals(expectedResponse, response.getContentAsString());
 
 		verify(weaponManager, times(1)).modifyWeapon(anyString(), any(Loadout.class));
 		assertNull(weapon.getModifications().get(ModType.RECEIVER).getCurrentModification());
@@ -524,11 +506,8 @@ public class WeaponControllerTest
 	public void getAvailableWeaponMods() throws Exception
 	{
 		log.debug("{}Running test - getAvailableWeaponMods  in WeaponControllerTest.", System.lineSeparator());
-
-		Loadout loadout = mock(Loadout.class);
 		Weapon weapon = mock(Weapon.class);
-		given(loadoutManager.getLoadout(1)).willReturn(loadout);
-		given(loadout.getWeapon()).willReturn(weapon);
+		given(weaponLoaderService.loadData("1", Weapon.class, weaponFactory)).willReturn(weapon);
 
 		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
 		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("1").name("TEST1").build());
@@ -537,7 +516,7 @@ public class WeaponControllerTest
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
-					.param("loadoutID", "1")
+					.param("weaponID", "1")
 					.param("modType", "RECEIVER")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -555,10 +534,8 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - getAvailableWeaponMods_withUnspecifiedType  in WeaponControllerTest.", System.lineSeparator());
 
-		Loadout loadout = mock(Loadout.class);
 		Weapon weapon = mock(Weapon.class);
-		given(loadoutManager.getLoadout(1)).willReturn(loadout);
-		given(loadout.getWeapon()).willReturn(weapon);
+		given(weaponLoaderService.loadData("1", Weapon.class, weaponFactory)).willReturn(weapon);
 
 		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
 		weaponModNameDTOS.add(WeaponModNameDTO.builder().id("1").name("TEST1").build());
@@ -567,7 +544,7 @@ public class WeaponControllerTest
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
-					.param("loadoutID", "1")
+					.param("weaponID", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
@@ -583,17 +560,15 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - getAvailableWeaponMods_WithEmptyList  in WeaponControllerTest.", System.lineSeparator());
 
-		Loadout loadout = mock(Loadout.class);
 		Weapon weapon = mock(Weapon.class);
-		given(loadoutManager.getLoadout(1)).willReturn(loadout);
-		given(loadout.getWeapon()).willReturn(weapon);
+		given(weaponLoaderService.loadData("1", Weapon.class, weaponFactory)).willReturn(weapon);
 
 		List<WeaponModNameDTO> weaponModNameDTOS = new ArrayList<>();
 		given(weaponMapper.convertToWeaponModNameDTO(any(List.class))).willReturn(weaponModNameDTOS);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				MockMvcRequestBuilders.get(urlString + "/getAvailableWeaponMods")
-					.param("loadoutID", "1")
+					.param("weaponID", "1")
 					.param("modType", "RECEIVER")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())

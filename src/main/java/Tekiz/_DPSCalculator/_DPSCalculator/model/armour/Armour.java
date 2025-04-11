@@ -58,7 +58,7 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	@JsonProperty("armourPiece")
 	protected final ArmourPiece armourPiece;
 
-	/** The slot the armour piece takes. This is dependent on the armour slot. */
+	/** The slot the armour piece is placed. This is dependent on the armour piece. */
 	@NonFinal
 	@JsonProperty("armourSlot")
 	protected ArmourSlot armourSlot;
@@ -92,18 +92,20 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	/**
 	 * A method that is used to make modifications to the armour.
 	 * @param armourMod The modification that the user wishes to make. The mod slot it affects is determined by the class of the {@link ModType}.
+	 * @return {@code true} if the modification was successful.
 	 */
 	@JsonIgnore
-	public void setMod(ArmourMod armourMod)
+	public boolean setMod(ArmourMod armourMod)
 	{
-		if (armourMod == null){
-			return;
+		if (armourMod == null || !armourMod.armourPiece().equals(this.armourPiece)){
+			return false;
 		}
 
 		ModificationSlot<ArmourMod> slot = modifications.get(armourMod.modType());
 		if (slot != null){
-			slot.changeCurrentModification(armourMod);
+			return slot.changeCurrentModification(armourMod);
 		}
+		return false;
 	}
 
 	/**
