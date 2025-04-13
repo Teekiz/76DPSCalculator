@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -92,7 +94,7 @@ public class LegendaryEffectController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (legendaryEffectManager.addLegendaryEffect(legendaryEffectID, loadout.getWeapon(), loadout)){
 			log.debug("Request to add legendary effect to weapon in loadout: {}. Legendary effect ID: {}.", loadoutID, legendaryEffectID);
-			return ResponseEntity.ok("Legendary effect " + legendaryEffectID + " has been applied to weapon in loadout " + loadoutID + ".");
+			return ResponseEntity.ok("Legendary effect " + sanitizeString(legendaryEffectID) + " has been applied to weapon in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Weapon legendary effect could not be applied.");
 	}
@@ -104,7 +106,7 @@ public class LegendaryEffectController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (legendaryEffectManager.removeLegendaryEffect(starType, loadout.getWeapon(), loadout)){
 			log.debug("Request to remove legendary effect from weapon in loadout: {}. Legendary effect star: {}.", loadoutID, starType);
-			return ResponseEntity.ok(starType + " legendary effect has been removed from weapon in loadout " + loadoutID + ".");
+			return ResponseEntity.ok(sanitizeString(starType) + " legendary effect has been removed from weapon in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Weapon legendary effect could not be removed.");
 	}
@@ -117,7 +119,7 @@ public class LegendaryEffectController
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
 		if (legendaryEffectManager.addLegendaryEffect(legendaryEffectID, armour, loadout)){
 			log.debug("Request to add legendary effect to armour armour in loadout: {}. Legendary effect ID: {}. Armour slot: {}. ArmourType: {}.", loadoutID, legendaryEffectID, armourType, armourSlot);
-			return ResponseEntity.ok("Legendary effect " + legendaryEffectID + " has been applied to " + armourType + " "+ armourSlot + " in loadout " + loadoutID + ".");
+			return ResponseEntity.ok("Legendary effect " + sanitizeString(legendaryEffectID) + " has been applied to " + sanitizeString(armourType) + " "+ sanitizeString(armourSlot) + " in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Armour legendary effect could not be applied.");
 	}
@@ -130,7 +132,7 @@ public class LegendaryEffectController
 		Armour armour = loadout.getArmour().getArmourInSlot(armourType, armourSlot);
 		if (legendaryEffectManager.removeLegendaryEffect(starType,armour, loadout)){
 			log.debug("Request to remove legendary effect from {} {} in loadout: {}. Legendary effect star: {}.", armourType, armourSlot, loadoutID, starType);
-			return ResponseEntity.ok(starType + " legendary effect has been removed from " + armourType + " "+ armourSlot + " in loadout " + loadoutID + ".");}
+			return ResponseEntity.ok(sanitizeString(starType) + " legendary effect has been removed from " + sanitizeString(armourType) + " "+ sanitizeString(armourSlot) + " in loadout " + loadoutID + ".");}
 		return ResponseEntity.badRequest().body("Armour legendary effect could not be removed.");
 	}
 }

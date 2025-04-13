@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -69,7 +71,7 @@ public class ArmourController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (armourManager.addArmour(armourID, armourSlot, loadout)){
-			return ResponseEntity.ok(armourID + " has been added to slot " + armourSlot + ".");
+			return ResponseEntity.ok(sanitizeString(armourID) + " has been added to slot " + sanitizeString(armourSlot) + ".");
 		}
 		return ResponseEntity.badRequest().body("Armour could not be applied.");
 	}
@@ -111,7 +113,7 @@ public class ArmourController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (armourManager.modifyArmour(modID, armourType, armourSlot, loadout)){
 			log.debug("Request to modify armour in loadout: {}. Modification ID: {}. Armour slot: {}. ArmourType: {}.", loadoutID, modID, armourType, armourSlot);
-			return ResponseEntity.ok("Modification " + modID + " has been applied to " + armourType + " "+ armourSlot + " in loadout " + loadoutID + ".");
+			return ResponseEntity.ok("Modification " + sanitizeString(modID) + " has been applied to " + sanitizeString(armourType) + " "+ sanitizeString(armourSlot) + " in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Armour mod could not be applied.");
 	}

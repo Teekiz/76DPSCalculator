@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler
 {
@@ -13,6 +15,6 @@ public class GlobalControllerExceptionHandler
 	public ResponseEntity<String> handleNotFoundException(ResourceNotFoundException resourceNotFoundException) {
 		return ResponseEntity
 			.status(HttpStatus.NOT_FOUND)
-			.body(resourceNotFoundException.getMessage());
+			.body(sanitizeString(resourceNotFoundException.getMessage()));
 	}
 }

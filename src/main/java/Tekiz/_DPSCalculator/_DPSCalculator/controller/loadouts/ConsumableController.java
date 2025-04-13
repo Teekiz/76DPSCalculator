@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -60,7 +62,7 @@ public class ConsumableController
 		log.debug("Add consumable called for consumable: {}.", consumableID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		consumableManager.addConsumable(consumableID, loadout);
-		return ResponseEntity.ok(consumableID + " has been added to your loadout.");
+		return ResponseEntity.ok(sanitizeString(consumableID) + " has been added to your loadout.");
 	}
 
 	@Operation(summary = "Removes a consumable from a loadout.", description = "Removes a consumable from the provided loadoutID using the consumable ID")
@@ -69,7 +71,7 @@ public class ConsumableController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		consumableManager.removeConsumable(consumableID, loadout);
-		return ResponseEntity.ok(consumableID + " has been removed from your loadout.");
+		return ResponseEntity.ok(sanitizeString(consumableID) + " has been removed from your loadout.");
 	}
 
 	@Operation(summary = "Gets all available consumables.", description = "Retrieves a list of all available consumables.")

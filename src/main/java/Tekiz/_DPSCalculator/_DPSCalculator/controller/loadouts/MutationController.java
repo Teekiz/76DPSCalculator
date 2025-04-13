@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -59,7 +61,7 @@ public class MutationController
 		log.debug("Add mutation called for mutation: {}.", mutationID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		mutationManager.addMutation(mutationID, loadout);
-		return ResponseEntity.ok(mutationID + " has been added to your loadout.");
+		return ResponseEntity.ok(sanitizeString(mutationID) + " has been added to your loadout.");
 	}
 
 	@Operation(summary = "Removes a mutation from a loadout.", description = "Removes a mutation from the provided loadoutID using the mutation ID")
@@ -68,7 +70,7 @@ public class MutationController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		mutationManager.removeMutation(mutationID, loadout);
-		return ResponseEntity.ok(mutationID + " has been removed from your loadout.");
+		return ResponseEntity.ok(sanitizeString(mutationID) + " has been removed from your loadout.");
 	}
 
 	@Operation(summary = "Gets all available mutations.", description = "Retrieves a list of all available mutations.")

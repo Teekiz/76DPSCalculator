@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -103,7 +105,7 @@ public class WeaponController
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		if (weaponManager.modifyWeapon(modID, loadout)){
 			log.debug("Request to modify weapon in loadout: {}. Modification ID: {}.", loadoutID, modID);
-			return ResponseEntity.ok("Modification " + modID + " has been applied to weapon in loadout " + loadoutID + ".");
+			return ResponseEntity.ok("Modification " + sanitizeString(modID) + " has been applied to weapon in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Weapon mod could not be applied.");
 	}

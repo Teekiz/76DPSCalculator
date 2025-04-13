@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -39,7 +41,7 @@ public class PlayerController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		playerManager.setSpecial(loadout, Specials.valueOf(special), value);
-		return ResponseEntity.status(HttpStatus.OK).body(special + " has been changed to " + value + ".");
+		return ResponseEntity.status(HttpStatus.OK).body(sanitizeString(special) + " has been changed to " + value + ".");
 	}
 
 	@Operation(summary = "Changes all special attributes.", description = "Changes all special attributes in a loadout with the matching loadout ID.")

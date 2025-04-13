@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/loadouts")
@@ -59,7 +61,7 @@ public class PerkController
 		log.debug("Add perk called for perk: {}.", perkID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.addPerk(perkID, loadout);
-		return ResponseEntity.ok(perkID + " has been added to your loadout.");
+		return ResponseEntity.ok(sanitizeString(perkID) + " has been added to your loadout.");
 	}
 
 	@Operation(summary = "Removes a perk from a loadout.", description = "Removes a perk from the provided loadoutID using the perk ID")
@@ -68,7 +70,7 @@ public class PerkController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.removePerk(perkID, loadout);
-		return ResponseEntity.ok(perkID + " has been removed from your loadout.");
+		return ResponseEntity.ok(sanitizeString(perkID) + " has been removed from your loadout.");
 	}
 
 	@Operation(summary = "Gets all available perks.", description = "Retrieves a list of all available perks.")
@@ -85,6 +87,6 @@ public class PerkController
 		log.debug("Received request to change perk rank for loadout {}. Perk name: {}, new rank: {}.", loadoutID, perkID, perkRank);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.changePerkRank(perkID, perkRank, loadout);
-		return ResponseEntity.ok(perkID + "'s rank has been modified.");
+		return ResponseEntity.ok(sanitizeString(perkID) + "'s rank has been modified.");
 	}
 }
