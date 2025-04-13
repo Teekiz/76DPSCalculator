@@ -1,11 +1,14 @@
 {
-    "name": "TestAutomatic",
-    "receiverType": "AUTOMATIC",
-    "damageChange": -0.1,
-    "damageCriticalMultiplier": 0,
-    "fireRateChange": 32,
-    "accuracyChange": 0,
-    "apChange": 0.50,
-    "prime": false,
-    "ammoOverrideType": null
+    "name": "Automatic",
+    "alias" : "AUTOMATIC",
+    "modType": "RECEIVER",
+    "modSubType" : "AUTOMATIC",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "DAMAGE_ADDITIVE" : -0.1,
+      "CRITICAL" : 0.0,
+      "FIRE_RATE" : 32,
+      "ACCURACY_ADDITIVE" : 0,
+      "AP_COST" : 0.5
+    }
 }

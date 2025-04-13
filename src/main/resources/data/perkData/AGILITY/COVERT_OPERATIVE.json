@@ -1,0 +1,28 @@
+{
+    "name" : "Covert Operative",
+    "special": "AGILITY",
+    "rank" : 
+    {
+        "currentRank" : 1,
+        "baseCost" : 1,
+        "maxRank" : 3
+    },
+    "description" : "Your ranged sneak attacks do 2.15/2.3/2.5x normal damage.",
+    "modifierSource" : "PERK",
+    "conditionString" : "#weapon instanceof T(Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon)",
+    "effects" :
+    {
+      "1" :
+      {
+        "SNEAK_DAMAGE" : 0.15
+      },
+      "2" :
+      {
+        "SNEAK_DAMAGE" : 0.3
+      },
+      "3" :
+      {
+        "SNEAK_DAMAGE" : 0.5
+      }
+    }
+}

@@ -1,9 +1,9 @@
 {
-    "name" : "Aged mirelurk queen steak",
+    "name" : "Cooked softshell meat",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "modifierSource" : "CONSUMABLE_MEAT",
     "effects" : {
-        "SPECIAL_ENDURANCE" : 3
+        "MAX_AP" : 20
     }
 }

@@ -1,0 +1,13 @@
+{
+    "name" : "Hitman's",
+    "description" : "+25% while aiming",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "RANGED_WEAPONS"
+    ],
+    "starType" : "_1STAR",
+    "conditionString" : "#player.getAttackType() == #AttackType.AIMING",
+    "effects" : {
+          "DAMAGE_ADDITIVE" : 0.25
+      }
+}

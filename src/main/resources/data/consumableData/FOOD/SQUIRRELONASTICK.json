@@ -1,9 +1,9 @@
 {
-    "name" : "Aged mirelurk queen steak",
+    "name" : "Squirrel on a stick",
     "consumableType" : "FOOD",
     "addictionType" : "NONE",
     "modifierSource" : "CONSUMABLE_MEAT",
     "effects" : {
-        "SPECIAL_ENDURANCE" : 3
+        "SPECIAL_AGILITY" : 3
     }
 }
