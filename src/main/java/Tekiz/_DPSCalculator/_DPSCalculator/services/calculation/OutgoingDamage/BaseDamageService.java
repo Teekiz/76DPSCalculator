@@ -35,12 +35,18 @@ public class BaseDamageService
 			baseDamage = weaponDamage.damage();
 		}
 
-		baseDamage = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_BASE, dpsDetails)
+		double bonuses = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_BASE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
-			.sum() + baseDamage;
+			.sum();
+
+		baseDamage = baseDamage + bonuses;
+
+		if (dpsDetails != null) {
+			dpsDetails.getDamageDetailsRecord(weaponDamage.damageType()).setBaseDamageAndBonuses(baseDamage, bonuses);
+		}
 		return baseDamage;
 	}
 }

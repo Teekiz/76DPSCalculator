@@ -3,6 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.BodyPartMultipl
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +19,7 @@ public class BodyPartMultiplierCalculator
 	 * @param dpsDetails An object containing all the results of the damage calculation.
 	 * @return The damage multiplied by the targeted limb bonus. If the enemy is {@code null} or the targetedLimb cannot be found, a {@code 1.0} multiplier will be used.
 	 */
-	public double calculatorBodyPartMultiplier(double damage, Loadout loadout, DPSDetails dpsDetails)
+	public double calculatorBodyPartMultiplier(double damage, WeaponDamage weaponDamage, Loadout loadout, DPSDetails dpsDetails)
 	{
 		Enemy enemy = loadout.getEnemy();
 
@@ -28,7 +29,10 @@ public class BodyPartMultiplierCalculator
 
 		//if the limb isn't part of the selectable type, return 0 (this should probably never happen, but just in case)
 		double bodyPartMult = enemy.getTargetableAreas().getOrDefault(enemy.getTargetedLimb(), 1.0);
-		dpsDetails.setBodyPartMultiplier(bodyPartMult);
+		if (dpsDetails != null)
+		{
+			dpsDetails.getDamageDetailsRecord(weaponDamage.damageType()).setBonusDamageMultiplier(bodyPartMult);
+		}
 		return damage * bodyPartMult;
 	}
 }

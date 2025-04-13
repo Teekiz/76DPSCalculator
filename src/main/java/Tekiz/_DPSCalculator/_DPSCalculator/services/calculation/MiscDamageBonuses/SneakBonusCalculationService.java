@@ -3,8 +3,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonus
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /** A service to calculate the sneak damage bonus a loadout provides. */
@@ -27,12 +27,17 @@ public class SneakBonusCalculationService
 	 * @param loadout  The loadout that will be used to calculate from.
 	 * @return A {@link Double} value of the loadouts bonus sneak damage.
 	 */
-	public double getSneakDamageBonus(Loadout loadout, DPSDetails dpsDetails){
-		return modifierAggregationService.filterEffects(loadout, ModifierTypes.SNEAK_DAMAGE, dpsDetails)
+	public double getSneakDamageBonus(Loadout loadout, WeaponDamage weaponDamage, DPSDetails dpsDetails){
+		double sneakBonus = modifierAggregationService.filterEffects(loadout, ModifierTypes.SNEAK_DAMAGE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)
 			.mapToDouble(Number::doubleValue)
 			.sum() + 1.00;
+
+		if (dpsDetails != null && weaponDamage != null) {
+			dpsDetails.getDamageDetailsRecord(weaponDamage.damageType()).setDamageSneakBonuses(sneakBonus);
+		}
+		return sneakBonus;
 	}
 }

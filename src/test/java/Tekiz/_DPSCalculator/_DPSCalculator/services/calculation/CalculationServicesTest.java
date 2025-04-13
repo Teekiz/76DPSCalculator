@@ -12,7 +12,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
@@ -100,7 +99,8 @@ public class CalculationServicesTest extends BaseTestClass
 
 		//weapon damage at level 45 is 28.0, each perk and consumable adds 0.2 extra damage and the receiver doesn't modify the damage
 		//28.0 * (1 + 0.2 + 0.2 + 0) = 39.2
-		assertEquals(39.2, calculator.calculateOutgoingDamage(loadout).getTotalDamagePerShot());
+		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
+		assertEquals(39.2, dpsDetails.getTotalDamagePerShot());
 
 		//removing the perk should reduce the damage by 20%
 		perkManager.removePerk(TESTEVENT, loadout);//TESTEVENT
@@ -331,9 +331,9 @@ public class CalculationServicesTest extends BaseTestClass
 
 		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
 
-		assertEquals(86.4, round(dpsDetails.getDamagePerShot().get(DamageType.PHYSICAL)));
+		assertEquals(86.4, round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getDamagePerShot()));
 		assertEquals(1.8, round(dpsDetails.getTimeToConsumeActionPoints()));
-		assertEquals(109.2, round(dpsDetails.getCriticalDamagePerShot().get(DamageType.PHYSICAL)));
+		assertEquals(109.2, round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getCriticalDamagePerShot()));
 	}
 
 	@Test
@@ -403,9 +403,9 @@ public class CalculationServicesTest extends BaseTestClass
 
 		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
 
-		assertEquals(51.6, round(dpsDetails.getDamagePerShot().get(DamageType.PHYSICAL)));
+		assertEquals(51.6, round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getDamagePerShot()));
 		assertEquals(3.4, round(dpsDetails.getTimeToConsumeActionPoints()));
-		assertEquals(78.4, round(dpsDetails.getCriticalDamagePerShot().get(DamageType.PHYSICAL)));
+		assertEquals(78.4, round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getCriticalDamagePerShot()));
 		assertEquals(84.4, round(dpsDetails.getTotalDamagePerSecond()));
 	}
 }

@@ -1,9 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.calculations;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,33 +15,35 @@ public class DPSDetails
 {
 	final int loadoutID;
 	String weaponName;
-	final List<ModifierDetails> modifiersUsed = new ArrayList<>();
+	final Set<ModifierDetails> modifiersUsed = new HashSet<>();
 
 	double shotsPerSecond;
 	double timeToEmptyMagazine;
 
-	//damage before factoring in reload time or swing speed.
-	final HashMap<DamageType, Double> damagePerShot = new HashMap<>();
-	//damage after factoring in reload time or swing speed.
-	final HashMap<DamageType, Double> damagePerSecond = new HashMap<>();
+	final HashMap<DamageType, DamageDetails> damageDetailsRecords = new HashMap<>();
 
-	double bodyPartMultiplier;
-	double damageResistMultiplier;
-
-	//VATS
-	//todo
-	double damagePerActionPoint;
 	double timeToConsumeActionPoints;
 	double shotsRequiredToFillCriticalMeter;
-	final HashMap<DamageType, Double> criticalDamagePerShot  = new HashMap<>();
+
+	/**
+	 * A method used to return the details of a damage record. A new record is created if an existing record cannot be found.
+	 * @param damageType The type of damage this record will be used to store.
+	 * @return A {@link DamageDetails} record.
+	 */
+	public DamageDetails getDamageDetailsRecord(DamageType damageType){
+		if (damageType == null) {
+			damageType = DamageType.UNKNOWN;
+		}
+		return damageDetailsRecords.computeIfAbsent(damageType, k -> new DamageDetails());
+	}
 
 	public double getTotalDamagePerShot()
 	{
-		return damagePerShot.values().stream().mapToDouble(Double::doubleValue).sum();
+		return damageDetailsRecords.values().stream().mapToDouble(DamageDetails::getDamagePerShot).sum();
 	}
 
 	public double getTotalDamagePerSecond()
 	{
-		return damagePerSecond.values().stream().mapToDouble(Double::doubleValue).sum();
+		return damageDetailsRecords.values().stream().mapToDouble(DamageDetails::getDamagePerSecond).sum();
 	}
 }

@@ -123,11 +123,12 @@ public class ReloadCalculationTest extends BaseTestClass
 				damageValue = 3;
 			}
 			double dps = rangedDamageCalculator.calculateDPSWithReload(damageValue, damage.overTime(), loadout, dpsDetails);
-			dpsDetails.getDamagePerSecond().put(damage.damageType(), dps);
+			dpsDetails.getDamageDetailsRecord(damage.damageType()).setDamagePerSecond(dps);
 		}
 
-		assertEquals(70.58, super.round(dpsDetails.getDamagePerSecond().get(DamageType.PHYSICAL)));
-		assertEquals(8.19, super.round(dpsDetails.getDamagePerSecond().get(DamageType.FIRE)));
+
+		assertEquals(70.58, super.round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getDamagePerSecond()));
+		assertEquals(8.19, super.round(dpsDetails.getDamageDetailsRecord(DamageType.FIRE).getDamagePerSecond()));
 
 		assertEquals(4.3, dpsDetails.getShotsPerSecond());
 		assertEquals(2.79, super.round(dpsDetails.getTimeToEmptyMagazine()));
@@ -290,8 +291,8 @@ public class ReloadCalculationTest extends BaseTestClass
 
 		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
 
-		assertEquals(70.6, super.round(dpsDetails.getDamagePerSecond().get(DamageType.PHYSICAL)));
-		assertEquals(8.2, super.round(dpsDetails.getDamagePerSecond().get(DamageType.FIRE)));
+		assertEquals(70.6, super.round(dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getDamagePerSecond()));
+		assertEquals(8.2, super.round(dpsDetails.getDamageDetailsRecord(DamageType.FIRE).getDamagePerSecond()));
 
 		assertEquals(4.3, dpsDetails.getShotsPerSecond());
 		assertEquals(2.79, super.round(dpsDetails.getTimeToEmptyMagazine()));

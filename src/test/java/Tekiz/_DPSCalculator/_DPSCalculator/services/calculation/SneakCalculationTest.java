@@ -73,7 +73,7 @@ public class SneakCalculationTest extends BaseTestClass
 		perkManager.changePerkRank(COVERT_OPERATIVE, 2, loadout);
 
 		//this should result in a sneak bonus of 1.3x (base 1 + 30% from perk)
-		assertEquals(1.3 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.3 ,sneakBonusCalculationService.getSneakDamageBonus(loadout, null, dpsDetails));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class SneakCalculationTest extends BaseTestClass
 		perkManager.changePerkRank(NINJA, 3, loadout);
 
 		//this should result in a sneak bonus of 1.9x (base 1 + 90% from perk)
-		assertEquals(1.9 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.9 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,null, dpsDetails));
 	}
 
 	@Test
@@ -103,10 +103,10 @@ public class SneakCalculationTest extends BaseTestClass
 		perkManager.changePerkRank(NINJA, 2, loadout); //0.6
 
 		//this should result in a sneak bonus of 1.5x (base 1 + 50% from perk)
-		assertEquals(1.5 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.5 ,sneakBonusCalculationService.getSneakDamageBonus(loadout, null, dpsDetails));
 
 		weaponManager.setWeapon(ASSAULTRONBLADE, loadout);
-		assertEquals(1.6 ,sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.6 ,sneakBonusCalculationService.getSneakDamageBonus(loadout, null, dpsDetails));
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class SneakCalculationTest extends BaseTestClass
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
 
 		//this should result in a sneak bonus of 1x
-		assertEquals(1.0, sneakBonusCalculationService.getSneakDamageBonus(loadout,dpsDetails));
+		assertEquals(1.0, sneakBonusCalculationService.getSneakDamageBonus(loadout,null, dpsDetails));
 	}
 
 	@Test
@@ -136,6 +136,6 @@ public class SneakCalculationTest extends BaseTestClass
 		//with the additional perks (0.15), and the sneak perk (0.5) with receiver (-0.1), this should result in (1.15 + 1.5 - 0.1 = 2.55 bonus damage)
 		//28.0 * 2.55 = 71.4
 		DPSDetails dpsDetails = calculator.calculateOutgoingDamage(loadout);
-		assertEquals(71.4, dpsDetails.getDamagePerShot().get(DamageType.PHYSICAL));
+		assertEquals(71.4, dpsDetails.getDamageDetailsRecord(DamageType.PHYSICAL).getDamagePerShot());
 	}
 }

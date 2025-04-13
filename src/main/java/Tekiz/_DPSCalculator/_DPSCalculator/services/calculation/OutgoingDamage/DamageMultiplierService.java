@@ -3,10 +3,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +34,20 @@ public class DamageMultiplierService
 	 * @param dpsDetails An object containing all the results of the damage calculation.
 	 * @return The total value of the {@code outgoingDamage} multiplied by all multiplicative bonuses.
 	 */
-	public Double calculateMultiplicativeDamage(Double outgoingDamage, Loadout loadout, DPSDetails dpsDetails)
+	public Double calculateMultiplicativeDamage(Double outgoingDamage, WeaponDamage weaponDamage, Loadout loadout, DPSDetails dpsDetails)
 	{
-		return modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails)
+		double totalMultiplier = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_MULTIPLICATIVE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)
-			.mapToDouble(Number::doubleValue)
-			.reduce(outgoingDamage, (damage, bonus) -> damage * (bonus + 1));
+			.mapToDouble(bonus -> bonus + 1.0)
+			.reduce(1.0, (a, b) -> a * b);
+
+		double totalBonusAsPercentage = (totalMultiplier - 1.0) * 100;
+		
+		if (dpsDetails != null){
+			dpsDetails.getDamageDetailsRecord(weaponDamage.damageType()).setBonusDamageMultiplier(totalBonusAsPercentage);
+		}
+		return outgoingDamage * totalMultiplier;
 	}
 }
