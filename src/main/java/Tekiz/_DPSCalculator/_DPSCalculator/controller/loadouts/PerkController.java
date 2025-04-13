@@ -1,5 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.PerkDTO;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
 
 @Slf4j
 @RestController
@@ -47,22 +50,18 @@ public class PerkController
 	public ResponseEntity<List<PerkDTO>> getPerks(@RequestParam int loadoutID) throws IOException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		if (loadout.getPerks() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.EMPTY_LIST);
-		}
 		return ResponseEntity.ok(perkMapper.convertAllToDTO(loadout.getPerks()));
 	}
 
 	//todo - handle exceptions and if perk cannot be found
 	@Operation(summary = "Add a perk to a loadout.", description = "Adds a perk to the provided loadoutID using the perk ID")
 	@PostMapping("/addPerk")
-	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException
+	public ResponseEntity<String> addPerk(@RequestParam int loadoutID, @RequestParam String perkID) throws IOException, ResourceNotFoundException
 	{
 		log.debug("Add perk called for perk: {}.", perkID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.addPerk(perkID, loadout);
-		return ResponseEntity.ok(perkID + " has been added to your loadout.");
+		return ResponseEntity.ok(sanitizeString(perkID) + " has been added to your loadout.");
 	}
 
 	@Operation(summary = "Removes a perk from a loadout.", description = "Removes a perk from the provided loadoutID using the perk ID")
@@ -71,7 +70,7 @@ public class PerkController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.removePerk(perkID, loadout);
-		return ResponseEntity.ok(perkID + " has been removed from your loadout.");
+		return ResponseEntity.ok(sanitizeString(perkID) + " has been removed from your loadout.");
 	}
 
 	@Operation(summary = "Gets all available perks.", description = "Retrieves a list of all available perks.")
@@ -88,6 +87,6 @@ public class PerkController
 		log.debug("Received request to change perk rank for loadout {}. Perk name: {}, new rank: {}.", loadoutID, perkID, perkRank);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		perkManager.changePerkRank(perkID, perkRank, loadout);
-		return ResponseEntity.ok(perkID + "'s rank has been modified.");
+		return ResponseEntity.ok(sanitizeString(perkID) + "'s rank has been modified.");
 	}
 }

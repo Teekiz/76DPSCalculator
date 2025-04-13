@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
@@ -46,7 +46,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testAPCalculation_withRangedWeapon() throws IOException
+	public void testAPCalculation_withRangedWeapon() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -72,7 +72,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testAPCalculation_withRangedWeapon_withModifiers() throws IOException
+	public void testAPCalculation_withRangedWeapon_withModifiers() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		Loadout loadout = loadoutManager.getLoadout(1);
@@ -124,7 +124,7 @@ public class ActionPointsCalculationTest extends BaseTestClass
 	}
 
 	@Test
-	public void testAPCalculation_withRangedWeapon_maxApIsZero() throws IOException
+	public void testAPCalculation_withRangedWeapon_maxApIsZero() throws IOException, ResourceNotFoundException
 	{
 		DPSDetails dpsDetails = new DPSDetails(1);
 		Loadout loadout = loadoutManager.getLoadout(1);

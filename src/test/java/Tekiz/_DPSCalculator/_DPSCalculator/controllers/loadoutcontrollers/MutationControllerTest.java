@@ -1,18 +1,15 @@
 package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
-import Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers.MutationController;
+import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.MutationController;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.MutationDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.MutationManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.MutationMapper;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

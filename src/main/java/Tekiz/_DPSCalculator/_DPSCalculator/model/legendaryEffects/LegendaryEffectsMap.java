@@ -1,5 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -20,11 +21,12 @@ public class LegendaryEffectsMap extends HashMap<LegendaryEffect, Boolean>
 	 * A method to add a new legendary effect if the current slot can be modified.
 	 *
 	 * @param newEffect The new legendary effect to be added.
+	 * @return {@code true} if the effect was added successfully.
 	 */
-	public void addLegendaryEffect(LegendaryEffect newEffect)
+	public boolean addLegendaryEffect(LegendaryEffect newEffect)
 	{
 		if (newEffect == null) {
-			return;
+			return false;
 		}
 
 		LegendaryEffect currentEffectInSlot = this.keySet().stream()
@@ -34,33 +36,37 @@ public class LegendaryEffectsMap extends HashMap<LegendaryEffect, Boolean>
 		if (currentEffectInSlot == null)
 		{
 			this.put(newEffect, true);
+			return true;
 		}
 		else if (Boolean.TRUE.equals(this.get(currentEffectInSlot)))
 		{
 			this.remove(currentEffectInSlot);
 			this.put(newEffect, true);
 		}
+
+		return true;
 	}
 
 	/**
 	 * A method to remove an existing legendary effect if the current slot can be modified.
 	 *
-	 * @param effect The new legendary effect to be removed.
+	 * @param starType The legendary star to be removed.
 	 */
-	public void removeLegendaryEffect(LegendaryEffect effect)
+	public boolean removeLegendaryEffect(StarType starType)
 	{
-		if (effect == null) {
-			return;
+		if (starType == null){
+			return false;
 		}
-
 		LegendaryEffect currentEffectInSlot = this.keySet().stream()
 			.filter(Objects::nonNull)
-			.filter(e -> e.starType().equals(effect.starType())).findFirst().orElse(null);
+			.filter(e -> e.starType().equals(starType)).findFirst().orElse(null);
 
-		if (currentEffectInSlot == null || Boolean.TRUE.equals(this.get(currentEffectInSlot)))
+		if (currentEffectInSlot != null && get(currentEffectInSlot))
 		{
-			this.remove(effect);
+			this.remove(currentEffectInSlot);
+			return true;
 		}
+		return false;
 	}
 
 	/**

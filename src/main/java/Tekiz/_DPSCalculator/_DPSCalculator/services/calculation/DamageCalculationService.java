@@ -72,15 +72,15 @@ public class DamageCalculationService
 
 		//this loops through the types of damage a weapon can deal, then adds them all up before rounding.
 		for (WeaponDamage damage : weapon.getBaseDamage(45)){
-			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage);
+			double baseDamage = baseDamageService.calculateBaseDamage(loadout, damage, dpsDetails);
 
-			double bonusDamageMultiplier = bonusDamageService.calculateBonusDamage(loadout, dpsDetails);
-			double sneakBonusMultiplier = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, dpsDetails) : 0;
+			double bonusDamageMultiplier = bonusDamageService.calculateBonusDamage(loadout, damage, dpsDetails);
+			double sneakBonusMultiplier = loadout.getPlayer().isSneaking() ? sneakBonusCalculationService.getSneakDamageBonus(loadout, damage, dpsDetails) : 0;
 
 			double baseDamageWithoutSneak = baseDamage * (bonusDamageMultiplier);
 			double baseDamageWithBonuses = baseDamage * (bonusDamageMultiplier + sneakBonusMultiplier);
 
-			double multiplicativeDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamageWithBonuses, loadout, dpsDetails);
+			double multiplicativeDamage = damageMultiplierService.calculateMultiplicativeDamage(baseDamageWithBonuses, damage, loadout, dpsDetails);
 
 			double damagePerShotWithCritical = criticalDamageBonusCalculator.addAverageCriticalDamagePerShot(loadout, baseDamage, baseDamageWithoutSneak, multiplicativeDamage, damage, dpsDetails);
 
@@ -88,7 +88,7 @@ public class DamageCalculationService
 
 			//damage per shot - with the damage resistances added
 			double damagePerShot = calculateDamageWithResistances(damagePerShotWithCritical, damage, loadout, dpsDetails);
-			dpsDetails.getDamagePerShot().put(damage.damageType(), round(damagePerShot));
+			dpsDetails.getDamageDetailsRecords().get(damage.damageType()).setDamagePerShot(round(damagePerShot));
 
 
 			if (weapon instanceof RangedWeapon){
@@ -96,7 +96,7 @@ public class DamageCalculationService
 			}
 
 			//damage per second
-			dpsDetails.getDamagePerSecond().put(damage.damageType(), round(damagePerShot));
+			dpsDetails.getDamageDetailsRecords().get(damage.damageType()).setDamagePerSecond(round(damagePerShot));
 		}
 
 		return dpsDetails;
@@ -118,7 +118,7 @@ public class DamageCalculationService
 		double outgoingDamage_wDRMW_wBPM = outgoingDamageWithDamageResistMult;
 		//skip if the damage is DoT
 		if (damage.overTime() == 0) {
-			outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, loadout, dpsDetails);
+			outgoingDamage_wDRMW_wBPM = bodyPartMultiplierCalculator.calculatorBodyPartMultiplier(outgoingDamageWithDamageResistMult, damage, loadout,dpsDetails);
 		}
 
 		return outgoingDamage_wDRMW_wBPM;

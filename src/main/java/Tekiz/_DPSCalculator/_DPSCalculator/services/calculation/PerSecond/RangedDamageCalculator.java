@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
@@ -69,7 +70,7 @@ public class RangedDamageCalculator
 		double totalCycleTime = 0;
 		//if the action points last longer than the reload, the total cycle time is changed to factor in AP usage.
 		// DoT damage isn't considered as it doesn't change compared to AP
-		if (loadout.getPlayer().isUsingVats() && !isDamageOverTime)
+		if (loadout.getPlayer().getAttackType().equals(AttackType.VATS) && !isDamageOverTime)
 		{
 			double timeToConsume = actionPointsCalculator.calculateAPDuration(shotsPerSecond, loadout, dpsDetails);
 

@@ -9,5 +9,6 @@ public enum ArmourPiece
 	TORSO,
 	ARMS,
 	LEGS,
+	ALL,
 	OTHER;
 }

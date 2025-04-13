@@ -1,7 +1,12 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
 
 @Slf4j
 @RestController
@@ -51,15 +58,11 @@ public class WeaponController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		log.debug("Received request for /getWeapon for loadout ID {}. Found {}.", loadoutID, loadout.getWeapon());
-		if (loadout.getWeapon() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
 		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 	@Operation(summary = "Set the weapon in the loadout.", description = "Set the weapon based on the weapon ID in the loadout matching the ID.")
 	@PostMapping("/setWeapon")
-	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException
+	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		weaponManager.setWeapon(weaponID, loadout);
@@ -76,12 +79,34 @@ public class WeaponController
 	public ResponseEntity<WeaponDetailsDTO> getWeaponDetails(@RequestParam String weaponID) throws IOException
 	{
 		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
-		if (weapon == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
 		WeaponDetailsDTO weaponDetails = weaponMapper.convertToDetailsDTO(weapon);
 		log.debug("Request for weapon: {}. Returning: {}.", weaponID, weaponDetails);
 		return ResponseEntity.ok(weaponDetails);
+	}
+	@Operation(summary = "Gets all available weapon mods.", description = "Retrieves a list of all weapon mod names that are available.")
+	@GetMapping("/getAvailableWeaponMods")
+	public ResponseEntity<List<WeaponModNameDTO>> getAvailableWeaponMods(@RequestParam String weaponID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
+	{
+		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
+		List<WeaponMod> weaponMods = weaponManager.getAvailableWeaponMods(weapon, modType);
+		return ResponseEntity.ok(weaponMapper.convertToWeaponModNameDTO(weaponMods));
+	}
+	@Operation(summary = "Gets a weapon mods details.", description = "Retrieves a detailed list of information about a weapon mod.")
+	@GetMapping("/getWeaponModDetails")
+	public ResponseEntity<WeaponModDTO> getWeaponModDetails(@RequestParam String modID) throws IOException
+	{
+		WeaponMod weaponMod = weaponLoaderService.loadData(modID, WeaponMod.class, null);
+		return ResponseEntity.ok(weaponMapper.convertToWeaponModDTO(weaponMod));
+	}
+	@Operation(summary = "Modifies the current weapon.", description = "Modifies the current loadouts weapon with the provided modification ID.")
+	@GetMapping("/modifyWeapon")
+	public ResponseEntity<String> modifyWeapon(@RequestParam int loadoutID, @RequestParam String modID) throws IOException, ResourceNotFoundException
+	{
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		if (weaponManager.modifyWeapon(modID, loadout)){
+			log.debug("Request to modify weapon in loadout: {}. Modification ID: {}.", loadoutID, modID);
+			return ResponseEntity.ok("Modification " + sanitizeString(modID) + " has been applied to weapon in loadout " + loadoutID + ".");
+		}
+		return ResponseEntity.badRequest().body("Weapon mod could not be applied.");
 	}
 }

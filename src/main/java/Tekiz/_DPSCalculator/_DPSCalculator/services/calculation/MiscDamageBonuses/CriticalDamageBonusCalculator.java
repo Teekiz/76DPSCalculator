@@ -2,16 +2,15 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonus
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses.SpecialBonusCalculationService;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +36,13 @@ public class CriticalDamageBonusCalculator
 	 * @return The non-critical damage adjusted with the critical damage.
 	 */
 	public double addAverageCriticalDamagePerShot(Loadout loadout, double baseDamage, double bonusDamage, double nonCriticalDamage, WeaponDamage weaponDamage, DPSDetails dpsDetails){
-		if (!loadout.getPlayer().isUsingVats() || weaponDamage == null ||weaponDamage.overTime() > 0){
-			dpsDetails.getCriticalDamagePerShot().put(weaponDamage != null ? weaponDamage.damageType() : DamageType.UNKNOWN, 0.0);
+		if (!loadout.getPlayer().getAttackType().equals(AttackType.VATS) || weaponDamage == null ||weaponDamage.overTime() > 0){
 			return nonCriticalDamage;
 		}
 
 		//damage per shot before averaging
-		double vatsCriticalDamage = bonusDamage + getVATSCriticalBonus(loadout, baseDamage, dpsDetails);
-		dpsDetails.getCriticalDamagePerShot().put(weaponDamage.damageType(), vatsCriticalDamage);
+		double vatsCriticalDamage = bonusDamage + getVATSCriticalBonus(loadout, baseDamage, weaponDamage.damageType(), dpsDetails);
+		dpsDetails.getDamageDetailsRecord(weaponDamage.damageType()).setCriticalDamagePerShot(vatsCriticalDamage);
 
 		//damage per shot divided by the total damage
 		double shotsRequired = getShotsRequiredToRechargeCriticalMeter(loadout, dpsDetails);
@@ -58,10 +56,11 @@ public class CriticalDamageBonusCalculator
 	 * A method to determine the critical damage a loadout does.
 	 * @param loadout  The loadout that will be used to calculate from.
 	 * @param baseDamage The base damage the loadout provides.
+	 * @param damageType The type of damage the weapon applies.
 	 * @param dpsDetails An object that stores all relevant data for the dps calculation.
 	 * @return The critical bonus damage.
 	 */
-	private double getVATSCriticalBonus(Loadout loadout, double baseDamage, DPSDetails dpsDetails){
+	private double getVATSCriticalBonus(Loadout loadout, double baseDamage, DamageType damageType, DPSDetails dpsDetails){
 		double criticalDamageBonus = modifierAggregationService.filterEffects(loadout, ModifierTypes.CRITICAL, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
@@ -70,6 +69,7 @@ public class CriticalDamageBonusCalculator
 			.sum();
 
 		double criticalMultiplier = calculateCriticalMultiplierBase(loadout) + criticalDamageBonus;
+		dpsDetails.getDamageDetailsRecord(damageType).setCriticalDamagePerShot(criticalMultiplier);
 		double damageCritical = baseDamage * criticalMultiplier;
 
 		log.debug("Critical damage: {}", damageCritical);

@@ -1,5 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.Category;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -7,12 +10,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
 import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 public class LegendaryEffectsManagerTest extends BaseTestClass
@@ -37,7 +39,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon() throws IOException
+	public void addingLegendaryEffect_ToWeapon() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -48,7 +50,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void addingLegendaryEffect_ToWeapon_WithImmutableSlot() throws IOException
+	public void addingLegendaryEffect_ToWeapon_WithImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -66,7 +68,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithImmutableSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithImmutableSlot() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -77,14 +79,14 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 		RangedWeapon rangedWeapon = RangedWeapon.builder().legendaryEffects(legendaryEffectsMap).build();
 		loadout.setWeapon(rangedWeapon);
 
-		legendaryEffectManager.removeLegendaryEffect(ANTIARMOUR, loadout.getWeapon(), loadout);
+		legendaryEffectManager.removeLegendaryEffect(StarType._1STAR, loadout.getWeapon(), loadout);
 
 		assertTrue("Loadout weapon effect has not been changed.",
 			loadout.getWeapon().getLegendaryEffects().containsKey(legendaryEffect));
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon() throws IOException
+	public void removingLegendaryEffect_FromWeapon() throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 		weaponManager.setWeapon(_10MMPISTOL, loadout);
@@ -93,7 +95,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 		assertTrue("Loadout weapon has 1 legendary effect.",
 			loadout.getWeapon().getLegendaryEffects().size() == 1);
 
-		legendaryEffectManager.removeLegendaryEffect(ANTIARMOUR, loadout.getWeapon(), loadout);
+		legendaryEffectManager.removeLegendaryEffect(StarType._1STAR, loadout.getWeapon(), loadout);
 
 		assertTrue("Loadout weapon has 1 legendary effect.",
 			loadout.getWeapon().getLegendaryEffects().isEmpty());
@@ -154,7 +156,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithNullSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithNullSlot()
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -171,7 +173,7 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 	}
 
 	@Test
-	public void removingLegendaryEffect_FromWeapon_WithNullSlot_ImmutableSlot() throws IOException
+	public void removingLegendaryEffect_FromWeapon_WithNullSlot_ImmutableSlot()
 	{
 		Loadout loadout = loadoutManager.getLoadout(1);
 
@@ -187,4 +189,51 @@ public class LegendaryEffectsManagerTest extends BaseTestClass
 			loadout.getWeapon().getLegendaryEffects().size() == 1);
 	}
 
+	@Test
+	public void getAvailableLegendaryEffects() throws IOException
+	{
+		List<LegendaryEffect> effects = legendaryEffectManager.getAvailableLegendaryEffects(null, null);
+
+		boolean containsMultipleStarTypes = effects.stream().map(LegendaryEffect::starType).distinct().count() > 1;
+		boolean containsMultipleCategories = effects.stream().map(LegendaryEffect::categories).distinct().count() > 1;
+
+		assertTrue("Contains multiple star types", containsMultipleStarTypes);
+		assertTrue("Contains multiple categories", containsMultipleCategories);
+	}
+
+	@Test
+	public void getAvailableLegendaryEffects_WithStarType() throws IOException
+	{
+		List<LegendaryEffect> effects = legendaryEffectManager.getAvailableLegendaryEffects(StarType._1STAR, null);
+
+		boolean containsMultipleStarTypes = effects.stream().map(LegendaryEffect::starType).distinct().count() == 1;
+		boolean containsMultipleCategories = effects.stream().map(LegendaryEffect::categories).distinct().count() > 1;
+
+		assertTrue("Contains one star type", containsMultipleStarTypes);
+		assertTrue("Contains multiple categories", containsMultipleCategories);
+	}
+
+	@Test
+	public void getAvailableLegendaryEffects_WithCategory() throws IOException
+	{
+		List<LegendaryEffect> effects = legendaryEffectManager.getAvailableLegendaryEffects(null, Category.MELEE_WEAPONS);
+
+		boolean containsMultipleStarTypes = effects.stream().map(LegendaryEffect::starType).distinct().count() > 1;
+		boolean containsMultipleCategories = effects.stream().map(LegendaryEffect::categories).distinct().count() == 1;
+
+		assertTrue("Contains multiple star type", containsMultipleStarTypes);
+		assertTrue("Contains one category", containsMultipleCategories);
+	}
+
+	@Test
+	public void getAvailableLegendaryEffects_WithStarType_WithCategory() throws IOException
+	{
+		List<LegendaryEffect> effects = legendaryEffectManager.getAvailableLegendaryEffects(StarType._1STAR, Category.ARMOUR);
+
+		boolean containsMultipleStarTypes = effects.stream().map(LegendaryEffect::starType).distinct().count() == 1;
+		boolean containsMultipleCategories = effects.stream().map(LegendaryEffect::categories).distinct().count() == 1;
+
+		assertTrue("Contains one star type", containsMultipleStarTypes);
+		assertTrue("Contains one category", containsMultipleCategories);
+	}
 }

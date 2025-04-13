@@ -15,7 +15,8 @@ public enum ArmourSlot
 	RIGHT_ARM(ArmourPiece.ARMS),
 	LEFT_LEG(ArmourPiece.LEGS),
 	RIGHT_LEG(ArmourPiece.LEGS),
-	OTHER(ArmourPiece.OTHER);
+	OTHER(ArmourPiece.OTHER),
+	ALL(ArmourPiece.ALL);
 
 	/** The slot where the armour may be assigned to. */
 	private final ArmourPiece armourPiece;

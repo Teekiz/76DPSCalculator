@@ -1,5 +1,6 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.loadoutcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.MutationDTO;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static Tekiz._DPSCalculator._DPSCalculator.controller.util.ControllerUtility.sanitizeString;
 
 @Slf4j
 @RestController
@@ -45,24 +48,20 @@ public class MutationController
 
 	@Operation(summary = "Get mutation in loadout.", description = "Retrieves all mutations within a loadout provided by the loadoutID")
 	@GetMapping("/getMutations")
-	public ResponseEntity<List<MutationDTO>> getMutations(@RequestParam int loadoutID) throws IOException
+	public ResponseEntity<List<MutationDTO>> getMutations(@RequestParam int loadoutID)
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
-		if (loadout.getPerks() == null)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.EMPTY_LIST);
-		}
 		return ResponseEntity.ok(mutationMapper.convertAllToDTO(loadout.getMutations()));
 	}
 
 	@Operation(summary = "Add a mutation to a loadout.", description = "Adds a mutation to the provided loadoutID using the consumable ID")
 	@PostMapping("/addMutation")
-	public ResponseEntity<String> addMutation(@RequestParam int loadoutID, @RequestParam String mutationID) throws IOException
+	public ResponseEntity<String> addMutation(@RequestParam int loadoutID, @RequestParam String mutationID) throws IOException, ResourceNotFoundException
 	{
 		log.debug("Add mutation called for mutation: {}.", mutationID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		mutationManager.addMutation(mutationID, loadout);
-		return ResponseEntity.ok(mutationID + " has been added to your loadout.");
+		return ResponseEntity.ok(sanitizeString(mutationID) + " has been added to your loadout.");
 	}
 
 	@Operation(summary = "Removes a mutation from a loadout.", description = "Removes a mutation from the provided loadoutID using the mutation ID")
@@ -71,7 +70,7 @@ public class MutationController
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		mutationManager.removeMutation(mutationID, loadout);
-		return ResponseEntity.ok(mutationID + " has been removed from your loadout.");
+		return ResponseEntity.ok(sanitizeString(mutationID) + " has been removed from your loadout.");
 	}
 
 	@Operation(summary = "Gets all available mutations.", description = "Retrieves a list of all available mutations.")

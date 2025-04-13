@@ -4,6 +4,7 @@
     "armourType" : "ARMOUR",
     "armourPiece" : "TORSO",
     "armourSet" : "WOOD",
+    "armourClassification" : "LIGHT",
     "armourResistance" :
     {
         "1": { "damageResistance": 7, "energyResistance": 3, "radiationResistance": 0, "cryoResistance": 0 },
@@ -12,5 +13,18 @@
         "25": {"damageResistance": 28, "energyResistance": 7, "radiationResistance": 0, "cryoResistance": 0},
         "35": {"damageResistance": 37, "energyResistance": 8, "radiationResistance": 0, "cryoResistance": 0},
         "45": { "damageResistance": 45, "energyResistance": 9, "radiationResistance": 0, "cryoResistance": 0}
+    },
+    "legendaryEffects" : {},
+    "modifications" : {
+      "MATERIAL" : {
+        "acceptedModType" : "MATERIAL",
+        "canSlotBeChanged" : true,
+        "availableInSlot" : ["BOILEDLEATHERCHEST"]
+      },
+      "MISCELLANEOUS" : {
+        "acceptedModType" : "MISCELLANEOUS",
+        "canSlotBeChanged" : true,
+        "availableInSlot" : ["CUSHIONED"]
+      }
     }
 }

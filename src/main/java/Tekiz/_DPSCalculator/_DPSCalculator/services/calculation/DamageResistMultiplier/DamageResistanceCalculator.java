@@ -8,7 +8,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,7 +58,7 @@ public class DamageResistanceCalculator
 					(resistance * (1 - getArmourPenetration(loadout, dpsDetails))), 0.365))
 		);
 
-		dpsDetails.setDamageResistMultiplier(damageResistMultiplier);
+		dpsDetails.getDamageDetailsRecord(damageType).setDamageResistMultiplier(damageResistMultiplier);
 
 		return damage * damageResistMultiplier;
 	}

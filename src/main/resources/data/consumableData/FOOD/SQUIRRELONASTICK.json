@@ -1,0 +1,9 @@
+{
+    "name" : "Squirrel on a stick",
+    "consumableType" : "FOOD",
+    "addictionType" : "NONE",
+    "modifierSource" : "CONSUMABLE_MEAT",
+    "effects" : {
+        "SPECIAL_AGILITY" : 3
+    }
+}

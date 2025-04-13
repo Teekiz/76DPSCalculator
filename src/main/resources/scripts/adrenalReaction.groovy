@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout
 import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
 
-class adrenalReaction extends Script
+class AdrenalReaction extends Script
 {
     def run(Loadout loadout) {
         double hpPercentage = loadout.player.healthPercentage

@@ -1,27 +1,42 @@
  {
     "name" : "10mm pistol",
     "weaponType" : "PISTOL",
-    "damageType" : "PHYSICAL",
     "weaponDamageByLevel" :
     {
-        "1" : 15.0,
-        "15" : 18.0,
-        "25" : 21.0,
-        "35" : 24.0,
-        "45" : 28.0
+        "1" : [
+          {"damageType" : "PHYSICAL", "damage" :  15.0, "overTime" :  0}
+        ],
+        "15" : [
+          {"damageType" : "PHYSICAL", "damage" :  18.0, "overTime" :  0}
+        ],
+        "25" : [
+          {"damageType" : "PHYSICAL", "damage" :  21.0, "overTime" :  0}
+        ],
+        "35" : [
+          {"damageType" : "PHYSICAL", "damage" :  24.0, "overTime" :  0}
+        ],
+        "45" : [
+          {"damageType" : "PHYSICAL", "damage" :  28.0, "overTime" :  0}
+        ]
     },
     "apCost" : 20,
-    "attackSpeed" : 0.67,
-    "criticalBonus" : 100,
-    "ammo" : "10mm",    
+    "criticalBonus" : 1.0,
     "magazineSize" : 12,
     "fireRate" : 43,
     "range" : 120,
     "accuracy" : 63,
-    "projectileCount" : 1,
     "rangedPenalty" : -50,
     "reloadTime" : 1.97,
-    "attackDelay" : 0.23,
     "legendaryEffects" : {},
-    "receiver" : "AUTOMATIC"
+    "modifications" : {
+      "RECEIVER" : {
+        "defaultModification": "AUTOMATIC",
+        "acceptedModType": "RECEIVER",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "AUTOMATIC",
+          "CALIBRATE"
+        ]
+      }
+    }
 }

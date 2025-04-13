@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.events;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
+import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.SpecialDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.PerkManager;
@@ -36,7 +37,7 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 	}
 
 	@Test
-	public void testSingleSpecial() throws IOException
+	public void testSingleSpecial() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testSingleSpecial in SpecialsEventChangedTest.", System.lineSeparator());
 		//setting the value to 4.
@@ -59,7 +60,7 @@ public class SpecialsEventsChangedTest extends BaseTestClass
 	}
 
 	@Test
-	public void testAllSpecials() throws IOException
+	public void testAllSpecials() throws IOException, ResourceNotFoundException
 	{
 		log.debug("{}Running test - testAllSpecials in SpecialsEventChangedTest.", System.lineSeparator());
 		//setting the value to 4.

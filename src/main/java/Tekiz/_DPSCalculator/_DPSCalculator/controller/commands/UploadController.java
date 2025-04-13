@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.controller.commandcontrollers;
+package Tekiz._DPSCalculator._DPSCalculator.controller.commands;
 
 import Tekiz._DPSCalculator._DPSCalculator.util.upload.LocalToDBUploader;
 import io.swagger.v3.oas.annotations.Operation;

@@ -32,11 +32,14 @@ public class ModificationSlot<T extends Modification>
 	/**
 	 * A method used to switch out the current modification in this slot if the slot can be changed and the alias is within the permitted list.
 	 * @param newModification The new modification to replace the current modification.
+	 * @return {@code true} if the modification was successful. Returns {@code false} if the slot cannot be changed or the mod is an accepted mod type.
 	 */
-	public void changeCurrentModification(T newModification){
+	public boolean changeCurrentModification(T newModification){
 		if (canSlotBeChanged && newModification != null && newModification.modType().equals(newModification.modType())
 			&& availableInSlot.contains(newModification.alias())){
 			currentModification = newModification;
+			return true;
 		}
+		return false;
 	}
 }

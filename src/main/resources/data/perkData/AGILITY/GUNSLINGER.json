@@ -9,7 +9,7 @@
     },
     "description" : "Your non-automatic pistols now do +10/15/20% more damage.",
     "modifierSource" : "PERK",
-    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().receiverType() == #ReceiverType.SEMIAUTOMATIC",
+    "conditionString" : "#weapon.getWeaponType() == #WeaponType.PISTOL && #weapon.getReceiver().getCurrentModification().modSubType() == #ModSubType.SEMIAUTOMATIC",
     "effects" :
     {
       "1" :

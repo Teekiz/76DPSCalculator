@@ -1,0 +1,13 @@
+{
+    "name" : "Vital",
+    "description" : "+50% Critical Damage",
+    "modifierSource" : "LEGENDARY_EFFECT",
+    "categories" : [
+        "MELEE_WEAPONS",
+        "RANGED_WEAPONS"
+    ],
+    "starType" : "_2STAR",
+    "effects" : {
+        "CRITICAL" : 0.5
+    }
+}

@@ -31,6 +31,11 @@ public class EquippedArmour
 	 */
 	public void addArmour(Armour armour)
 	{
+		//if the armour has been set in the wrong slot, the armour cannot be added
+		if (!armour.getArmourPiece().equals(armour.armourSlot.getArmourPiece())){
+			return;
+		}
+
 		removeArmour(armour.armourType, armour.armourSlot);
 
 		switch (armour)

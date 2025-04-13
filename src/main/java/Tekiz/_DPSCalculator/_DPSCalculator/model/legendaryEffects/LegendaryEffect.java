@@ -62,6 +62,21 @@ public record LegendaryEffect(@Id
 						 @ValueConverter(value = ModifiersAdapter.ModifiersConverter.class)
 						 HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier, Keyable
 {
+
+	/**
+	 * A method used to compare the current legendaryEffect and the object it will be applied to.
+	 * @param legendaryEffectObject The object this effect will be applied to.
+	 * @return {@code true} if the legendary effect can be applied to provided effect.
+	 */
+	public boolean doesLegendaryObjectMatchType(LegendaryEffectObject legendaryEffectObject){
+		for (Category category : categories){
+			if (category.getClassType().isInstance(legendaryEffectObject)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public boolean equals(Object object)
 	{
