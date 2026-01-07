@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.scripts;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import groovy.lang.GroovyShell;
@@ -45,7 +45,7 @@ public class GroovyScriptService
 	 * @param loadout The arguments to be passed to the method.
 	 * @return The result of the method invocation, or an empty map if an error occurs.
 	 */
-	public Map<ModifierTypes, ModifierValue<?>> runMethod(File scriptFile, Loadout loadout) throws IOException {
+	public Map<ModifierType, ModifierValue<?>> runMethod(File scriptFile, Loadout loadout) throws IOException {
 		Script script = parseFile(scriptFile);
 		if (script == null) {
 			log.error("Failed to parse script file: {}", scriptFile.getAbsolutePath());
@@ -56,7 +56,7 @@ public class GroovyScriptService
 			Object result = script.invokeMethod("run", loadout);
 
 			if (result instanceof Map.Entry<?, ?> entry) {
-				if (entry.getKey() instanceof ModifierTypes key && entry.getValue() instanceof ModifierValue<?> value) {
+				if (entry.getKey() instanceof ModifierType key && entry.getValue() instanceof ModifierValue<?> value) {
 					return Map.of(key, value);
 				} else {
 					log.error("Script returned invalid types: Key={}, Value={}",
@@ -64,8 +64,8 @@ public class GroovyScriptService
 				}
 			} else if (result instanceof Map<?, ?> map) {
 				return map.entrySet().stream()
-					.filter(e -> e.getKey() instanceof ModifierTypes && e.getValue() instanceof ModifierValue<?>)
-					.collect(Collectors.toMap(e -> (ModifierTypes) e.getKey(), e -> (ModifierValue<?>) e.getValue()));
+					.filter(e -> e.getKey() instanceof ModifierType && e.getValue() instanceof ModifierValue<?>)
+					.collect(Collectors.toMap(e -> (ModifierType) e.getKey(), e -> (ModifierValue<?>) e.getValue()));
 			} else {
 				log.error("Script returned an unsupported type: {}", result.getClass().getName());
 			}

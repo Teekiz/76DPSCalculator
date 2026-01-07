@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierBoost;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionService;
@@ -28,7 +28,7 @@ public class ModifierBoostService
 	 */
 	/**
 	 * A method that used to identify boosts. Used by {@link ModifierExpressionService} if
-	 * a {@link Modifier} {@link ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED".
+	 * a {@link Modifier} {@link ModifierType} is "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param modifiers The {@link List} of {@link Modifier}'s.
 	 * @return A {@link HashMap} of {@link ModifierSource} and {@link Number} containing the boost types and the boosted values.
 	 */
@@ -39,8 +39,8 @@ public class ModifierBoostService
 		for (Modifier modifier : modifiers)
 		{
 			if (modifier.effects() != null
-				&& modifier.effects().containsKey(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS)
-				&& modifier.effects().get(ModifierTypes.PRIORITY_AFFECTS_MODIFIERS).getValue() instanceof ModifierBoost boostedValue) {
+				&& modifier.effects().containsKey(ModifierType.PRIORITY_AFFECTS_MODIFIERS)
+				&& modifier.effects().get(ModifierType.PRIORITY_AFFECTS_MODIFIERS).getValue() instanceof ModifierBoost boostedValue) {
 				modifierBoosts.put(boostedValue.getAffectedSourceType(), boostedValue.getValueChange());
 			}
 		}
@@ -55,13 +55,13 @@ public class ModifierBoostService
 	 * @param modifierBoosts A {@link HashMap} containing all applicable boosts.
 	 * @return A new {@link HashMap} with all boosts applied (if applicable).
 	 */
-	public Map<ModifierTypes, ModifierValue<Number>> checkBoost(Modifier modifier,  HashMap<ModifierSource, Number> modifierBoosts)
+	public Map<ModifierType, ModifierValue<Number>> checkBoost(Modifier modifier, HashMap<ModifierSource, Number> modifierBoosts)
 	{
 		if (modifier.effects() == null){
 			return null;
 		}
 		//returns only filtered effects.
-		Map<ModifierTypes, ModifierValue<Number>> filteredEffects = modifier.effects()
+		Map<ModifierType, ModifierValue<Number>> filteredEffects = modifier.effects()
 			.entrySet()
 			.stream()
 			.filter(entry -> entry.getValue().getValue() instanceof Number)
@@ -71,7 +71,7 @@ public class ModifierBoostService
 			return filteredEffects;
 		}
 
-		Map<ModifierTypes, ModifierValue<Number>> effectsWithBoost = new HashMap<>();
+		Map<ModifierType, ModifierValue<Number>> effectsWithBoost = new HashMap<>();
 		Number valueChange = modifierBoosts.get(modifier.modifierSource());
 
 		filteredEffects.forEach((key, value) -> {

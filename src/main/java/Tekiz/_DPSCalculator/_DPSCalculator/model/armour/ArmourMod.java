@@ -1,9 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.armour;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -43,5 +42,5 @@ public record ArmourMod(@Id
 						@JsonSerialize(using = ModifiersAdapter.ModifiersSerializer.class)
 						@JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
 						@ValueConverter(value = ModifiersAdapter.ModifiersConverter.class)
-						HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modification
+						HashMap<ModifierType, ModifierValue<?>> effects) implements Modification
 {}

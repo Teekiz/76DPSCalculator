@@ -18,6 +18,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,7 +74,12 @@ public class WeaponController
 	@GetMapping("/getAvailableWeapons")
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
-		return ResponseEntity.ok(weaponMapper.convertAllToNameDTO(weaponLoaderService.loadAllData("Weapon", Weapon.class, weaponFactory)));
+		log.debug("Get available weapons called.");
+		List<Weapon> availableWeapons = weaponLoaderService.loadAllData("Weapon", Weapon.class, weaponFactory);
+		//todo - something is causing this to become null, could be due to weapon mods
+		List<WeaponNameDTO> availableWeaponsNames = weaponMapper.convertAllToNameDTO(availableWeapons.stream().filter(Objects::nonNull).toList());
+		log.debug("Available weapons requested: {}", availableWeaponsNames.stream().map(WeaponNameDTO::getName).toList());
+		return ResponseEntity.ok(availableWeaponsNames);
 	}
 	@Operation(summary = "Get all the details of a weapon", description = "Retrieves the weapon details of a weapon matching the weapon ID.")
 	@GetMapping("/getWeaponDetails")

@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
@@ -46,7 +46,7 @@ public class ActionPointsCalculator
 		double baseAPPerAttack = weapon.getApCost();
 
 		List<Double> apBonuses = new ArrayList<>(modifierAggregationService
-			.filterEffects(loadout, ModifierTypes.AP_COST, dpsDetails)
+			.filterEffects(loadout, ModifierType.AP_COST, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)

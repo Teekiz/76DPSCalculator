@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.binding;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
@@ -28,7 +28,7 @@ public class BaseBinding
 		binding.setVariable("ModSubType", ModSubType.class);
 		binding.setVariable("Special", Specials.class);
 		binding.setVariable("AttackType", AttackType.class);
-		binding.setVariable("ModifierType", ModifierTypes.class);
+		binding.setVariable("ModifierType", ModifierType.class);
 		return binding;
 	}
 }

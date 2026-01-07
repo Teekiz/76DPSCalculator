@@ -4,8 +4,9 @@ import Tekiz._DPSCalculator._DPSCalculator.model.statusEffects.StatusEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import lombok.Getter;
 
+/** The type of modification applied to the calculation (e.g. multiplication damage, base damage.)*/
 @Getter
-public enum ModifierTypes
+public enum ModifierType
 {
 	DAMAGE_BASE(Double.class, "Base damage"),
 	DAMAGE_ADDITIVE(Double.class, "Bonus damage"),
@@ -62,7 +63,7 @@ public enum ModifierTypes
 	private final Boolean inverseValue;
 
 	//if only the value type and display name is important
-	ModifierTypes(Class<?> valueType, String displayName)
+	ModifierType(Class<?> valueType, String displayName)
 	{
 		this.valueType = valueType;
 		this.displayName = displayName;
@@ -70,7 +71,7 @@ public enum ModifierTypes
 	}
 
 	//if the value should be displayed inversely (i.e. +20% becomes -20%).
-	ModifierTypes(Class<?> valueType, String displayName, Boolean inverseValue)
+	ModifierType(Class<?> valueType, String displayName, Boolean inverseValue)
 	{
 		this.valueType = valueType;
 		this.displayName = displayName;
@@ -78,7 +79,7 @@ public enum ModifierTypes
 	}
 
 	//if the type is only important (i.e. the modifier is for internal use only)
-	ModifierTypes(Class<?> valueType)
+	ModifierType(Class<?> valueType)
 	{
 		this.valueType = valueType;
 		this.displayName = null;

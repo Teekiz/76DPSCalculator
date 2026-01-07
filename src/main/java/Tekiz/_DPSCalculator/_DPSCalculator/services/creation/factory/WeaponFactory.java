@@ -63,6 +63,7 @@ public class WeaponFactory implements Factory<Weapon>
 		try
 		{
 			JsonNode weaponTypeNode = weaponNode.get("weaponType");
+			log.debug("weaponNode: {}", weaponNode.get("name"));
 			if (weaponTypeNode == null || !weaponTypeNode.isTextual()) {
 				//an error log is not thrown as this will be expected if the loadout has been deserialized with no set weaponNode.
 				log.warn("Cannot deserialize node. WeaponType is missing or null.");

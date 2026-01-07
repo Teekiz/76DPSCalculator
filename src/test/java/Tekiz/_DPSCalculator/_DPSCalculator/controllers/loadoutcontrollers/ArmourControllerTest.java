@@ -11,7 +11,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -615,8 +615,8 @@ public class ArmourControllerTest
 	public void getArmourModDetails() throws Exception
 	{
 		log.debug("{}Running test - getArmourModDetails in ArmourControllerTest.", System.lineSeparator());
-		HashMap<ModifierTypes, ModifierValue<?>> effects = new HashMap<>();
-		effects.put(ModifierTypes.RELOADSPEED, new ModifierValue<>(ModifierTypes.RELOADSPEED, 0.55));
+		HashMap<ModifierType, ModifierValue<?>> effects = new HashMap<>();
+		effects.put(ModifierType.RELOADSPEED, new ModifierValue<>(ModifierType.RELOADSPEED, 0.55));
 		ArmourMod armourMod = new ArmourMod("1", "MATMOD1", "TEST1", ModType.MATERIAL, null, null, null, null, effects);
 
 		when(armourLoaderService.loadData("1", ArmourMod.class, null)).thenReturn(armourMod);

@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.parser;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
@@ -76,12 +76,12 @@ public class ParsingService
 
 	/**
 	 * Evaluates a given SpEL {@link Expression} in the context of the player's current loadout,
-	 * and returns the result as a {@link Map.Entry} of {@link ModifierTypes} and {@link Number}.
+	 * and returns the result as a {@link Map.Entry} of {@link ModifierType} and {@link Number}.
 	 *
 	 * @param expression The SpEL {@link Expression} to evaluate.
 	 * @return The result of the expression evaluation as a {@link Map.Entry}, or {@code null} if evaluation fails.
 	 */
-	public Map.Entry<ModifierTypes, ModifierValue<?>> parseContext(Expression expression, Loadout loadout)
+	public Map.Entry<ModifierType, ModifierValue<?>> parseContext(Expression expression, Loadout loadout)
 	{
 		try
 		{

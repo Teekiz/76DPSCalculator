@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyTags;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
@@ -35,7 +35,7 @@ public class BaseEvaluationContext
 		context.setVariable("ModType", ModType.class);
 		context.setVariable("ModSubType", ModSubType.class);
 		context.setVariable("Special", Specials.class);
-		context.setVariable("ModifierType", ModifierTypes.class);
+		context.setVariable("ModifierType", ModifierType.class);
 		context.setVariable("ModifierSource", ModifierSource.class);
 		context.setVariable("MapUtil", MapUtil.class);
 		context.setVariable("AttackType", AttackType.class);

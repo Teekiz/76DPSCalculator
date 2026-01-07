@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers;
 public enum ModifierSource
 {
 	/*
-		These are used in conjunction with ModifierTypes.MODIFIES_MODIFIERS:
+		These are used in conjunction with ModifierType.MODIFIES_MODIFIERS:
 		e.g. Strange in numbers will affect MUTATION_POSITIVE modifiers.
 	 */
 

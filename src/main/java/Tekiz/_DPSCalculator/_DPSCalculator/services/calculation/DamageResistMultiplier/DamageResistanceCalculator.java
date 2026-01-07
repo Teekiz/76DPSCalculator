@@ -3,7 +3,7 @@ package Tekiz._DPSCalculator._DPSCalculator.services.calculation.DamageResistMul
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.enemy.Enemy;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
@@ -81,7 +81,7 @@ public class DamageResistanceCalculator
 
 	private double getArmourPenetration(Loadout loadout, DPSDetails dpsDetails)
 	{
-		return modifierAggregationService.filterEffects(loadout, ModifierTypes.PENETRATION, dpsDetails)
+		return modifierAggregationService.filterEffects(loadout, ModifierType.PENETRATION, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)

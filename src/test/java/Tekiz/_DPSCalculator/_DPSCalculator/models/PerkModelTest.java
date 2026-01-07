@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.models;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
@@ -49,14 +49,14 @@ public class PerkModelTest extends BaseTestClass
 	{
 		Expression expression = expressionParser.parseExpression("2 > 1"); //false
 
-		HashMap<ModifierTypes, ModifierValue<?>> effectOne = new HashMap<>();
-		effectOne.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 2.0));
-		HashMap<ModifierTypes, ModifierValue<?>> effectTwo = new HashMap<>();
-		effectTwo.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 3.0));
-		HashMap<ModifierTypes, ModifierValue<?>> effectThree = new HashMap<>();
-		effectThree.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 4.0));
+		HashMap<ModifierType, ModifierValue<?>> effectOne = new HashMap<>();
+		effectOne.put(ModifierType.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierType.DAMAGE_ADDITIVE, 2.0));
+		HashMap<ModifierType, ModifierValue<?>> effectTwo = new HashMap<>();
+		effectTwo.put(ModifierType.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierType.DAMAGE_ADDITIVE, 3.0));
+		HashMap<ModifierType, ModifierValue<?>> effectThree = new HashMap<>();
+		effectThree.put(ModifierType.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierType.DAMAGE_ADDITIVE, 4.0));
 
-		HashMap<Integer, HashMap<ModifierTypes, ModifierValue<?>>> effects = new HashMap<>();
+		HashMap<Integer, HashMap<ModifierType, ModifierValue<?>>> effects = new HashMap<>();
 		effects.put(1, effectOne);
 		effects.put(2, effectTwo);
 		effects.put(3, effectThree);

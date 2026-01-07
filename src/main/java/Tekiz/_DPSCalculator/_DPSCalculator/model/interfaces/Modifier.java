@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.interfaces;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -48,11 +48,11 @@ public interface Modifier extends Serializable
 
 	/**
 	 * Retrieves the effects associated with the modifier. The effects are defined as a map
-	 * of {@link ModifierTypes} to their corresponding values ({@link Integer}, {@link Double} or {@link String} if the
-	 * {@code ModifierTypes} is "ADDITIONAL_CONTEXT_REQUIRED".)
+	 * of {@link ModifierType} to their corresponding values ({@link Integer}, {@link Double} or {@link String} if the
+	 * {@code ModifierType} is "ADDITIONAL_CONTEXT_REQUIRED".)
 	 *
-	 * @return A {@link HashMap} of {@link ModifierTypes} to their corresponding values,
+	 * @return A {@link HashMap} of {@link ModifierType} to their corresponding values,
 	 *         where the values are of type {@code V}.
 	 */
-	HashMap<ModifierTypes, ModifierValue<?>> effects();
+	HashMap<ModifierType, ModifierValue<?>> effects();
 }

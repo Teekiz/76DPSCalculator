@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
@@ -61,7 +61,7 @@ public class CriticalDamageBonusCalculator
 	 * @return The critical bonus damage.
 	 */
 	private double getVATSCriticalBonus(Loadout loadout, double baseDamage, DamageType damageType, DPSDetails dpsDetails){
-		double criticalDamageBonus = modifierAggregationService.filterEffects(loadout, ModifierTypes.CRITICAL, dpsDetails)
+		double criticalDamageBonus = modifierAggregationService.filterEffects(loadout, ModifierType.CRITICAL, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)
@@ -113,7 +113,7 @@ public class CriticalDamageBonusCalculator
 	{
 		//todo - implement % change to refresh recharge rate
 		double vatsCriticalConsumptionRatePerShot = modifierAggregationService
-			.filterEffects(loadout, ModifierTypes.CRITICAL_CONSUMPTION, dpsDetails)
+			.filterEffects(loadout, ModifierType.CRITICAL_CONSUMPTION, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Integer)
 			.map(value -> (Integer) value)

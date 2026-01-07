@@ -2,7 +2,7 @@ package scripts
 
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout
 import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 
 class Unyielding extends Script
 {
@@ -23,12 +23,12 @@ class Unyielding extends Script
         }?.value
 
         def unyieldingMap = [:]
-        List<Map.Entry> mapEntries = [MapUtil.createEntry(ModifierTypes.SPECIAL_STRENGTH, value.intValue()),
-                                      MapUtil.createEntry(ModifierTypes.SPECIAL_PERCEPTION, value.intValue()),
-                                      MapUtil.createEntry(ModifierTypes.SPECIAL_CHARISMA, value.intValue()),
-                                      MapUtil.createEntry(ModifierTypes.SPECIAL_INTELLIGENCE, value.intValue()),
-                                      MapUtil.createEntry(ModifierTypes.SPECIAL_AGILITY, value.intValue()),
-                                      MapUtil.createEntry(ModifierTypes.SPECIAL_LUCK, value.intValue())]
+        List<Map.Entry> mapEntries = [MapUtil.createEntry(ModifierType.SPECIAL_STRENGTH, value.intValue()),
+                                      MapUtil.createEntry(ModifierType.SPECIAL_PERCEPTION, value.intValue()),
+                                      MapUtil.createEntry(ModifierType.SPECIAL_CHARISMA, value.intValue()),
+                                      MapUtil.createEntry(ModifierType.SPECIAL_INTELLIGENCE, value.intValue()),
+                                      MapUtil.createEntry(ModifierType.SPECIAL_AGILITY, value.intValue()),
+                                      MapUtil.createEntry(ModifierType.SPECIAL_LUCK, value.intValue())]
         mapEntries.each { entry ->
             unyieldingMap[entry.key] = entry.value
         }

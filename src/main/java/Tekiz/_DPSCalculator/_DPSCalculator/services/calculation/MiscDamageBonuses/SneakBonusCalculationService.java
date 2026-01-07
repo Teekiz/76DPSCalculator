@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
@@ -28,7 +28,7 @@ public class SneakBonusCalculationService
 	 * @return A {@link Double} value of the loadouts bonus sneak damage.
 	 */
 	public double getSneakDamageBonus(Loadout loadout, WeaponDamage weaponDamage, DPSDetails dpsDetails){
-		double sneakBonus = modifierAggregationService.filterEffects(loadout, ModifierTypes.SNEAK_DAMAGE, dpsDetails)
+		double sneakBonus = modifierAggregationService.filterEffects(loadout, ModifierType.SNEAK_DAMAGE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)

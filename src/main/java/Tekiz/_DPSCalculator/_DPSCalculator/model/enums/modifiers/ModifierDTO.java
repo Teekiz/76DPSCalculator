@@ -6,7 +6,7 @@ import lombok.Getter;
 public class ModifierDTO<T>
 {
 	@SuppressWarnings("unchecked")
-	public ModifierDTO(ModifierTypes type, ModifierValue<?> modifierValue){
+	public ModifierDTO(ModifierType type, ModifierValue<?> modifierValue){
 		this.type = type;
 		this.value = (T) modifierValue.getValue();
 
@@ -36,7 +36,7 @@ public class ModifierDTO<T>
 		this.userDescription = type.getDisplayName() + ": " + prefix + valueStr + "%.";
 	}
 
-	ModifierTypes type;
+	ModifierType type;
 	T value;
 	String userDescription;
 }

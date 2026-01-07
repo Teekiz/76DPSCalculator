@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.OutgoingDamage;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
@@ -35,7 +35,7 @@ public class BaseDamageService
 			baseDamage = weaponDamage.damage();
 		}
 
-		double bonuses = modifierAggregationService.filterEffects(loadout, ModifierTypes.DAMAGE_BASE, dpsDetails)
+		double bonuses = modifierAggregationService.filterEffects(loadout, ModifierType.DAMAGE_BASE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)

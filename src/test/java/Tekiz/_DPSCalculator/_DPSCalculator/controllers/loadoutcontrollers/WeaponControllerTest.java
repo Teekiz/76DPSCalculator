@@ -2,7 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.controllers.loadoutcontrollers;
 
 import Tekiz._DPSCalculator._DPSCalculator.controller.loadouts.WeaponController;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -583,9 +583,9 @@ public class WeaponControllerTest
 	{
 		log.debug("{}Running test - getWeaponModDetails in WeaponControllerTest.", System.lineSeparator());
 
-		HashMap<ModifierTypes, ModifierValue<?>> modifiers = new HashMap<>();
-		modifiers.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 0.2));
-		modifiers.put(ModifierTypes.CRITICAL_CONSUMPTION, new ModifierValue<>(ModifierTypes.CRITICAL_CONSUMPTION, 55));
+		HashMap<ModifierType, ModifierValue<?>> modifiers = new HashMap<>();
+		modifiers.put(ModifierType.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierType.DAMAGE_ADDITIVE, 0.2));
+		modifiers.put(ModifierType.CRITICAL_CONSUMPTION, new ModifierValue<>(ModifierType.CRITICAL_CONSUMPTION, 55));
 
 		WeaponMod weaponMod = new WeaponMod("1", "Test", "Test", ModType.RECEIVER, ModSubType.NOT_APPLICABLE,
 			ModifierSource.WEAPON_MODIFICATION, null, modifiers);

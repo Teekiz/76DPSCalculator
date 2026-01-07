@@ -1,11 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Special;
-import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,16 +32,16 @@ public class SpecialBonusCalculationService
 	 */
 	public int getSpecialBonus(Specials special, Loadout loadout)
 	{
-		ModifierTypes modifierType;
+		ModifierType modifierType;
 		switch (special)
 		{
-			case STRENGTH -> modifierType = ModifierTypes.SPECIAL_STRENGTH;
-			case PERCEPTION -> modifierType = ModifierTypes.SPECIAL_PERCEPTION;
-			case ENDURANCE -> modifierType = ModifierTypes.SPECIAL_ENDURANCE;
-			case CHARISMA -> modifierType = ModifierTypes.SPECIAL_CHARISMA;
-			case INTELLIGENCE -> modifierType = ModifierTypes.SPECIAL_INTELLIGENCE;
-			case AGILITY -> modifierType = ModifierTypes.SPECIAL_AGILITY;
-			case LUCK -> modifierType = ModifierTypes.SPECIAL_LUCK;
+			case STRENGTH -> modifierType = ModifierType.SPECIAL_STRENGTH;
+			case PERCEPTION -> modifierType = ModifierType.SPECIAL_PERCEPTION;
+			case ENDURANCE -> modifierType = ModifierType.SPECIAL_ENDURANCE;
+			case CHARISMA -> modifierType = ModifierType.SPECIAL_CHARISMA;
+			case INTELLIGENCE -> modifierType = ModifierType.SPECIAL_INTELLIGENCE;
+			case AGILITY -> modifierType = ModifierType.SPECIAL_AGILITY;
+			case LUCK -> modifierType = ModifierType.SPECIAL_LUCK;
 			default -> {return 0;}
 		}
 

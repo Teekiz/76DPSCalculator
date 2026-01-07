@@ -7,7 +7,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.Limbs;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
@@ -166,8 +166,8 @@ public class CalculationServicesTest extends BaseTestClass
 		// based on this from the wiki: https://fallout.fandom.com/wiki/Damage_(Fallout_76)
 		//A semi-automatic rifle that deals 100 Physical WeaponDamage against a target with 200 (Physical) WeaponDamage Resist will deal 38 Physical WeaponDamage:
 
-		HashMap<ModifierTypes, ModifierValue<?>> map = new HashMap<>();
-		map.put(ModifierTypes.PENETRATION, new ModifierValue<>(ModifierTypes.PENETRATION, 0.36));
+		HashMap<ModifierType, ModifierValue<?>> map = new HashMap<>();
+		map.put(ModifierType.PENETRATION, new ModifierValue<>(ModifierType.PENETRATION, 0.36));
 
 		LegendaryEffect legendaryEffect = new LegendaryEffect("1", "testEffect", "", ModifierSource.LEGENDARY_EFFECT,
 			new ArrayList<>(), StarType._1STAR, null, map);

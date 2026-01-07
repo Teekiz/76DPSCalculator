@@ -1,11 +1,8 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PlayerBonuses;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,7 @@ public class MinorStatCalculationService
 	 */
 	public double calculateHealthPointBonuses(Loadout loadout)
 	{
-		return modifierAggregationService.filterEffects(loadout, ModifierTypes.HEALTH, null)
+		return modifierAggregationService.filterEffects(loadout, ModifierType.HEALTH, null)
 			.stream()
 			.filter(value -> value instanceof Double)
 			.map(value -> (Double) value)
@@ -48,7 +45,7 @@ public class MinorStatCalculationService
 	 * @return A {@link Double} value of the loadouts bonus health.
 	 */
 	public int calculateActionPointBonuses(Loadout loadout){
-		return modifierAggregationService.filterEffects(loadout, ModifierTypes.MAX_AP, null)
+		return modifierAggregationService.filterEffects(loadout, ModifierType.MAX_AP, null)
 			.stream()
 			.filter(value -> value instanceof Integer)
 			.map(value -> (Integer) value)

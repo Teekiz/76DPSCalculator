@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
@@ -34,7 +34,7 @@ import org.springframework.expression.Expression;
  * @param condition                 The condition required to use the modification.
  *                                  {@link ExpressionAdapter.ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
  *                                  is used to check the condition. If a condition string is not included, the modification will always be used.
- * @param effects                   The effects of the modification. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
+ * @param effects                   The effects of the modification. An effect consists of a {@link ModifierType} and a value ({@link Integer} or {@link Double}).
  *                                  If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of the modification. This will be used by the
  *                                  {@link ModifierExpressionService} to determine the appropriate value.
  */
@@ -53,5 +53,5 @@ public record WeaponMod(@Id
 						@JsonSerialize(using = ModifiersAdapter.ModifiersSerializer.class)
 						@JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
 						@ValueConverter(value = ModifiersAdapter.ModifiersConverter.class)
-						HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modification
+						HashMap<ModifierType, ModifierValue<?>> effects) implements Modification
 {}

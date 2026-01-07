@@ -2,9 +2,8 @@ package Tekiz._DPSCalculator._DPSCalculator.services.aggregation;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.ModifierDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
-import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
@@ -12,21 +11,19 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
 import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierScriptService;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * A service that retrieves and returns all known modifiers.
- * This service also applies values to "ADDITIONAL_CONTEXT_REQUIRED" {@link ModifierTypes} and retrieve all modifiers of a given type.
+ * This service also applies values to "ADDITIONAL_CONTEXT_REQUIRED" {@link ModifierType} and retrieve all modifiers of a given type.
  *
  */
 @Service
@@ -101,35 +98,35 @@ public class ModifierAggregationService
 
 	/**
 	 * A method that is used for to identify and apply {@link Modifier}'s
-	 * that have {@link ModifierTypes} "ADDITIONAL_CONTEXT_REQUIRED" or "SCRIPT".
-	 * @param modifiers The {@link List} that will be used to search for and apply {@link ModifierTypes} with "ADDITIONAL_CONTEXT_REQUIRED".
+	 * that have {@link ModifierType} "ADDITIONAL_CONTEXT_REQUIRED" or "SCRIPT".
+	 * @param modifiers The {@link List} that will be used to search for and apply {@link ModifierType} with "ADDITIONAL_CONTEXT_REQUIRED".
 	 * @param loadout The loadout the {@link Modifier}'s will be retrieved from.
 	 */
 	private void applyAdditionalContext(List<Modifier> modifiers, Loadout loadout)
 	{
 		for (Modifier modifier : modifiers) {
 
-			Map<ModifierTypes, ModifierValue<?>> effects = modifier.effects();
+			Map<ModifierType, ModifierValue<?>> effects = modifier.effects();
 
 			if (effects != null) {
 				// create a temporary list of keys to modify
-				List<ModifierTypes> keysToModify = new ArrayList<>();
+				List<ModifierType> keysToModify = new ArrayList<>();
 
 				effects.forEach((key, value) -> {
-					if (key == ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED || key == ModifierTypes.SCRIPT) {
+					if (key == ModifierType.ADDITIONAL_CONTEXT_REQUIRED || key == ModifierType.SCRIPT) {
 						keysToModify.add(key);
 					}
 				});
 
-				for (ModifierTypes key : keysToModify) {
-					if (key.equals(ModifierTypes.ADDITIONAL_CONTEXT_REQUIRED)){
-						Map.Entry<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+				for (ModifierType key : keysToModify) {
+					if (key.equals(ModifierType.ADDITIONAL_CONTEXT_REQUIRED)){
+						Map.Entry<ModifierType, ModifierValue<?>> additionalContextEntry =
 							modifierExpressionService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
 						if (additionalContextEntry != null) {
 							effects.put(additionalContextEntry.getKey(), additionalContextEntry.getValue());
 						}
-					} else if (key.equals(ModifierTypes.SCRIPT)) {
-						Map<ModifierTypes, ModifierValue<?>> additionalContextEntry =
+					} else if (key.equals(ModifierType.SCRIPT)) {
+						Map<ModifierType, ModifierValue<?>> additionalContextEntry =
 							modifierScriptService.getAdditionalContext(effects.get(key).getValue().toString(), loadout);
 						effects.putAll(additionalContextEntry);
 					}
@@ -140,13 +137,13 @@ public class ModifierAggregationService
 	}
 
 	/**
-	 * A method that filters out and returns all {@link ModifierTypes} of a given value.
-	 * @param loadout The {@link Loadout} that the {@link ModifierTypes} will be filtered from.
-	 * @param modifierTypes The {@link ModifierTypes} that be retrieved.
+	 * A method that filters out and returns all {@link ModifierType} of a given value.
+	 * @param loadout The {@link Loadout} that the {@link ModifierType} will be filtered from.
+	 * @param modifierType The {@link ModifierType} that be retrieved.
 	 * @return A {@link List} of {@link Number} or {@link Objects} that have been filtered from {@code modifiers}.
 	 */
 	@SuppressWarnings("unchecked")
-	public<T> List<T> filterEffects(Loadout loadout, ModifierTypes modifierTypes, DPSDetails dpsDetails)
+	public<T> List<T> filterEffects(Loadout loadout, ModifierType modifierType, DPSDetails dpsDetails)
 	{
 		//gets all the modifiers from the provided loadout.
 		List<Modifier> modifiers = getAllModifiers(loadout);
@@ -157,12 +154,12 @@ public class ModifierAggregationService
 
 		for (Modifier modifier : modifiers)
 		{
-			if (Number.class.isAssignableFrom(modifierTypes.getValueType())){
-				Map<ModifierTypes, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
+			if (Number.class.isAssignableFrom(modifierType.getValueType())){
+				Map<ModifierType, ModifierValue<Number>> effectsMap = modifierBoostService.checkBoost(modifier, boosts);
 
 				if (effectsMap != null)
 				{
-					effectsMap.computeIfPresent(modifierTypes, (key, value) -> {
+					effectsMap.computeIfPresent(modifierType, (key, value) -> {
 						effects.add((T) value.getValue());
 
 						if (dpsDetails != null){

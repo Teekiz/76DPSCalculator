@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ModifierMapper
 	 * @param entry The {@link Map.Entry} to be converted.
 	 * @return The {@link Map.Entry} represented as a DTO ({@link ModifierDTO}).
 	 */
-	public ModifierDTO<?> convertToModifierDTO(Map.Entry<ModifierTypes, ModifierValue<?>> entry){
+	public ModifierDTO<?> convertToModifierDTO(Map.Entry<ModifierType, ModifierValue<?>> entry){
 		return new ModifierDTO<>(entry.getKey(), entry.getValue());
 	}
 
@@ -26,7 +26,7 @@ public class ModifierMapper
 	 * @param modifiers A {@link HashMap} of modifiers to be converted.
 	 * @return A {@link List} of modifiers represented as a DTOs ({@link ModifierDTO}).
 	 */
-	public List<ModifierDTO<?>> convertAllModifiersToDTO(HashMap<ModifierTypes, ModifierValue<?>> modifiers){
+	public List<ModifierDTO<?>> convertAllModifiersToDTO(HashMap<ModifierType, ModifierValue<?>> modifiers){
 		return modifiers.entrySet().stream()
 			.map(this::convertToModifierDTO)
 			.collect(Collectors.toList());

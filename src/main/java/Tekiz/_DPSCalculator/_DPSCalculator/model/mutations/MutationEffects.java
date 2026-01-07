@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.mutations;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter.*;
@@ -26,7 +26,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * @param condition      The condition required to use the mutation. If the condition is not met, the effects will not be applied.
  *                       {@link ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
  *                       is used to check the condition. If a condition string is not included, the mutation effect will always be used.
- * @param effects        The effects of the mutation. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
+ * @param effects        The effects of the mutation. An effect consists of a {@link ModifierType} and a value ({@link Integer} or {@link Double}).
  *                       If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of mutation. This will be used by the
  *                       {@link ModifierExpressionService} to determine the appropriate value.
  */
@@ -38,4 +38,4 @@ public record MutationEffects(@JsonProperty("mutationName") String name,
 							  @JsonSerialize(using = ModifiersSerializer.class)
 							  @JsonDeserialize(using = ModifiersDeserializer.class)
 							  @ValueConverter(value = ModifiersConverter.class)
-							  HashMap<ModifierTypes, ModifierValue<?>> effects) implements Modifier {}
+							  HashMap<ModifierType, ModifierValue<?>> effects) implements Modifier {}

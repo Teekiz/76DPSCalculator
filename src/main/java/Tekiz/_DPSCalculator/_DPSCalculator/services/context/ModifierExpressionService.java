@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.parser.ParsingService;
@@ -35,12 +35,12 @@ public class ModifierExpressionService
 	}
 
 	/**
-	 * A method used to parse and apply a new {@link ModifierTypes} with a determined value.
+	 * A method used to parse and apply a new {@link ModifierType} with a determined value.
 	 * @param expressionString The expression of a modifier that requires additional context.
 	 * @param loadout  The loadout that will be used to check against the context expression.
-	 * @return A {@link Map.Entry} of a new {@link ModifierTypes} and a {@link Number} value.
+	 * @return A {@link Map.Entry} of a new {@link ModifierType} and a {@link Number} value.
 	 */
-	public Map.Entry<ModifierTypes, ModifierValue<?>> getAdditionalContext(String expressionString, Loadout loadout)
+	public Map.Entry<ModifierType, ModifierValue<?>> getAdditionalContext(String expressionString, Loadout loadout)
 	{
 		try
 		{
@@ -50,7 +50,7 @@ public class ModifierExpressionService
 		catch (Exception e)
 		{
 			log.error("Unable to parse expression: {}.", expressionString, e);
-			return new AbstractMap.SimpleEntry<>(ModifierTypes.ERROR_TYPE, new ModifierValue<>(ModifierTypes.ERROR_TYPE, "ERROR"));
+			return new AbstractMap.SimpleEntry<>(ModifierType.ERROR_TYPE, new ModifierValue<>(ModifierType.ERROR_TYPE, "ERROR"));
 		}
 	}
 }

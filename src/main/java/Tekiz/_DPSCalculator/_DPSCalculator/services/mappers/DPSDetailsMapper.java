@@ -1,7 +1,11 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.*;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,10 +24,11 @@ public class DPSDetailsMapper
 		return new DPSDetailsDTO(
 			dpsDetails.getLoadoutID(),
 			dpsDetails.getWeaponName(),
-			dpsDetails.getModifiersUsed(),
+			dpsDetails.getModifiersUsed().stream().map(detail -> new ModifierDetailsDTO(detail.modifierName(),
+				detail.modifierType().getDisplayName(), detail.modifierValue())).collect(Collectors.toSet()),
 			dpsDetails.getShotsPerSecond(),
 			dpsDetails.getTimeToEmptyMagazine(),
-			dpsDetails.getDamageDetailsRecords(),
+			convertDpsDetailsToDTO(dpsDetails.getDamageDetailsRecords()),
 			dpsDetails.getTotalDamagePerShot(),
 			dpsDetails.getTotalDamagePerSecond(),
 			dpsDetails.getTimeToConsumeActionPoints(),
@@ -39,5 +44,11 @@ public class DPSDetailsMapper
 		return dpsDetailsList.stream().
 			map(this::convertToDTO)
 			.toList();
+	}
+
+	public HashMap<String, DamageDetails> convertDpsDetailsToDTO(Map<DamageType, DamageDetails> dpsDetails){
+		HashMap<String, DamageDetails> dtoMap = new HashMap<>();
+		dpsDetails.forEach((key, value) -> dtoMap.put(key.name(), value));
+		return dtoMap;
 	}
 }

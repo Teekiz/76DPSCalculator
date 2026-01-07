@@ -1,6 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.context;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.ScriptLoaderService;
@@ -49,7 +49,7 @@ public class ModifierScriptService
 	 * @param loadout The loadout to be checked.
 	 * @return The result of the method invocation, or {@code null} if an error occurs.
 	 */
-	public Map<ModifierTypes, ModifierValue<?>> getAdditionalContext(String scriptName, Loadout loadout)
+	public Map<ModifierType, ModifierValue<?>> getAdditionalContext(String scriptName, Loadout loadout)
 	{
 		try
 		{

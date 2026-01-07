@@ -1,13 +1,12 @@
 package Tekiz._DPSCalculator._DPSCalculator.models;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.MutationEffects;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +28,11 @@ public class MutationModelTest extends BaseTestClass
 	{
 		Expression expression = expressionParser.parseExpression("true");
 
-		HashMap<ModifierTypes, ModifierValue<?>> positiveEffects = new HashMap<>();
-		positiveEffects.put(ModifierTypes.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierTypes.DAMAGE_ADDITIVE, 2.0));
+		HashMap<ModifierType, ModifierValue<?>> positiveEffects = new HashMap<>();
+		positiveEffects.put(ModifierType.DAMAGE_ADDITIVE, new ModifierValue<>(ModifierType.DAMAGE_ADDITIVE, 2.0));
 
-		HashMap<ModifierTypes, ModifierValue<?>> negativeEffects = new HashMap<>();
-		negativeEffects.put(ModifierTypes.HEALTH, new ModifierValue<>(ModifierTypes.HEALTH, -2.0));
+		HashMap<ModifierType, ModifierValue<?>> negativeEffects = new HashMap<>();
+		negativeEffects.put(ModifierType.HEALTH, new ModifierValue<>(ModifierType.HEALTH, -2.0));
 
 		MutationEffects mutationEffectsPositive = new MutationEffects("", ModifierSource.MUTATION_POSITIVE, expression, positiveEffects);
 		MutationEffects mutationEffectsNegative = new MutationEffects("", ModifierSource.MUTATION_NEGATIVE, expression, negativeEffects);

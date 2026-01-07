@@ -1,8 +1,9 @@
 package scripts
 
+
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout
 import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 
 class AdrenalReaction extends Script
 {
@@ -28,7 +29,7 @@ class AdrenalReaction extends Script
             it.key >= hpPercentage
         }?.value
 
-        return MapUtil.createEntry(ModifierTypes.DAMAGE_ADDITIVE, value.doubleValue())
+        return MapUtil.createEntry(ModifierType.DAMAGE_ADDITIVE, value.doubleValue())
     }
 
     @Override

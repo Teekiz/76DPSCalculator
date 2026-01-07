@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.perks;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierSource;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
@@ -41,7 +41,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.context.ModifierExpressionSe
  * @param condition         The condition required to use the perk. If the condition is not met, the effects will not be applied.
  * 	 						{@link ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
  * 	 						is used to check the condition. If a condition string is not included, the perk will always be used.
- * @param effectsPerRank    The effects of the perk. Each perk can have multiple effects that will be applied per rank. An effect consists of a {@link ModifierTypes} and a value ({@link Integer} or {@link Double}).
+ * @param effectsPerRank    The effects of the perk. Each perk can have multiple effects that will be applied per rank. An effect consists of a {@link ModifierType} and a value ({@link Integer} or {@link Double}).
  * 	 						If an effect requires additional logic to determine the applied value, use "ADDITIONAL_CONTEXT_REQUIRED" alongside the name of perk. This will be used by the
  * 	 						{@link ModifierExpressionService} to determine the appropriate value.
  */
@@ -60,17 +60,17 @@ public record Perk(@Id
 				   @JsonSerialize(contentUsing = ModifiersSerializer.class)
 				   @JsonDeserialize(contentUsing = ModifiersDeserializer.class)
 				   @ValueConverter(value = PerkModifiersConverter.class)
-				   HashMap<Integer, HashMap<ModifierTypes, ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
+				   HashMap<Integer, HashMap<ModifierType, ModifierValue<?>>> effectsPerRank) implements Modifier, Keyable
 {
 	/**
 	 * Retrieves the effects associated with the current rank of the perk.
 	 * Each rank provides a different set of effects that modify specific stats.
 	 *
-	 * @return A map of {@link ModifierTypes} to their corresponding values for the current rank.
+	 * @return A map of {@link ModifierType} to their corresponding values for the current rank.
 	 *         Returns {@code null} if no effects are defined.
 	 */
 	@JsonIgnore
-	public HashMap<ModifierTypes, ModifierValue<?>> effects()
+	public HashMap<ModifierType, ModifierValue<?>> effects()
 	{
 		if (effectsPerRank != null)
 		{

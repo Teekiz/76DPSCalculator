@@ -1,7 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.calculation.PerSecond;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.calculations.DPSDetails;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierTypes;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.AttackType;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
@@ -9,7 +9,6 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.services.aggregation.ModifierAggregationService;
 import Tekiz._DPSCalculator._DPSCalculator.services.calculation.MiscDamageBonuses.ActionPointsCalculator;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +137,7 @@ public class RangedDamageCalculator
 		RangedWeapon weapon = (RangedWeapon) loadout.getWeapon();
 		double fireRate = weapon.getFireRate();
 
-		fireRate = modifierAggregationService.filterEffects(loadout, ModifierTypes.FIRE_RATE, dpsDetails)
+		fireRate = modifierAggregationService.filterEffects(loadout, ModifierType.FIRE_RATE, dpsDetails)
 			.stream()
 			.filter(value -> value instanceof Integer)
 			.map(value -> (Integer) value)
