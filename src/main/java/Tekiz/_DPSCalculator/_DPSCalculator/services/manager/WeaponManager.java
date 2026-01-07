@@ -128,4 +128,24 @@ public class WeaponManager
 			.filter(weaponMod -> availableModsForWeapon.contains(weaponMod.alias().toLowerCase()))
 			.collect(Collectors.toList());
 	}
+
+	/**
+	 * A method to adjust the current selected weapons level.
+	 * @param targetLevel The desired level of the weapon.
+	 * @param loadout The current loadout the weapon is found in.
+	 * @throws ResourceNotFoundException If the weapon has not been set prior to calling this method.
+	 */
+	@SaveLoadout
+	public void setWeaponLevel(int targetLevel, Loadout loadout) throws ResourceNotFoundException
+	{
+		Weapon weapon = loadout.getWeapon();
+
+		if (weapon == null){
+			log.error("Weapon not set. Cannot adjust level.");
+			throw new ResourceNotFoundException("Weapon not found while changing weapon level.");
+		}
+
+		log.debug("Changing weapon level for {} in loadout {}. Target level: {}", loadout.getWeapon().getName(), loadout.getLoadoutID(), targetLevel);
+		weapon.setWeaponLevel(targetLevel);
+	}
 }

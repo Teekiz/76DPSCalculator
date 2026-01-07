@@ -21,6 +21,7 @@ public class WeaponDetailsDTO
 	private String id;
 	private String name;
 	private String weaponType;
+	private int weaponLevel;
 	private HashMap<Integer, List<WeaponDamage>> weaponDamageByLevel;
 	private int apCost;
 	private int criticalBonus;

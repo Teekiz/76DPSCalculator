@@ -635,4 +635,29 @@ public class WeaponControllerTest
 
 		assertThat(response.getContentAsString().isEmpty());
 	}
+
+	@Test
+	public void setWeaponLevel() throws Exception
+	{
+		log.debug("{}Running test - setWeaponLevel in WeaponControllerTest.", System.lineSeparator());
+
+		Loadout loadout = mock(Loadout.class);
+		when(loadout.getLoadoutID()).thenReturn(1);
+
+		given(loadoutManager.getLoadout(1)).willReturn(loadout);
+		given(loadout.getWeapon()).willReturn(mock(Weapon.class));
+		given(loadout.getWeapon().getId()).willReturn("1");
+
+		MockHttpServletResponse response = mockMvc.perform(
+				MockMvcRequestBuilders.post(urlString + "/setWeaponLevel")
+					.param("loadoutID", "1")
+					.param("targetLevel", "10")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(content().string("Weapon 1 level has been changed in loadout 1."))
+			.andReturn().getResponse();
+
+		verify(loadoutManager, times(1)).getLoadout(1);
+		verify(weaponManager, times(1)).setWeaponLevel(10, loadout);
+	}
 }

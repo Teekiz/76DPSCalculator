@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class WeaponModelTest extends BaseTestClass
 {
-	@Test
-	public void testWeaponBaseDamage()
+	Weapon weapon;
+
+	@BeforeEach
+	void setup()
 	{
 		HashMap<Integer, List<WeaponDamage>> damageMap = new HashMap<>();
 		List<WeaponDamage> weaponDamageList_5 = new ArrayList<>();
@@ -34,15 +37,34 @@ public class WeaponModelTest extends BaseTestClass
 		damageMap.put(10, weaponDamageList_10);
 		damageMap.put(15, weaponDamageList_15);
 
-		Weapon weapon = RangedWeapon.builder()
+		 weapon = RangedWeapon.builder()
 			.id("TEST")
 			.name("TEST")
 			.weaponType(WeaponType.PISTOL)
 			.weaponDamageByLevel(damageMap)
 			.build();
+	}
 
+	@Test
+	public void testWeaponBaseDamage()
+	{
 		assertEquals(weapon.getBaseDamage(5).getFirst().damage(), 20.0);
 		assertEquals(weapon.getBaseDamage(10).getFirst().damage(), 30.0);
 		assertEquals(weapon.getBaseDamage(15).getFirst().damage(), 40.0);
+	}
+
+	//level not avaiable, level is available,
+	@Test
+	public void testSetLevel_LevelIsValid()
+	{
+		weapon.setWeaponLevel(10);
+		assertEquals(weapon.getWeaponLevel(), 10);
+	}
+
+	@Test
+	public void testSetLevel_LevelIsNotValid()
+	{
+		weapon.setWeaponLevel(50);
+		assertEquals(weapon.getWeaponLevel(), 15);
 	}
 }
