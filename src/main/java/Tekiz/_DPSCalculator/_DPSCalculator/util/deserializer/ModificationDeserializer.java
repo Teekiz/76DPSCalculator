@@ -1,6 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
@@ -40,7 +41,18 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			return null;
 		}
 
-		Class<?> objectClass = getClassFromString(getTypeNode(jsonParser));
+		JsonNode modTypeNode = modificationNode.get("ModType");
+
+		Class<?> objectClass = null;
+
+		if (modTypeNode != null && !modTypeNode.isNull()) {
+			try {
+				ModType modType = ModType.valueOf(modTypeNode.asText());
+				objectClass = modType.getClassType();
+			} catch (IllegalArgumentException e) {
+				log.error("Unknown ModType in JSON: {}", modTypeNode.asText());
+			}
+		}
 
 		if (objectClass == null){
 			log.error("Cannot deserialize modification: class cannot be determined.");
@@ -86,35 +98,5 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			log.error("Cannot deserialize modification as node: {}. {}", modificationNode, e.getMessage(), e);
 			return null;
 		}
-	}
-
-	/**
-	 * A method to determine the class to be constructed base on the node name.
-	 * @param className The name of the class to be constructed.
-	 * @return The {@link Class} that matches {@code className}. Otherwise, returns null.
-	 */
-	private Class<?> getClassFromString(String className){
-
-		log.debug("Object class name: {}", className);
-		switch (className.toUpperCase()){
-			case "RECEIVER" -> 							{return WeaponMod.class;}
-			case "MATERIAL", "MISCELLANEOUS" -> 		{return ArmourMod.class;}
-			default -> 									{return null;}
-		}
-	}
-
-	/**
-	 * A method to determine the modification type.
-	 * @param jsonParser The {@link JsonParser} providing the JSON input as a string.
-	 * @return The type of object or an empty string if it cannot be found.
-	 */
-	private String getTypeNode(JsonParser jsonParser){
-
-		JsonStreamContext parentContext = jsonParser.getParsingContext().getParent();
-		if (parentContext == null){
-			return "";
-		}
-
-		return parentContext.getCurrentName();
 	}
 }
