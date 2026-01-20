@@ -18,6 +18,7 @@ public class LegendaryEffectDTO
 	String id;
 	String name;
 	String description;
+	boolean isHidden;
 	List<Category> categories;
 	StarType starType;
 }

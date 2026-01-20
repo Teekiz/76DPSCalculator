@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.PowerArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -18,5 +19,17 @@ public enum Category
 
 	Category(Class<?> classType){
 		this.classType = classType;
+	}
+
+	/**
+	 * A method to get the category associated with the class type.
+	 * @param clazz The class to check against.
+	 * @return The relevant classType (or null if not available)
+	 */
+	public static Category getClassCategory(Class<?> clazz){
+		return Arrays.stream(Category.values())
+			.filter(category -> category.getClassType().isAssignableFrom(clazz))
+			.findFirst()
+			.orElse(null);
 	}
 }

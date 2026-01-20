@@ -35,7 +35,7 @@ public class ModificationSlot<T extends Modification>
 	 * @return {@code true} if the modification was successful. Returns {@code false} if the slot cannot be changed or the mod is an accepted mod type.
 	 */
 	public boolean changeCurrentModification(T newModification){
-		if (canSlotBeChanged && newModification != null && newModification.modType().equals(newModification.modType())
+		if (canSlotBeChanged && newModification != null && newModification.modType().equals(currentModification.modType())
 			&& availableInSlot.contains(newModification.alias())){
 			currentModification = newModification;
 			return true;

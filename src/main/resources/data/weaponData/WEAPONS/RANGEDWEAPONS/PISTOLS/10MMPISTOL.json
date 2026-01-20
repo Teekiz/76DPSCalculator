@@ -27,7 +27,24 @@
     "accuracy" : 63,
     "rangedPenalty" : -50,
     "reloadTime" : 1.97,
-    "legendaryEffects" : {},
+    "legendaryEffects" : {
+      "_1STAR" : {
+          "currentLegendaryEffect" : null,
+          "canSlotBeChanged" : true
+      },
+      "_2STAR" : {
+        "currentLegendaryEffect" : null,
+        "canSlotBeChanged" : true
+      },
+      "_3STAR" : {
+        "currentLegendaryEffect" : null,
+        "canSlotBeChanged" : true
+      },
+      "_4STAR" : {
+        "currentLegendaryEffect" : null,
+        "canSlotBeChanged" : true
+      }
+    },
     "modifications" : {
       "RECEIVER" : {
         "defaultModification": "AUTOMATIC",

@@ -131,8 +131,9 @@ public class WeaponManager
 
 	/**
 	 * A method to adjust the current selected weapons level.
+	 *
 	 * @param targetLevel The desired level of the weapon.
-	 * @param loadout The current loadout the weapon is found in.
+	 * @param loadout     The current loadout the weapon is found in.
 	 * @throws ResourceNotFoundException If the weapon has not been set prior to calling this method.
 	 */
 	@SaveLoadout

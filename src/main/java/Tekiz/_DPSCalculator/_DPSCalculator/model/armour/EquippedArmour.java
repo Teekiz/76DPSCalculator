@@ -5,6 +5,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourSetEffe
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlot;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.List;
@@ -234,7 +235,7 @@ public class EquippedArmour
 
 			if (equippedUnderArmour != null){
 				modifiers.addAll(equippedUnderArmour.getAllModificationEffects());
-				modifiers.addAll(equippedUnderArmour.getLegendaryEffects().getAllEffects());
+				modifiers.addAll(equippedUnderArmour.getLegendaryEffects().values().stream().map(LegendaryEffectSlot::getCurrentLegendaryEffect).toList());
 			}
 			return modifiers;
 		}

@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonStreamContext;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,9 +31,10 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 	@Override
 	public Modification deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException
 	{
-		JsonNode modificationNode = jsonParser.getCodec().readTree(jsonParser);
+		ObjectCodec codec = jsonParser.getCodec();
+		JsonNode modificationNode = codec.readTree(jsonParser);
 
-		if (modificationNode == null)
+		if (modificationNode.isMissingNode() || modificationNode.isNull())
 		{
 			log.error("Cannot deserialize modification: node is null.");
 			return null;

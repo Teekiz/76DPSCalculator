@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LegendaryEffectsLoaderServiceTest extends BaseTestClass
+public class LegendaryEffectsLoaderServiceTestAO extends BaseTestClass
 {
 	@Autowired
 	DataLoaderService dataLoaderService;
@@ -40,9 +40,9 @@ public class LegendaryEffectsLoaderServiceTest extends BaseTestClass
 	@Test
 	void testLoadAllLegendaryEffects() throws IOException
 	{
-		List<LegendaryEffect> LegendaryEffects = dataLoaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null);
-		assertNotNull(LegendaryEffects);
-		LegendaryEffect legendaryEffect = LegendaryEffects.stream().filter(entry -> entry.name().equalsIgnoreCase("Unyielding")).findFirst().orElse(null);
+		List<LegendaryEffect> legendaryEffects = dataLoaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null);
+		assertNotNull(legendaryEffects);
+		LegendaryEffect legendaryEffect = legendaryEffects.stream().filter(entry -> entry.name().equalsIgnoreCase("Unyielding")).findFirst().orElse(null);
 
 		assertNotNull(legendaryEffect);
 		assertEquals("Unyielding", legendaryEffect.name());

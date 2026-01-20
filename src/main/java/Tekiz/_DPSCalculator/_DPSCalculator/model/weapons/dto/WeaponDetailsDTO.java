@@ -1,6 +1,9 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto;
 
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectDTO;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
@@ -26,4 +29,5 @@ public class WeaponDetailsDTO
 	private int apCost;
 	private int criticalBonus;
 	private HashMap<ModType, ModificationSlot<WeaponMod>> modifications;
+	private HashMap<StarType, LegendaryEffectSlot> legendaryEffects;
 }

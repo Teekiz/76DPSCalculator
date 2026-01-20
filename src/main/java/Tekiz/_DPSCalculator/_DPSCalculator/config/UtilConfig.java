@@ -1,15 +1,15 @@
 package Tekiz._DPSCalculator._DPSCalculator.config;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.consumables.Consumable;
-import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.mutations.Mutation;
 import Tekiz._DPSCalculator._DPSCalculator.model.perks.Perk;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.LoadoutFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
-import Tekiz._DPSCalculator._DPSCalculator.util.binding.BaseBinding;
+import Tekiz._DPSCalculator._DPSCalculator.util.contextual.Context;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.ExpressionAdapter;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.HashMapKeyComponent;
 import Tekiz._DPSCalculator._DPSCalculator.util.deserializer.LoadoutDeserializer;
@@ -41,7 +41,7 @@ public class UtilConfig
 		return new SpelExpressionParser();
 	}
 	@Bean
-	public GroovyShell groovyShell() {return new GroovyShell(BaseBinding.getBaseBinding());}
+	public GroovyShell groovyShell() {return new GroovyShell(Context.getBaseBinding());}
 
 	@Value("${files.path.properties}")
 	private String filePathProperties;

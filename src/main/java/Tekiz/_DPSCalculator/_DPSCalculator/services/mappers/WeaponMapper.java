@@ -61,9 +61,11 @@ public class WeaponMapper
 			.id(weapon.getId())
 			.name(weapon.getName())
 			.weaponType(weapon.getWeaponType().toString())
+			.weaponLevel(weapon.getWeaponLevel())
 			.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 			.apCost(weapon.getApCost())
 			.modifications(weapon.getModifications())
+			.legendaryEffects(weapon.getLegendaryEffects())
 			.build();
 	}
 
@@ -79,6 +81,7 @@ public class WeaponMapper
 				.id(weapon.getId())
 				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
+				.weaponLevel(weapon.getWeaponLevel())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
 				.magazineSize(((RangedWeapon) weapon).getMagazineSize())
@@ -86,16 +89,19 @@ public class WeaponMapper
 				.range(((RangedWeapon) weapon).getRange())
 				.accuracy(((RangedWeapon) weapon).getAccuracy())
 				.modifications(weapon.getModifications())
+				.legendaryEffects(weapon.getLegendaryEffects())
 				.build();
 		} else if (weapon instanceof MeleeWeapon) {
 			return MeleeWeaponDTO.builder()
 				.id(weapon.getId())
 				.name(weapon.getName())
 				.weaponType(weapon.getWeaponType().toString())
+				.weaponLevel(weapon.getWeaponLevel())
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
 				.attackSpeed(((MeleeWeapon) weapon).getAttackSpeed().toString())
 				.modifications(weapon.getModifications())
+				.legendaryEffects(weapon.getLegendaryEffects())
 				.build();
 		} else {
 			return convertToDetailsDTO(weapon);

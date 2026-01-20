@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,12 +64,12 @@ public class WeaponController
 		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 	@Operation(summary = "Set the weapon in the loadout.", description = "Set the weapon based on the weapon ID in the loadout matching the ID.")
-	@PostMapping("/setWeapon")
-	public ResponseEntity<String> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException, ResourceNotFoundException
+	@PatchMapping("/setWeapon")
+	public ResponseEntity<WeaponDetailsDTO> setWeapon(@RequestParam int loadoutID, @RequestParam String weaponID) throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		weaponManager.setWeapon(weaponID, loadout);
-		return ResponseEntity.ok("Weapon has been updated.");
+		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 	@Operation(summary = "Gets all available weapons names", description = "Retrieves a list of all weapon names that are available.")
 	@GetMapping("/getAvailableWeapons")
@@ -105,6 +106,7 @@ public class WeaponController
 		WeaponMod weaponMod = weaponLoaderService.loadData(modID, WeaponMod.class, null);
 		return ResponseEntity.ok(weaponMapper.convertToWeaponModDTO(weaponMod));
 	}
+	//todo - return weapon instead of string
 	@Operation(summary = "Modifies the current weapon.", description = "Modifies the current loadouts weapon with the provided modification ID.")
 	@GetMapping("/modifyWeapon")
 	public ResponseEntity<String> modifyWeapon(@RequestParam int loadoutID, @RequestParam String modID) throws IOException, ResourceNotFoundException
@@ -115,5 +117,15 @@ public class WeaponController
 			return ResponseEntity.ok("Modification " + sanitizeString(modID) + " has been applied to weapon in loadout " + loadoutID + ".");
 		}
 		return ResponseEntity.badRequest().body("Weapon mod could not be applied.");
+	}
+
+	@Operation(summary = "Modifies the current weapons level.", description = "Modifies the current loadouts weapon level with the provided modification ID.")
+	@PatchMapping("/setWeaponLevel")
+	public ResponseEntity<WeaponDetailsDTO> setWeaponLevel(@RequestParam int loadoutID, @RequestParam int targetLevel) throws ResourceNotFoundException
+	{
+		Loadout loadout = loadoutManager.getLoadout(loadoutID);
+		weaponManager.setWeaponLevel(targetLevel, loadout);
+		WeaponDetailsDTO weaponDetails = weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon());
+		return ResponseEntity.ok(weaponDetails);
 	}
 }

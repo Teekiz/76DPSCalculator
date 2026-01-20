@@ -4,7 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
-import Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext.BaseEvaluationContext;
+import Tekiz._DPSCalculator._DPSCalculator.util.contextual.Context;
 import java.util.Map;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class ParsingService
 	 */
 	private StandardEvaluationContext getContext(Object rootObject, Loadout loadout)
 	{
-		StandardEvaluationContext context = BaseEvaluationContext.getBaseEvaluationContext(rootObject);
+		StandardEvaluationContext context = Context.getBaseEvaluationContext(rootObject);
 		context.setVariable("player", loadout.getPlayer());
 		context.setVariable("weapon", loadout.getWeapon());
 		context.setVariable("enemy", loadout.getEnemy());

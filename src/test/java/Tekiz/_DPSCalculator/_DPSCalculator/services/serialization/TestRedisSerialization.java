@@ -1,6 +1,5 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.serialization;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ConsumableManager;
@@ -67,7 +66,7 @@ public class TestRedisSerialization extends BaseTestClass
 		perkManager.addPerk(GUNSLINGER, loadout);//GUNSLINGER
 		perkManager.addPerk(STRANGEINNUMBERS, loadout);//STRANGEINNUMBERS
 		mutationManager.addMutation(ADRENALREACTION, loadout);//ADRENALREACTION
-		legendaryEffectManager.addLegendaryEffect(ANTIARMOUR, loadout.getWeapon(), loadout);//ANTIARMOUR
+		legendaryEffectManager.changeLegendaryEffect(ANTIARMOUR, loadout.getWeapon(), loadout);//ANTIARMOUR
 
 		loadout = null;
 

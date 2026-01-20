@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(LegendaryEffectController.class)
-public class LegendaryEffectsControllerTest
+public class LegendaryEffectsControllerTestAO
 {
 	@Autowired
 	MockMvc mockMvc;
@@ -64,7 +64,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getAvailableLegendaryEffects() throws Exception
 	{
-		log.debug("{}Running test - getAvailableLegendaryEffects in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getAvailableLegendaryEffects in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		when(loaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null)).thenReturn(getLegendaryEffectsForTest());
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -119,7 +119,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getAvailableLegendaryEffects_withStarType() throws Exception
 	{
-		log.debug("{}Running test - getAvailableLegendaryEffects_withStarType in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getAvailableLegendaryEffects_withStarType in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		when(loaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null)).thenReturn(getLegendaryEffectsForTest());
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -161,7 +161,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getAvailableLegendaryEffects_withCategory() throws Exception
 	{
-		log.debug("{}Running test - getAvailableLegendaryEffects_withCategory in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getAvailableLegendaryEffects_withCategory in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		when(loaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null)).thenReturn(getLegendaryEffectsForTest());
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -196,7 +196,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getAvailableLegendaryEffects_withStarType_withCategory() throws Exception
 	{
-		log.debug("{}Running test - getAvailableLegendaryEffects_withStarType_withCategory in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getAvailableLegendaryEffects_withStarType_withCategory in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		when(loaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null)).thenReturn(getLegendaryEffectsForTest());
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -231,7 +231,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getAvailableLegendaryEffects_withEmptyList() throws Exception
 	{
-		log.debug("{}Running test - getAvailableLegendaryEffects_withEmptyList in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getAvailableLegendaryEffects_withEmptyList in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		when(loaderService.loadAllData("LEGENDARYEFFECT", LegendaryEffect.class, null)).thenReturn(null);
 
 		MockHttpServletResponse response = mockMvc.perform(
@@ -251,7 +251,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getWeaponLegendaryEffects() throws Exception
 	{
-		log.debug("{}Running test - getWeaponLegendaryEffects in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getWeaponLegendaryEffects in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -294,7 +294,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getWeaponLegendaryEffects_WeaponIsNull() throws Exception
 	{
-		log.debug("{}Running test - getWeaponLegendaryEffects_WeaponIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getWeaponLegendaryEffects_WeaponIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -311,7 +311,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getWeaponLegendaryEffects_WeaponHasNoEffects() throws Exception
 	{
-		log.debug("{}Running test - getWeaponLegendaryEffects_WeaponHasNoEffects in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getWeaponLegendaryEffects_WeaponHasNoEffects in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -338,7 +338,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getArmourLegendaryEffects() throws Exception
 	{
-		log.debug("{}Running test - getArmourLegendaryEffects in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getArmourLegendaryEffects in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -385,7 +385,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getArmourLegendaryEffects_ArmourIsNull() throws Exception
 	{
-		log.debug("{}Running test - getArmourLegendaryEffects_ArmourIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getArmourLegendaryEffects_ArmourIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -405,7 +405,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void getArmourLegendaryEffects_ArmourHasNoEffects() throws Exception
 	{
-		log.debug("{}Running test - getArmourLegendaryEffects_ArmourHasNoEffects in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - getArmourLegendaryEffects_ArmourHasNoEffects in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -436,7 +436,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addWeaponLegendaryEffect() throws Exception
 	{
-		log.debug("{}Running test - addWeaponLegendaryEffect in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addWeaponLegendaryEffect in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -461,7 +461,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addWeaponLegendaryEffect_WeaponIsNull() throws Exception
 	{
-		log.debug("{}Running test - addWeaponLegendaryEffect_WeaponIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addWeaponLegendaryEffect_WeaponIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -484,7 +484,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addWeaponLegendaryEffect_EffectIsNull() throws Exception
 	{
-		log.debug("{}Running test - addWeaponLegendaryEffect_EffectIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addWeaponLegendaryEffect_EffectIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 		LegendaryEffectsMap legendaryEffectsMap = new LegendaryEffectsMap();
@@ -508,7 +508,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeWeaponLegendaryEffect() throws Exception
 	{
-		log.debug("{}Running test - removeWeaponLegendaryEffect in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeWeaponLegendaryEffect in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -533,7 +533,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeWeaponLegendaryEffect_WeaponDoesNotContainStar() throws Exception
 	{
-		log.debug("{}Running test - removeWeaponLegendaryEffect_WeaponDoesNotContainStar in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeWeaponLegendaryEffect_WeaponDoesNotContainStar in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -557,7 +557,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeWeaponLegendaryEffect_WeaponIsNull() throws Exception
 	{
-		log.debug("{}Running test - removeWeaponLegendaryEffect_WeaponIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeWeaponLegendaryEffect_WeaponIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 		when(loadout.getWeapon()).thenReturn(null);
@@ -579,7 +579,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addArmourLegendaryEffect() throws Exception
 	{
-		log.debug("{}Running test - addArmourLegendaryEffect in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addArmourLegendaryEffect in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -609,7 +609,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addArmourLegendaryEffect_ArmourIsNull() throws Exception
 	{
-		log.debug("{}Running test - addArmourLegendaryEffect_ArmourIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addArmourLegendaryEffect_ArmourIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -635,7 +635,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void addArmourLegendaryEffect_EffectIsNull() throws Exception
 	{
-		log.debug("{}Running test - addArmourLegendaryEffect_EffectIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - addArmourLegendaryEffect_EffectIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -665,7 +665,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeArmourLegendaryEffect() throws Exception
 	{
-		log.debug("{}Running test - removeArmourLegendaryEffect in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeArmourLegendaryEffect in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -694,7 +694,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeArmourLegendaryEffect_ArmourDoesNotContainStar() throws Exception
 	{
-		log.debug("{}Running test - removeArmourLegendaryEffect_ArmourDoesNotContainStar in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeArmourLegendaryEffect_ArmourDoesNotContainStar in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 
@@ -721,7 +721,7 @@ public class LegendaryEffectsControllerTest
 	@Test
 	public void removeArmourLegendaryEffect_ArmourIsNull() throws Exception
 	{
-		log.debug("{}Running test - removeArmourLegendaryEffect_ArmourIsNull in LegendaryEffectsControllerTest.", System.lineSeparator());
+		log.debug("{}Running test - removeArmourLegendaryEffect_ArmourIsNull in LegendaryEffectsControllerTestAO.", System.lineSeparator());
 		Loadout loadout = mock(Loadout.class);
 		when(loadoutManager.getLoadout(1)).thenReturn(loadout);
 		EquippedArmour equippedArmour = new EquippedArmour();

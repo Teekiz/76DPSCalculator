@@ -1,7 +1,6 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +21,7 @@ public class LegendaryEffectMapper
 	{
 		if (legendaryEffect == null) {return null;}
 		return new LegendaryEffectDTO(legendaryEffect.id(), legendaryEffect.name(),
-			legendaryEffect.description(), legendaryEffect.categories(), legendaryEffect.starType());
-	}
-
-	/**
-	 * A method to convert all legendary effect in a HashMap to a data transfer object (DTO) representation.
-	 * @param legendaryEffectObject An object containing legendary effects to be converted.
-	 * @return A {@link List} of {@link LegendaryEffect} represented as a DTOs ({@link LegendaryEffectDTO}).
-	 */
-	public List<LegendaryEffectDTO> convertAllToDTO(LegendaryEffectObject legendaryEffectObject)
-	{
-		return legendaryEffectObject.getLegendaryEffects().keySet().stream()
-			.map(this::convertToDTO)
-			.collect(Collectors.toList());
+			legendaryEffect.description(), legendaryEffect.isHidden(), legendaryEffect.categories(), legendaryEffect.starType());
 	}
 
 	/**

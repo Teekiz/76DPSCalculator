@@ -6,6 +6,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.modifiers.ModifierValue;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModSubType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
@@ -13,6 +14,7 @@ import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.damage.WeaponDamage;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
@@ -644,20 +646,52 @@ public class WeaponControllerTest
 		Loadout loadout = mock(Loadout.class);
 		when(loadout.getLoadoutID()).thenReturn(1);
 
+		HashMap<Integer, List<WeaponDamage>> damageMap = new HashMap<>();
+
+		List<WeaponDamage> list = new ArrayList<>();
+		list.add(new WeaponDamage(DamageType.PHYSICAL, 20, 0));
+
+		damageMap.put(1, list);
+		damageMap.put(10, list);
+
+		Weapon weapon = RangedWeapon.builder()
+			.id("TESTWEAPON1")
+			.name("TESTWEAPON")
+			.weaponType(WeaponType.PISTOL)
+			.weaponDamageByLevel(damageMap)
+			.fireRate(10)
+			.build();
+
+		WeaponDetailsDTO weaponDetailsDTO = WeaponDetailsDTO.builder()
+			.id(weapon.getId())
+			.name(weapon.getName())
+			.weaponType(String.valueOf(weapon.getWeaponType()))
+			.weaponLevel(1)
+			.build();
+
 		given(loadoutManager.getLoadout(1)).willReturn(loadout);
-		given(loadout.getWeapon()).willReturn(mock(Weapon.class));
-		given(loadout.getWeapon().getId()).willReturn("1");
+		given(loadout.getWeapon()).willReturn(weapon);
+		given(weaponMapper.convertToRangedOrMeleeDTO(weapon)).willReturn(weaponDetailsDTO);
 
 		MockHttpServletResponse response = mockMvc.perform(
-				MockMvcRequestBuilders.post(urlString + "/setWeaponLevel")
+				MockMvcRequestBuilders.patch(urlString + "/setWeaponLevel")
 					.param("loadoutID", "1")
-					.param("targetLevel", "10")
+					.param("targetLevel", "1")
 					.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(content().string("Weapon 1 level has been changed in loadout 1."))
 			.andReturn().getResponse();
 
+		String expectedJson = """
+			{
+			  "id": "TESTWEAPON1",
+			  "name": "TESTWEAPON",
+			  "weaponType" : "PISTOL",
+			  "weaponLevel" : 1,
+			}""";
+
+		JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
+
 		verify(loadoutManager, times(1)).getLoadout(1);
-		verify(weaponManager, times(1)).setWeaponLevel(10, loadout);
+		verify(weaponManager, times(1)).setWeaponLevel(1, loadout);
 	}
 }

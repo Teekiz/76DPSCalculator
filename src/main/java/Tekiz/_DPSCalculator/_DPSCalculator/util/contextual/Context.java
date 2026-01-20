@@ -1,4 +1,4 @@
-package Tekiz._DPSCalculator._DPSCalculator.util.evaluationcontext;
+package Tekiz._DPSCalculator._DPSCalculator.util.contextual;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyTags;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.enemy.EnemyType;
@@ -11,13 +11,15 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.DamageType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.weapons.WeaponType;
 import Tekiz._DPSCalculator._DPSCalculator.util.map.MapUtil;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
- * A utility service to provide a {@link StandardEvaluationContext} object used by the {@link SpelExpressionParser} instance.
+ * A utility service to provide a {@link StandardEvaluationContext} object used by the {@link SpelExpressionParser} instance and binding for the {@link GroovyShell} instance.
  */
-public class BaseEvaluationContext
+public class Context
 {
 	//This is used to set an alias for enums that may be found in the perk data.
 	/**
@@ -42,5 +44,22 @@ public class BaseEvaluationContext
 		context.setVariable("EnemyType", EnemyType.class);
 		context.setVariable("EnemyTags", EnemyTags.class);
 		return context;
+	}
+
+	/**
+	 * A method to return the provided binding context.
+	 * @return A new {@link Binding} object with applied context.
+	 */
+	public static Binding getBaseBinding()
+	{
+		Binding binding = new Binding();
+		binding.setVariable("WeaponType", WeaponType.class);
+		binding.setVariable("DamageType", DamageType.class);
+		binding.setVariable("ModType", ModType.class);
+		binding.setVariable("ModSubType", ModSubType.class);
+		binding.setVariable("Special", Specials.class);
+		binding.setVariable("AttackType", AttackType.class);
+		binding.setVariable("ModifierType", ModifierType.class);
+		return binding;
 	}
 }

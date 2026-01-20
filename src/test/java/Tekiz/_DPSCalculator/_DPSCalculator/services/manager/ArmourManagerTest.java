@@ -3,9 +3,11 @@ package Tekiz._DPSCalculator._DPSCalculator.services.manager;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.OverArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.player.Specials;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
 import Tekiz._DPSCalculator._DPSCalculator.model.player.Player;
 import Tekiz._DPSCalculator._DPSCalculator.test.BaseTestClass;
@@ -153,11 +155,11 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		legendaryEffectManager.addLegendaryEffect(UNYIELDING, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout);
+		legendaryEffectManager.changeLegendaryEffect(UNYIELDING, StarType._1STAR, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
 		assertEquals(1, piece.getLegendaryEffects().size());
-		assertEquals("Unyielding", piece.getLegendaryEffects().getAllEffects().getFirst().name());
+		assertEquals("Unyielding", piece.getLegendaryEffects().values().stream().map(LegendaryEffectSlot::getCurrentLegendaryEffect).toList().getFirst().name());
 	}
 
 	@Test
@@ -167,7 +169,7 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		assertThrows(ResourceNotFoundException.class, () -> legendaryEffectManager.addLegendaryEffect("NOTAREALARMOURMOD", loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout));
+		assertThrows(ResourceNotFoundException.class, () -> legendaryEffectManager.changeLegendaryEffect("NOTAREALARMOURMOD", StarType._1STAR, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout));
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece)loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
 		assertEquals(0, piece.getLegendaryEffects().size());
@@ -180,7 +182,7 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		assertThrows(ResourceNotFoundException.class, () -> legendaryEffectManager.addLegendaryEffect(UNYIELDING, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.OTHER), loadout));
+		assertThrows(ResourceNotFoundException.class, () -> legendaryEffectManager.changeLegendaryEffect(UNYIELDING, StarType._1STAR, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.OTHER), loadout));
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 		OverArmourPiece piece = (OverArmourPiece) loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO);
 		assertEquals(0, piece.getLegendaryEffects().size());
@@ -193,7 +195,7 @@ public class ArmourManagerTest extends BaseTestClass
 		armourManager.addArmour(WOODCHEST, ArmourSlot.TORSO, loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
-		legendaryEffectManager.addLegendaryEffect(UNYIELDING, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout);
+		legendaryEffectManager.changeLegendaryEffect(UNYIELDING, StarType._1STAR, loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO), loadout);
 		assertNotNull(loadout.getArmour().getArmourInSlot(ArmourType.ARMOUR, ArmourSlot.TORSO));
 
 		Player player = playerManager.getPlayer(loadout);

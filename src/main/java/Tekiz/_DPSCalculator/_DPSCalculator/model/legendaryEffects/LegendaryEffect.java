@@ -38,6 +38,7 @@ import org.springframework.expression.Expression;
  * @param starType 		 The star slot this effect is applied to.
  * @param modifierSource The source type of the modifier ({@link ModifierSource}). This is used by the {@link ModifierBoostService}
  *                       to apply a modification to the consumable effects if a corresponding effect is available.
+ * @param isHidden 		 Determines whether an object is hidden when retrieving legendary effects.
  * @param condition      The condition required to use the consumable. If the condition is not met, the effects will not be applied.
  *                       {@link ExpressionAdapter.ExpressionDeserializer} will take the string value of the property "conditionString" and convert it into an expression. {@link ModifierConditionLogic}
  *                       is used to check the condition. If a condition string is not included, the consumable will always be used.
@@ -48,29 +49,31 @@ import org.springframework.expression.Expression;
 @Document("legendaryEffect")
 @RepositoryObject(repository = LegendaryEffectRepository.class)
 public record LegendaryEffect(@Id
-						 @JsonProperty("id") @JsonAlias("_id") String id,
-						 @JsonProperty("name") String name,
-						 @JsonProperty("description") String description,
-						 @JsonProperty("modifierSource") ModifierSource modifierSource,
-						 @JsonProperty("categories") List<Category> categories,
-						 @JsonProperty("starType") StarType starType,
-						 @ValueConverter(value = ExpressionAdapter.ExpressionConverter.class)
-						 @JsonProperty("conditionString") Expression condition,
-						 @JsonProperty("effects")
-						 @JsonSerialize(using = ModifiersAdapter.ModifiersSerializer.class)
-						 @JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
-						 @ValueConverter(value = ModifiersAdapter.ModifiersConverter.class)
-						 HashMap<ModifierType, ModifierValue<?>> effects) implements Modifier, Keyable
+						 			@JsonProperty("id") @JsonAlias("_id") String id,
+							  		@JsonProperty("name") String name,
+							  		@JsonProperty("description") String description,
+							  		@JsonProperty("modifierSource") ModifierSource modifierSource,
+							 	    @JsonProperty("categories") List<Category> categories,
+							  		@JsonProperty("starType") StarType starType,
+							  		@ValueConverter(value = ExpressionAdapter.ExpressionConverter.class)
+						 			@JsonProperty("conditionString") Expression condition,
+							  		@JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
+						 			@JsonProperty("isHidden") boolean isHidden,
+							  		@JsonProperty("effects")
+						 			@JsonSerialize(using = ModifiersAdapter.ModifiersSerializer.class)
+						 			@JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
+						 			@ValueConverter(value = ModifiersAdapter.ModifiersConverter.class)
+						 			HashMap<ModifierType, ModifierValue<?>> effects) implements  Modifier, Keyable
 {
 
 	/**
 	 * A method used to compare the current legendaryEffect and the object it will be applied to.
-	 * @param legendaryEffectObject The object this effect will be applied to.
+	 * @param legendaryEffect The object this effect will be applied to.
 	 * @return {@code true} if the legendary effect can be applied to provided effect.
 	 */
-	public boolean doesLegendaryObjectMatchType(LegendaryEffectObject legendaryEffectObject){
+	public boolean doesLegendaryEffectMatchType(LegendaryEffect legendaryEffect){
 		for (Category category : categories){
-			if (category.getClassType().isInstance(legendaryEffectObject)){
+			if (category.getClassType().isInstance(legendaryEffect)){
 				return true;
 			}
 		}

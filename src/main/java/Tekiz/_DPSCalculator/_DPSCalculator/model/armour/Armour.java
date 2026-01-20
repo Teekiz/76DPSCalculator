@@ -4,11 +4,14 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResista
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.Category;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Keyable;
 import Tekiz._DPSCalculator._DPSCalculator.model.interfaces.Modifier;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectsMap;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectCompatible;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.ArmourRepository;
 import Tekiz._DPSCalculator._DPSCalculator.persistence.RepositoryObject;
@@ -32,7 +35,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @SuperBuilder(toBuilder = true)
 @Document(collection = "armour")
 @RepositoryObject(repository = ArmourRepository.class)
-public abstract class Armour implements LegendaryEffectObject, Serializable
+public abstract class Armour implements Serializable, LegendaryEffectCompatible
 {
 	/** The id of the armour */
 	@Id
@@ -73,7 +76,7 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 
 	/** An object containing legendary effects in a HashMap*/
 	@JsonProperty("legendaryEffects")
-	protected final LegendaryEffectsMap legendaryEffects;
+	protected HashMap<StarType, LegendaryEffectSlot> legendaryEffects;
 
 	/** An object to simplify modification lookups. */
 	@JsonProperty("modifications")
@@ -108,6 +111,23 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 		return false;
 	}
 
+	@JsonIgnore
+	public void modifyLegendaryEffect(StarType starType, LegendaryEffect legendaryEffect){
+		Category category = Category.getClassCategory(this.getClass());
+		LegendaryEffectSlot slot = legendaryEffects.get(starType);
+
+		//if the slot cannot be found.
+		if (slot == null){
+			return;
+		}
+
+		//todo - remove lower tier slots.
+		//if the slot can be found, update the slot (null object effectively removes the effect)
+		if (legendaryEffect == null || legendaryEffect.categories().contains(category)) {
+			slot.changeCurrentLegendaryEffect(legendaryEffect);
+		}
+	}
+
 	/**
 	 * A method that gets the effects from the modifications and legendary effects.
 	 * @return A {@link List} of {@link Modifier}'s and {@link LegendaryEffect}'s.
@@ -115,7 +135,7 @@ public abstract class Armour implements LegendaryEffectObject, Serializable
 	@JsonIgnore
 	public List<Modifier> getAllModificationEffects()
 	{
-		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.getAllEffects() : List.of());
+		List<Modifier> modifiers = new ArrayList<>(legendaryEffects != null ? legendaryEffects.values().stream().map(LegendaryEffectSlot::getCurrentLegendaryEffect).toList() : List.of());
 
 		if (modifications != null){
 			modifiers.addAll(modifications.values().stream()

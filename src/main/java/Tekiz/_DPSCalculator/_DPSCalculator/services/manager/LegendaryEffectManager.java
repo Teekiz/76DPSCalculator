@@ -5,15 +5,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.Category
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectObject;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectCompatible;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.events.ModifierChangedEvent;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,50 +32,19 @@ public class LegendaryEffectManager
 	}
 
 	@SaveLoadout
-	public boolean addLegendaryEffect(String legendaryEffectID, LegendaryEffectObject legendaryEffectObject, Loadout loadout) throws IOException, ResourceNotFoundException
+	public void changeLegendaryEffect(String legendaryEffectID, StarType starType, LegendaryEffectCompatible legendaryEffectCompatible, Loadout loadout) throws IOException, ResourceNotFoundException
 	{
 		LegendaryEffect legendaryEffect = dataLoaderService.loadData(legendaryEffectID, LegendaryEffect.class, null);
 
-		if (legendaryEffect == null || legendaryEffectObject == null || legendaryEffectObject.getLegendaryEffects() == null){
-			if (legendaryEffect == null){
-				log.error("Legendary effect loading failed for: {}", legendaryEffectID);
-			} else if (legendaryEffectObject == null) {
-				log.error("Object to add legendary effect not found.");
-			} else {
-				log.error("Object does not have legendary effect slot.");
-			}
+		if (legendaryEffectCompatible == null){
+			log.error("Object to add legendary effect not found.");
 			throw new ResourceNotFoundException("Cannot add effect to object. Effect ID: " + legendaryEffectID + ".");
 		}
 
-		if (!legendaryEffect.doesLegendaryObjectMatchType(legendaryEffectObject)){
-			log.error("Legendary effect {} could not be applied to object {}. (Incompatible types)", legendaryEffect.name(), legendaryEffectObject.getName());
-			return false;
-		}
-
-		if(legendaryEffectObject.getLegendaryEffects().addLegendaryEffect(legendaryEffect)){
-			log.debug("Added legendary effect {} to item: {}.", legendaryEffect.name(), legendaryEffectObject);
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(legendaryEffect, loadout,legendaryEffect.name() + " has been added.");
-			applicationEventPublisher.publishEvent(modifierChangedEvent);
-			return true;
-		}
-		return false;
-	}
-
-	@SaveLoadout
-	public boolean removeLegendaryEffect(StarType starType, LegendaryEffectObject legendaryEffectObject, Loadout loadout) throws ResourceNotFoundException
-	{
-		if (legendaryEffectObject == null || legendaryEffectObject.getLegendaryEffects() == null)
-		{
-			throw new ResourceNotFoundException("Could not remove effect from object. Star type: " + starType + ".");
-		}
-
-		if (legendaryEffectObject.getLegendaryEffects().removeLegendaryEffect(starType)){
-			log.debug("Removed {} legendary effect from item: {}.", starType, legendaryEffectObject.getName());
-			ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(starType, loadout,starType + " has been removed.");
-			applicationEventPublisher.publishEvent(modifierChangedEvent);
-			return true;
-		}
-		return false;
+		legendaryEffectCompatible.modifyLegendaryEffect(starType, legendaryEffect);
+		log.debug("Added legendary effect {} to item: {}.", legendaryEffect.name(), legendaryEffectCompatible);
+		ModifierChangedEvent modifierChangedEvent = new ModifierChangedEvent(legendaryEffect, loadout, legendaryEffect.name() + " has been added.");
+		applicationEventPublisher.publishEvent(modifierChangedEvent);
 	}
 
 	/**
