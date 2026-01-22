@@ -72,10 +72,14 @@ public class WeaponFactory implements Factory<Weapon>
 
 			WeaponType weaponType = WeaponType.valueOf(weaponTypeNode.asText().toUpperCase());
 			if (weaponType.equals(WeaponType.PISTOL) || weaponType.equals(WeaponType.RIFLE)) {
-				return objectMapper.treeToValue(weaponNode, RangedWeapon.class);
+				Weapon weapon = objectMapper.treeToValue(weaponNode, RangedWeapon.class);
+				setDefaultLevel(weapon);
+				return weapon;
 			}
 			else if (weaponType.equals(WeaponType.ONEHANDED) || weaponType.equals(WeaponType.TWOHANDED)) {
-				return objectMapper.treeToValue(weaponNode, MeleeWeapon.class);
+				Weapon weapon = objectMapper.treeToValue(weaponNode, MeleeWeapon.class);
+				setDefaultLevel(weapon);
+				return weapon;
 			}
 			return null;
 		}
@@ -107,5 +111,16 @@ public class WeaponFactory implements Factory<Weapon>
 
 		JsonNode jsonNode = objectMapper.valueToTree(document);
 		return createFromJsonNode(jsonNode);
+	}
+
+	/**
+	 * Assigns the highest level as default level to a weapon if it has not already been specified.
+	 * @param weapon The weapon being created.
+	 */
+	private void setDefaultLevel(Weapon weapon){
+		if (weapon.getWeaponLevel() == 0){
+			int highestLevel = weapon.getWeaponDamageByLevel().keySet().stream().mapToInt(v -> v).max().orElse(0);
+			weapon.setWeaponLevel(highestLevel);
+		}
 	}
 }
