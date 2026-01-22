@@ -54,6 +54,51 @@
           "AUTOMATIC",
           "CALIBRATE"
         ]
+      },
+      "BARREL" : {
+        "defaultModification": "STANDARD_SHORT",
+        "acceptedModType": "BARREL",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "STANDARD_SHORT",
+          "STANDARD_LONG"
+        ]
+      },
+      "GRIP" : {
+        "defaultModification": "STANDARD",
+        "acceptedModType": "GRIP",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "STANDARD",
+          "TRUE"
+        ]
+      },
+      "MAGAZINE" : {
+        "defaultModification": "STANDARD",
+        "acceptedModType": "MAGAZINE",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "STANDARD",
+          "QUICK"
+        ]
+      },
+      "SIGHTS" : {
+        "defaultModification": "STANDARD",
+        "acceptedModType": "SIGHTS",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "STANDARD",
+          "REFLEX_CIRCLE"
+        ]
+      },
+      "MUZZLE" : {
+        "defaultModification": "NO_MUZZLE",
+        "acceptedModType": "SIGHTS",
+        "canSlotBeChanged": true,
+        "availableInSlot": [
+          "NO_MUZZLE",
+          "SUPPRESSOR"
+        ]
       }
     }
 }

@@ -4,6 +4,7 @@ import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.Factory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.strategy.ObjectLoaderStrategy;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -32,6 +33,6 @@ public class DataLoaderService {
 	}
 
 	public <T> List<T> loadAllData(String prefix, Class<T> classType, Factory<T> factory) throws IOException {
-		return objectLoaderStrategy.getAllData(prefix, classType, factory);
+		return objectLoaderStrategy.getAllData(prefix, classType, factory).stream().filter(Objects::nonNull).toList();
 	}
 }

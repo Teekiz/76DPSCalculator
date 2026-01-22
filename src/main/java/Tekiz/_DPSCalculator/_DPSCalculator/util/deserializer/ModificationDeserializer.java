@@ -53,7 +53,10 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 		}
 
 		if (objectClass == null){
-			log.error("Cannot deserialize modification: class cannot be determined.");
+			String name = modificationNode.get("name") != null ? modificationNode.get("name").asText() : "NULL";
+			String modType = modTypeNode!= null ? modificationNode.asText() : "NULL";
+
+			log.error("Cannot deserialize modification: class cannot be determined (Name: {}, Type: {}).", name, modType);
 			return null;
 		}
 

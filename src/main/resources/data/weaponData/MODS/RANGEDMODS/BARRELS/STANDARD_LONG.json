@@ -1,0 +1,12 @@
+{
+    "name": "Standard Long",
+    "alias" : "STANDARD_LONG",
+    "modType": "BARREL",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "RANGE" : 84,
+      "ACCURACY_SIGHTED" : 0.25,
+      "ACCURACY_ADDITIVE" : -3,
+      "RECOIL" : 0.25
+    }
+}

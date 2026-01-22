@@ -1,0 +1,13 @@
+{
+    "name": "No muzzle",
+    "alias" : "NO_MUZZLE",
+    "modType": "MUZZLE",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "RECOIL" : "-0.12",
+      "RECOIL_PER_SHOT" : "-0.5",
+      "IS_SILENT" : true,
+      "RANGE" : "-18",
+      "ACCURACY_ADDITIVE" : "1"
+    }
+}

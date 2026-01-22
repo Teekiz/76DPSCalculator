@@ -1,0 +1,8 @@
+{
+    "name": "Standard",
+    "alias" : "STANDARD",
+    "modType": "MAGAZINE",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Quick",
+    "alias" : "QUICK",
+    "modType": "GRIP",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "RELOADSPEED" : 0.3,
+      "AP_COST" : -0.05
+    }
+}

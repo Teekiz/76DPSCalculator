@@ -1,0 +1,8 @@
+{
+    "name": "No muzzle",
+    "alias" : "NO_MUZZLE",
+    "modType": "MUZZLE",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+    }
+}

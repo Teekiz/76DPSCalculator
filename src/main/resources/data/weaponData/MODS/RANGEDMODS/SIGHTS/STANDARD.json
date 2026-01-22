@@ -1,0 +1,8 @@
+{
+    "name": "Standard",
+    "alias" : "STANDARD",
+    "modType": "SIGHTS",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+    }
+}

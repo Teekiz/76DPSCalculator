@@ -1,0 +1,10 @@
+{
+    "name": "Standard Short",
+    "alias" : "STANDARD_SHORT",
+    "modType": "BARREL",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "ACCURACY_SIGHTED" : 0.2,
+      "RECOIL" : -0.1
+    }
+}

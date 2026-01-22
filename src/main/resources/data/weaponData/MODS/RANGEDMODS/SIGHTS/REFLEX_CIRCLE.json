@@ -1,0 +1,12 @@
+{
+    "name": "Reflex (Circle)",
+    "alias" : "REFLEX_CIRCLE",
+    "modType": "SIGHTS",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "AIM_SPEED" : 0.1,
+      "ACCURACY_SIGHTED" : 0.15,
+      "ACCURACY_ADDITIVE" : 7,
+      "AP_COST" : -0.15
+    }
+}

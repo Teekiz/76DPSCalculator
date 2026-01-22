@@ -76,9 +76,8 @@ public class WeaponController
 	public ResponseEntity<List<WeaponNameDTO>> getAvailableWeapons() throws IOException
 	{
 		log.debug("Get available weapons called.");
-		List<Weapon> availableWeapons = weaponLoaderService.loadAllData("Weapon", Weapon.class, weaponFactory);
-		//todo - something is causing this to become null, could be due to weapon mods
-		List<WeaponNameDTO> availableWeaponsNames = weaponMapper.convertAllToNameDTO(availableWeapons.stream().filter(Objects::nonNull).toList());
+		List<Weapon> availableWeapons = weaponLoaderService.loadAllData("Weapons", Weapon.class, weaponFactory);
+		List<WeaponNameDTO> availableWeaponsNames = weaponMapper.convertAllToNameDTO(availableWeapons);
 		log.debug("Available weapons requested: {}", availableWeaponsNames.stream().map(WeaponNameDTO::getName).toList());
 		return ResponseEntity.ok(availableWeaponsNames);
 	}

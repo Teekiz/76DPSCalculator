@@ -1,0 +1,12 @@
+{
+    "name": "True",
+    "alias" : "TRUE",
+    "modType": "GRIP",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "AIM_SPEED" : 0.03,
+      "ACCURACY_HIPFIRE" : 0.25,
+      "ACCURACY_SIGHTED" : 0.1,
+      "ACCURACY_ADDITIVE" : 4
+    }
+}

@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.jsonidmapper.JsonIDMapper;
 
+@Slf4j
 public class JsonLoaderStrategy implements ObjectLoaderStrategy
 {
 	private final ObjectMapper objectMapper;
@@ -36,8 +38,17 @@ public class JsonLoaderStrategy implements ObjectLoaderStrategy
 	public <T> List<T> getAllData(String prefix, Class<T> classType, Factory<T> factory) throws IOException, ClassCastException
 	{
 		List<T> resultList = new ArrayList<>();
+
+		log.debug("Getting all data for prefix: {}, classtype: {}, factory is null: {}.", prefix, classType, factory == null);
+
 		for (Map.Entry<String, File> entry : jsonIDMapper.getFilesFromPrefix(prefix).entrySet()){
 			JsonNode jsonNode = objectMapper.readTree(entry.getValue());
+
+			if (jsonNode == null){
+				log.error("JSON Node for prefix {} is null. Skipping file {}.", prefix, entry.getValue().getName());
+				continue;
+			}
+
 			((ObjectNode) jsonNode).put("id", entry.getKey());
 			if (factory != null){
 				resultList.add(factory.createObject(jsonNode));

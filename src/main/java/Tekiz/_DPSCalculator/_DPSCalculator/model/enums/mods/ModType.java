@@ -1,10 +1,7 @@
 package Tekiz._DPSCalculator._DPSCalculator.model.enums.mods;
 
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
-import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.Category;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
-import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +9,11 @@ public enum ModType
 {
 	//RANGED WEAPONS
 	RECEIVER("Receiver", WeaponMod.class),
+	BARREL("Barrel", WeaponMod.class),
+	GRIP("Grip", WeaponMod.class),
+	MAGAZINE("Magazine", WeaponMod.class),
+	SIGHTS("Sights", WeaponMod.class),
+	MUZZLE("Muzzle", WeaponMod.class),
 
 	//ARMOUR
 	MATERIAL("Material", ArmourMod.class),

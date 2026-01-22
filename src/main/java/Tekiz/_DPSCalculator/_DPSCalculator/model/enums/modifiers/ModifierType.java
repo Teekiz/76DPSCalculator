@@ -38,7 +38,9 @@ public enum ModifierType
 	ACCURACY_SIGHTED(Double.class, "Sighted accuracy"),
 	AIM_SPEED(Double.class, "Aim speed"),
 	RECOIL(Double.class, "Recoil change"),
+	RECOIL_PER_SHOT(Double.class, "Recoil per-shot change"),
 	SCORCHED_DAMAGE(Double.class, "Scorched damage"),
+	IS_SILENT(Boolean.class, "Suppressed"),
 
 	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),
