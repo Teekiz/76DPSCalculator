@@ -47,12 +47,12 @@
     },
     "modifications" : {
       "RECEIVER" : {
-        "defaultModification": "AUTOMATIC",
+        "defaultModification": "AUTOMATIC_RECEIVER",
         "acceptedModType": "RECEIVER",
         "canSlotBeChanged": true,
         "availableInSlot": [
-          "AUTOMATIC",
-          "CALIBRATE"
+          "AUTOMATIC_RECEIVER",
+          "CALIBRATE_RECEIVER"
         ]
       },
       "BARREL" : {
@@ -65,29 +65,29 @@
         ]
       },
       "GRIP" : {
-        "defaultModification": "STANDARD",
+        "defaultModification": "STANDARD_GRIP",
         "acceptedModType": "GRIP",
         "canSlotBeChanged": true,
         "availableInSlot": [
-          "STANDARD",
-          "TRUE"
+          "STANDARD_GRIP",
+          "TRUE_GRIP"
         ]
       },
       "MAGAZINE" : {
-        "defaultModification": "STANDARD",
+        "defaultModification": "STANDARD_MAGAZINE",
         "acceptedModType": "MAGAZINE",
         "canSlotBeChanged": true,
         "availableInSlot": [
-          "STANDARD",
-          "QUICK"
+          "STANDARD_MAGAZINE",
+          "QUICK_MAGAZINE"
         ]
       },
       "SIGHTS" : {
-        "defaultModification": "STANDARD",
+        "defaultModification": "STANDARD_SIGHTS",
         "acceptedModType": "SIGHTS",
         "canSlotBeChanged": true,
         "availableInSlot": [
-          "STANDARD",
+          "STANDARD_SIGHTS",
           "REFLEX_CIRCLE"
         ]
       },

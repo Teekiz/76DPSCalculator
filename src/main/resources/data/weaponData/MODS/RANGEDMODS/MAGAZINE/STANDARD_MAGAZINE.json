@@ -1,6 +1,6 @@
 {
-    "name": "Standard",
-    "alias" : "STANDARD",
+    "name": "Standard Magazine",
+    "alias" : "STANDARD_MAGAZINE",
     "modType": "MAGAZINE",
     "modifierSource" : "WEAPON_MODIFICATION",
     "effects" : {

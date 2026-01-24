@@ -1,14 +1,10 @@
 package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.EquippedArmour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourModDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourNameDTO;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -22,8 +18,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor =@__(@Autowired))
 public class ArmourMapper
 {
-	private final ModifierMapper modifierMapper;
-
 	/**
 	 * Gets all the equipped armour in a loadout and converts them to a list of data transfer object (DTO).
 	 * @param equippedArmour The equipped armour in a loadout.
@@ -91,36 +85,6 @@ public class ArmourMapper
 			.armourSlot(armour.getArmourSlot())
 			.armourResistance(armour.getArmourResistance())
 			.modifications(armour.getModifications())
-			.build();
-	}
-
-	/**
-	 * A method to convert all armour mods provided into a data transfer object (DTO).
-	 * @param mods The {@link ArmourMod}s to be converted.
-	 * @return A list of {@link ArmourMod}s represented as a DTO ({@link ArmourModNameDTO}).
-	 */
-	public List<ArmourModNameDTO> convertToArmourModNameDTO(List<ArmourMod> mods){
-		if (mods == null){return Collections.emptyList();}
-		return mods.stream()
-			.map(entry -> ArmourModNameDTO.builder()
-				.id(entry.id())
-				.name(entry.name())
-				.build())
-			.collect(Collectors.toList());
-	}
-
-	/**
-	 * A method to convert a single armour mod into a data transfer object (DTO).
-	 * @param armourMod The {@link ArmourMod} to be converted.
-	 * @return The {@link ArmourMod} represented as a DTO ({@link ArmourModNameDTO}).
-	 */
-	public ArmourModDTO convertToArmourModDTO(ArmourMod armourMod){
-		if (armourMod==null){return null;}
-		return ArmourModDTO.builder()
-			.id(armourMod.id())
-			.name(armourMod.name())
-			.modType(armourMod.modType())
-			.modificationEffects(modifierMapper.convertAllModifiersToDTO(armourMod.effects()))
 			.build();
 	}
 }

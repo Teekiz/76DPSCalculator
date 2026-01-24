@@ -3,14 +3,10 @@ package Tekiz._DPSCalculator._DPSCalculator.services.mappers;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.MeleeWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.RangedWeapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.MeleeWeaponDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.RangedWeaponDTO;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -24,7 +20,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor =@__(@Autowired))
 public class WeaponMapper
 {
-	private final ModifierMapper modifierMapper;
+	private ModificationMapper modificationMapper;
 
 	/**
 	 * A method to convert a single weapon into a data transfer object (DTO).
@@ -106,35 +102,5 @@ public class WeaponMapper
 		} else {
 			return convertToDetailsDTO(weapon);
 		}
-	}
-
-	/**
-	 * A method to convert all weapon mod provided into a data transfer object (DTO).
-	 * @param mods The {@link WeaponMod}s to be converted.
-	 * @return A list of {@link WeaponMod}s represented as a DTO ({@link WeaponModDTO}).
-	 */
-	public List<WeaponModNameDTO> convertToWeaponModNameDTO(List<WeaponMod> mods){
-		if (mods == null){return Collections.emptyList();}
-		return mods.stream()
-			.map(entry -> WeaponModNameDTO.builder()
-				.id(entry.id())
-				.name(entry.name())
-				.build())
-			.collect(Collectors.toList());
-	}
-
-	/**
-	 * A method to convert a single weapon mod into a data transfer object (DTO).
-	 * @param weaponMod The {@link WeaponMod} to be converted.
-	 * @return The {@link WeaponMod} represented as a DTO ({@link WeaponModDTO}).
-	 */
-	public WeaponModDTO convertToWeaponModDTO(WeaponMod weaponMod){
-		if (weaponMod==null){return null;}
-		return WeaponModDTO.builder()
-			.id(weaponMod.id())
-			.name(weaponMod.name())
-			.modType(weaponMod.modType())
-			.modificationEffects(modifierMapper.convertAllModifiersToDTO(weaponMod.effects()))
-			.build();
 	}
 }

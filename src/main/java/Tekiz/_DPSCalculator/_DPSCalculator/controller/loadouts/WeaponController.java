@@ -3,30 +3,26 @@ package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.WeaponFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.WeaponManager;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.ModificationMapper;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,10 +40,12 @@ public class WeaponController
 	private final WeaponMapper weaponMapper;
 	private final DataLoaderService weaponLoaderService;
 	private final WeaponFactory weaponFactory;
+	private final ModificationMapper modificationMapper;
 	@Autowired
-	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, DataLoaderService weaponLoaderService, WeaponFactory weaponFactory)
+	public WeaponController(LoadoutManager loadoutManager, WeaponManager weaponManager, WeaponMapper weaponMapper, DataLoaderService weaponLoaderService, WeaponFactory weaponFactory, ModificationMapper modificationMapper)
 	{
 		this.weaponFactory = weaponFactory;
+		this.modificationMapper = modificationMapper;
 		log.info("Weapon controller created.");
 		this.loadoutManager = loadoutManager;
 		this.weaponManager = weaponManager;
@@ -92,18 +90,18 @@ public class WeaponController
 	}
 	@Operation(summary = "Gets all available weapon mods.", description = "Retrieves a list of all weapon mod names that are available.")
 	@GetMapping("/getAvailableWeaponMods")
-	public ResponseEntity<List<WeaponModNameDTO>> getAvailableWeaponMods(@RequestParam String weaponID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
+	public ResponseEntity<List<ModificationDTO>> getAvailableWeaponMods(@RequestParam String weaponID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
 	{
 		Weapon weapon = weaponLoaderService.loadData(weaponID, Weapon.class, weaponFactory);
 		List<WeaponMod> weaponMods = weaponManager.getAvailableWeaponMods(weapon, modType);
-		return ResponseEntity.ok(weaponMapper.convertToWeaponModNameDTO(weaponMods));
+		return ResponseEntity.ok(modificationMapper.convertListToModificationDTO(weaponMods));
 	}
 	@Operation(summary = "Gets a weapon mods details.", description = "Retrieves a detailed list of information about a weapon mod.")
 	@GetMapping("/getWeaponModDetails")
-	public ResponseEntity<WeaponModDTO> getWeaponModDetails(@RequestParam String modID) throws IOException
+	public ResponseEntity<ModificationDTO> getWeaponModDetails(@RequestParam String modID) throws IOException
 	{
 		WeaponMod weaponMod = weaponLoaderService.loadData(modID, WeaponMod.class, null);
-		return ResponseEntity.ok(weaponMapper.convertToWeaponModDTO(weaponMod));
+		return ResponseEntity.ok(modificationMapper.convertToModificationDTO(weaponMod));
 	}
 	//todo - return weapon instead of string
 	@Operation(summary = "Modifies the current weapon.", description = "Modifies the current loadouts weapon with the provided modification ID.")

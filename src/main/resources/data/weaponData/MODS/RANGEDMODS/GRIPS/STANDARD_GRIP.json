@@ -1,10 +1,8 @@
 {
-    "name": "Quick",
-    "alias" : "QUICK",
+    "name": "Standard Grip",
+    "alias" : "STANDARD_GRIP",
     "modType": "GRIP",
     "modifierSource" : "WEAPON_MODIFICATION",
     "effects" : {
-      "RELOADSPEED" : 0.3,
-      "AP_COST" : -0.05
     }
 }

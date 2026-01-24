@@ -1,0 +1,10 @@
+{
+    "name": "Quick Magazine",
+    "alias" : "QUICK_MAGAZINE",
+    "modType": "GRIP",
+    "modifierSource" : "WEAPON_MODIFICATION",
+    "effects" : {
+      "RELOADSPEED" : 0.3,
+      "AP_COST" : -0.05
+    }
+}

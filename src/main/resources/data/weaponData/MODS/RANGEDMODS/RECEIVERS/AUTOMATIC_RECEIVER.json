@@ -1,6 +1,6 @@
 {
-    "name": "Automatic",
-    "alias" : "AUTOMATIC",
+    "name": "Automatic Receiver",
+    "alias" : "AUTOMATIC_RECEIVER",
     "modType": "RECEIVER",
     "modSubType" : "AUTOMATIC",
     "modifierSource" : "WEAPON_MODIFICATION",

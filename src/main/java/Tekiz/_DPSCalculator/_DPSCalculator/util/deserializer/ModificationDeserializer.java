@@ -2,6 +2,7 @@ package Tekiz._DPSCalculator._DPSCalculator.util.deserializer;
 
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.Modification;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.weapons.WeaponMod;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,34 +40,23 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			return null;
 		}
 
-		JsonNode modTypeNode = modificationNode.get("ModType");
-
-		Class<?> objectClass = null;
-
-		if (modTypeNode != null && !modTypeNode.isNull()) {
-			try {
-				ModType modType = ModType.valueOf(modTypeNode.asText());
-				objectClass = modType.getClassType();
-			} catch (IllegalArgumentException e) {
-				log.error("Unknown ModType in JSON: {}", modTypeNode.asText());
-			}
-		}
-
-		if (objectClass == null){
-			String name = modificationNode.get("name") != null ? modificationNode.get("name").asText() : "NULL";
-			String modType = modTypeNode!= null ? modificationNode.asText() : "NULL";
-
-			log.error("Cannot deserialize modification: class cannot be determined (Name: {}, Type: {}).", name, modType);
-			return null;
-		}
-
 		try
 		{
 			DataLoaderService loaderService = (DataLoaderService) context.findInjectableValue(DataLoaderService.class.getName(), null, null);
 
+			//if the modification is coming from a text-source, it should be in a mod slot.
 			if (modificationNode.isTextual())
 			{
 				String ModificationIdentifier = modificationNode.asText();
+
+				Object parentObject = context.getParser().getParsingContext().getParent().getCurrentValue();
+
+				if (!(parentObject instanceof ModificationSlot<?>)) {
+					log.debug("Could not deserialize modification: '{}', cannot determine parent type.", ModificationIdentifier);
+					return null;
+				}
+
+				Class<?> objectClass = ModType.getClassType(((ModificationSlot<?>) parentObject).getModType());
 
 				log.debug("Deserializing modification: '{}'", ModificationIdentifier);
 				Modification modification = (Modification) loaderService.loadData(ModificationIdentifier, objectClass, null);
@@ -80,6 +70,15 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			{
 				//needs to be retrieved from a database
 				JsonNode collection = modificationNode.get("collectionName");
+				JsonNode modTypeNode = modificationNode.get("modType");
+
+				if (modTypeNode == null || modTypeNode.isNull()){
+					log.debug("Cannot deserialize collection as modTypeNode is null.");
+					return null;
+				}
+				ModType modType = ModType.valueOf(modTypeNode.asText());
+				Class<?> objectClass = modType.getClassType();
+
 				if (collection != null && !collection.isNull()){
 					String id = modificationNode.get("id").asText();
 					return (Modification) loaderService.loadData(id, objectClass, null);

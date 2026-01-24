@@ -1,6 +1,6 @@
 {
-    "name": "True",
-    "alias" : "TRUE",
+    "name": "True Grip",
+    "alias" : "TRUE_GRIP",
     "modType": "GRIP",
     "modifierSource" : "WEAPON_MODIFICATION",
     "effects" : {

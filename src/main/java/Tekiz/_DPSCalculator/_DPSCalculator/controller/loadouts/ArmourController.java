@@ -3,8 +3,6 @@ package Tekiz._DPSCalculator._DPSCalculator.controller.loadouts;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.Armour;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourModDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourModNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.dto.ArmourNameDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourPiece;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
@@ -12,11 +10,13 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.factory.ArmourFactory;
 import Tekiz._DPSCalculator._DPSCalculator.services.creation.loading.DataLoaderService;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.ArmourManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.ArmourMapper;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.ModificationMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -43,9 +43,12 @@ public class ArmourController
 	private final ArmourMapper armourMapper;
 	private final DataLoaderService armourLoaderService;
 	private final ArmourFactory armourFactory;
+	private final ModificationMapper modificationMapper;
+
 	@Autowired
-	public ArmourController(LoadoutManager loadoutManager, ArmourManager armourManager, ArmourMapper armourMapper, DataLoaderService armourLoaderService, ArmourFactory armourFactory)
+	public ArmourController(LoadoutManager loadoutManager, ArmourManager armourManager, ArmourMapper armourMapper, DataLoaderService armourLoaderService, ArmourFactory armourFactory, ModificationMapper modificationMapper)
 	{
+		this.modificationMapper = modificationMapper;
 		log.info("Armour controller created.");
 		this.armourFactory = armourFactory;
 		this.loadoutManager = loadoutManager;
@@ -92,18 +95,18 @@ public class ArmourController
 	}
 	@Operation(summary = "Gets all available armour mods.", description = "Retrieves a list of all armour mod names that are available. Filtered by the type and slot.")
 	@GetMapping("/getAvailableArmourMods")
-	public ResponseEntity<List<ArmourModNameDTO>> getAvailableArmourMods(@RequestParam String armourID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
+	public ResponseEntity<List<ModificationDTO>> getAvailableArmourMods(@RequestParam String armourID, @RequestParam(required = false) ModType modType) throws IOException, ResourceNotFoundException
 	{
 		Armour armour = armourLoaderService.loadData(armourID, Armour.class, armourFactory);
 		List<ArmourMod> armourMods = armourManager.getAvailableArmourMods(armour, modType);
-		return ResponseEntity.ok(armourMapper.convertToArmourModNameDTO(armourMods));
+		return ResponseEntity.ok(modificationMapper.convertListToModificationDTO(armourMods));
 	}
 	@Operation(summary = "Gets an armour mods details.", description = "Retrieves a detailed list of information about an armour mod.")
 	@GetMapping("/getArmourModDetails")
-	public ResponseEntity<ArmourModDTO> getArmourModDetails(@RequestParam String modID) throws IOException
+	public ResponseEntity<ModificationDTO> getArmourModDetails(@RequestParam String modID) throws IOException
 	{
 		ArmourMod armourMod = armourLoaderService.loadData(modID, ArmourMod.class, null);
-		ArmourModDTO armourModDTO = armourMapper.convertToArmourModDTO(armourMod);
+		ModificationDTO armourModDTO = modificationMapper.convertToModificationDTO(armourMod);
 		return ResponseEntity.ok(armourModDTO);
 	}
 	@Operation(summary = "Modifies the current armour.", description = "Modifies the current loadouts armour with the provided modification ID.")

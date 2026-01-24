@@ -1,6 +1,6 @@
 {
-    "name": "Standard",
-    "alias" : "STANDARD",
+    "name": "Standard Sights",
+    "alias" : "STANDARD_SIGHTS",
     "modType": "SIGHTS",
     "modifierSource" : "WEAPON_MODIFICATION",
     "effects" : {

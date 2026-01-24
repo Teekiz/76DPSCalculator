@@ -1,6 +1,6 @@
 {
-    "name": "Calibrated",
-    "alias" : "CALIBRATE",
+    "name": "Calibrated Receiver",
+    "alias" : "CALIBRATE_RECEIVER",
     "modType": "RECEIVER",
     "modSubType" : "SEMIAUTOMATIC",
     "modifierSource" : "WEAPON_MODIFICATION",

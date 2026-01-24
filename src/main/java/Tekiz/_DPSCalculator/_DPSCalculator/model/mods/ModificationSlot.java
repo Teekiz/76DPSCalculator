@@ -23,6 +23,7 @@ public class ModificationSlot<T extends Modification>
 	@JsonProperty("currentModification") @JsonAlias("defaultModification")
 	private T currentModification;
 	/**The type of mod this slot manages. */
+	@JsonProperty("modType") @JsonAlias("acceptedModType")
 	private ModType modType;
 	/** Whether the slot can be modified after creation. */
 	private final boolean canSlotBeChanged;

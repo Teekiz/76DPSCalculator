@@ -1,6 +1,6 @@
 {
-    "name": "No muzzle",
-    "alias" : "NO_MUZZLE",
+    "name": "Suppressor",
+    "alias" : "SUPPRESSOR",
     "modType": "MUZZLE",
     "modifierSource" : "WEAPON_MODIFICATION",
     "effects" : {
