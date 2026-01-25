@@ -28,7 +28,7 @@ public class ModifierDTO<T>
 			if (type.getInverseValue()) {
 				prefix = (numberValue < 0) ? "+" : "-";
 			} else {
-				prefix = (numberValue >= 0) ? "+" : "";
+				prefix = (numberValue >= 0) ? "+" : "-";
 			}
 			valueStr = String.valueOf(Math.abs(numberValue));
 		}

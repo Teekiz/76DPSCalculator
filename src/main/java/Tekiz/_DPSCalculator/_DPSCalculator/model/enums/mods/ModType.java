@@ -34,5 +34,4 @@ public enum ModType
 	public static Class<?> getClassType(ModType modType){
 		return modType.getClassType();
 	}
-
 }

@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor =@__(@Autowired))
 public class ArmourMapper
 {
+	private ModificationMapper modificationMapper;
+	private LegendaryEffectMapper legendaryEffectMapper;
+
 	/**
 	 * Gets all the equipped armour in a loadout and converts them to a list of data transfer object (DTO).
 	 * @param equippedArmour The equipped armour in a loadout.
@@ -84,7 +87,8 @@ public class ArmourMapper
 			.armourLevel(armour.getArmourLevel())
 			.armourSlot(armour.getArmourSlot())
 			.armourResistance(armour.getArmourResistance())
-			.modifications(armour.getModifications())
+			.modifications(modificationMapper.convertHashMapToModificationDTO(armour.getModifications()))
+			.legendaryEffects(legendaryEffectMapper.convertHashMapToLegendaryEffectDTO(armour.getLegendaryEffects()))
 			.build();
 	}
 }

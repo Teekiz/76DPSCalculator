@@ -108,7 +108,7 @@ public class HashMapKeyComponent
 					log.debug("Deserializing Legendary Effect KeyObject: {}.", string);
 					return loaderService.loadData(objectIdentifier, LegendaryEffect.class, null);
 				}
-				case null, default ->
+				default ->
 				{
 					log.error("Could not deserialize key of type: {}. Name: {}.", objectType, objectIdentifier);
 					return null;

@@ -40,7 +40,7 @@ public enum ModifierType
 	RECOIL(Double.class, "Recoil change"),
 	RECOIL_PER_SHOT(Double.class, "Recoil per-shot change"),
 	SCORCHED_DAMAGE(Double.class, "Scorched damage"),
-	IS_SILENT(Boolean.class, "Suppressed"),
+	IS_SILENT(Boolean.class, "Silences weapon"),
 
 	//if multiple contexts are required, could change from String to List.
 	ADDITIONAL_CONTEXT_REQUIRED(String.class),

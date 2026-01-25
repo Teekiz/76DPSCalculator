@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class WeaponMapper
 {
 	private ModificationMapper modificationMapper;
+	private LegendaryEffectMapper legendaryEffectMapper;
 
 	/**
 	 * A method to convert a single weapon into a data transfer object (DTO).
@@ -60,8 +61,8 @@ public class WeaponMapper
 			.weaponLevel(weapon.getWeaponLevel())
 			.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 			.apCost(weapon.getApCost())
-			.modifications(weapon.getModifications())
-			.legendaryEffects(weapon.getLegendaryEffects())
+			.modifications(modificationMapper.convertHashMapToModificationDTO(weapon.getModifications()))
+			.legendaryEffects(legendaryEffectMapper.convertHashMapToLegendaryEffectDTO(weapon.getLegendaryEffects()))
 			.build();
 	}
 
@@ -84,8 +85,8 @@ public class WeaponMapper
 				.fireRate(((RangedWeapon) weapon).getFireRate())
 				.range(((RangedWeapon) weapon).getRange())
 				.accuracy(((RangedWeapon) weapon).getAccuracy())
-				.modifications(weapon.getModifications())
-				.legendaryEffects(weapon.getLegendaryEffects())
+				.modifications(modificationMapper.convertHashMapToModificationDTO(weapon.getModifications()))
+				.legendaryEffects(legendaryEffectMapper.convertHashMapToLegendaryEffectDTO(weapon.getLegendaryEffects()))
 				.build();
 		} else if (weapon instanceof MeleeWeapon) {
 			return MeleeWeaponDTO.builder()
@@ -96,8 +97,8 @@ public class WeaponMapper
 				.weaponDamageByLevel(weapon.getWeaponDamageByLevel())
 				.apCost(weapon.getApCost())
 				.attackSpeed(((MeleeWeapon) weapon).getAttackSpeed().toString())
-				.modifications(weapon.getModifications())
-				.legendaryEffects(weapon.getLegendaryEffects())
+				.modifications(modificationMapper.convertHashMapToModificationDTO(weapon.getModifications()))
+				.legendaryEffects(legendaryEffectMapper.convertHashMapToLegendaryEffectDTO(weapon.getLegendaryEffects()))
 				.build();
 		} else {
 			return convertToDetailsDTO(weapon);

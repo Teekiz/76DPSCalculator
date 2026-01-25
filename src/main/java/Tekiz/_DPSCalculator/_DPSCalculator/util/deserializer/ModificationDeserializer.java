@@ -49,6 +49,11 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			{
 				String ModificationIdentifier = modificationNode.asText();
 
+				/* todo - apply this:
+						String typeString = context.getParser().getParsingContext().getParent().getParent().getCurrentName();
+						Class<?> objectClass = ModType.valueOf(typeString).getClassType();
+				*/
+
 				Object parentObject = context.getParser().getParsingContext().getParent().getCurrentValue();
 
 				if (!(parentObject instanceof ModificationSlot<?>)) {

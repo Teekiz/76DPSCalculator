@@ -47,7 +47,7 @@
     },
     "modifications" : {
       "RECEIVER" : {
-        "defaultModification": "AUTOMATIC_RECEIVER",
+        "defaultModification": "CALIBRATE_RECEIVER",
         "acceptedModType": "RECEIVER",
         "canSlotBeChanged": true,
         "availableInSlot": [
@@ -93,7 +93,7 @@
       },
       "MUZZLE" : {
         "defaultModification": "NO_MUZZLE",
-        "acceptedModType": "SIGHTS",
+        "acceptedModType": "MUZZLE",
         "canSlotBeChanged": true,
         "availableInSlot": [
           "NO_MUZZLE",

@@ -4,8 +4,11 @@ import Tekiz._DPSCalculator._DPSCalculator.model.armour.ArmourMod;
 import Tekiz._DPSCalculator._DPSCalculator.model.armour.properties.ArmourResistance;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourClassification;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.armour.ArmourSlot;
+import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType;
 import Tekiz._DPSCalculator._DPSCalculator.model.enums.mods.ModType;
+import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlotDTO;
 import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlot;
+import Tekiz._DPSCalculator._DPSCalculator.model.mods.ModificationSlotDTO;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +28,6 @@ public class ArmourDTO extends ArmourNameDTO
 	private HashMap<Integer, ArmourResistance> armourResistance;
 	/** if the armour classification applies. */
 	private ArmourClassification armourClassification;
-	private HashMap<ModType, ModificationSlot<ArmourMod>> modifications;
+	private HashMap<ModType, ModificationSlotDTO> modifications;
+	private HashMap<StarType, LegendaryEffectSlotDTO> legendaryEffects;
 }
