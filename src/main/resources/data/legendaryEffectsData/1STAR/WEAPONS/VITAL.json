@@ -7,6 +7,7 @@
         "RANGED_WEAPONS"
     ],
     "starType" : "_2STAR",
+    "isHidden" : false,
     "effects" : {
         "CRITICAL" : 0.5
     }

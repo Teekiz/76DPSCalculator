@@ -6,6 +6,7 @@
         "RANGED_WEAPONS"
     ],
     "starType" : "_1STAR",
+    "isHidden" : false,
     "conditionString" : "#player.getAttackType() == #AttackType.AIMING",
     "effects" : {
           "DAMAGE_ADDITIVE" : 0.25

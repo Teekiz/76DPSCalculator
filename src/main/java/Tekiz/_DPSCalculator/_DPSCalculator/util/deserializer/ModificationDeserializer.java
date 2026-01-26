@@ -48,20 +48,14 @@ public class ModificationDeserializer extends JsonDeserializer<Modification>
 			if (modificationNode.isTextual())
 			{
 				String ModificationIdentifier = modificationNode.asText();
+				String typeString = context.getParser().getParsingContext().getParent().getCurrentName();
 
-				/* todo - apply this:
-						String typeString = context.getParser().getParsingContext().getParent().getParent().getCurrentName();
-						Class<?> objectClass = ModType.valueOf(typeString).getClassType();
-				*/
-
-				Object parentObject = context.getParser().getParsingContext().getParent().getCurrentValue();
-
-				if (!(parentObject instanceof ModificationSlot<?>)) {
-					log.debug("Could not deserialize modification: '{}', cannot determine parent type.", ModificationIdentifier);
+				if (typeString == null || typeString.isEmpty()) {
+					log.debug("Cannot deserialize modification - cannot determine object type.");
 					return null;
 				}
 
-				Class<?> objectClass = ModType.getClassType(((ModificationSlot<?>) parentObject).getModType());
+				Class<?> objectClass = ModType.valueOf(typeString).getClassType();
 
 				log.debug("Deserializing modification: '{}'", ModificationIdentifier);
 				Modification modification = (Modification) loaderService.loadData(ModificationIdentifier, objectClass, null);

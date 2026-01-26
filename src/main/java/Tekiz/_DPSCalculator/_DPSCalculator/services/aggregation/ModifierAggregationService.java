@@ -105,6 +105,9 @@ public class ModifierAggregationService
 	private void applyAdditionalContext(List<Modifier> modifiers, Loadout loadout)
 	{
 		for (Modifier modifier : modifiers) {
+			if (modifier == null || modifier.effects() == null){
+				continue;
+			}
 
 			Map<ModifierType, ModifierValue<?>> effects = modifier.effects();
 

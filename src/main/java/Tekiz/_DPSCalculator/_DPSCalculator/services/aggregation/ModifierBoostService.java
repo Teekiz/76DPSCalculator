@@ -38,7 +38,8 @@ public class ModifierBoostService
 
 		for (Modifier modifier : modifiers)
 		{
-			if (modifier.effects() != null
+			if (modifier != null &&
+				modifier.effects() != null
 				&& modifier.effects().containsKey(ModifierType.PRIORITY_AFFECTS_MODIFIERS)
 				&& modifier.effects().get(ModifierType.PRIORITY_AFFECTS_MODIFIERS).getValue() instanceof ModifierBoost boostedValue) {
 				modifierBoosts.put(boostedValue.getAffectedSourceType(), boostedValue.getValueChange());
@@ -57,7 +58,7 @@ public class ModifierBoostService
 	 */
 	public Map<ModifierType, ModifierValue<Number>> checkBoost(Modifier modifier, HashMap<ModifierSource, Number> modifierBoosts)
 	{
-		if (modifier.effects() == null){
+		if (modifier == null || modifier.effects() == null){
 			return null;
 		}
 		//returns only filtered effects.

@@ -8,12 +8,12 @@ import Tekiz._DPSCalculator._DPSCalculator.model.enums.legendaryEffects.StarType
 import Tekiz._DPSCalculator._DPSCalculator.model.exceptions.ResourceNotFoundException;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffect;
 import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectDTO;
-import Tekiz._DPSCalculator._DPSCalculator.model.legendaryEffects.LegendaryEffectSlot;
 import Tekiz._DPSCalculator._DPSCalculator.model.loadout.Loadout;
-import Tekiz._DPSCalculator._DPSCalculator.model.weapons.Weapon;
+import Tekiz._DPSCalculator._DPSCalculator.model.weapons.dto.WeaponDetailsDTO;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LegendaryEffectManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.manager.LoadoutManager;
 import Tekiz._DPSCalculator._DPSCalculator.services.mappers.LegendaryEffectMapper;
+import Tekiz._DPSCalculator._DPSCalculator.services.mappers.WeaponMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +38,12 @@ public class LegendaryEffectController
 	private final LoadoutManager loadoutManager;
 	private final LegendaryEffectManager legendaryEffectManager;
 	private final LegendaryEffectMapper legendaryEffectMapper;
+	private final WeaponMapper weaponMapper;
 
 	@Autowired
-	public LegendaryEffectController(LoadoutManager loadoutManager, LegendaryEffectManager legendaryEffectManager, LegendaryEffectMapper legendaryEffectMapper)
+	public LegendaryEffectController(LoadoutManager loadoutManager, LegendaryEffectManager legendaryEffectManager, LegendaryEffectMapper legendaryEffectMapper, WeaponMapper weaponMapper)
 	{
+		this.weaponMapper = weaponMapper;
 		log.info("Legendary effect controller created.");
 		this.loadoutManager = loadoutManager;
 		this.legendaryEffectManager = legendaryEffectManager;
@@ -52,23 +54,24 @@ public class LegendaryEffectController
 	@GetMapping("/getAvailableLegendaryEffects")
 	public ResponseEntity<List<LegendaryEffectDTO>> getAvailableLegendaryEffects(@RequestParam(required = false) StarType starType, @RequestParam(required = false) Category category) throws IOException
 	{
+		log.debug("Received request for getAvailableLegendaryEffects, starType: {}, category: {}", starType, category);
 		List<LegendaryEffect> legendaryEffects = legendaryEffectManager.getAvailableLegendaryEffects(starType, category);
 		List<LegendaryEffectDTO> legendaryEffectDTOs = legendaryEffectMapper.convertAllToDTO(legendaryEffects);
 		return ResponseEntity.ok(legendaryEffectDTOs);
 	}
 
 	@Operation(summary = "Changes a legendary effect on the current weapon", description = "Changes a legendary effect on the weapon in the provided loadout.")
-	@PostMapping("/addWeaponLegendaryEffect")
-	public ResponseEntity<String> changeWeaponLegendaryEffect(@RequestParam int loadoutID, @RequestParam StarType starType, @RequestParam String legendaryEffectID) throws IOException, ResourceNotFoundException
+	@PatchMapping("/changeWeaponLegendaryEffect")
+	public ResponseEntity<WeaponDetailsDTO> changeWeaponLegendaryEffect(@RequestParam int loadoutID, @RequestParam StarType starType, @RequestParam String legendaryEffectID) throws IOException, ResourceNotFoundException
 	{
+		log.debug("Request to add legendary effect to weapon in loadout: {}. Legendary effect ID: {}.", loadoutID, legendaryEffectID);
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);
 		legendaryEffectManager.changeLegendaryEffect(legendaryEffectID, starType, loadout.getWeapon(), loadout);
-		log.debug("Request to add legendary effect to weapon in loadout: {}. Legendary effect ID: {}.", loadoutID, legendaryEffectID);
-		return ResponseEntity.ok("Legendary effect " + sanitizeString(legendaryEffectID) + " has been applied to weapon in loadout " + loadoutID + ".");
+		return ResponseEntity.ok(weaponMapper.convertToRangedOrMeleeDTO(loadout.getWeapon()));
 	}
 
 	@Operation(summary = "Changes a legendary effect onto the matching armour piece.", description = "Changes a legendary effect onto the armour piece in the provided loadout.")
-	@PostMapping("/addArmourLegendaryEffect")
+	@PatchMapping("/changeArmourLegendaryEffect")
 	public ResponseEntity<String> changeArmourLegendaryEffect(@RequestParam int loadoutID, @RequestParam StarType starType, @RequestParam String legendaryEffectID, @RequestParam ArmourType armourType, @RequestParam ArmourSlot armourSlot) throws IOException, ResourceNotFoundException
 	{
 		Loadout loadout = loadoutManager.getLoadout(loadoutID);

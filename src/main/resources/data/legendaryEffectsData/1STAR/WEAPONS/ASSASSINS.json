@@ -7,6 +7,7 @@
         "RANGED_WEAPONS"
     ],
     "starType" : "_1STAR",
+    "isHidden" : false,
     "conditionString" : "#enemy.getEnemyType().getTags().contains(#EnemyTags.HUMAN)",
     "effects" : {
         "DAMAGE_ADDITIVE" : 0.5

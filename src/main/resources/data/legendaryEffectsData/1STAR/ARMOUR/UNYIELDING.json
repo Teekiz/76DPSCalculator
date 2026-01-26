@@ -6,6 +6,7 @@
         "ARMOUR"
     ],
     "starType" : "_1STAR",
+    "isHidden" : false,
     "effects" : {
       "SCRIPT" : "unyielding"
     }

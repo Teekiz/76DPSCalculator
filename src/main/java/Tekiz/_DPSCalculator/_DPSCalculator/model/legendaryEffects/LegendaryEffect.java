@@ -57,7 +57,6 @@ public record LegendaryEffect(@Id
 							  		@JsonProperty("starType") StarType starType,
 							  		@ValueConverter(value = ExpressionAdapter.ExpressionConverter.class)
 						 			@JsonProperty("conditionString") Expression condition,
-							  		@JsonDeserialize(using = ModifiersAdapter.ModifiersDeserializer.class)
 						 			@JsonProperty("isHidden") boolean isHidden,
 							  		@JsonProperty("effects")
 						 			@JsonSerialize(using = ModifiersAdapter.ModifiersSerializer.class)
